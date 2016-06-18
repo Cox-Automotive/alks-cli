@@ -1,0 +1,36 @@
+{
+  "name": "alks",
+  "version": "0.0.1",
+  "description": "CLI for working with ALKS",
+  "main": "lib/alks.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha ./test"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/coxauto/alks.git"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "alks": "lib/alks.js"
+  },
+  "author": "Brian Antonelli <bantonelli@coxautoinc.com>",
+  "private": "false",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "cli-color": "^1.1.0",
+    "cli-table": "^0.3.1",
+    "commander": "^2.9.0",
+    "dotenv": "^2.0.0",
+    "fuzzy": "^0.1.1",
+    "prompt": "^1.0.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
