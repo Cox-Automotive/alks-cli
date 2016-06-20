@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI for working with ALKS",
   "main": "lib/alks.js",
   "scripts": {
@@ -11,14 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/coxauto/alks.git"
+    "url": ""
   },
   "preferGlobal": true,
   "bin": {
     "alks": "lib/alks.js"
   },
   "author": "Brian Antonelli <bantonelli@coxautoinc.com>",
-  "private": "false",
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "cli-color": "^1.1.0",
