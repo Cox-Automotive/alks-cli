@@ -12,22 +12,27 @@ var program = require('commander'),
     config  = require('../package.json'),
     utils   = require('./utils');
 
+var durationValues = [ 2, 6, 12, 18, 24, 36 ],
+    outputValues   = [ 'json', 'env', 'docker' ];
+
 program
     .version(config.version)
     .description('creates a new session')
     .option('-p, --password [password]', 'my password')
-    .option('-d, --duration [hours]', 'duration of session [hours]', 2)
-    .option('-e, --setenv', 'export values as environment variables')
+    .option('-d, --duration [hours]', 'duration of session (' + durationValues.join(', ') + ')', durationValues[0])
+    .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + ')', outputValues[0])
     .parse(process.argv);
-
-var durationValues = [ 2, 6, 12, 18, 24, 36 ];
 
 var password = program.password,
     duration = parseInt(program.duration),
-    setenv   = _.isBoolean(program.setenv);
+    output   = program.output;
 
 if(!_.contains(durationValues, duration)){
     utils.errorAndExit('The duration provided ('+duration+') is not in the allowed values: ' + durationValues.join(', '));
+}
+
+if(!_.contains(outputValues, output)){
+    utils.errorAndExit('The output provided ('+output+') is not in the allowed values: ' + outputValues.join(', '));
 }
 
 async.waterfall([
@@ -91,14 +96,20 @@ async.waterfall([
         expires.setHours(expires.getHours()+duration);
         console.error(clc.white('Your AWS session data has been generated and expires ' + expires));
         
-        if(setenv){
+        if(output === 'docker'){
+            console.log([
+                ' -e AWS_ACCESS_KEY_ID=', sessionData.access_key,
+                ' -e AWS_SECRET_ACCESS_KEY=', sessionData.secret_key,
+                ' -e AWS_SESSION_TOKEN=', sessionData.session_token
+            ].join(''));
+        }
+        else if(output === 'env'){
             var cmd = utils.isWindows() ? 'SET' : 'export'
-            var sb = [
+            console.log([
                 cmd, ' AWS_ACCESS_KEY_ID=', sessionData.access_key, ' && ',
                 cmd, ' AWS_SECRET_ACCESS_KEY=', sessionData.secret_key, ' && ',
                 cmd, ' AWS_SESSION_TOKEN=', sessionData.session_token
-            ];
-            console.log(sb.join(''));
+            ].join(''));
         }
         else{
             console.log(JSON.stringify(sessionData, null, 4));
