@@ -92,13 +92,12 @@ async.waterfall([
         console.error(clc.white('Your AWS session data has been generated and expires ' + expires));
         
         if(setenv){
-            var sb = [];
-            sb.push('export AWS_ACCESS_KEY_ID=');
-            sb.push(sessionData.access_key);
-            sb.push(' && export AWS_SECRET_ACCESS_KEY=');
-            sb.push(sessionData.secret_key);
-            sb.push(' && export AWS_SESSION_TOKEN=');
-            sb.push(sessionData.session_token);
+            var cmd = utils.isWindows() ? 'SET' : 'export'
+            var sb = [
+                cmd, ' AWS_ACCESS_KEY_ID=', sessionData.access_key, ' && ',
+                cmd, ' AWS_SECRET_ACCESS_KEY=', sessionData.secret_key, ' && ',
+                cmd, ' AWS_SESSION_TOKEN=', sessionData.session_token
+            ];
             console.log(sb.join(''));
         }
         else{
