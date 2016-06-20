@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    _       = require('underscore'),
+    async   = require('async'),
+    prompt  = require('prompt'),
+    request = require('request'),
+    config  = require('../package.json'),
+    utils   = require('./utils');
+
+program
+    .version(config.version)
+    .description('creates a new session')
+    .option('-p, --password [password]', 'my password')
+    .option('-d, --duration [hours]', 'Duration of session [hours]', 2)
+    .option('-e, --setenv', 'export values to environment variables')
+    .parse(process.argv);
+
+var durationValues = [ 2, 6, 12, 18, 24, 36 ];
+
+var password = program.password,
+    duration = parseInt(program.duration),
+    setenv   = _.isBoolean(program.setenv);
+
+if(!_.contains(durationValues, duration)){
+    utils.errorAndExit('The duration provided ('+duration+') is not in the allowed values: ' + durationValues.join(', '));
+}
+
+async.waterfall([
+    /// first handle the password
+    function(callback){
+        // if its empty then prompt them
+        if(_.isEmpty(password)){
+            prompt.start();
+            prompt.message = '';
+            prompt.get([{
+                name: 'password',
+                description: 'Enter network password',
+                hidden: true,
+                required: true
+            }], function(err, result){
+                if(err){
+                    callback(err);
+                }
+                else{
+                    callback(null, result.password);
+                }
+            });
+        }
+        // otherwise just return the provided password
+        else{
+            callback(null, password);
+        }
+    },
+    // now call the ALKS API
+    function(password, callback){
+        var payload = _.extend(
+            {
+                password: password,
+                sessionTime: duration
+            },
+            utils.getConfigForRequest()
+        );
+
+        request({
+            url: utils.getConfig().ALKS_SERVER + '/getKeys',
+            method: 'POST',
+            json: payload
+        }, function(err, results){
+            console.log(err);
+            console.log(JSON.stringify(results));
+        });
+    }
+], function(err, data){
+    console.log('all done', err, data)
+});

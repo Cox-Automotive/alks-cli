@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    utils   = require('./utils'),
+    config  = require('../package.json');
+
+program
+    .version(config.version)
+    .command('create', 'creates a new session')
+    .parse(process.argv);
