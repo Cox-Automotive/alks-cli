@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CLI for working with ALKS",
   "main": "lib/alks.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "type": "git",
     "url": ""
   },
+  "license": "MIT",
   "preferGlobal": true,
   "bin": {
     "alks": "lib/alks.js"

@@ -39,7 +39,7 @@ async.waterfall([
             prompt.message = '';
             prompt.get([{
                 name: 'password',
-                description: 'Enter network password',
+                description: 'Password for ' + utils.getConfig().ALKS_USERID,
                 hidden: true,
                 required: true
             }], function(err, result){
