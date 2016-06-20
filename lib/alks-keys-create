@@ -16,8 +16,8 @@ program
     .version(config.version)
     .description('creates a new session')
     .option('-p, --password [password]', 'my password')
-    .option('-d, --duration [hours]', 'Duration of session [hours]', 2)
-    .option('-e, --setenv', 'export values to environment variables')
+    .option('-d, --duration [hours]', 'duration of session [hours]', 2)
+    .option('-e, --setenv', 'export values as environment variables')
     .parse(process.argv);
 
 var durationValues = [ 2, 6, 12, 18, 24, 36 ];
@@ -67,14 +67,46 @@ async.waterfall([
         );
 
         request({
-            url: utils.getConfig().ALKS_SERVER + '/getKeys',
+            url: utils.getConfig().ALKS_SERVER + '/getKeys/',
             method: 'POST',
             json: payload
         }, function(err, results){
-            console.log(err);
-            console.log(JSON.stringify(results));
+            if(err){
+                return callback(err);
+            }
+            else if(results.statusCode !== 200){
+                return callback(results.body.statusMessage);
+            }
+            
+            callback(null, {
+                access_key:    results.body.accessKey,
+                secret_key:    results.body.secretKey,
+                session_token: results.body.sessionToken
+            });
         });
+    },
+    // now deal with the session data
+    function(sessionData, callback){
+        var expires = new Date();
+        expires.setHours(expires.getHours()+duration);
+        console.error(clc.white('Your AWS session data has been generated and expires ' + expires));
+        
+        if(setenv){
+            var sb = [];
+            sb.push('export AWS_ACCESS_KEY_ID=');
+            sb.push(sessionData.access_key);
+            sb.push(' && export AWS_SECRET_ACCESS_KEY=');
+            sb.push(sessionData.secret_key);
+            sb.push(' && export AWS_SESSION_TOKEN=');
+            sb.push(sessionData.session_token);
+            console.log(sb.join(''));
+        }
+        else{
+            console.log(JSON.stringify(sessionData, null, 4));
+        }
     }
 ], function(err, data){
-    console.log('all done', err, data)
+    if(err){
+        utils.errorAndExit(err);
+    }
 });

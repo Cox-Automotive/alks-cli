@@ -23,4 +23,4 @@ After installing ALKS it will be available on your path. Simply run the followin
 
 To see a what options are available to a command ask for help on it:
 
-    alks help generate
+    alks keys help create

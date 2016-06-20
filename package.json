@@ -26,6 +26,7 @@
     "commander": "^2.9.0",
     "dotenv": "^2.0.0",
     "fuzzy": "^0.1.1",
+    "momentjs": "^1.1.7",
     "prompt": "^1.0.0",
     "request": "^2.72.0",
     "underscore": "^1.8.3"
