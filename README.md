@@ -51,6 +51,7 @@ Since ALKS requires you to pass your credentials, we've made the CLI provide mul
 3. Create an environment variable called `ALKS_PASSWORD` whose value is your password.
 4. Type your password. If we do not find a password we will prompt you on each use.
 
+
 #### Password Priority
 
 We will attempt to lookup your password in the following order:
