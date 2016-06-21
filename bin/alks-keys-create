@@ -10,7 +10,7 @@ var program = require('commander'),
     prompt  = require('prompt'),
     request = require('request'),
     config  = require('../package.json'),
-    utils   = require('./utils');
+    utils   = require('../lib/utils');
 
 var durationValues = [ 2, 6, 12, 18, 24, 36 ],
     outputValues   = [ 'json', 'env', 'docker' ];

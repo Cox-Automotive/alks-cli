@@ -10,7 +10,7 @@ var path     = require('path'),
     program  = require('commander'),
     fs       = require('fs'),
     fuzzy    = require('fuzzy'),
-    utils    = require('./utils'),
+    utils    = require('../lib/utils'),
     pkg      = require(path.join(__dirname, '../', 'package.json'));
 
 var config   = path.join((process.env.HOME || process.env.USERPROFILE), 'alks.env'),

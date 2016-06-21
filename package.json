@@ -2,7 +2,7 @@
   "name": "alks",
   "version": "0.0.5",
   "description": "CLI for working with ALKS",
-  "main": "lib/alks.js",
+  "main": "bin/alks",
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test"
   },
@@ -16,7 +16,7 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "alks": "lib/alks.js"
+    "alks": "bin/alks"
   },
   "author": "Brian Antonelli <bantonelli@coxautoinc.com>",
   "dependencies": {
