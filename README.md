@@ -102,3 +102,17 @@ Output values:
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
+
+### `keys list`
+
+`alks keys list` - List existing ALKS keys as well as output them
+
+Optional arguments:
+
+* `-o [output]` Output format. Supports: `json`, `env`, `docker` 
+
+Output values:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_SESSION_TOKEN`
