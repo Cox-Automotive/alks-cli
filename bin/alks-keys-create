@@ -9,12 +9,14 @@ var program = require('commander'),
     async   = require('async'),
     prompt  = require('prompt'),
     request = require('request'),
+    moment  = require('moment'),
     config  = require('../package.json'),
     account = require('../lib/account'),
+    keys    = require('../lib/keys'),
     utils   = require('../lib/utils');
 
 var durationValues = [ 2, 6, 12, 18, 24, 36 ],
-    outputValues   = [ 'json', 'env', 'docker' ];
+    outputValues   = utils.getOutputValues();
 
 program
     .version(config.version)
@@ -63,36 +65,23 @@ async.waterfall([
             }
             
             callback(null, {
-                access_key:    results.body.accessKey,
-                secret_key:    results.body.secretKey,
-                session_token: results.body.sessionToken
+                accessKey:    results.body.accessKey,
+                secretKey:    results.body.secretKey,
+                sessionToken: results.body.sessionToken
             });
         });
     },
     // now deal with the session data
     function(sessionData, callback){
-        var expires = new Date();
-        expires.setHours(expires.getHours()+duration);
-        console.error(clc.white('Your AWS session data has been generated and expires ' + expires));
+        // calculate expiration
+        var expires = moment().add(duration, 'hours');
+        console.error(clc.white('Your AWS session data has been generated and expires ' + expires.calendar()));
         
-        if(output === 'docker'){
-            console.log([
-                ' -e AWS_ACCESS_KEY_ID=', sessionData.access_key,
-                ' -e AWS_SECRET_ACCESS_KEY=', sessionData.secret_key,
-                ' -e AWS_SESSION_TOKEN=', sessionData.session_token
-            ].join(''));
-        }
-        else if(output === 'env'){
-            var cmd = utils.isWindows() ? 'SET' : 'export'
-            console.log([
-                cmd, ' AWS_ACCESS_KEY_ID=', sessionData.access_key, ' && ',
-                cmd, ' AWS_SECRET_ACCESS_KEY=', sessionData.secret_key, ' && ',
-                cmd, ' AWS_SESSION_TOKEN=', sessionData.session_token
-            ].join(''));
-        }
-        else{
-            console.log(JSON.stringify(sessionData, null, 4));
-        }
+        // store session data in DB
+        keys.addKey(sessionData.accessKey, sessionData.secretKey, sessionData.sessionToken, expires.toDate());
+
+        // now output the key
+        console.log(keys.getKeyOutput(output, sessionData));
     }
 ], function(err, data){
     if(err){

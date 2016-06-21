@@ -5,7 +5,6 @@ process.title = 'ALKS';
 
 var path     = require('path'),
     clc      = require('cli-color'),
-    path     = require('path'),
     _        = require('underscore'),
     program  = require('commander'),
     fs       = require('fs'),
@@ -13,7 +12,7 @@ var path     = require('path'),
     utils    = require('../lib/utils'),
     pkg      = require(path.join(__dirname, '../', 'package.json'));
 
-var config   = path.join((process.env.HOME || process.env.USERPROFILE), 'alks.env'),
+var config   = utils.getFilePathInHome('alks.env'),
     data     = [];
 
 require('dotenv').load({ silent: true, path: config });
