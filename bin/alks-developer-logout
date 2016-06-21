@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    _       = require('underscore'),
+    config  = require('../package.json'),
+    utils   = require('../lib/utils'),
+    account = require('../lib/account');
+
+program
+    .version(config.version)
+    .description('removes password')
+    .parse(process.argv);
+
+if(account.removePassword()){
+    console.error(clc.white.bold('Password removed!'));    
+}
+else{
+    console.error(clc.red.bold('Error removing password!'));       
+}

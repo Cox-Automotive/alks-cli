@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    _       = require('underscore'),
+    config  = require('../package.json'),
+    utils   = require('../lib/utils'),
+    account = require('../lib/account');
+
+program
+    .version(config.version)
+    .description('stores password')
+    .parse(process.argv);
+
+account.getPasswordFromPrompt(function(err, password){
+    if(account.storePassword(password)){
+        console.error(clc.white.bold('Password saved!'));    
+    }
+    else{
+        console.error(clc.red.bold('Error saving password!'));       
+    }
+});

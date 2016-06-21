@@ -4,26 +4,12 @@
 process.title = 'ALKS';
 
 var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    Table   = require('cli-table'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils');
+    utils   = require('../lib/utils'),
+    config  = require('../package.json');
 
 program
     .version(config.version)
-    .description('Shows current developer configuration')
+    .command('info', 'shows current developer configuration')
+    .command('login', 'stores password')
+    .command('logout', 'removes password')
     .parse(process.argv);
-
-
-var table = new Table({
-    head: [clc.white.bold('Key'), clc.white.bold('Value')],
-    colWidths: [25, 50]
-});
-
-_.each(utils.getConfig(), function(val, key){
-    table.push([key, val]);
-});
-
-console.error(clc.white.underline.bold('Developer Configuration'));
-console.error(clc.white(table.toString()));

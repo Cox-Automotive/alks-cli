@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -26,6 +26,7 @@
     "commander": "^2.9.0",
     "dotenv": "^2.0.0",
     "fuzzy": "^0.1.1",
+    "keytar": "^3.0.2",
     "momentjs": "^1.1.7",
     "prompt": "^1.0.0",
     "request": "^2.72.0",

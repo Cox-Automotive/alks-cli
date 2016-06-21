@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    _       = require('underscore'),
+    Table   = require('cli-table'),
+    config  = require('../package.json'),
+    utils   = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('shows current developer configuration')
+    .parse(process.argv);
+
+var table = new Table({
+    head: [clc.white.bold('Key'), clc.white.bold('Value')],
+    colWidths: [25, 50]
+});
+
+_.each(utils.getConfig(), function(val, key){
+    table.push([key, val]);
+});
+
+console.error(clc.white.underline.bold('Developer Configuration'));
+console.error(clc.white(table.toString()));
