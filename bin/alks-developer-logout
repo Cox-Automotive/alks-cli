@@ -16,7 +16,7 @@ program
     .parse(process.argv);
 
 if(account.removePassword()){
-    console.error(clc.white.bold('Password removed!'));    
+    console.error(clc.white('Password removed!'));    
 }
 else{
     console.error(clc.red.bold('Error removing password!'));       

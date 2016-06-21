@@ -17,7 +17,7 @@ program
 
 account.getPasswordFromPrompt(function(err, password){
     if(account.storePassword(password)){
-        console.error(clc.white.bold('Password saved!'));    
+        console.error(clc.white('Password saved!'));    
     }
     else{
         console.error(clc.red.bold('Error saving password!'));       

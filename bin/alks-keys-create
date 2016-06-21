@@ -85,9 +85,9 @@ async.waterfall([
         else if(output === 'env'){
             var cmd = utils.isWindows() ? 'SET' : 'export'
             console.log([
-                cmd, 'AWS_ACCESS_KEY_ID=', sessionData.access_key, ' && ',
-                cmd, 'AWS_SECRET_ACCESS_KEY=', sessionData.secret_key, ' && ',
-                cmd, 'AWS_SESSION_TOKEN=', sessionData.session_token
+                cmd, ' AWS_ACCESS_KEY_ID=', sessionData.access_key, ' && ',
+                cmd, ' AWS_SECRET_ACCESS_KEY=', sessionData.secret_key, ' && ',
+                cmd, ' AWS_SESSION_TOKEN=', sessionData.session_token
             ].join(''));
         }
         else{

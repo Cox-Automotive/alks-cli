@@ -1,13 +1,21 @@
 #ALKS CLI
 
+[![NPM](https://nodei.co/npm/alks.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/alks/)
+
 ## About
-CLI for working with ALKS.
+CLI for working with the ALKS service.
+
+### Prerequisites
+
+To install and use alks, you will need Node.js (version 4 or greater) and npm  ([nodejs.org](https://nodejs.org/en/download/package-manager)).
 
 ## Installing
 
 ALKS CLI is meant to be installed via NPM.
 
-    npm install alks -g
+```
+npm install -g alks
+```
 
 ## Configuring
 
@@ -59,3 +67,37 @@ If you would rather run the ALKS CLI as a Docker container, simply run the follo
 ```
 docker run -it -v ~:/root coxauto/alks-cli
 ```
+
+# Commands
+
+## Developer
+
+### `developer login`
+
+`alks developer login` - Store your login credentials in the OS keychain.
+
+### `developer logout`
+
+`alks developer logout` - Remove your login credentials from the OS keychain.
+
+### `developer info`
+
+`alks developer info` - Show your current developer configuration
+
+## Keys
+
+### `keys create`
+
+`alks keys create` - Create a new session key with the ALKS service
+
+Optional arguments:
+
+* `-p [password]` Your password
+* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
+* `-o [output]` Output format. Supports: `json`, `env`, `docker` 
+
+Output values:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_SESSION_TOKEN`
