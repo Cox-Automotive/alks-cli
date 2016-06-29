@@ -9,13 +9,16 @@ var program = require('commander'),
     Table   = require('cli-table'),
     moment  = require('moment'),
     prompt  = require('prompt'),
+    async   = require('async'),
     config  = require('../package.json'),
     utils   = require('../lib/utils'),
+    account = require('../lib/account'),
     keys    = require('../lib/keys');
 
 program
     .version(config.version)
     .description('list previous keys')
+    .option('-p, --password [password]', 'my password')
     .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + ')', utils.getOutputValues()[0])
     .parse(process.argv);
 
@@ -23,41 +26,53 @@ if(!_.contains(utils.getOutputValues(), program.output)){
     utils.errorAndExit('The output provided ('+program.output+') is not in the allowed values: ' + utils.getOutputValues().join(', '));
 }
 
-keys.getKeys(function(err, foundKeys){
-    var table = new Table({
-        head: [
-            clc.white.bold('#'),
-            clc.white.bold('Access Key'),
-            clc.white.bold('Secret Key'),
-            clc.white.bold('Expires'),
-            clc.white.bold('Created')
-        ],
-        colWidths: [5, 25, 45, 25, 25]
-    });
+async.waterfall([
+    /// first handle the password
+    function(callback){
+        account.getPassword(program, callback);
+    },
+    // now retrieve the keys
+    function(password, callback){
+        keys.getKeys(password, function(err, foundKeys){
+            var table = new Table({
+                head: [
+                    clc.white.bold('#'),
+                    clc.white.bold('Access Key'),
+                    clc.white.bold('Secret Key'),
+                    clc.white.bold('Expires'),
+                    clc.white.bold('Created')
+                ],
+                colWidths: [5, 25, 45, 25, 25]
+            });
 
-    _.each(foundKeys, function(keydata, i){
-        table.push([ i+1, keydata.accessKey, keydata.secretKey, moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
-    });
+            _.each(foundKeys, function(keydata, i){
+                table.push([ i+1, keydata.accessKey, keydata.secretKey, moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
+            });
 
+            console.error(clc.white(table.toString()));
 
-    console.error(clc.white(table.toString()));
+            prompt.message = prompt.delimiter = '';
+            prompt.start();
 
-    prompt.message = prompt.delimiter = '';
-    prompt.start();
+            var promptKey = clc.yellow('Use (1-' + foundKeys.length + ')?');
+            prompt.get([promptKey], function(err, result){
+                var index;
+                try{
+                    index = parseInt(result[promptKey]) - 1;
+                } catch(e){}
 
-    var promptKey = clc.yellow('Use (1-' + foundKeys.length + ')?');
-    prompt.get([promptKey], function(err, result){
-        var index;
-        try{
-            index = parseInt(result[promptKey]) - 1;
-        } catch(e){}
+                if(isNaN(index) || index > foundKeys.length - 1){
+                    console.error(clc.red('Invalid value received.'));
+                    return;
+                }
 
-        if(isNaN(index) || index > foundKeys.length - 1){
-            console.error(clc.red('Invalid value received.'));
-            return;
-        }
+                console.log(keys.getKeyOutput(program.output, foundKeys[index]));
+            });
 
-        console.log(keys.getKeyOutput(program.output, foundKeys[index]));
-    });
-
+        });
+    }
+], function(err, data){
+    if(err){
+        utils.errorAndExit(err);
+    }
 });

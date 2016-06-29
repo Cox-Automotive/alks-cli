@@ -68,17 +68,17 @@ async.waterfall([
                 accessKey:    results.body.accessKey,
                 secretKey:    results.body.secretKey,
                 sessionToken: results.body.sessionToken
-            });
+            }, password);
         });
     },
     // now deal with the session data
-    function(sessionData, callback){
+    function(sessionData, password, callback){
         // calculate expiration
         var expires = moment().add(duration, 'hours');
         console.error(clc.white('Your AWS session data has been generated and expires ' + expires.calendar()));
         
         // store session data in DB
-        keys.addKey(sessionData.accessKey, sessionData.secretKey, sessionData.sessionToken, expires.toDate());
+        keys.addKey(sessionData.accessKey, sessionData.secretKey, sessionData.sessionToken, expires.toDate(), password);
 
         // now output the key
         console.log(keys.getKeyOutput(output, sessionData));

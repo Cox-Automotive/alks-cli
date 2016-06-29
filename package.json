@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -24,6 +24,7 @@
     "cli-color": "^1.1.0",
     "cli-table": "^0.3.1",
     "commander": "^2.9.0",
+    "crypto": "0.0.3",
     "dotenv": "^2.0.0",
     "fuzzy": "^0.1.1",
     "keytar": "^3.0.2",
