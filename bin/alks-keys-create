@@ -7,15 +7,14 @@ var program = require('commander'),
     clc     = require('cli-color'),
     _       = require('underscore'),
     async   = require('async'),
-    prompt  = require('prompt'),
-    request = require('request'),
     moment  = require('moment'),
     config  = require('../package.json'),
     account = require('../lib/account'),
     keys    = require('../lib/keys'),
+    alks    = require('../lib/alks-api'),
     utils   = require('../lib/utils');
 
-var durationValues = [ 2, 6, 12, 18, 24, 36 ],
+var durationValues = alks.getDurations(),
     outputValues   = utils.getOutputValues();
 
 program
@@ -45,32 +44,7 @@ async.waterfall([
     },
     // now call the ALKS API
     function(password, callback){
-        var payload = _.extend(
-            {
-                password: password,
-                sessionTime: duration
-            },
-            utils.getConfigForRequest()
-        );
-
-        request({
-            url: utils.getConfig().ALKS_SERVER + '/getKeys/',
-            method: 'POST',
-            json: payload
-        }, function(err, results){
-            if(err){
-                return callback(err);
-            }
-            else if(results.statusCode !== 200){
-                return callback(results.body.statusMessage);
-            }
-            
-            callback(null, {
-                accessKey:    results.body.accessKey,
-                secretKey:    results.body.secretKey,
-                sessionToken: results.body.sessionToken
-            }, password);
-        });
+        alks.createKey(password, duration, callback);
     },
     // now deal with the session data
     function(sessionData, password, callback){
