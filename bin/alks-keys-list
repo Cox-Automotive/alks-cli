@@ -20,6 +20,7 @@ program
     .description('list previous keys')
     .option('-p, --password [password]', 'my password')
     .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + ')', utils.getOutputValues()[0])
+    .option('-f, --force', 'if output is set to creds, force overwriting of default AWS credentials')
     .parse(process.argv);
 
 if(!_.contains(utils.getOutputValues(), program.output)){
@@ -66,7 +67,7 @@ async.waterfall([
                     return;
                 }
 
-                console.log(keys.getKeyOutput(program.output, foundKeys[index]));
+                console.log(keys.getKeyOutput(program.output, foundKeys[index], program.force));
             });
 
         });
