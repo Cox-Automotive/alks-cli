@@ -95,7 +95,7 @@ Optional arguments:
 
 * `-p [password]` Your password
 * `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
-* `-o [output]` Output format. Supports: `json`, `env`, `docker` 
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
 
 Output values:
 
@@ -105,14 +105,23 @@ Output values:
 
 ### `keys list`
 
-`alks keys list` - List existing ALKS keys as well as output them
+`alks keys list` - List existing ALKS keys as well as output them. Your keys are stored encrypted using AES-256.
 
 Optional arguments:
 
-* `-o [output]` Output format. Supports: `json`, `env`, `docker` 
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds` 
 
 Output values:
 
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
+
+# Output Formats
+
+ALKS will output in a variety of formats:
+
+* `json`: Outputs a JSON object
+* `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`
+* `docker`: Outputs environment arguments to pass to a Docker run call
+* `creds`: Updates the default AWS credentials file
