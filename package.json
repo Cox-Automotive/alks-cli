@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
