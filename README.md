@@ -19,16 +19,15 @@ npm install -g alks
 
 ## Configuring
 
-ALKS relies on a dotfile for its configuration. Create *alks.env* and save it in your home directory. Be sure to fill out all values from the sample below:
+ALKS requires some basic environment information to get started just run the configuration command and you'll be prompted for the necessary configuration settings.
 
-### Sample alks.env
+    alks developer configure
 
-```
-ALKS_SERVER=https://server.alks
-ALKS_USERID=mynetworkaccount
-ALKS_ACCOUNT=account from ALKS to use
-ALKS_ROLE=role from ALKS to use
-```
+* ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com)
+* Network Username: Your network username
+* Network Password: Your network password, this is optional but recommended
+* Account: The ALKS account to use (ex: 193118345547/ALKS_NP_Admin - awsfoolabs)
+* Role: The IAM role to use
 
 ## Running
 
@@ -72,6 +71,10 @@ docker run -it -v ~:/root coxauto/alks-cli
 # Commands
 
 ## Developer
+
+### `developer configure`
+
+`alks developer configure` - Configures ALKS 
 
 ### `developer login`
 
