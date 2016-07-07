@@ -6,8 +6,10 @@ process.title = 'ALKS';
 var program = require('commander'),
     clc     = require('cli-color'),
     _       = require('underscore'),
+    async   = require('async'),
     Table   = require('cli-table'),
     config  = require('../package.json'),
+    account = require('../lib/account'),
     utils   = require('../lib/utils');
 
 program
@@ -20,9 +22,24 @@ var table = new Table({
     colWidths: [25, 50]
 });
 
-_.each(utils.getConfig(), function(val, key){
-    table.push([key, val]);
-});
+async.series({
+    // get account
+    account: function(callback){
+        account.getAccount(callback);
+    },
+    password: function(callback){
+        account.getPassword(null, callback); // null means dont prompt
+    }
+},
+function(err, results){
+    _.each(results.account, function(val, key){
+        table.push([key, _.isEmpty(val) ? '' : val]);
+    });
 
-console.error(clc.white.underline.bold('Developer Configuration'));
-console.error(clc.white(table.toString()));
+    var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
+    table.push(['Password', password]);
+
+    console.error(clc.white.underline.bold('Developer Configuration'));
+    console.error(clc.white(table.toString()));
+
+});

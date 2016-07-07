@@ -15,16 +15,6 @@ var path     = require('path'),
 var config   = utils.getFilePathInHome('alks.env'),
     data     = [];
 
-require('dotenv').load({ silent: true, path: config });
-
-var cData = utils.getConfig();
-_.each(_.keys(cData), function(key){
-    if(_.isEmpty(cData[key])){
-        utils.errorAndExit('Missing required configuration: "' + key +
-            '". Please ensure variables are in environment or config file: ' + config);
-    }
-});
-
 program
     .command('keys', 'manage keys')
     .command('developer', 'show developer')
