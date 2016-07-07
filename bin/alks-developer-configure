@@ -1,0 +1,74 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    prompt  = require('prompt'),
+    async   = require('async'),
+    _       = require('underscore'),
+    config  = require('../package.json'),
+    utils   = require('../lib/utils'),
+    account = require('../lib/account');
+
+program
+    .version(config.version)
+    .description('configures developer')
+    .parse(process.argv);
+
+function getPrompt(field, data, text, callback){
+    var promptConfig = {
+        name: field,
+        description: text,
+        required: true
+    };
+    if(!_.isEmpty(data[field])){
+        promptConfig.default = data[field];
+    }
+
+    prompt.start();
+    prompt.message = '';
+    prompt.get([ promptConfig ], function(err, result){
+        if(err){
+            callback(err);
+        }
+        else{
+            callback(null, result[field]);
+        }
+    });    
+}
+
+async.waterfall([
+    function(callback){
+        account.getAccount(callback);
+    }
+], function(err, previousData){
+    async.series({
+        server: function(callback){
+            getPrompt('server', previousData, 'ALKS server', callback);
+        },
+        userid: function(callback){
+            getPrompt('userid', previousData, 'Network Username', callback);
+        },
+        password: function(callback){
+            account.getPasswordFromPrompt(callback, 'Network Password', true);  
+        },    
+        account: function(callback){
+            getPrompt('account', previousData, 'ALKS Account', callback);
+        },
+        role: function(callback){
+            getPrompt('role', previousData, 'ALKS Role', callback);
+        }
+    }, 
+    function(err, results){
+        account.saveAccount(results, function(err){
+            if(err){
+                console.error(clc.red.bold('Error saving account!'));
+            }
+            else{
+                console.error(clc.white('Account saved!'));
+            }
+        });
+    });
+});
