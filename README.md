@@ -3,11 +3,11 @@
 [![NPM](https://nodei.co/npm/alks.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/alks/)
 
 ## About
-CLI for working with the ALKS service.
+CLI for working with the [ALKS](https://github.com/Cox-Automotive/ALKS) service.
 
 ### Prerequisites
 
-To install and use alks, you will need Node.js (version 4 or greater) and npm  ([nodejs.org](https://nodejs.org/en/download/package-manager)).
+To install and use the ALKS CLI, you will need Node.js (version 4 or greater) and NPM ([nodejs.org](https://nodejs.org/en/download/package-manager)).
 
 ## Installing
 
@@ -19,7 +19,7 @@ npm install -g alks
 
 ## Configuring
 
-ALKS requires some basic environment information to get started just run the configuration command and you'll be prompted for the necessary configuration settings.
+The ALKS CLI requires some basic environment information to get started. Simply run the configuration command and you'll be prompted for the necessary configuration settings.
 
     alks developer configure
 
@@ -31,7 +31,7 @@ ALKS requires some basic environment information to get started just run the con
 
 ## Running
 
-After installing ALKS it will be available on your path. Simply run the following to see a list of supported commands:
+After installing the ALKS CLI it will be available on your path. Simply run the following to see a list of supported commands:
 
     alks
 
@@ -125,7 +125,7 @@ Output values:
 
 # Output Formats
 
-ALKS will output in a variety of formats:
+ALKS CLI will output in a variety of formats:
 
 * `json`: Outputs a JSON object
 * `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`

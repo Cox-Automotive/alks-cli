@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -11,14 +11,28 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Cox-Automotive/ALKS-CLI.git"
   },
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
     "alks": "bin/alks"
   },
-  "author": "Brian Antonelli <bantonelli@coxautoinc.com>",
+  "author": {
+    "name": "Cox Automotive",
+    "email": "brian.antonelli@coxautoinc.com",
+    "url": "https://github.com/Cox-Automotive/"
+  },
+  "bugs": {
+    "url": "https://github.com/Cox-Automotive/ALKS-CLI/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Cox-Automotive/ALKS-CLI/blob/master/COPYING"
+    }
+  ],
+  "keywords": [ "alks" ],  
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "cli-color": "^1.1.0",
