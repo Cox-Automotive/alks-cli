@@ -19,8 +19,8 @@ program
     .version(config.version)
     .description('list previous keys')
     .option('-p, --password [password]', 'my password')
-    .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + ')', utils.getOutputValues()[0])
-    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile (defaults to default)')
+    .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + '), default: ' + utils.getOutputValues()[0], utils.getOutputValues()[0])
+    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .parse(process.argv);
 
