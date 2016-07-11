@@ -23,8 +23,8 @@ program
     .option('-p, --password [password]', 'my password')
     .option('-d, --duration [hours]', 'duration of session (' + durationValues.join(', ') + ')', durationValues[0])
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + ')', outputValues[0])
-    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile')
-    .option('-f, --force', 'if output is set to creds, force overwriting of default AWS credentials')
+    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile (defaults to default)')
+    .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .parse(process.argv);
 
 var duration = parseInt(program.duration),
