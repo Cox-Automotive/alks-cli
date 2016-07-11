@@ -57,26 +57,28 @@ async.waterfall([
                 table.push([ i+1, keydata.accessKey, keydata.secretKey, moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
             });
 
+            console.error(clc.white.underline.bold('\nAvailable Keys'));
             console.error(clc.white(table.toString()));
 
-            prompt.message = prompt.delimiter = '';
-            prompt.start();
+            if(foundKeys.length){
+                prompt.message = prompt.delimiter = '';
+                prompt.start();
 
-            var promptKey = clc.yellow('Use (1-' + foundKeys.length + ')?');
-            prompt.get([promptKey], function(err, result){
-                var index;
-                try{
-                    index = parseInt(result[promptKey]) - 1;
-                } catch(e){}
+                var promptKey = clc.yellow('Use (1-' + foundKeys.length + ')?');
+                prompt.get([promptKey], function(err, result){
+                    var index;
+                    try{
+                        index = parseInt(result[promptKey]) - 1;
+                    } catch(e){}
 
-                if(isNaN(index) || index > foundKeys.length - 1){
-                    console.error(clc.red('Invalid value received.'));
-                    return;
-                }
+                    if(isNaN(index) || index > foundKeys.length - 1){
+                        console.error(clc.red('Invalid value received.'));
+                        return;
+                    }
 
-                console.log(keys.getKeyOutput(program.output, foundKeys[index], program.force));
-            });
-
+                    console.log(keys.getKeyOutput(program.output, foundKeys[index], program.force));
+                });
+            }
         });
     }
 ], function(err, data){

@@ -39,7 +39,7 @@ function(err, results){
     var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
     table.push(['Password', password]);
 
-    console.error(clc.white.underline.bold('Developer Configuration'));
+    console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.error(clc.white(table.toString()));
 
 });
