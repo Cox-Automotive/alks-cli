@@ -55,7 +55,7 @@ async.waterfall([
             });
 
             _.each(foundKeys, function(keydata, i){
-                table.push([ i+1, keydata.accessKey, keydata.secretKey, moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
+                table.push([ i+1, utils.obfuscate(keydata.accessKey), utils.obfuscate(keydata.secretKey), moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
             });
 
             console.error(clc.white.underline.bold('\nAvailable Keys'));
