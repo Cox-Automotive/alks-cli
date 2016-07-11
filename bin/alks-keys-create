@@ -23,6 +23,7 @@ program
     .option('-p, --password [password]', 'my password')
     .option('-d, --duration [hours]', 'duration of session (' + durationValues.join(', ') + ')', durationValues[0])
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + ')', outputValues[0])
+    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile')
     .option('-f, --force', 'if output is set to creds, force overwriting of default AWS credentials')
     .parse(process.argv);
 
@@ -63,7 +64,7 @@ async.waterfall([
         keys.addKey(sessionData.accessKey, sessionData.secretKey, sessionData.sessionToken, expires.toDate(), password);
 
         // now output the key
-        console.log(keys.getKeyOutput(output, sessionData, program.force));
+        console.log(keys.getKeyOutput(output, sessionData, program.namedProfile, program.force));
     }
 ], function(err, data){
     if(err){

@@ -99,7 +99,8 @@ Optional arguments:
 * `-p [password]` Your password
 * `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
-* `-f` If output is set to creds, force overwriting of default AWS credentials if they already exist
+* `-n` If output is set to creds, use this named profile (defaults to default)
+* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
 
@@ -115,7 +116,8 @@ Optional arguments:
 
 * `-p [password]` Your password
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
-* `-f` If output is set to creds, force overwriting of default AWS credentials if they already exist
+* `-n` If output is set to creds, use this named profile (defaults to default)
+* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
 
@@ -130,4 +132,6 @@ ALKS CLI will output in a variety of formats:
 * `json`: Outputs a JSON object
 * `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`
 * `docker`: Outputs environment arguments to pass to a Docker run call
-* `creds`: Updates the default AWS credentials file
+* `creds`: Updates the AWS credentials file
+	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
+	* If the named profile already exists you'll need to supply an override flag: `-f`
