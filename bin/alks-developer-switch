@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    clc     = require('cli-color'),
+    async   = require('async'),
+    _       = require('underscore'),
+    config  = require('../package.json'),
+    utils   = require('../lib/utils'),
+    account = require('../lib/account'),
+    alks    = require('../lib/alks-api');
+
+program
+    .version(config.version)
+    .description('switches alks account')
+    .parse(process.argv);
+
+async.waterfall([
+    // check to be sure were configured
+    function(callback){
+        account.ensureConfigured(function(err, data){
+            if(err) utils.errorAndExitNoConfig();
+            else callback(null);
+        });        
+    },    
+    function(callback){
+        account.getPassword(program, callback);
+    },
+    function(password, callback){
+        alks.getAccounts(password, callback);
+    }
+], function(err, data){
+    if(err){
+        utils.errorAndExit(err);
+    }
+    console.log('done', data)
+});
