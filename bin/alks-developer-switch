@@ -3,14 +3,15 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    async   = require('async'),
-    _       = require('underscore'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    account = require('../lib/account'),
-    alks    = require('../lib/alks-api');
+var program  = require('commander'),
+    clc      = require('cli-color'),
+    async    = require('async'),
+    _        = require('underscore'),
+    inquirer = require('inquirer'),
+    config   = require('../package.json'),
+    utils    = require('../lib/utils'),
+    account  = require('../lib/account'),
+    alks     = require('../lib/alks-api');
 
 program
     .version(config.version)
@@ -30,10 +31,27 @@ async.waterfall([
     },
     function(password, callback){
         alks.getAccounts(password, callback);
+    },
+    function(accounts, callback){
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'account',
+                message: 'Please select an account/role',
+                choices: accounts
+            }
+        ]).then(function(answers){
+            callback(null, answers.account);
+        });
+    },
+    function(accountToSwitchTo, callback){
+        // TODO: switch account, derp!
+        
+        console.error(clc.white('Your account is now set to %s'), accountToSwitchTo);
+        callback(null);
     }
 ], function(err, data){
     if(err){
         utils.errorAndExit(err);
     }
-    console.log('done', data)
 });
