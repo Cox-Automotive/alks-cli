@@ -66,7 +66,7 @@ async.waterfall([
             alksAccount: alksAccount,
             alksRole: alksRole
         });
-        console.log(JSON.stringify(accountPayload, null, 4))
+
         Account.saveAccount(accountPayload, function(err){
             if(err){
                 console.error(clc.red.bold('Error switching account!'), err);
