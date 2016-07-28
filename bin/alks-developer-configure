@@ -3,14 +3,16 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    prompt  = require('prompt'),
-    async   = require('async'),
-    _       = require('underscore'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    account = require('../lib/account');
+var program  = require('commander'),
+    clc      = require('cli-color'),
+    prompt   = require('prompt'),
+    inquirer = require('inquirer'),
+    async    = require('async'),
+    _        = require('underscore'),
+    config   = require('../package.json'),
+    utils    = require('../lib/utils'),
+    Account  = require('../lib/account'),
+    alks     = require('../lib/alks-api');
 
 program
     .version(config.version)
@@ -41,34 +43,63 @@ function getPrompt(field, data, text, callback){
 
 async.waterfall([
     function(callback){
-        account.getAccount(callback);
-    }
-], function(err, previousData){
-    async.series({
-        server: function(callback){
-            getPrompt('server', previousData, 'ALKS server', callback);
-        },
-        userid: function(callback){
-            getPrompt('userid', previousData, 'Network Username', callback);
-        },
-        password: function(callback){
-            account.getPasswordFromPrompt(callback, 'Network Password', true);  
-        },    
-        account: function(callback){
-            getPrompt('account', previousData, 'ALKS Account', callback);
-        },
-        role: function(callback){
-            getPrompt('role', previousData, 'ALKS Role', callback);
-        }
-    }, 
-    function(err, results){
-        account.saveAccount(results, function(err){
-            if(err){
-                console.error(clc.red.bold('Error saving account!'));
-            }
-            else{
-                console.error(clc.white('Account saved!'));
-            }
+        Account.getAccount(callback);
+    },
+    function(previousData, callback){
+        getPrompt('server', previousData, 'ALKS server', function(err, server){
+            callback(err, previousData, server);
         });
+    },
+    function(previousData, server, callback){
+        getPrompt('userid', previousData, 'Network Username', function(err, userid){
+            callback(err, previousData, server, userid);
+        });
+    },
+    function(previousData, server, userid, callback){
+        Account.getPasswordFromPrompt(function(err, password){
+            callback(err, previousData, server, userid, password);
+        }, 'Network Password', true);
+    },
+    function(previousData, server, userid, password, callback){
+        alks.getAccounts(server, userid, password, function(err, accounts){
+            callback(err, server, userid, password, accounts);
+        })
+    },
+    function(server, userid, password, accounts, callback){
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'account',
+                message: 'Please select an account/role',
+                choices: accounts
+            }
+        ]).then(function(answers){
+            var data = answers.account.split(alks.getAccountSelectorDelimiter()),
+                account = data[0],
+                role = data[1];
+
+            callback(null, server, userid, password, account, role);
+        });
+    }
+], function(err, server, userid, password, account, role){
+    if(err){
+        return utils.errorAndExit('Error configuring account!', err);
+    }
+
+    var accountPayload = {
+        server: server,
+        userid: userid,
+        password: password,
+        account: account,
+        role: role
+    };
+
+    Account.saveAccount(accountPayload, function(err){
+        if(err){
+            console.error(clc.red.bold('Error saving account!'));
+        }
+        else{
+            console.error(clc.white('Account saved!'));
+        }
     });
 });
