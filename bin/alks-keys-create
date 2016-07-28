@@ -41,10 +41,7 @@ if(!_.contains(outputValues, output)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        account.ensureConfigured(function(err, data){
-            if(err) utils.errorAndExitNoConfig();
-            else callback(null);
-        });        
+        account.ensureConfigured(callback);        
     },
     // first handle the password
     function(callback){
