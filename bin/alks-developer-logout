@@ -8,14 +8,14 @@ var program = require('commander'),
     _       = require('underscore'),
     config  = require('../package.json'),
     utils   = require('../lib/utils'),
-    account = require('../lib/account');
+    Account = require('../lib/account');
 
 program
     .version(config.version)
     .description('removes password')
     .parse(process.argv);
 
-if(account.removePassword()){
+if(Account.removePassword()){
     console.error(clc.white('Password removed!'));    
 }
 else{

@@ -23,11 +23,10 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 
     alks developer configure
 
-* ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com)
+* ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com/rest)
 * Network Username: Your network username
 * Network Password: Your network password, this is optional but recommended
-* Account: The ALKS account to use (ex: 193118345547/ALKS_NP_Admin - awsfoolabs)
-* Role: The IAM role to use
+* Account/Role: Select one of the available ALKS accounts/roles
 
 ## Running
 
@@ -45,7 +44,7 @@ To see a what options are available to a command ask for help on it:
 
 Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this. 
 
-1. Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and Linux uses Gnome Keyring. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
+1. **Recommended:** Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and Linux uses Gnome Keyring. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
 2. Provide your password as an argument, simply pass `-p 'my pass!'`. Note this will appear in your Bash history.
 3. Create an environment variable called `ALKS_PASSWORD` whose value is your password.
 4. Type your password. If we do not find a password we will prompt you on each use.
@@ -75,6 +74,10 @@ docker run -it -v ~:/root coxauto/alks-cli
 ### `developer configure`
 
 `alks developer configure` - Configures ALKS 
+
+### `developer switch` 
+
+`alks developer switch` - Switch the active ALKS account/role
 
 ### `developer login`
 

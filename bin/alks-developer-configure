@@ -61,27 +61,39 @@ async.waterfall([
         }, 'Network Password', true);
     },
     function(previousData, server, userid, password, callback){
-        alks.getAccounts(server, userid, password, function(err, accounts){
-            callback(err, server, userid, password, accounts);
-        })
-    },
-    function(server, userid, password, accounts, callback){
         inquirer.prompt([
             {
                 type: 'list',
-                name: 'account',
-                message: 'Please select an account/role',
-                choices: accounts
+                name: 'savePassword',
+                message: 'Save password',
+                choices: [ 'Yes', 'No' ]
             }
         ]).then(function(answers){
-            var data = answers.account.split(alks.getAccountSelectorDelimiter()),
-                account = data[0],
-                role = data[1];
+            callback(null, previousData, server, userid, password, answers.savePassword);
+        });        
+    },
+    function(previousData, server, userid, password, savePassword, callback){
+        alks.getAccounts(server, userid, password, function(err, accounts){
+            callback(err, server, userid, password, savePassword, accounts);
+        })
+    },
+    function(server, userid, password, savePassword, alksAccounts, callback){
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'alksAccount',
+                message: 'Please select an ALKS account/role',
+                choices: alksAccounts
+            }
+        ]).then(function(answers){
+            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
+                alksAccount = data[0],
+                alksRole = data[1];
 
-            callback(null, server, userid, password, account, role);
+            callback(null, server, userid, password, savePassword, alksAccount, alksRole);
         });
     }
-], function(err, server, userid, password, account, role){
+], function(err, server, userid, password, savePassword, alksAccount, alksRole){
     if(err){
         return utils.errorAndExit('Error configuring account!', err);
     }
@@ -90,8 +102,9 @@ async.waterfall([
         server: server,
         userid: userid,
         password: password,
-        account: account,
-        role: role
+        savePassword: savePassword,
+        alksAccount: alksAccount,
+        alksRole: alksRole
     };
 
     Account.saveAccount(accountPayload, function(err){

@@ -9,7 +9,7 @@ var program = require('commander'),
     async   = require('async'),
     moment  = require('moment'),
     config  = require('../package.json'),
-    account = require('../lib/account'),
+    Account = require('../lib/account'),
     keys    = require('../lib/keys'),
     alks    = require('../lib/alks-api'),
     utils   = require('../lib/utils');
@@ -41,18 +41,24 @@ if(!_.contains(outputValues, output)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        account.ensureConfigured(function(err, data){
+        Account.ensureConfigured(function(err, data){
             if(err) utils.errorAndExitNoConfig();
             else callback(null);
         });        
     },
-    // first handle the password
+    // get account
     function(callback){
-        account.getPassword(program, callback);
+        Account.getAccount(callback);
+    },
+    // get password
+    function(account, callback){
+        Account.getPassword(program, function(err, password){
+            callback(err, account, password);
+        });
     },
     // now call the ALKS API
-    function(password, callback){
-        alks.createKey(password, duration, callback);
+    function(account, password, callback){
+        alks.createKey(account, password, duration, callback);
     },
     // now deal with the session data
     function(sessionData, password, callback){

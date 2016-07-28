@@ -12,7 +12,7 @@ var program = require('commander'),
     async   = require('async'),
     config  = require('../package.json'),
     utils   = require('../lib/utils'),
-    account = require('../lib/account'),
+    Account = require('../lib/account'),
     keys    = require('../lib/keys');
 
 program
@@ -31,14 +31,14 @@ if(!_.contains(utils.getOutputValues(), program.output)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        account.ensureConfigured(function(err, data){
+        Account.ensureConfigured(function(err, data){
             if(err) utils.errorAndExitNoConfig();
             else callback(null);
         });
     },
     // get the password
     function(callback){
-        account.getPassword(program, callback);
+        Account.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){
