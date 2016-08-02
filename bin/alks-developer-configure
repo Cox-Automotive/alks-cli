@@ -42,24 +42,29 @@ function getPrompt(field, data, text, callback){
 }
 
 async.waterfall([
+    // check for an exisiting account
     function(callback){
         Account.getAccount(callback);
     },
+    // ask for server
     function(previousData, callback){
         getPrompt('server', previousData, 'ALKS server', function(err, server){
             callback(err, previousData, server);
         });
     },
+    // ask for username
     function(previousData, server, callback){
         getPrompt('userid', previousData, 'Network Username', function(err, userid){
             callback(err, previousData, server, userid);
         });
     },
+    // ask for password
     function(previousData, server, userid, callback){
         Account.getPasswordFromPrompt(function(err, password){
             callback(err, previousData, server, userid, password);
         }, 'Network Password', true);
     },
+    // ask if they want to save password
     function(previousData, server, userid, password, callback){
         inquirer.prompt([
             {
@@ -72,11 +77,13 @@ async.waterfall([
             callback(null, previousData, server, userid, password, answers.savePassword);
         });        
     },
+    // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
         alks.getAccounts(server, userid, password, function(err, accounts){
             callback(err, server, userid, password, savePassword, accounts);
         })
     },
+    // ask which ALKS account/role to use
     function(server, userid, password, savePassword, alksAccounts, callback){
         inquirer.prompt([
             {
@@ -94,6 +101,7 @@ async.waterfall([
         });
     }
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
+    // did any of our steps have issues?
     if(err){
         return utils.errorAndExit('Error configuring account!', err);
     }
@@ -107,6 +115,7 @@ async.waterfall([
         alksRole: alksRole
     };
 
+    // create account
     Account.saveAccount(accountPayload, function(err){
         if(err){
             console.error(clc.red.bold('Error saving account!'));
