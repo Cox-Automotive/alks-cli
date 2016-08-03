@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program  = require('commander'),
+    clc      = require('cli-color'),
+    async    = require('async'),
+    _        = require('underscore'),
+    inquirer = require('inquirer'),
+    config   = require('../package.json'),
+    utils    = require('../lib/utils'),
+    Account  = require('../lib/account'),
+    alks     = require('../lib/alks-api');
+
+program
+    .version(config.version)
+    .description('switches alks account')
+    .parse(process.argv);
+
+async.waterfall([
+    // check to be sure were configured
+    function(callback){
+        Account.ensureConfigured(function(err, data){
+            if(err) utils.errorAndExitNoConfig();
+            else callback(null);
+        });        
+    },
+    // get account
+    function(callback){
+        Account.getAccount(callback);
+    },
+    // get password
+    function(account, callback){
+        Account.getPassword(program, function(err, password){
+            callback(err, account, password);
+        });
+    },
+    // load available account/roles
+    function(account, password, callback){
+        alks.getAccounts(account.server, account.userid, password, function(err, alksAccounts){
+            callback(err, account, alksAccounts);
+        });
+    },
+    // ask user which account/role
+    function(account, alksAccounts, callback){
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'alksAccount',
+                message: 'Please select an ALKS account/role',
+                choices: alksAccounts
+            }
+        ]).then(function(answers){
+            console.log()
+            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
+                alksAccount = data[0],
+                alksRole = data[1];
+
+            callback(null, account, alksAccount, alksRole);
+        });
+    },
+    // update user account
+    function(account, alksAccount, alksRole, callback){
+        var accountPayload = _.extend(account, {
+            alksAccount: alksAccount,
+            alksRole: alksRole
+        });
+
+        Account.saveAccount(accountPayload, function(err){
+            if(err){
+                console.error(clc.red.bold('Error switching account!'), err);
+            }
+            else{
+                console.error(clc.white('Your account is now set to %s - %s'), alksAccount, alksRole);
+                callback(null);
+            }
+        });
+    }
+], function(err, data){
+    if(err){
+        utils.errorAndExit(err);
+    }
+});

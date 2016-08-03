@@ -9,7 +9,7 @@ var program = require('commander'),
     async   = require('async'),
     Table   = require('cli-table'),
     config  = require('../package.json'),
-    account = require('../lib/account'),
+    Account = require('../lib/account'),
     utils   = require('../lib/utils');
 
 program
@@ -25,10 +25,10 @@ var table = new Table({
 async.series({
     // get account
     account: function(callback){
-        account.getAccount(callback);
+        Account.getAccount(callback);
     },
     password: function(callback){
-        account.getPassword(null, callback); // null means dont prompt
+        Account.getPassword(null, callback); // null means dont prompt
     }
 },
 function(err, results){
