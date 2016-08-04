@@ -62,7 +62,7 @@ async.waterfall([
     function(previousData, server, userid, callback){
         Account.getPasswordFromPrompt(function(err, password){
             callback(err, previousData, server, userid, password);
-        }, 'Network Password', true);
+        }, 'Network Password', false);
     },
     // ask if they want to save password
     function(previousData, server, userid, password, callback){
