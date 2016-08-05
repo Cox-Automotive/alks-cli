@@ -66,11 +66,14 @@ async.waterfall([
         // store session data in DB
         keys.addKey(sessionData.accessKey, sessionData.secretKey, sessionData.sessionToken, expires.toDate(), password);
 
-        // now output the key
-        console.log(keys.getKeyOutput(output, sessionData, program.namedProfile, program.force));
+        callback(null, sessionData);
     }
 ], function(err, data){
     if(err){
-        utils.errorAndExit(err);
+        return utils.errorAndExit(err);
     }
+
+    console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
+
+    utils.checkForUpdate();
 });

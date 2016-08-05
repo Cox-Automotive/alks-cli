@@ -42,4 +42,5 @@ function(err, results){
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.error(clc.white(table.toString()));
 
+    utils.checkForUpdate();
 });

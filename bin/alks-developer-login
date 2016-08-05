@@ -22,4 +22,5 @@ Account.getPasswordFromPrompt(function(err, password){
     else{
         console.error(clc.red.bold('Error saving password!'));
     }
+    utils.checkForUpdate();
 });
