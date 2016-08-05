@@ -21,3 +21,5 @@ if(Account.removePassword()){
 else{
     console.error(clc.red.bold('Error removing password!'));       
 }
+
+utils.checkForUpdate();

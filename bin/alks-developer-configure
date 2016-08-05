@@ -124,4 +124,6 @@ async.waterfall([
             console.error(clc.white('Account saved!'));
         }
     });
+
+    utils.checkForUpdate();    
 });

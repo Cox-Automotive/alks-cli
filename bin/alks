@@ -45,5 +45,3 @@ else if(!_.includes(commands, requestedCommand)){
     
     utils.errorAndExit(msg.join(''));
 }
-
-utils.checkForUpdate();

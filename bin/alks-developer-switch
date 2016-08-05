@@ -81,4 +81,5 @@ async.waterfall([
     if(err){
         utils.errorAndExit(err);
     }
+    utils.checkForUpdate();
 });
