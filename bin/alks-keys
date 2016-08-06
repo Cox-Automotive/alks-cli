@@ -12,3 +12,5 @@ program
     .command('create', 'creates a new session')
     .command('list',   'lists previous keys')
     .parse(process.argv);
+
+utils.subcommandSuggestion(program, 'keys');
