@@ -65,8 +65,8 @@ async.waterfall([
         
         // store session data in DB
         keys.addKey(sessionData.accessKey, sessionData.secretKey, 
-                    sessionData.sessionToken, account.alksAccount,
-                    expires.toDate(), password);
+                    sessionData.sessionToken, sessionData.guiURL,
+                    account.alksAccount, expires.toDate(), password);
 
         callback(null, sessionData);
     }

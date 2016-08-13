@@ -11,6 +11,7 @@ program
     .version(config.version)
     .command('create', 'creates a new session')
     .command('list',   'lists previous keys')
+    .command('open',   'open the AWS console')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'keys');
