@@ -6,7 +6,7 @@ process.title = 'ALKS';
 var program = require('commander'),
     clc     = require('cli-color'),
     _       = require('underscore'),
-    Table   = require('cli-table'),
+    Table   = require('cli-table2'),
     moment  = require('moment'),
     prompt  = require('prompt'),
     async   = require('async'),
@@ -51,12 +51,27 @@ async.waterfall([
                 clc.white.bold('Expires'),
                 clc.white.bold('Created')
             ],
-            colWidths: [5, 25, 45, 25, 25]
+            colWidths: [5, 25, 25, 25, 25]
         });
 
-        _.each(foundKeys, function(keydata, i){
-            table.push([ i+1, utils.obfuscate(keydata.accessKey), utils.obfuscate(keydata.secretKey), moment(keydata.expires).calendar(), moment(keydata.meta.created).fromNow() ])
+        
+        var groupedKeys = _.groupBy(foundKeys, 'alksAccount'),
+            i           = 0;
+
+        _.each(groupedKeys, function(keys, alksAccount){
+            table.push([ { colSpan: 5, content: clc.yellow.bold('ALKS Account: ' + alksAccount) } ]);
+
+            _.each(keys, function(keydata){
+                table.push([ (i++)+1,
+                             utils.obfuscate(keydata.accessKey), 
+                             utils.obfuscate(keydata.secretKey), 
+                             moment(keydata.expires).calendar(), 
+                             moment(keydata.meta.created).fromNow() 
+                           ]);
+            });
         });
+
+
 
         console.error(clc.white.underline.bold('\nAvailable Keys'));
         console.error(clc.white(table.toString()));
@@ -65,7 +80,7 @@ async.waterfall([
             prompt.message = prompt.delimiter = '';
             prompt.start();
 
-            var promptKey = clc.yellow('Use (1-' + foundKeys.length + ')?');
+            var promptKey = clc.yellow('Use (1-' + i + ')?');
             prompt.get([promptKey], function(err, result){
                 var index;
                 try{
@@ -76,16 +91,23 @@ async.waterfall([
                     return utils.errorAndExit('Invalid value received.');
                 }
 
-                callback(null, foundKeys, index);
+                i = 0;
+                _.each(groupedKeys, function(keys, alksAccount){
+                    _.each(keys, function(keydata){
+                        if(i++ === index){
+                            callback(null, keydata);
+                        }
+                    }); 
+                });
             });
         }        
     }
-], function(err, foundKeys, selectedIndex){
+], function(err, selectedKey){
     if(err){
         return utils.errorAndExit(err);
     }
 
-    console.log(keys.getKeyOutput(program.output, foundKeys[selectedIndex], program.namedProfile, program.force));
+    console.log(keys.getKeyOutput(program.output, selectedKey, program.namedProfile, program.force));
 
     utils.checkForUpdate();
 });

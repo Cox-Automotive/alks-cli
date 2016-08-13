@@ -4,6 +4,7 @@
 process.title = 'ALKS';
 
 var program = require('commander'),
+    _       = require('underscore'),
     utils   = require('../lib/utils'),
     config  = require('../package.json');
 
@@ -15,3 +16,5 @@ program
     .command('login', 'stores password')
     .command('logout', 'removes password')
     .parse(process.argv);
+
+utils.subcommandSuggestion(program, 'developer');
