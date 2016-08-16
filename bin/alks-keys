@@ -11,7 +11,7 @@ program
     .version(config.version)
     .command('create', 'creates a new session')
     .command('list',   'lists previous keys')
-    .command('open',   'open the AWS console')
+    // .command('open',   'open the AWS console') // NOT YET AVAIABLE IN API
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'keys');
