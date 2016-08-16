@@ -15,6 +15,10 @@ program
     .description('stores password')
     .parse(process.argv);
 
+if(!utils.isPasswordStorable()){
+    utils.errorAndExit('Password saving is not supported on this machine.');
+}
+
 Account.getPasswordFromPrompt(function(err, password){
     if(Account.storePassword(password)){
         console.error(clc.white('Password saved!'));
