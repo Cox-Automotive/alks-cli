@@ -130,5 +130,5 @@ async.waterfall([
         }
     });
 
-    utils.checkForUpdate();    
+    utils.checkForUpdate();
 });
