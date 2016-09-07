@@ -41,7 +41,7 @@ if(!_.contains(outputValues, output)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);        
+        Account.ensureConfigured(callback);
     },
     // get account
     function(callback){
@@ -62,7 +62,7 @@ async.waterfall([
         // calculate expiration
         var expires = moment().add(duration, 'hours');
         console.error(clc.white('Your AWS session data has been generated and expires ' + expires.calendar()));
-        
+
         // store session data in DB
         keys.addKey(sessionData.accessKey, sessionData.secretKey, 
                     sessionData.sessionToken, sessionData.guiURL,
