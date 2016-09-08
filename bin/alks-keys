@@ -9,9 +9,9 @@ var program = require('commander'),
 
 program
     .version(config.version)
-    .command('create', 'creates a new session')
-    .command('list',   'lists previous keys')
-    // .command('open',   'open the AWS console') // NOT YET AVAIABLE IN API
+    .command('create',  'creates a new session')
+    .command('list',    'lists previous keys')
+    .command('console', 'open an AWS console in your browser')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'keys');

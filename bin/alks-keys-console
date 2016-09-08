@@ -18,7 +18,7 @@ var program = require('commander'),
 
 program
     .version(config.version)
-    .description('list previous keys')
+    .description('open an AWS console in your browser')
     .option('-p, --password [password]', 'my password')
     .parse(process.argv);
 
@@ -48,7 +48,7 @@ async.waterfall([
             colWidths: [5, 25, 25, 25, 25]
         });
 
-        
+
         var groupedKeys = _.groupBy(foundKeys, 'alksAccount'),
             i           = 0;
 
@@ -57,10 +57,10 @@ async.waterfall([
 
             _.each(keys, function(keydata){
                 table.push([ (i++)+1,
-                             utils.obfuscate(keydata.accessKey), 
-                             utils.obfuscate(keydata.secretKey), 
-                             moment(keydata.expires).calendar(), 
-                             moment(keydata.meta.created).fromNow() 
+                             utils.obfuscate(keydata.accessKey),
+                             utils.obfuscate(keydata.secretKey),
+                             moment(keydata.expires).calendar(),
+                             moment(keydata.meta.created).fromNow()
                            ]);
             });
         });
@@ -90,22 +90,22 @@ async.waterfall([
                         if(i++ === index){
                             callback(null, keydata);
                         }
-                    }); 
+                    });
                 });
             });
-        }        
+        }
     }
 ], function(err, selectedKey){
     if(err){
         return utils.errorAndExit(err);
     }
-    if(!_.isEmpty(selectedKey.guiURL)){
-        opn(selectedKey.guiURL);
+    if(!_.isEmpty(selectedKey.consoleURL)){
+        opn(selectedKey.consoleURL);
     }
     else{
         console.error(clc.red('The selected key does not have a console URL.'));
     }
-    
+
     utils.checkForUpdate();
     process.exit(1); // needed for opn()
 });
