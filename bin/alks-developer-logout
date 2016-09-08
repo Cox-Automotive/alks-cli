@@ -15,15 +15,11 @@ program
     .description('removes password')
     .parse(process.argv);
 
-if(!utils.isPasswordStorable()){
-    utils.errorAndExit('Password saving is not supported on this machine.');
-}
-
 if(Account.removePassword()){
-    console.error(clc.white('Password removed!'));    
+    console.error(clc.white('Password removed!'));
 }
 else{
-    console.error(clc.red.bold('Error removing password!'));       
+    console.error(clc.red.bold('Error removing password!'));
 }
 
 utils.checkForUpdate();

@@ -66,21 +66,16 @@ async.waterfall([
     },
     // ask if they want to save password
     function(previousData, server, userid, password, callback){
-        if(!utils.isPasswordStorable()){
-            callback(null, previousData, server, userid, password, false);
-        }
-        else{
-            inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'savePassword',
-                    message: 'Save password',
-                    choices: [ 'Yes', 'No' ]
-                }
-            ]).then(function(answers){
-                callback(null, previousData, server, userid, password, answers.savePassword);
-            });
-        }
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'savePassword',
+                message: 'Save password',
+                choices: [ 'Yes', 'No' ]
+            }
+        ]).then(function(answers){
+            callback(null, previousData, server, userid, password, answers.savePassword);
+        });
     },
     // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
