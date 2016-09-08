@@ -37,9 +37,9 @@
   ],
   "dependencies": {
     "async": "^2.0.0-rc.6",
+    "chmod": "^0.2.1",
     "cli-color": "^1.1.0",
     "cli-table2": "^0.2.0",
-    "clortho": "^1.2.2",
     "clortho": "github:Cox-Automotive/clortho.git#bb96e8473d8935450349978c8d894aadc39600f9",
     "commander": "^2.9.0",
     "crypto": "0.0.3",
