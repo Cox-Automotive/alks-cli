@@ -64,8 +64,8 @@ async.waterfall([
         console.error(clc.white('Your AWS session data has been generated and expires ' + expires.calendar()));
 
         // store session data in DB
-        keys.addKey(sessionData.accessKey, sessionData.secretKey, 
-                    sessionData.sessionToken, sessionData.guiURL,
+        keys.addKey(sessionData.accessKey, sessionData.secretKey,
+                    sessionData.sessionToken, sessionData.consoleURL,
                     account.alksAccount, expires.toDate(), password);
 
         callback(null, sessionData);

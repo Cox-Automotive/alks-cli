@@ -122,11 +122,14 @@ Optional arguments:
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
-Output values:
+### `keys console`
 
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-* `AWS_SESSION_TOKEN`
+`alks keys console` - Open the AWS console in the default browser for the selected key.
+
+Optional arguments:
+
+* `-p [password]` Your password
+
 
 # Output Formats
 
