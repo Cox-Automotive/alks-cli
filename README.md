@@ -101,7 +101,7 @@ Optional arguments:
 
 * `-p [password]` Your password
 * `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
@@ -118,7 +118,7 @@ Output values:
 Optional arguments:
 
 * `-p [password]` Your password
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
@@ -141,3 +141,4 @@ ALKS CLI will output in a variety of formats:
 * `creds`: Updates the AWS credentials file
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
 	* If the named profile already exists you'll need to supply an override flag: `-f`
+* `idea`: Outputs environment variables formatted for Intelli-J
