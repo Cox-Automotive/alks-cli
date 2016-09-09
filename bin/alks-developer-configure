@@ -19,14 +19,19 @@ program
     .description('configures developer')
     .parse(process.argv);
 
-function getPrompt(field, data, text, callback){
+function getPrompt(field, data, text, validator, callback){
     var promptConfig = {
         name: field,
         description: text,
         required: true
     };
+
     if(!_.isEmpty(data[field])){
         promptConfig.default = data[field];
+    }
+
+    if(_.isFunction(validator)){
+        promptConfig.conform = validator;
     }
 
     prompt.start();
@@ -38,7 +43,7 @@ function getPrompt(field, data, text, callback){
         else{
             callback(null, result[field]);
         }
-    });    
+    });
 }
 
 async.waterfall([
@@ -48,13 +53,13 @@ async.waterfall([
     },
     // ask for server
     function(previousData, callback){
-        getPrompt('server', previousData, 'ALKS server', function(err, server){
+        getPrompt('server', previousData, 'ALKS server', utils.isURL, function(err, server){
             callback(err, previousData, server);
         });
     },
     // ask for username
     function(previousData, server, callback){
-        getPrompt('userid', previousData, 'Network Username', function(err, userid){
+        getPrompt('userid', previousData, 'Network Username', null, function(err, userid){
             callback(err, previousData, server, userid);
         });
     },
@@ -62,7 +67,7 @@ async.waterfall([
     function(previousData, server, userid, callback){
         Account.getPasswordFromPrompt(function(err, password){
             callback(err, previousData, server, userid, password);
-        }, 'Network Password', false);
+        }, 'Network Password');
     },
     // ask if they want to save password
     function(previousData, server, userid, password, callback){
@@ -103,7 +108,7 @@ async.waterfall([
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
     // did any of our steps have issues?
     if(err){
-        return utils.errorAndExit('Error configuring account!', err);
+        return utils.errorAndExit('Error configuring account: ' + err.message);
     }
 
     var accountPayload = {
