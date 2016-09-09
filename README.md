@@ -2,6 +2,8 @@
 
 [![NPM](https://nodei.co/npm/alks.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/alks/)
 
+[![Build Status](https://travis-ci.org/Cox-Automotive/ALKS-CLI.svg?branch=master)](https://travis-ci.org/Cox-Automotive/mashery)
+
 ## About
 CLI for working with the [ALKS](https://github.com/Cox-Automotive/ALKS) service.
 
