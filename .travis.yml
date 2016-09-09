@@ -1,1 +1,5 @@
-[![Build Status](https://travis-ci.org/Cox-Automotive/mashery.svg?branch=master)](https://travis-ci.org/Cox-Automotive/mashery)
+language: node_js
+node_js:
+  - "0.12"
+  - "0.11"
+  - "0.10"
