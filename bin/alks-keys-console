@@ -66,10 +66,10 @@ async.waterfall([
         });
 
 
-        console.error(clc.white.underline.bold('\nPlease choose a session to open the AWS console for'));
-        console.error(clc.white(table.toString()));
-
         if(foundKeys.length){
+            console.error(clc.white.underline.bold('\nPlease choose a session to open the AWS console for'));
+            console.error(clc.white(table.toString()));
+
             prompt.message = prompt.delimiter = '';
             prompt.start();
 
@@ -93,6 +93,9 @@ async.waterfall([
                     });
                 });
             });
+        }
+        else{
+            console.error(clc.white('No existing keys found, please run "alks keys create"'));
         }
     }
 ], function(err, selectedKey){

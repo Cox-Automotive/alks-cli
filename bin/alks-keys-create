@@ -19,7 +19,7 @@ var durationValues = alks.getDurations(),
 
 program
     .version(config.version)
-    .description('creates a new session')
+    .description('creates a new key')
     .option('-p, --password [password]', 'my password')
     .option('-d, --duration [hours]', 'duration of session (' + durationValues.join(', ') + '), default: ' + durationValues[0], durationValues[0])
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
@@ -61,7 +61,7 @@ async.waterfall([
     function(sessionData, account, password, callback){
         // calculate expiration
         var expires = moment().add(duration, 'hours');
-        console.error(clc.white('Your AWS session data has been generated and expires ' + expires.calendar()));
+        console.error(clc.white('AWS session data generated for "' + account.alksAccount + '" and expires ' + expires.calendar()));
 
         // store session data in DB
         keys.addKey(sessionData.accessKey, sessionData.secretKey,
