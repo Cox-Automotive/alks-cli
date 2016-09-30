@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    utils   = require('../lib/utils'),
+    config  = require('../package.json');
+
+program
+    .version(config.version)
+    .command('start',   'creates or resumes a session')
+    .command('console', 'open an AWS console in your browser')
+    .parse(process.argv);
+
+utils.subcommandSuggestion(program, 'sessions');

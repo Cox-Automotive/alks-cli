@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program  = require('commander'),
+    clc      = require('cli-color'),
+    async    = require('async'),
+    _        = require('underscore'),
+    inquirer = require('inquirer'),
+    config   = require('../package.json'),
+    utils    = require('../lib/utils'),
+    Account  = require('../lib/account'),
+    alks     = require('../lib/alks-api');
+
+program
+    .version(config.version)
+    .description('creates or resumes a session')
+    .parse(process.argv);
+
+// TODO: should we just have account.getALKSAccount()?
+// TODO: how to make this not require input? dont want to have to pass that long-ass ALKS account string in
+// TODO: output values
+async.waterfall([
+    // check to be sure were configured
+    function(callback){
+        Account.ensureConfigured(callback);
+    },
+    // get account
+    function(callback){
+        Account.getAccount(callback);
+    },
+    // get password
+    function(account, callback){
+        Account.getPassword(program, function(err, password){
+            callback(err, account, password);
+        });
+    },
+    // load available account/roles
+    function(account, password, callback){
+        alks.getAccounts(account.server, account.userid, password, function(err, alksAccounts){
+            callback(err, account, alksAccounts);
+        });
+    },
+    // ask user which account/role
+    function(account, alksAccounts, callback){
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'alksAccount',
+                message: 'Please select an ALKS account/role',
+                choices: alksAccounts
+            }
+        ]).then(function(answers){
+            console.log()
+            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
+                alksAccount = data[0],
+                alksRole = data[1];
+
+            callback(null, account, alksAccount, alksRole);
+        });
+    },
+    // look for existing session
+    function(account, alksAccount, alksRole, callback){
+        // TODO: find existing session, if none create eone
+        // TODO: return session keys
+    }
+], function(err, data){
+    if(err){
+        utils.errorAndExit(err);
+    }
+
+    // TODO: output session keys, follow output format of keys create
+
+    utils.checkForUpdate();
+});

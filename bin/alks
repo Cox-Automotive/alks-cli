@@ -16,8 +16,9 @@ var config   = utils.getFilePathInHome('alks.env'),
     data     = [];
 
 program
-    .command('keys', 'manage keys')
-    .command('developer', 'show developer')
+    .command('keys', 'manage alks keys')
+    .command('sessions', 'manage aws sessions')
+    .command('developer', 'developer & account commands')
     .version(pkg.version);
 
 if(process.stdout.isTTY){
