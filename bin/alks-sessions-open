@@ -10,6 +10,7 @@ var program  = require('commander'),
     inquirer = require('inquirer'),
     config   = require('../package.json'),
     utils    = require('../lib/utils'),
+    keys     = require('../lib/keys'),
     Account  = require('../lib/account'),
     alks     = require('../lib/alks-api');
 
@@ -18,7 +19,6 @@ program
     .description('creates or resumes a session')
     .parse(process.argv);
 
-// TODO: should we just have account.getALKSAccount()?
 // TODO: how to make this not require input? dont want to have to pass that long-ass ALKS account string in
 // TODO: output values
 async.waterfall([
@@ -30,11 +30,19 @@ async.waterfall([
     function(callback){
         Account.getALKSAccount(program, callback);
     },
-    // look for existing session
+    // now retrieve existing keys
     function(alksAccount, callback){
+        console.log('getting keys')
+        keys.getKeys(alksAccount.password, function(err, keys){
+            console.log('got keys')
+            callback(null, alksAccount, keys);
+        });
+    },
+    // look for existing session
+    function(alksAccount, keys, callback){
         // TODO: find existing session, if none create eone
         // TODO: return session keys
-        console.log(alksAccount)
+        console.log(JSON.stringify(alksAccount), JSON.stringify(keys))
     }
 ], function(err, data){
     if(err){
