@@ -26,44 +26,15 @@ async.waterfall([
     function(callback){
         Account.ensureConfigured(callback);
     },
-    // get account
+    // get alks account
     function(callback){
-        Account.getAccount(callback);
-    },
-    // get password
-    function(account, callback){
-        Account.getPassword(program, function(err, password){
-            callback(err, account, password);
-        });
-    },
-    // load available account/roles
-    function(account, password, callback){
-        alks.getAccounts(account.server, account.userid, password, function(err, alksAccounts){
-            callback(err, account, alksAccounts);
-        });
-    },
-    // ask user which account/role
-    function(account, alksAccounts, callback){
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'alksAccount',
-                message: 'Please select an ALKS account/role',
-                choices: alksAccounts
-            }
-        ]).then(function(answers){
-            console.log()
-            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
-                alksAccount = data[0],
-                alksRole = data[1];
-
-            callback(null, account, alksAccount, alksRole);
-        });
+        Account.getALKSAccount(program, callback);
     },
     // look for existing session
-    function(account, alksAccount, alksRole, callback){
+    function(alksAccount, callback){
         // TODO: find existing session, if none create eone
         // TODO: return session keys
+        console.log(alksAccount)
     }
 ], function(err, data){
     if(err){

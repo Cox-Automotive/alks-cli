@@ -67,7 +67,7 @@ async.waterfall([
 
 
         if(foundKeys.length){
-            console.error(clc.white.underline.bold('\nPlease choose a session to open the AWS console for'));
+            console.error(clc.white.underline.bold('\nPlease choose key to open the AWS console for'));
             console.error(clc.white(table.toString()));
 
             prompt.message = prompt.delimiter = '';

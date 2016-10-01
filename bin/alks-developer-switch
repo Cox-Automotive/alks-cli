@@ -7,11 +7,9 @@ var program  = require('commander'),
     clc      = require('cli-color'),
     async    = require('async'),
     _        = require('underscore'),
-    inquirer = require('inquirer'),
     config   = require('../package.json'),
     utils    = require('../lib/utils'),
-    Account  = require('../lib/account'),
-    alks     = require('../lib/alks-api');
+    Account  = require('../lib/account');
 
 program
     .version(config.version)
@@ -27,34 +25,10 @@ async.waterfall([
     function(callback){
         Account.getAccount(callback);
     },
-    // get password
+    // get alks account
     function(account, callback){
-        Account.getPassword(program, function(err, password){
-            callback(err, account, password);
-        });
-    },
-    // load available account/roles
-    function(account, password, callback){
-        alks.getAccounts(account.server, account.userid, password, function(err, alksAccounts){
-            callback(err, account, alksAccounts);
-        });
-    },
-    // ask user which account/role
-    function(account, alksAccounts, callback){
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'alksAccount',
-                message: 'Please select an ALKS account/role',
-                choices: alksAccounts
-            }
-        ]).then(function(answers){
-            console.log()
-            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
-                alksAccount = data[0],
-                alksRole = data[1];
-
-            callback(null, account, alksAccount, alksRole);
+        Account.getALKSAccount(program, function(err, alksAccount){
+            callback(err, account, alksAccount.account, alksAccount.role);
         });
     },
     // update user account
