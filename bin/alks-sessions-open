@@ -14,13 +14,20 @@ var program  = require('commander'),
     Account  = require('../lib/account'),
     alks     = require('../lib/alks-api');
 
+var outputValues = utils.getOutputValues();
+
 program
     .version(config.version)
     .description('creates or resumes a session')
+    .option('-p, --password [password]', 'my password (required if not stored)')
+    .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
+    .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
+    .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .parse(process.argv);
 
+var output = program.output;
+
 // TODO: how to make this not require input? dont want to have to pass that long-ass ALKS account string in
-// TODO: output values
 async.waterfall([
     // check to be sure were configured
     function(callback){
@@ -32,24 +39,30 @@ async.waterfall([
     },
     // now retrieve existing keys
     function(alksAccount, callback){
-        console.log('getting keys')
         keys.getKeys(alksAccount.password, function(err, keys){
-            console.log('got keys')
             callback(null, alksAccount, keys);
         });
     },
     // look for existing session
     function(alksAccount, keys, callback){
-        // TODO: find existing session, if none create eone
-        // TODO: return session keys
-        console.log(JSON.stringify(alksAccount), JSON.stringify(keys))
+        if(keys.length){
+            // filter keys for the selected alks account/role
+            var keyCriteria = { alksAccount: alksAccount.account, alksRole: alksAccount.role },
+            // filter, sort by expiration, grab last key to expire
+                selectedKey = _.last(_.sortBy(_.where(keys, keyCriteria), 'expires'));
+
+            if(selectedKey) return callback(null, selectedKey);
+        }
+
+        console.log('TODO: gen key');
+        // alks.createKey(account, password, duration, callback);
     }
 ], function(err, data){
     if(err){
-        utils.errorAndExit(err);
+        return utils.errorAndExit(err);
     }
 
-    // TODO: output session keys, follow output format of keys create
+    console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
 
     utils.checkForUpdate();
 });

@@ -20,7 +20,7 @@ var durationValues = alks.getDurations(),
 program
     .version(config.version)
     .description('creates a new key')
-    .option('-p, --password [password]', 'my password')
+    .option('-p, --password [password]', 'my password (required if not stored)')
     .option('-d, --duration [hours]', 'duration of session (' + durationValues.join(', ') + '), default: ' + durationValues[0], durationValues[0])
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
@@ -66,7 +66,8 @@ async.waterfall([
         // store session data in DB
         keys.addKey(sessionData.accessKey, sessionData.secretKey,
                     sessionData.sessionToken, sessionData.consoleURL,
-                    account.alksAccount, expires.toDate(), password);
+                    account.alksAccount, account.alksRole,
+                    expires.toDate(), password);
 
         callback(null, sessionData);
     }

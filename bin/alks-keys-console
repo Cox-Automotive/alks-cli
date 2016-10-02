@@ -19,7 +19,7 @@ var program = require('commander'),
 program
     .version(config.version)
     .description('open an AWS console in your browser')
-    .option('-p, --password [password]', 'my password')
+    .option('-p, --password [password]', 'my password (required if not stored)')
     .parse(process.argv);
 
 async.waterfall([
