@@ -27,8 +27,8 @@ async.waterfall([
     },
     // get alks account
     function(account, callback){
-        Account.getALKSAccount(program, function(err, alksAccount){
-            callback(err, account, alksAccount.account, alksAccount.role);
+        Account.getALKSAccount(program, null, function(err, alksAccount){
+            callback(err, account, alksAccount.alksAccount, alksAccount.alksRole);
         });
     },
     // update user account

@@ -26,9 +26,20 @@ program
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .parse(process.argv);
 
-var output = program.output;
+var alksAccountId    = program.args[0],
+    alksAccountIdInt = parseInt(alksAccountId),
+    output           = program.output;
 
-// TODO: how to make this not require input? dont want to have to pass that long-ass ALKS account string in
+if(program.args[0] && (isNaN(alksAccountIdInt) || alksAccountIdInt < 1)){
+    utils.errorAndExit('ALKS Account ID should be a positive integer.');
+}
+else if(!isNaN(alksAccountIdInt)){
+    alksAccountId = alksAccountIdInt - 1;
+}
+else if(isNaN(alksAccountIdInt)){
+    alksAccountId = null;
+}
+
 async.waterfall([
     // check to be sure were configured
     function(callback){
@@ -36,10 +47,11 @@ async.waterfall([
     },
     // get alks account
     function(callback){
-        Account.getALKSAccount(program, callback);
+        Account.getALKSAccount(program, alksAccountId, callback);
     },
     // now retrieve existing keys
     function(alksAccount, callback){
+        console.log('got this', alksAccount)
         keys.getKeys(alksAccount.password, function(err, keys){
             callback(null, alksAccount, keys);
         });

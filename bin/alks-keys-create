@@ -68,7 +68,7 @@ async.waterfall([
         keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
                     key.alksAccount, key.alksRole, expires.toDate(), password);
 
-        callback(null, sessionData);
+        callback(null, key);
     }
 ], function(err, data){
     if(err){
