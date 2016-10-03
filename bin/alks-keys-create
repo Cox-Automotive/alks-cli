@@ -58,16 +58,15 @@ async.waterfall([
         alks.createKey(account, password, duration, callback);
     },
     // now deal with the session data
-    function(sessionData, account, password, callback){
+    function(key, account, password, callback){
         // calculate expiration
         var expires = moment().add(duration, 'hours');
-        console.error(clc.white('AWS session data generated for "' + account.alksAccount + '" and expires ' + expires.calendar()));
+        console.error(clc.white([ 'AWS session data generated for "', account.alksAccount,
+                                 '" and expires ', expires.calendar() ].join('')));
 
         // store session data in DB
-        keys.addKey(sessionData.accessKey, sessionData.secretKey,
-                    sessionData.sessionToken, sessionData.consoleURL,
-                    account.alksAccount, account.alksRole,
-                    expires.toDate(), password);
+        keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                    key.alksAccount, key.alksRole, expires.toDate(), password);
 
         callback(null, sessionData);
     }

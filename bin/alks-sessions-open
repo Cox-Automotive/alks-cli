@@ -8,6 +8,7 @@ var program  = require('commander'),
     async    = require('async'),
     _        = require('underscore'),
     inquirer = require('inquirer'),
+    moment   = require('moment'),
     config   = require('../package.json'),
     utils    = require('../lib/utils'),
     keys     = require('../lib/keys'),
@@ -44,24 +45,42 @@ async.waterfall([
         });
     },
     // look for existing session
-    function(alksAccount, keys, callback){
-        if(keys.length){
-            // filter keys for the selected alks account/role
-            var keyCriteria = { alksAccount: alksAccount.account, alksRole: alksAccount.role },
-            // filter, sort by expiration, grab last key to expire
-                selectedKey = _.last(_.sortBy(_.where(keys, keyCriteria), 'expires'));
+    function(alksAccount, existingKeys, callback){
+        console.error('');
 
-            if(selectedKey) return callback(null, selectedKey);
+        if(existingKeys.length){
+            // filter keys for the selected alks account/role
+            var keyCriteria = { alksAccount: alksAccount.alksAccount, alksRole: alksAccount.alksRole },
+            // filter, sort by expiration, grab last key to expire
+                selectedKey = _.last(_.sortBy(_.where(existingKeys, keyCriteria), 'expires'));
+
+            if(selectedKey){
+                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount.alksAccount, 
+                                          alksAccount.alksRole ].join(' ')));
+                return callback(null, selectedKey);
+            }
         }
 
-        console.log('TODO: gen key');
-        // alks.createKey(account, password, duration, callback);
+        var duration = _.last(alks.getDurations()),
+            expires  = moment().add(duration, 'hours');
+
+                console.error(clc.white.underline([ 'Creating new session in', alksAccount.alksAccount, 
+                                          alksAccount.alksRole ].join(' ')));
+        alks.createKey(alksAccount, alksAccount.password, duration, function(err, key){
+            // store session data in DB
+            keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                        key.alksAccount, key.alksRole, expires.toDate(), alksAccount.password);
+
+
+            callback(err, key);
+        });
     }
 ], function(err, data){
     if(err){
         return utils.errorAndExit(err);
     }
 
+    console.error('');
     console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
 
     utils.checkForUpdate();
