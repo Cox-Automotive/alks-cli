@@ -51,15 +51,12 @@ async.waterfall([
     },
     // now retrieve existing keys
     function(alksAccount, callback){
-        console.log('got this', alksAccount)
         keys.getKeys(alksAccount.password, function(err, keys){
             callback(null, alksAccount, keys);
         });
     },
     // look for existing session
     function(alksAccount, existingKeys, callback){
-        console.error('');
-
         if(existingKeys.length){
             // filter keys for the selected alks account/role
             var keyCriteria = { alksAccount: alksAccount.alksAccount, alksRole: alksAccount.alksRole },
@@ -67,7 +64,7 @@ async.waterfall([
                 selectedKey = _.last(_.sortBy(_.where(existingKeys, keyCriteria), 'expires'));
 
             if(selectedKey){
-                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount.alksAccount, 
+                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount.alksAccount,
                                           alksAccount.alksRole ].join(' ')));
                 return callback(null, selectedKey);
             }
@@ -76,8 +73,9 @@ async.waterfall([
         var duration = _.last(alks.getDurations()),
             expires  = moment().add(duration, 'hours');
 
-                console.error(clc.white.underline([ 'Creating new session in', alksAccount.alksAccount, 
-                                          alksAccount.alksRole ].join(' ')));
+        console.error(clc.white.underline([ 'Creating new session in', alksAccount.alksAccount, alksAccount.alksRole ].join(' ')));
+
+        // generate a new key/session
         alks.createKey(alksAccount, alksAccount.password, duration, function(err, key){
             // store session data in DB
             keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
