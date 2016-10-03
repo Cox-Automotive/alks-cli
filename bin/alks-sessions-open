@@ -20,7 +20,7 @@ var outputValues = utils.getOutputValues();
 program
     .version(config.version)
     .description('creates or resumes a session')
-    .option('-p, --password [password]', 'my password (required if not stored)')
+    .option('-p, --password [password]', 'my password')
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
