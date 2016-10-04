@@ -3,18 +3,18 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    Table   = require('cli-table2'),
-    moment  = require('moment'),
-    prompt  = require('prompt'),
-    async   = require('async'),
-    opn     = require('opn'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    Account = require('../lib/account'),
-    keys    = require('../lib/keys');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    Table     = require('cli-table2'),
+    moment    = require('moment'),
+    prompt    = require('prompt'),
+    async     = require('async'),
+    opn       = require('opn'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer'),
+    keys      = require('../lib/keys');
 
 program
     .version(config.version)
@@ -26,11 +26,11 @@ program
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
     // get the password
     function(callback){
-        Account.getPassword(program, callback);
+        Developer.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){

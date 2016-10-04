@@ -3,19 +3,19 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    Account = require('../lib/account');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer');
 
 program
     .version(config.version)
     .description('removes password')
     .parse(process.argv);
 
-if(Account.removePassword()){
+if(Developer.removePassword()){
     console.error(clc.white('Password removed!'));
 }
 else{

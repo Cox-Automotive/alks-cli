@@ -3,16 +3,16 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    async   = require('async'),
-    moment  = require('moment'),
-    config  = require('../package.json'),
-    Account = require('../lib/account'),
-    keys    = require('../lib/keys'),
-    alks    = require('../lib/alks-api'),
-    utils   = require('../lib/utils');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    moment    = require('moment'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    keys      = require('../lib/keys'),
+    alks      = require('../lib/alks-api'),
+    utils     = require('../lib/utils');
 
 var durationValues = alks.getDurations(),
     outputValues   = utils.getOutputValues();
@@ -41,27 +41,27 @@ if(!_.contains(outputValues, output)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
-    // get account
+    // get developer
     function(callback){
-        Account.getAccount(callback);
+        Developer.getDeveloper(callback);
     },
     // get password
-    function(account, callback){
-        Account.getPassword(program, function(err, password){
-            callback(err, account, password);
+    function(developer, callback){
+        Developer.getPassword(program, function(err, password){
+            callback(err, developer, password);
         });
     },
     // now call the ALKS API
-    function(account, password, callback){
-        alks.createKey(account, password, duration, callback);
+    function(developer, password, callback){
+        alks.createKey(developer, password, duration, callback);
     },
     // now deal with the session data
-    function(key, account, password, callback){
+    function(key, developer, password, callback){
         // calculate expiration
         var expires = moment().add(duration, 'hours');
-        console.error(clc.white([ 'AWS session data generated for "', account.alksAccount,
+        console.error(clc.white([ 'AWS session data generated for "', developer.alksAccount,
                                  '" and expires ', expires.calendar() ].join('')));
 
         // store session data in DB

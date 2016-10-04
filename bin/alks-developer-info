@@ -3,14 +3,14 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    async   = require('async'),
-    Table   = require('cli-table2'),
-    config  = require('../package.json'),
-    Account = require('../lib/account'),
-    utils   = require('../lib/utils');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
 
 program
     .version(config.version)
@@ -23,16 +23,16 @@ var table = new Table({
 });
 
 async.series({
-    // get account
-    account: function(callback){
-        Account.getAccount(callback);
+    // get developer
+    developer: function(callback){
+        Developer.getDeveloper(callback);
     },
     password: function(callback){
-        Account.getPassword(null, callback); // null means dont prompt
+        Developer.getPassword(null, callback); // null means dont prompt
     }
 },
 function(err, results){
-    _.each(results.account, function(val, key){
+    _.each(results.developer, function(val, key){
         table.push([key, _.isEmpty(val) ? '' : val]);
     });
 

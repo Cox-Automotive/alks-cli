@@ -3,20 +3,20 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    Account = require('../lib/account');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer');
 
 program
     .version(config.version)
     .description('stores password')
     .parse(process.argv);
 
-Account.getPasswordFromPrompt(function(err, password){
-    Account.storePassword(password, function(err, saved){
+Developer.getPasswordFromPrompt(function(err, password){
+    Developer.storePassword(password, function(err, saved){
         if(!saved){
             utils.passwordSaveErrorHandler(err);
         }

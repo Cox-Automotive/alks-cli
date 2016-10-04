@@ -3,17 +3,17 @@
 
 process.title = 'ALKS';
 
-var program  = require('commander'),
-    clc      = require('cli-color'),
-    async    = require('async'),
-    _        = require('underscore'),
-    inquirer = require('inquirer'),
-    moment   = require('moment'),
-    config   = require('../package.json'),
-    utils    = require('../lib/utils'),
-    keys     = require('../lib/keys'),
-    Account  = require('../lib/account'),
-    alks     = require('../lib/alks-api');
+var program    = require('commander'),
+    clc        = require('cli-color'),
+    async      = require('async'),
+    _          = require('underscore'),
+    inquirer   = require('inquirer'),
+    moment     = require('moment'),
+    config     = require('../package.json'),
+    utils      = require('../lib/utils'),
+    keys       = require('../lib/keys'),
+    Developer  = require('../lib/developer'),
+    alks       = require('../lib/alks-api');
 
 var outputValues = utils.getOutputValues();
 
@@ -48,26 +48,26 @@ else if(isNaN(alksAccountIdxInt)){
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
-    // get account
+    // get developer
     function(callback){
-        Account.getAccount(callback);
+        Developer.getDeveloper(callback);
     },
     // get password
     function(account, callback){
-        Account.getPassword(program, function(err, password){
-            callback(err, account, password);
+        Developer.getPassword(program, function(err, password){
+            callback(err, developer, password);
         });
     },
     // get alks account
-    function(account, password, callback){
+    function(developer, password, callback){
         // set password so they dont get prompted again
         program.password = password;
 
         // only lookup alks account if they didnt provide
         if(!hasAlksAcctRole){
-            Account.getALKSAccount(program, alksAccountIdx, function(err, data){
+            Developer.getALKSAccount(program, alksAccountIdx, function(err, data){
                 callback(err, password, data.account, data.role);
             });
         }

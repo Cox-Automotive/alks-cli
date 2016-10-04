@@ -3,16 +3,16 @@
 
 process.title = 'ALKS';
 
-var program  = require('commander'),
-    clc      = require('cli-color'),
-    prompt   = require('prompt'),
-    inquirer = require('inquirer'),
-    async    = require('async'),
-    _        = require('underscore'),
-    config   = require('../package.json'),
-    utils    = require('../lib/utils'),
-    Account  = require('../lib/account'),
-    alks     = require('../lib/alks-api');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    prompt    = require('prompt'),
+    inquirer  = require('inquirer'),
+    async     = require('async'),
+    _         = require('underscore'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer'),
+    alks      = require('../lib/alks-api');
 
 program
     .version(config.version)
@@ -47,9 +47,9 @@ function getPrompt(field, data, text, validator, callback){
 }
 
 async.waterfall([
-    // check for an exisiting account
+    // check for an exisiting developer
     function(callback){
-        Account.getAccount(callback);
+        Developer.getDeveloper(callback);
     },
     // ask for server
     function(previousData, callback){
@@ -65,7 +65,7 @@ async.waterfall([
     },
     // ask for password
     function(previousData, server, userid, callback){
-        Account.getPasswordFromPrompt(function(err, password){
+        Developer.getPasswordFromPrompt(function(err, password){
             callback(err, previousData, server, userid, password);
         }, 'Network Password');
     },
@@ -108,10 +108,10 @@ async.waterfall([
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
     // did any of our steps have issues?
     if(err){
-        return utils.errorAndExit('Error configuring account: ' + err.message);
+        return utils.errorAndExit('Error configuring developer: ' + err.message);
     }
 
-    var accountPayload = {
+    var developerPayload = {
         server: server,
         userid: userid,
         password: password,
@@ -120,13 +120,13 @@ async.waterfall([
         alksRole: alksRole
     };
 
-    // create account
-    Account.saveAccount(accountPayload, function(err){
+    // create developer
+    Developer.saveDeveloper(developerPayload, function(err){
         if(err){
-            console.error(clc.red.bold('Error saving account!'));
+            console.error(clc.red.bold('Error saving developer!'));
         }
         else{
-            console.error(clc.white('Account saved!'));
+            console.error(clc.white('Developer saved!'));
         }
     });
 
