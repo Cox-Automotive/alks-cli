@@ -142,5 +142,5 @@ ALKS CLI will output in a variety of formats:
 * `docker`: Outputs environment arguments to pass to a Docker run call
 * `creds`: Updates the AWS credentials file
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
-	* If the named profile already exists you'll need to supply an override flag: `-f`
+	* If the named profile already exists you'll need to supply the overwrite flag: `-f`
 * `idea`: Outputs environment variables formatted for Intelli-J
