@@ -19,6 +19,7 @@ var program = require('commander'),
 program
     .version(config.version)
     .description('open an AWS console in your browser')
+    .option('-o, --openWith [appName]', 'open in a different app (optional)')
     .option('-p, --password [password]', 'my password')
     .parse(process.argv);
 
@@ -103,7 +104,9 @@ async.waterfall([
         return utils.errorAndExit(err);
     }
     if(!_.isEmpty(selectedKey.consoleURL)){
-        opn(selectedKey.consoleURL);
+        var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+
+        opn(selectedKey.consoleURL, opts);
     }
     else{
         console.error(clc.red('The selected key does not have a console URL.'));

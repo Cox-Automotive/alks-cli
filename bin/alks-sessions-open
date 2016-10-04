@@ -28,23 +28,22 @@ program
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .parse(process.argv);
 
-var alksAccountId    = program.args[0],
-    alksAccountIdInt = parseInt(alksAccountId),
-    alksAccount      = program.account,
-    alksRole         = program.role,
-    hasAlksAcctRole  = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
-    output           = program.output;
+var alksAccountIdx    = program.args[0],
+    alksAccountIdxInt = parseInt(alksAccountIdx),
+    alksAccount       = program.account,
+    alksRole          = program.role,
+    hasAlksAcctRole   = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
+    output            = program.output;
 
-if(program.args[0] && (isNaN(alksAccountIdInt) || alksAccountIdInt < 1)){
+if(program.args[0] && (isNaN(alksAccountIdxInt) || alksAccountIdxInt < 1)){
     utils.errorAndExit('ALKS Account ID should be a positive integer.');
 }
-else if(!isNaN(alksAccountIdInt)){
-    alksAccountId = alksAccountIdInt - 1;
+else if(!isNaN(alksAccountIdxInt)){
+    alksAccountIdx = alksAccountIdxInt - 1;
 }
-else if(isNaN(alksAccountIdInt)){
-    alksAccountId = null;
+else if(isNaN(alksAccountIdxInt)){
+    alksAccountIdx = null;
 }
-
 
 async.waterfall([
     // check to be sure were configured
@@ -68,7 +67,7 @@ async.waterfall([
 
         // only lookup alks account if they didnt provide
         if(!hasAlksAcctRole){
-            Account.getALKSAccount(program, alksAccountId, function(err, data){
+            Account.getALKSAccount(program, alksAccountIdx, function(err, data){
                 callback(err, password, data.account, data.role);
             });
         }
