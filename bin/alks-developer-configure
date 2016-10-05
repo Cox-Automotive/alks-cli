@@ -17,7 +17,10 @@ var program   = require('commander'),
 program
     .version(config.version)
     .description('configures developer')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+
+var logger = 'dev-config';
 
 function getPrompt(field, data, text, validator, callback){
     var promptConfig = {
@@ -49,6 +52,7 @@ function getPrompt(field, data, text, validator, callback){
 async.waterfall([
     // check for an exisiting developer
     function(callback){
+        utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
     },
     // ask for server
@@ -84,6 +88,7 @@ async.waterfall([
     },
     // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
+        utils.log(program, logger, 'getting alks accounts');
         alks.getAccounts(server, userid, password, function(err, accounts){
             callback(err, server, userid, password, savePassword, accounts);
         })
@@ -121,8 +126,10 @@ async.waterfall([
     };
 
     // create developer
+    utils.log(program, logger, 'saving developer');
     Developer.saveDeveloper(developerPayload, function(err){
         if(err){
+            utils.log(program, logger, 'error saving! ' + err.message);
             console.error(clc.red.bold('Error saving developer!'));
         }
         else{
@@ -130,5 +137,6 @@ async.waterfall([
         }
     });
 
+    utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
 });

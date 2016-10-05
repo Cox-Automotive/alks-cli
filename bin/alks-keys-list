@@ -22,11 +22,14 @@ program
     .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + '), default: ' + utils.getOutputValues()[0], utils.getOutputValues()[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 if(!_.contains(utils.getOutputValues(), program.output)){
     utils.errorAndExit('The output provided ('+program.output+') is not in the allowed values: ' + utils.getOutputValues().join(', '));
 }
+
+var logger = 'keys-list';
 
 async.waterfall([
     // check to be sure were configured
@@ -35,10 +38,12 @@ async.waterfall([
     },
     // get the password
     function(callback){
+        utils.log(program, logger, 'getting password');
         Developer.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){
+        utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, callback);
     },
     // it's dangerous to go alone, choose a key...
@@ -109,5 +114,6 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(program.output, selectedKey, program.namedProfile, program.force));
 
+    utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });

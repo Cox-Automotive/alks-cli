@@ -15,6 +15,7 @@ var program   = require('commander'),
 program
     .version(config.version)
     .description('shows current developer configuration')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var table = new Table({
@@ -22,9 +23,12 @@ var table = new Table({
     colWidths: [25, 50]
 });
 
+var logger = 'dev-info';
+
 async.series({
     // get developer
     developer: function(callback){
+        utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
     },
     password: function(callback){
@@ -42,5 +46,6 @@ function(err, results){
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.error(clc.white(table.toString()));
 
+    utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
 });

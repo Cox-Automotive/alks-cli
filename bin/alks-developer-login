@@ -13,11 +13,16 @@ var program   = require('commander'),
 program
     .version(config.version)
     .description('stores password')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
+var logger = 'dev-login';
+
 Developer.getPasswordFromPrompt(function(err, password){
+    utils.log(program, logger, 'saving password');
     Developer.storePassword(password, function(err, saved){
         if(!saved){
+            utils.log(program, logger, 'error saving password! ' + err.message);
             utils.passwordSaveErrorHandler(err);
         }
         else{
@@ -25,5 +30,6 @@ Developer.getPasswordFromPrompt(function(err, password){
         }
     });
 
+    utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });

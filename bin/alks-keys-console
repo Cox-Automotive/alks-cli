@@ -21,7 +21,10 @@ program
     .description('open an AWS console in your browser')
     .option('-o, --openWith [appName]', 'open in a different app (optional)')
     .option('-p, --password [password]', 'my password')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+
+var logger = 'keys-console';
 
 async.waterfall([
     // check to be sure were configured
@@ -30,10 +33,12 @@ async.waterfall([
     },
     // get the password
     function(callback){
+        utils.log(program, logger, 'getting password');
         Developer.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){
+        utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, callback);
     },
     // it's dangerous to go alone, choose a key...
@@ -96,6 +101,7 @@ async.waterfall([
             });
         }
         else{
+            utils.log(program, logger, 'no keys found');
             console.error(clc.white('No existing keys found, please run "alks keys create"'));
         }
     }
@@ -106,12 +112,14 @@ async.waterfall([
     if(!_.isEmpty(selectedKey.consoleURL)){
         var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
 
+        utils.log(program, logger, 'opening ' + selectedKey.consoleURL + ' with opts: ' + JSON.stringify(opts));
         opn(selectedKey.consoleURL, opts);
     }
     else{
         console.error(clc.red('The selected key does not have a console URL.'));
     }
 
+    utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
     process.exit(1); // needed for opn()
 });

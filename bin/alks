@@ -43,6 +43,6 @@ else if(!_.includes(commands, requestedCommand)){
         msg.push(clc.white.underline(suggest[0]));
         msg.push(clc.white('?'));
     }
-    
+
     utils.errorAndExit(msg.join(''));
 }

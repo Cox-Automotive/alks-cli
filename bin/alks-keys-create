@@ -15,7 +15,8 @@ var program   = require('commander'),
     utils     = require('../lib/utils');
 
 var durationValues = alks.getDurations(),
-    outputValues   = utils.getOutputValues();
+    outputValues   = utils.getOutputValues(),
+    logger         = 'keys-create';
 
 program
     .version(config.version)
@@ -25,6 +26,7 @@ program
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var duration = parseInt(program.duration),
@@ -45,16 +47,19 @@ async.waterfall([
     },
     // get developer
     function(callback){
+        utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
     },
     // get password
     function(developer, callback){
+        utils.log(program, logger, 'getting password');
         Developer.getPassword(program, function(err, password){
             callback(err, developer, password);
         });
     },
     // now call the ALKS API
     function(developer, password, callback){
+        utils.log(program, logger, 'calling api');
         alks.createKey(developer, password, duration, callback);
     },
     // now deal with the session data
@@ -65,6 +70,7 @@ async.waterfall([
                                  '" and expires ', expires.calendar() ].join('')));
 
         // store session data in DB
+        utils.log(program, logger, 'saving key in DB');
         keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
                     key.alksAccount, key.alksRole, expires.toDate(), password);
 
@@ -77,5 +83,6 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
 
+    utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
