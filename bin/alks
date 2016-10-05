@@ -22,7 +22,7 @@ program
     .version(pkg.version);
 
 if(process.stdout.isTTY){
-    console.error(clc.whiteBright.bold('ALKS v%s'), pkg.version);    
+    console.error(clc.whiteBright.bold('ALKS v%s'), pkg.version);
 }
 
 program.parse(process.argv);
