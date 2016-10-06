@@ -1,0 +1,141 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program    = require('commander'),
+    clc        = require('cli-color'),
+    async      = require('async'),
+    _          = require('underscore'),
+    inquirer   = require('inquirer'),
+    moment     = require('moment'),
+    opn        = require('opn'),
+    config     = require('../package.json'),
+    utils      = require('../lib/utils'),
+    keys       = require('../lib/keys'),
+    Developer  = require('../lib/developer'),
+    alks       = require('../lib/alks-api');
+
+var outputValues = utils.getOutputValues();
+
+program
+    .version(config.version)
+    .description('open an AWS console in your browser')
+    .option('-o, --openWith [appName]', 'open in a different app (optional)')
+    .option('-a, --account [alksAccount]', 'alks account to use')
+    .option('-r, --role [alksRole]', 'alks role to use')
+    .option('-p, --password [password]', 'my password')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+// TODO: DRY.. this is pretty much the same code from alks-sessions-open
+var alksAccountIdx    = program.args[0],
+    alksAccountIdxInt = parseInt(alksAccountIdx),
+    alksAccount       = program.account,
+    alksRole          = program.role,
+    hasAlksAcctRole   = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
+    output            = program.output,
+    logger            = 'sessions-console';
+
+if(program.args[0] && (isNaN(alksAccountIdxInt) || alksAccountIdxInt < 1)){
+    utils.errorAndExit('ALKS Account ID should be a positive integer.');
+}
+else if(!isNaN(alksAccountIdxInt)){
+    alksAccountIdx = alksAccountIdxInt - 1;
+}
+else if(isNaN(alksAccountIdxInt)){
+    alksAccountIdx = null;
+}
+
+async.waterfall([
+    // check to be sure were configured
+    function(callback){
+        Developer.ensureConfigured(callback);
+    },
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    // get password
+    function(developer, callback){
+        utils.log(program, logger, 'getting password');
+        Developer.getPassword(program, function(err, password){
+            callback(err, developer, password);
+        });
+    },
+    // get alks account
+    function(developer, password, callback){
+        // set password so they dont get prompted again
+        program.password = password;
+
+        // only lookup alks account if they didnt provide
+        if(!hasAlksAcctRole){
+            utils.log(program, logger, 'getting accounts');
+            Developer.getALKSAccount(program, alksAccountIdx, function(err, data){
+                callback(err, password, data.account, data.role);
+            });
+        }
+        else{
+            utils.log(program, logger, 'using provided account/role');
+            callback(null, password, alksAccount, alksRole);
+        }
+    },
+    // now retrieve existing keys
+    function(password, alksAccount, alksRole, callback){
+        utils.log(program, logger, 'getting existing keys');
+        keys.getKeys(password, function(err, keys){
+            callback(null, password, alksAccount, alksRole, keys);
+        });
+    },
+    // look for existing session
+    function(password, alksAccount, alksRole, existingKeys, callback){
+        if(existingKeys.length){
+            utils.log(program, logger, 'filtering keys by account/role');
+
+            // filter keys for the selected alks account/role
+            var keyCriteria = { alksAccount: alksAccount, alksRole: alksRole },
+            // filter, sort by expiration, grab last key to expire
+                selectedKey = _.last(_.sortBy(_.where(existingKeys, keyCriteria), 'expires'));
+
+            if(selectedKey){
+                utils.log(program, logger, 'found existing valid key');
+                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount, alksRole ].join(' ')));
+                return callback(null, selectedKey);
+            }
+        }
+
+        var duration = _.last(alks.getDurations()),
+            expires  = moment().add(duration, 'hours');
+
+        console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
+
+        // generate a new key/session
+        utils.log(program, logger, 'calling api to generate new keys/session');
+        alks.createKey({ alksAccount: alksAccount, alksRole: alksRole }, password, duration, function(err, key){
+            // store session data in DB
+            utils.log(program, logger, 'storing key');
+            keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                        key.alksAccount, key.alksRole, expires.toDate(), password);
+
+
+            callback(err, key);
+        });
+    }
+], function(err, selectedKey){
+    if(err){
+        return utils.errorAndExit(err);
+    }
+
+    if(!_.isEmpty(selectedKey.consoleURL)){
+        var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+
+        opn(selectedKey.consoleURL, opts);
+    }
+    else{
+        console.error(clc.red('The selected key does not have a console URL.'));
+    }
+
+    utils.log(program, logger, 'checking for updates');
+    utils.checkForUpdate();
+});

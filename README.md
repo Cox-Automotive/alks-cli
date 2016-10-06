@@ -93,6 +93,39 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer info` - Show your current developer configuration
 
+## Sessions
+
+### `sessions open`
+
+`alks sessions open [index]` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an index you'll be prompted for the account/role you'd like to use. If you provide the index (1-n) there's no need to select the account/role. Alternatively you can provide the account and role as flags.
+
+Optional arguments:
+
+* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
+* `-n` If output is set to creds, use this named profile (defaults to default)
+* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
+
+Output values:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_SESSION_TOKEN`
+
+### `sessions console`
+
+`alks sessions console [index]` - Open the AWS console in the default browser for the specified ALKS session.
+
+Optional arguments:
+
+* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
+* `-p [password]` Your password
+
 ## Keys
 
 ### `keys create`
@@ -130,6 +163,7 @@ Optional arguments:
 
 Optional arguments:
 
+* `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-p [password]` Your password
 
 
@@ -142,5 +176,5 @@ ALKS CLI will output in a variety of formats:
 * `docker`: Outputs environment arguments to pass to a Docker run call
 * `creds`: Updates the AWS credentials file
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
-	* If the named profile already exists you'll need to supply an override flag: `-f`
+	* If the named profile already exists you'll need to supply the overwrite flag: `-f`
 * `idea`: Outputs environment variables formatted for Intelli-J

@@ -3,17 +3,17 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    Table   = require('cli-table2'),
-    moment  = require('moment'),
-    prompt  = require('prompt'),
-    async   = require('async'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    Account = require('../lib/account'),
-    keys    = require('../lib/keys');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    Table     = require('cli-table2'),
+    moment    = require('moment'),
+    prompt    = require('prompt'),
+    async     = require('async'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer'),
+    keys      = require('../lib/keys');
 
 program
     .version(config.version)
@@ -22,23 +22,28 @@ program
     .option('-o, --output [format]', 'output format (' + utils.getOutputValues().join(', ') + '), default: ' + utils.getOutputValues()[0], utils.getOutputValues()[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 if(!_.contains(utils.getOutputValues(), program.output)){
     utils.errorAndExit('The output provided ('+program.output+') is not in the allowed values: ' + utils.getOutputValues().join(', '));
 }
 
+var logger = 'keys-list';
+
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
     // get the password
     function(callback){
-        Account.getPassword(program, callback);
+        utils.log(program, logger, 'getting password');
+        Developer.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){
+        utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, callback);
     },
     // it's dangerous to go alone, choose a key...
@@ -54,7 +59,7 @@ async.waterfall([
             colWidths: [5, 25, 25, 25, 25]
         });
 
-        
+
         var groupedKeys = _.groupBy(foundKeys, 'alksAccount'),
             i           = 0;
 
@@ -63,10 +68,10 @@ async.waterfall([
 
             _.each(keys, function(keydata){
                 table.push([ (i++)+1,
-                             utils.obfuscate(keydata.accessKey), 
-                             utils.obfuscate(keydata.secretKey), 
-                             moment(keydata.expires).calendar(), 
-                             moment(keydata.meta.created).fromNow() 
+                             utils.obfuscate(keydata.accessKey),
+                             utils.obfuscate(keydata.secretKey),
+                             moment(keydata.expires).calendar(),
+                             moment(keydata.meta.created).fromNow()
                            ]);
             });
         });
@@ -97,10 +102,10 @@ async.waterfall([
                         if(i++ === index){
                             callback(null, keydata);
                         }
-                    }); 
+                    });
                 });
             });
-        }        
+        }
     }
 ], function(err, selectedKey){
     if(err){
@@ -109,5 +114,6 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(program.output, selectedKey, program.namedProfile, program.force));
 
+    utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
