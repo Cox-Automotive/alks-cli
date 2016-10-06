@@ -1,0 +1,7 @@
+Release Notes: 2016-10-06
+========================
+Thanks for upgrading to the latest version of the ALKS CLI! :)
+
+- Added session command, the plan is for this to replace the keys command
+- Added changelog on update - now you can see what changed
+- Learn more about this release, especially sessions, at: https://goo.gl/SAS7bp

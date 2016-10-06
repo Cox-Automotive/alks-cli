@@ -9,8 +9,8 @@ var program = require('commander'),
 
 program
     .version(config.version)
-    .command('open [alksAccountId]', 'creates or resumes a session')
-    .command('console', 'open an AWS console in your browser')
+    .command('open [alksAccountIndex]', 'creates or resumes a session')
+    .command('console [alksAccountIndex]', 'open an AWS console in your browser')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'sessions');

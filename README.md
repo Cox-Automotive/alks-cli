@@ -102,8 +102,8 @@ docker run -it -v ~:/root coxauto/alks-cli
 Optional arguments:
 
 * `-p [password]` Your password
-* `-a [account]` The ALKS account to use
-* `-r [role]` The ALKS role to use
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
@@ -116,10 +116,13 @@ Output values:
 
 ### `sessions console`
 
-`alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
+`alks sessions console [index]` - Open the AWS console in the default browser for the specified ALKS session.
 
 Optional arguments:
 
+* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-p [password]` Your password
 
