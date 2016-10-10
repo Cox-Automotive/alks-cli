@@ -73,7 +73,7 @@ async.waterfall([
         if(!hasAlksAcctRole){
             utils.log(program, logger, 'getting accounts');
             Developer.getALKSAccount(program, alksAccountIdx, function(err, data){
-                callback(err, password, data.account, data.role);
+                callback(err, password, data.alksAccount, data.alksRole);
             });
         }
         else{

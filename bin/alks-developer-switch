@@ -32,7 +32,7 @@ async.waterfall([
     // get alks account
     function(developer, callback){
         Developer.getALKSAccount(program, null, function(err, alks){
-            callback(err, developer, alks.account, alks.role);
+            callback(err, developer, alks.alksAccount, alks.alksRole);
         });
     },
     // update user account
