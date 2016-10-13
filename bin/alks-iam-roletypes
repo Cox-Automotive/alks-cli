@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    config    = require('../package.json'),
+    alks      = require('../lib/alks-api'),
+    utils     = require('../lib/utils');
+
+var logger = 'iam-roletypes';
+
+program
+    .version(config.version)
+    .description('list the available iam role types')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);

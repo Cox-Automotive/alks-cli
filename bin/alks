@@ -17,6 +17,7 @@ var config   = utils.getFilePathInHome('alks.env'),
 
 program
     .command('sessions', 'manage aws sessions')
+    .command('iam', 'manage iam resources')
     .command('keys', 'manage alks keys')
     .command('developer', 'developer & account commands')
     .version(pkg.version);

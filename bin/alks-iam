@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program = require('commander'),
+    utils   = require('../lib/utils'),
+    config  = require('../package.json');
+
+program
+    .version(config.version)
+    .command('createrole', 'create IAM role')
+    .command('roletypes',  'list the available iam role types')
+    .parse(process.argv);
+
+utils.subcommandSuggestion(program, 'sessions');
