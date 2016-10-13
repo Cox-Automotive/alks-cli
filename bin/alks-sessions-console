@@ -138,4 +138,5 @@ async.waterfall([
 
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    process.exit(1); // needed for opn()
 });
