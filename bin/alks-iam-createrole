@@ -9,12 +9,124 @@ var program   = require('commander'),
     async     = require('async'),
     config    = require('../package.json'),
     alks      = require('../lib/alks-api'),
+    Developer = require('../lib/developer'),
     utils     = require('../lib/utils');
 
-var logger = 'iam-createrole';
+var logger       = 'iam-createrole',
+    roleNameDesc = 'alphanumeric including @+=._-';
 
 program
     .version(config.version)
     .description('creates a new IAM role')
+    .option('-n, --rolename [rolename]', 'the name of the role, ' + roleNameDesc)
+    .option('-t, --roletype [roletype]', 'the role type, to see available roles: alks iam roletypes')
+    .option('-d, --defaultPolicies', 'include default policies, default: false', false)
+    .option('-a, --account [alksAccount]', 'alks account to use')
+    .option('-r, --role [alksRole]', 'alks role to use')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+
+var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g,
+    roleName        = program.rolename,
+    roleType        = program.roletype,
+    incDefPolicies  = program.defaultPolicies,
+    alksAccount     = program.account,
+    alksRole        = program.role,
+    hasAlksAcctRole = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole);
+
+utils.log(program, logger, 'validating role name: ' + roleName);
+if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
+    utils.errorAndExit('The role name provided contains illegal characters. It must be ' + roleNameDesc);
+}
+
+utils.log(program, logger, 'validating role type: ' + roleType);
+if(_.isEmpty(roleType)){
+    utils.errorAndExit('The role type is required');
+}
+
+async.waterfall([
+    // check to be sure were configured
+    function(callback){
+        Developer.ensureConfigured(callback);
+    },
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    // get password
+    function(developer, callback){
+        utils.log(program, logger, 'getting password');
+        Developer.getPassword(program, function(err, password){
+            callback(err, developer, password);
+        });
+    },
+    // get alks account
+    function(developer, password, callback){
+        // set password so they dont get prompted again
+        program.password = password;
+
+        // only lookup alks account if they didnt provide
+        if(!hasAlksAcctRole){
+            utils.log(program, logger, 'getting accounts');
+            Developer.getALKSAccount(program, { iamOnly: true }, function(err, data){
+                if(err) callback(err);
+                else callback(null, developer, password, data.alksAccount, data.alksRole);
+            });
+        }
+        else{
+            utils.log(program, logger, 'using provided account/role');
+            callback(null, developer, password, alksAccount, alksRole);
+        }
+    },
+    // now retrieve existing keys
+    function(developer, password, alksAccount, alksRole, callback){
+        utils.log(program, logger, 'getting existing keys');
+        // TODO: should IAM keys be stored seperately or just flagged?
+        keys.getKeys(password, function(err, keys){
+            callback(null, developer, password, alksAccount, alksRole, keys);
+        });
+    },
+    // look for existing session
+    function(developer, password, alksAccount, alksRole, existingKeys, callback){
+        if(existingKeys.length){
+            utils.log(program, logger, 'filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
+
+            // filter keys for the selected alks account/role
+            var keyCriteria = { alksAccount: alksAccount, alksRole: alksRole },
+            // filter, sort by expiration, grab last key to expire
+                selectedKey = _.last(_.sortBy(_.where(existingKeys, keyCriteria), 'expires'));
+
+            if(selectedKey){
+                utils.log(program, logger, 'found existing valid key');
+                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount, alksRole ].join(' ')));
+                return callback(null, selectedKey);
+            }
+        }
+
+        console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
+
+        // generate a new key/session
+        utils.log(program, logger, 'calling api to generate new keys/session');
+
+        var data = _.extend(developer, { alksAccount: alksAccount, alksRole: alksRole });
+        alks.createIamKey(data, password, function(err, key){
+            if(!err){
+                // TODO: where to store and flag (see above TODO)
+                // store session data in DB
+                utils.log(program, logger, 'storing key: ' + JSON.stringify(key));
+                // keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                            // key.alksAccount, key.alksRole, expires.toDate(), password);
+            }
+
+            callback(err, key);
+        });
+    }
+], function(err, data){
+    if(err){
+        return utils.errorAndExit(err);
+    }
+
+    utils.log(program, logger, 'checking for updates');
+    utils.checkForUpdate();
+});
