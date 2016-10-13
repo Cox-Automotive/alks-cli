@@ -3,36 +3,42 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    Table   = require('cli-table2'),
-    moment  = require('moment'),
-    prompt  = require('prompt'),
-    async   = require('async'),
-    opn     = require('opn'),
-    config  = require('../package.json'),
-    utils   = require('../lib/utils'),
-    Account = require('../lib/account'),
-    keys    = require('../lib/keys');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    Table     = require('cli-table2'),
+    moment    = require('moment'),
+    prompt    = require('prompt'),
+    async     = require('async'),
+    opn       = require('opn'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer'),
+    keys      = require('../lib/keys');
 
 program
     .version(config.version)
     .description('open an AWS console in your browser')
+    .option('-o, --openWith [appName]', 'open in a different app (optional)')
     .option('-p, --password [password]', 'my password')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+
+var logger = 'keys-console';
 
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
     // get the password
     function(callback){
-        Account.getPassword(program, callback);
+        utils.log(program, logger, 'getting password');
+        Developer.getPassword(program, callback);
     },
     // now retrieve the keys
     function(password, callback){
+        utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, callback);
     },
     // it's dangerous to go alone, choose a key...
@@ -66,10 +72,10 @@ async.waterfall([
         });
 
 
-        console.error(clc.white.underline.bold('\nPlease choose a session to open the AWS console for'));
-        console.error(clc.white(table.toString()));
-
         if(foundKeys.length){
+            console.error(clc.white.underline.bold('\nPlease choose key to open the AWS console for'));
+            console.error(clc.white(table.toString()));
+
             prompt.message = prompt.delimiter = '';
             prompt.start();
 
@@ -94,18 +100,26 @@ async.waterfall([
                 });
             });
         }
+        else{
+            utils.log(program, logger, 'no keys found');
+            console.error(clc.white('No existing keys found, please run "alks keys create"'));
+        }
     }
 ], function(err, selectedKey){
     if(err){
         return utils.errorAndExit(err);
     }
     if(!_.isEmpty(selectedKey.consoleURL)){
-        opn(selectedKey.consoleURL);
+        var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+
+        utils.log(program, logger, 'opening ' + selectedKey.consoleURL + ' with opts: ' + JSON.stringify(opts));
+        opn(selectedKey.consoleURL, opts);
     }
     else{
         console.error(clc.red('The selected key does not have a console URL.'));
     }
 
+    utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
     process.exit(1); // needed for opn()
 });

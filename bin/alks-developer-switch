@@ -3,73 +3,52 @@
 
 process.title = 'ALKS';
 
-var program  = require('commander'),
-    clc      = require('cli-color'),
-    async    = require('async'),
-    _        = require('underscore'),
-    inquirer = require('inquirer'),
-    config   = require('../package.json'),
-    utils    = require('../lib/utils'),
-    Account  = require('../lib/account'),
-    alks     = require('../lib/alks-api');
+var program    = require('commander'),
+    clc        = require('cli-color'),
+    async      = require('async'),
+    _          = require('underscore'),
+    config     = require('../package.json'),
+    utils      = require('../lib/utils'),
+    Developer  = require('../lib/developer');
 
 program
     .version(config.version)
     .description('switches alks account')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+
+var logger = 'dev-switch';
 
 async.waterfall([
     // check to be sure were configured
     function(callback){
-        Account.ensureConfigured(callback);
+        Developer.ensureConfigured(callback);
     },
-    // get account
+    // get developer
     function(callback){
-        Account.getAccount(callback);
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
     },
-    // get password
-    function(account, callback){
-        Account.getPassword(program, function(err, password){
-            callback(err, account, password);
-        });
-    },
-    // load available account/roles
-    function(account, password, callback){
-        alks.getAccounts(account.server, account.userid, password, function(err, alksAccounts){
-            callback(err, account, alksAccounts);
-        });
-    },
-    // ask user which account/role
-    function(account, alksAccounts, callback){
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'alksAccount',
-                message: 'Please select an ALKS account/role',
-                choices: alksAccounts
-            }
-        ]).then(function(answers){
-            console.log()
-            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
-                alksAccount = data[0],
-                alksRole = data[1];
-
-            callback(null, account, alksAccount, alksRole);
+    // get alks account
+    function(developer, callback){
+        Developer.getALKSAccount(program, null, function(err, alks){
+            callback(err, developer, alks.alksAccount, alks.alksRole);
         });
     },
     // update user account
-    function(account, alksAccount, alksRole, callback){
-        var accountPayload = _.extend(account, {
+    function(developer, alksAccount, alksRole, callback){
+        var developerPayload = _.extend(developer, {
             alksAccount: alksAccount,
             alksRole: alksRole
         });
 
-        Account.saveAccount(accountPayload, function(err){
+        utils.log(program, logger, 'saving developer');
+        Developer.saveDeveloper(developerPayload, function(err){
             if(err){
                 console.error(clc.red.bold('Error switching account!'), err);
             }
             else{
-                console.error(clc.white('Your account is now set to %s - %s'), alksAccount, alksRole);
+                console.error(clc.white('You\'re now using: %s - %s'), alksAccount, alksRole);
                 callback(null);
             }
         });
@@ -79,5 +58,6 @@ async.waterfall([
         utils.errorAndExit(err);
     }
 
+    utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
