@@ -13,4 +13,4 @@ program
     .command('roletypes',  'list the available iam role types')
     .parse(process.argv);
 
-utils.subcommandSuggestion(program, 'sessions');
+utils.subcommandSuggestion(program, 'iam');
