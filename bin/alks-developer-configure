@@ -89,7 +89,7 @@ async.waterfall([
     // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(server, userid, password, { filter: { iamKeyActive: false } }, function(err, accounts){
+        alks.getAccounts(server, userid, password, { filter: { iamOnly: false } }, function(err, accounts){
             callback(err, server, userid, password, savePassword, accounts);
         })
     },
