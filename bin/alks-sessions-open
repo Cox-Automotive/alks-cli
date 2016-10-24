@@ -8,7 +8,6 @@ var program    = require('commander'),
     async      = require('async'),
     _          = require('underscore'),
     inquirer   = require('inquirer'),
-    moment     = require('moment'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
     keys       = require('../lib/keys'),
@@ -85,7 +84,7 @@ async.waterfall([
     // now retrieve existing keys
     function(developer, password, alksAccount, alksRole, callback){
         utils.log(program, logger, 'getting existing keys');
-        keys.getKeys(password, function(err, keys){
+        keys.getKeys(password, false, function(err, keys){
             callback(null, developer, password, alksAccount, alksRole, keys);
         });
     },
@@ -106,8 +105,7 @@ async.waterfall([
             }
         }
 
-        var duration = _.last(alks.getDurations()),
-            expires  = moment().add(duration, 'hours');
+        var duration = _.last(alks.getDurations());
 
         console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
 
@@ -120,7 +118,7 @@ async.waterfall([
                 // store session data in DB
                 utils.log(program, logger, 'storing key: ' + JSON.stringify(key));
                 keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                            key.alksAccount, key.alksRole, expires.toDate(), password);
+                            key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
             }
 
             callback(err, key);

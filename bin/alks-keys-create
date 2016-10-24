@@ -7,7 +7,6 @@ var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
-    moment    = require('moment'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
     keys      = require('../lib/keys'),
@@ -65,14 +64,13 @@ async.waterfall([
     // now deal with the session data
     function(key, developer, password, callback){
         // calculate expiration
-        var expires = moment().add(duration, 'hours');
         console.error(clc.white([ 'AWS session data generated for "', developer.alksAccount,
-                                 '" and expires ', expires.calendar() ].join('')));
+                                 '" and expires ', key.expires.calendar() ].join('')));
 
         // store session data in DB
         utils.log(program, logger, 'saving key in DB');
         keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                    key.alksAccount, key.alksRole, expires.toDate(), password);
+                    key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
 
         callback(null, key);
     }

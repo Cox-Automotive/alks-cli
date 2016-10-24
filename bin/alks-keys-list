@@ -44,7 +44,7 @@ async.waterfall([
     // now retrieve the keys
     function(password, callback){
         utils.log(program, logger, 'getting existing keys');
-        keys.getKeys(password, callback);
+        keys.getKeys(password, false, callback);
     },
     // it's dangerous to go alone, choose a key...
     function(foundKeys, callback){

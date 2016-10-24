@@ -10,6 +10,7 @@ var program   = require('commander'),
     config    = require('../package.json'),
     alks      = require('../lib/alks-api'),
     Developer = require('../lib/developer'),
+    keys      = require('../lib/keys'),
     utils     = require('../lib/utils');
 
 var logger       = 'iam-createrole',
@@ -82,9 +83,9 @@ async.waterfall([
     // now retrieve existing keys
     function(developer, password, alksAccount, alksRole, callback){
         utils.log(program, logger, 'getting existing keys');
-        // TODO: should IAM keys be stored seperately or just flagged?
-        keys.getKeys(password, function(err, keys){
-            callback(null, developer, password, alksAccount, alksRole, keys);
+        keys.getKeys(password, true, function(err, keys){
+            utils.log(program, logger, 'got existing keys');
+            callback(err, developer, password, alksAccount, alksRole, keys);
         });
     },
     // look for existing session
@@ -100,7 +101,7 @@ async.waterfall([
             if(selectedKey){
                 utils.log(program, logger, 'found existing valid key');
                 console.error(clc.white.underline([ 'Resuming existing session in', alksAccount, alksRole ].join(' ')));
-                return callback(null, selectedKey);
+                return callback(null, selectedKey, password);
             }
         }
 
@@ -112,21 +113,24 @@ async.waterfall([
         var data = _.extend(developer, { alksAccount: alksAccount, alksRole: alksRole });
         alks.createIamKey(data, password, function(err, key){
             if(!err){
-                // TODO: where to store and flag (see above TODO)
-                // store session data in DB
                 utils.log(program, logger, 'storing key: ' + JSON.stringify(key));
-                // keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                            // key.alksAccount, key.alksRole, expires.toDate(), password);
+                keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                            key.alksAccount, key.alksRole, key.expires.toDate(), password, true);
             }
 
-            callback(err, key);
+            callback(err, key, password);
         });
+    },
+    // finally, create the role
+    function(selectedKey, password, callback){
+        utils.log(program, logger, 'calling api to create role');
+        alks.createIamRole(selectedKey, password, roleName, roleType, incDefPolicies, callback);
     }
 ], function(err, data){
     if(err){
         return utils.errorAndExit(err);
     }
-
+    console.log(data)
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
