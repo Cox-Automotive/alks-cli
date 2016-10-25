@@ -100,12 +100,9 @@ async.waterfall([
 
             if(selectedKey){
                 utils.log(program, logger, 'found existing valid key');
-                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount, alksRole ].join(' ')));
-                return callback(null, selectedKey, password);
+                return callback(null, selectedKey, developer, password);
             }
         }
-
-        console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
 
         // generate a new key/session
         utils.log(program, logger, 'calling api to generate new keys/session');
@@ -118,19 +115,21 @@ async.waterfall([
                             key.alksAccount, key.alksRole, key.expires.toDate(), password, true);
             }
 
-            callback(err, key, password);
+            callback(err, key, developer, password);
         });
     },
     // finally, create the role
-    function(selectedKey, password, callback){
-        utils.log(program, logger, 'calling api to create role');
-        alks.createIamRole(selectedKey, password, roleName, roleType, incDefPolicies, callback);
+    function(selectedKey, developer, password, callback){
+        var data = _.extend({}, developer, selectedKey);
+        utils.log(program, logger, 'calling api to create role: ' + JSON.stringify(data));
+        alks.createIamRole(data, password, roleName, roleType, incDefPolicies, callback);
     }
 ], function(err, data){
     if(err){
         return utils.errorAndExit(err);
     }
-    console.log(data)
+
+    console.error(clc.white(['The role: ', data.roleName, ' was created with the ARN: '].join('')) + clc.white.underline(data.roleArn));
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
