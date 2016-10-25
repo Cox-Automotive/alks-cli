@@ -3,14 +3,15 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    utils   = require('../lib/utils'),
-    config  = require('../package.json');
+var program   = require('commander'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils');
 
 program
     .version(config.version)
     .command('createrole', 'create IAM role')
     .command('roletypes',  'list the available iam role types')
+    .command('console',    'open an AWS console in your browser to preform IAM functions')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'iam');
