@@ -72,25 +72,26 @@ async.waterfall([
         if(!hasAlksAcctRole){
             utils.log(program, logger, 'getting accounts');
             Developer.getALKSAccount(program, { selectIndex: alksAccountIdx }, function(err, data){
-                callback(err, password, data.alksAccount, data.alksRole);
+                if(err) callback(err);
+                else callback(null, developer, password, data.alksAccount, data.alksRole);
             });
         }
         else{
             utils.log(program, logger, 'using provided account/role');
-            callback(null, password, alksAccount, alksRole);
+            callback(null, developer, password, alksAccount, alksRole);
         }
     },
     // now retrieve existing keys
-    function(password, alksAccount, alksRole, callback){
+    function(developer, password, alksAccount, alksRole, callback){
         utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, false, function(err, keys){
-            callback(null, password, alksAccount, alksRole, keys);
+            callback(null, developer, password, alksAccount, alksRole, keys);
         });
     },
     // look for existing session
-    function(password, alksAccount, alksRole, existingKeys, callback){
+    function(developer, password, alksAccount, alksRole, existingKeys, callback){
         if(existingKeys.length){
-            utils.log(program, logger, 'filtering keys by account/role');
+            utils.log(program, logger, 'filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
 
             // filter keys for the selected alks account/role
             var keyCriteria = { alksAccount: alksAccount, alksRole: alksRole },
@@ -110,12 +111,15 @@ async.waterfall([
 
         // generate a new key/session
         utils.log(program, logger, 'calling api to generate new keys/session');
-        alks.createKey({ alksAccount: alksAccount, alksRole: alksRole }, password, duration, function(err, key){
-            // store session data in DB
-            utils.log(program, logger, 'storing key');
-            keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                        key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
 
+        var data = _.extend(developer, { alksAccount: alksAccount, alksRole: alksRole });
+        alks.createKey(data, password, duration, function(err, key){
+            if(!err){
+                // store session data in DB
+                utils.log(program, logger, 'storing key: ' + JSON.stringify(key));
+                keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+                            key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
+            }
 
             callback(err, key);
         });
