@@ -9,6 +9,7 @@ var program    = require('commander'),
     opn        = require('opn'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
+    alks       = require('../lib/alks-api'),
     Keys       = require('../lib/keys'),
     Developer  = require('../lib/developer'),
     Sessions   = require('../lib/sessions'),
@@ -38,17 +39,18 @@ var onComplete = function(err, key){
         return utils.errorAndExit(err);
     }
 
-    if(!_.isEmpty(key.consoleURL)){
+    utils.log(program, logger, 'calling aws to generate 15min console URL');
+    alks.generateConsoleUrl(key, function(err, url){
+        if(err){
+            utils.errorAndExit(err);
+        }
+
         var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+        opn(url, opts);
 
-        opn(key.consoleURL, opts);
-    }
-    else{
-        console.error(clc.red('The selected key does not have a console URL.'));
-    }
-
-    utils.log(program, logger, 'checking for updates');
-    utils.checkForUpdate();
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate();
+    });
 }
 
 if(_.isUndefined(program.iam)){

@@ -69,7 +69,7 @@ async.waterfall([
 
         // store session data in DB
         utils.log(program, logger, 'saving key in DB');
-        keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
+        keys.addKey(key.accessKey, key.secretKey, key.sessionToken,
                     key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
 
         callback(null, key);
