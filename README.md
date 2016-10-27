@@ -78,7 +78,7 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer configure` - Configures ALKS 
 
-### `developer switch` 
+### `~~developer switch~~` 
 
 `alks developer switch` - Switch the active ALKS account/role
 
@@ -129,9 +129,37 @@ Optional arguments:
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-p [password]` Your password
 
+
+## IAM
+
+### `iam createrole`
+
+`alks iam createrole` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life of 36 hours and automatically renew them when necessary.
+
+Optional arguments:
+
+* `-p [password]` Your password
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
+* `-d`: Include default policies, defaults to false
+
+Outputs the created role's ARN.
+
+### `iam roletypes`
+
+`alks iam roletypes` - List the available IAM role types.
+
+Optional arguments:
+
+* `-o [output]` Output format. Supports: `json`, `list`
+
+Outputs a list of available role types.
+
 ## Keys
 
-### `keys create`
+Please note that the keys subcommand is being deprecated in favor of the new sessions subcommand.
+
+### `~~keys create~~`
 
 `alks keys create` - Create a new session key with the ALKS service
 
@@ -149,7 +177,7 @@ Output values:
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
 
-### `keys list`
+### `~~keys list~~`
 
 `alks keys list` - List existing ALKS keys as well as output them. Your keys are stored encrypted using AES-256.
 
@@ -160,7 +188,7 @@ Optional arguments:
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
-### `keys console`
+### `~~keys console~~`
 
 `alks keys console` - Open the AWS console in the default browser for the selected key.
 
