@@ -7,7 +7,7 @@ var program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
     alks      = require('../lib/alks-api'),
-    iam       = require('../lib/iam'),
+    Iam       = require('../lib/iam'),
     utils     = require('../lib/utils'),
     config    = require('../package.json');
 
@@ -43,7 +43,7 @@ if(_.isEmpty(roleType)){
     utils.errorAndExit('The role type is required');
 }
 
-iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }

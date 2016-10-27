@@ -41,7 +41,7 @@ After installing the ALKS CLI it will be available on your path. Simply run the 
 
 To see a what options are available to a command ask for help on it:
 
-    alks keys help create
+    alks sessions help open
 
 ### Password
 
@@ -98,13 +98,14 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 ### `sessions open`
 
-`alks sessions open [index]` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an index you'll be prompted for the account/role you'd like to use. If you provide the index (1-n) there's no need to select the account/role. Alternatively you can provide the account and role as flags.
+`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life of 36 hours and automatically renew them when necessary.
 
 Optional arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM user
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
@@ -117,13 +118,14 @@ Output values:
 
 ### `sessions console`
 
-`alks sessions console [index]` - Open the AWS console in the default browser for the specified ALKS session.
+`alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
 
 Optional arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM user
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-p [password]` Your password
 
