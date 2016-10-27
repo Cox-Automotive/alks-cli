@@ -78,7 +78,7 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer configure` - Configures ALKS 
 
-### `~~developer switch~~` 
+### `developer switch` 
 
 `alks developer switch` - Switch the active ALKS account/role
 
@@ -159,7 +159,7 @@ Outputs a list of available role types.
 
 Please note that the keys subcommand is being deprecated in favor of the new sessions subcommand.
 
-### `~~keys create~~`
+### `keys create`
 
 `alks keys create` - Create a new session key with the ALKS service
 
@@ -177,7 +177,7 @@ Output values:
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
 
-### `~~keys list~~`
+### `keys list`
 
 `alks keys list` - List existing ALKS keys as well as output them. Your keys are stored encrypted using AES-256.
 
@@ -188,7 +188,7 @@ Optional arguments:
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
-### `~~keys console~~`
+### `keys console`
 
 `alks keys console` - Open the AWS console in the default browser for the selected key.
 
