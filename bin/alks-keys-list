@@ -114,6 +114,7 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(program.output, selectedKey, program.namedProfile, program.force));
 
+    utils.deprecationWarning('alks keys list is deprecated. Please use alks sessions open.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });

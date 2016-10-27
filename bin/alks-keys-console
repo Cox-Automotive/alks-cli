@@ -119,6 +119,7 @@ async.waterfall([
         console.error(clc.red('The selected key does not have a console URL.'));
     }
 
+    utils.deprecationWarning('alks keys console is deprecated. Please use alks sessions console.');
     utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
 });

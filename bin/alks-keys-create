@@ -81,6 +81,7 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
 
+    utils.deprecationWarning('alks keys create is deprecated. Please use alks sessions open.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
 });
