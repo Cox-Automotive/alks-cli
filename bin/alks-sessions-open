@@ -5,14 +5,12 @@ process.title = 'ALKS';
 
 var program    = require('commander'),
     clc        = require('cli-color'),
-    async      = require('async'),
     _          = require('underscore'),
-    inquirer   = require('inquirer'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
-    keys       = require('../lib/keys'),
+    Keys       = require('../lib/keys'),
     Developer  = require('../lib/developer'),
-    alks       = require('../lib/alks-api');
+    Sessions   = require('../lib/sessions');
 
 var outputValues = utils.getOutputValues();
 
@@ -46,91 +44,13 @@ else if(isNaN(alksAccountIdxInt)){
     alksAccountIdx = null;
 }
 
-async.waterfall([
-    // check to be sure were configured
-    function(callback){
-        Developer.ensureConfigured(callback);
-    },
-    // get developer
-    function(callback){
-        utils.log(program, logger, 'getting developer');
-        Developer.getDeveloper(callback);
-    },
-    // get password
-    function(developer, callback){
-        utils.log(program, logger, 'getting password');
-        Developer.getPassword(program, function(err, password){
-            callback(err, developer, password);
-        });
-    },
-    // get alks account
-    function(developer, password, callback){
-        // set password so they dont get prompted again
-        program.password = password;
-
-        // only lookup alks account if they didnt provide
-        if(!hasAlksAcctRole){
-            utils.log(program, logger, 'getting accounts');
-            Developer.getALKSAccount(program, { selectIndex: alksAccountIdx }, function(err, data){
-                if(err) callback(err);
-                else callback(null, developer, password, data.alksAccount, data.alksRole);
-            });
-        }
-        else{
-            utils.log(program, logger, 'using provided account/role');
-            callback(null, developer, password, alksAccount, alksRole);
-        }
-    },
-    // now retrieve existing keys
-    function(developer, password, alksAccount, alksRole, callback){
-        utils.log(program, logger, 'getting existing keys');
-        keys.getKeys(password, false, function(err, keys){
-            callback(null, developer, password, alksAccount, alksRole, keys);
-        });
-    },
-    // look for existing session
-    function(developer, password, alksAccount, alksRole, existingKeys, callback){
-        if(existingKeys.length){
-            utils.log(program, logger, 'filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
-
-            // filter keys for the selected alks account/role
-            var keyCriteria = { alksAccount: alksAccount, alksRole: alksRole },
-            // filter, sort by expiration, grab last key to expire
-                selectedKey = _.last(_.sortBy(_.where(existingKeys, keyCriteria), 'expires'));
-
-            if(selectedKey){
-                utils.log(program, logger, 'found existing valid key');
-                console.error(clc.white.underline([ 'Resuming existing session in', alksAccount, alksRole ].join(' ')));
-                return callback(null, selectedKey);
-            }
-        }
-
-        var duration = _.last(alks.getDurations());
-
-        console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
-
-        // generate a new key/session
-        utils.log(program, logger, 'calling api to generate new keys/session');
-
-        var data = _.extend(developer, { alksAccount: alksAccount, alksRole: alksRole });
-        alks.createKey(data, password, duration, function(err, key){
-            if(!err){
-                // store session data in DB
-                utils.log(program, logger, 'storing key: ' + JSON.stringify(key));
-                keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                            key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
-            }
-
-            callback(err, key);
-        });
-    }
-], function(err, data){
+Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, alksAccountIdx, false, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }
 
     console.error('');
-    console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
+    console.log(Keys.getKeyOutput(output, key, program.namedProfile, program.force));
 
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
