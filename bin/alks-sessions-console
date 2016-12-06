@@ -10,11 +10,11 @@ var program    = require('commander'),
     inquirer   = require('inquirer'),
     moment     = require('moment'),
     opn        = require('opn'),
+    alks       = require('alks-node'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
     keys       = require('../lib/keys'),
-    Developer  = require('../lib/developer'),
-    alks       = require('../lib/alks-api');
+    Developer  = require('../lib/developer');
 
 var outputValues = utils.getOutputValues();
 
@@ -73,23 +73,23 @@ async.waterfall([
         if(!hasAlksAcctRole){
             utils.log(program, logger, 'getting accounts');
             Developer.getALKSAccount(program, alksAccountIdx, function(err, data){
-                callback(err, password, data.alksAccount, data.alksRole);
+                callback(err, developer, password, data.alksAccount, data.alksRole);
             });
         }
         else{
             utils.log(program, logger, 'using provided account/role');
-            callback(null, password, alksAccount, alksRole);
+            callback(null, developer, password, alksAccount, alksRole);
         }
     },
     // now retrieve existing keys
-    function(password, alksAccount, alksRole, callback){
+    function(developer, password, alksAccount, alksRole, callback){
         utils.log(program, logger, 'getting existing keys');
         keys.getKeys(password, function(err, keys){
-            callback(null, password, alksAccount, alksRole, keys);
+            callback(null, developer, password, alksAccount, alksRole, keys);
         });
     },
     // look for existing session
-    function(password, alksAccount, alksRole, existingKeys, callback){
+    function(developer, password, alksAccount, alksRole, existingKeys, callback){
         if(existingKeys.length){
             utils.log(program, logger, 'filtering keys by account/role');
 
@@ -105,14 +105,17 @@ async.waterfall([
             }
         }
 
-        var duration = _.last(alks.getDurations()),
+        var duration = _.first(alks.getDurations()),
             expires  = moment().add(duration, 'hours');
 
         console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
 
         // generate a new key/session
         utils.log(program, logger, 'calling api to generate new keys/session');
-        alks.createKey({ alksAccount: alksAccount, alksRole: alksRole }, password, duration, function(err, key){
+        var data = _.extend(developer, { alksAccount: alksAccount, alksRole: alksRole });
+        alks.createKey(data, password, duration, function(err, key){
+            if(err) return callback(err, null);
+
             // store session data in DB
             utils.log(program, logger, 'storing key');
             keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
@@ -127,15 +130,17 @@ async.waterfall([
         return utils.errorAndExit(err);
     }
 
-    if(!_.isEmpty(selectedKey.consoleURL)){
+    utils.log(program, logger, 'calling aws to generate 15min console URL');
+    alks.generateConsoleUrl(selectedKey, function(err, url){
+        if(err){
+            utils.errorAndExit(err);
+        }
+
         var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+        opn(url, opts);
 
-        opn(selectedKey.consoleURL, opts);
-    }
-    else{
-        console.error(clc.red('The selected key does not have a console URL.'));
-    }
-
-    utils.log(program, logger, 'checking for updates');
-    utils.checkForUpdate();
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate();
+        process.exit(1);
+    });
 });

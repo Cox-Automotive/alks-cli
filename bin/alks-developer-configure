@@ -9,10 +9,10 @@ var program   = require('commander'),
     inquirer  = require('inquirer'),
     async     = require('async'),
     _         = require('underscore'),
+    alks      = require('alks-node'),
     config    = require('../package.json'),
     utils     = require('../lib/utils'),
-    Developer = require('../lib/developer'),
-    alks      = require('../lib/alks-api');
+    Developer = require('../lib/developer');
 
 program
     .version(config.version)
@@ -89,7 +89,7 @@ async.waterfall([
     // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(server, userid, password, function(err, accounts){
+        alks.getAccounts(server, userid, password, {}, function(err, accounts){
             callback(err, server, userid, password, savePassword, accounts);
         })
     },

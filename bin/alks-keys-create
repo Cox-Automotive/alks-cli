@@ -8,10 +8,10 @@ var program   = require('commander'),
     _         = require('underscore'),
     async     = require('async'),
     moment    = require('moment'),
+    alks      = require('alks-node'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
     keys      = require('../lib/keys'),
-    alks      = require('../lib/alks-api'),
     utils     = require('../lib/utils');
 
 var durationValues = alks.getDurations(),

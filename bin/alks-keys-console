@@ -11,6 +11,7 @@ var program   = require('commander'),
     prompt    = require('prompt'),
     async     = require('async'),
     opn       = require('opn'),
+    alks      = require('alks-node'),
     config    = require('../package.json'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer'),
@@ -109,17 +110,18 @@ async.waterfall([
     if(err){
         return utils.errorAndExit(err);
     }
-    if(!_.isEmpty(selectedKey.consoleURL)){
+
+    utils.log(program, logger, 'calling aws to generate 15min console URL');
+    alks.generateConsoleUrl(selectedKey, function(err, url){
+        if(err){
+            utils.errorAndExit(err);
+        }
+
         var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+        opn(url, opts);
 
-        utils.log(program, logger, 'opening ' + selectedKey.consoleURL + ' with opts: ' + JSON.stringify(opts));
-        opn(selectedKey.consoleURL, opts);
-    }
-    else{
-        console.error(clc.red('The selected key does not have a console URL.'));
-    }
-
-    utils.log(program, logger, 'checking for update');
-    utils.checkForUpdate();
-    process.exit(1); // needed for opn()
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate();
+        process.exit(1);
+    });
 });

@@ -1,8 +1,10 @@
-Release Notes: 2016-10-10
-========================
+Release Notes: 2016-12-06
+============================
+
 Thanks for upgrading to the latest version of the ALKS CLI! :)
 
-- Squashed a bug that caused `sessions open` to generate key for the wrong account
-- Added session command, the plan is for this to replace the keys command
-- Added changelog on update - now you can see what changed
-- Learn more about this release, especially sessions, at: https://goo.gl/SAS7bp
+- Adds support for `alks sessions console` - finally!
+- Reduced session duration, resolves an EB bug where it was not honoring the max time
+- Changes supported key durations to: 2, 6, 12, 18
+
+Happy Holidays! 🎄

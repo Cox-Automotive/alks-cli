@@ -9,11 +9,11 @@ var program    = require('commander'),
     _          = require('underscore'),
     inquirer   = require('inquirer'),
     moment     = require('moment'),
+    alks       = require('alks-node'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
     keys       = require('../lib/keys'),
-    Developer  = require('../lib/developer'),
-    alks       = require('../lib/alks-api');
+    Developer  = require('../lib/developer');
 
 var outputValues = utils.getOutputValues();
 
@@ -106,7 +106,7 @@ async.waterfall([
             }
         }
 
-        var duration = _.last(alks.getDurations()),
+        var duration = _.first(alks.getDurations()),
             expires  = moment().add(duration, 'hours');
 
         console.error(clc.white.underline([ 'Creating new session in', alksAccount, alksRole ].join(' ')));
