@@ -135,7 +135,7 @@ Optional arguments:
 Optional arguments:
 
 * `-p [password]` Your password
-* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
+* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
