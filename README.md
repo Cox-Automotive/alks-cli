@@ -106,6 +106,7 @@ Optional arguments:
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
+* `-N` Forces a new session to be generated
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
