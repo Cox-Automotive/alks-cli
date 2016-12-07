@@ -11,9 +11,9 @@ var program   = require('commander'),
     prompt    = require('prompt'),
     async     = require('async'),
     opn       = require('opn'),
+    alks      = require('alks-node'),
     config    = require('../package.json'),
     utils     = require('../lib/utils'),
-    alks      = require('../lib/alks-api'),
     Developer = require('../lib/developer'),
     keys      = require('../lib/keys');
 
@@ -122,6 +122,8 @@ async.waterfall([
 
         utils.deprecationWarning('alks keys console is deprecated. Please use alks sessions console.');
         utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
+        utils.checkForUpdate(function(){
+            process.exit(1);
+        });
     });
 });

@@ -108,6 +108,7 @@ Optional arguments:
 * `-i` Specifies you wish to work as an IAM user
 * `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
+* `-N` Forces a new session to be generated
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
@@ -166,8 +167,8 @@ Please note that the keys subcommand is being deprecated in favor of the new ses
 Optional arguments:
 
 * `-p [password]` Your password
-* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
-* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
+* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18
+* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 

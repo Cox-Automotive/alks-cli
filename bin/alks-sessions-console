@@ -4,14 +4,11 @@
 process.title = 'ALKS';
 
 var program    = require('commander'),
-    clc        = require('cli-color'),
     _          = require('underscore'),
     opn        = require('opn'),
+    alks       = require('alks-node'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
-    alks       = require('../lib/alks-api'),
-    Keys       = require('../lib/keys'),
-    Developer  = require('../lib/developer'),
     Sessions   = require('../lib/sessions'),
     Iam        = require('../lib/iam');
 
@@ -49,7 +46,9 @@ var onComplete = function(err, key){
         opn(url, opts);
 
         utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
+        utils.checkForUpdate(function(){
+            process.exit(1);
+        });
     });
 }
 

@@ -7,8 +7,8 @@ var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
+    alks      = require('alks-node'),
     config    = require('../package.json'),
-    alks      = require('../lib/alks-api'),
     Developer = require('../lib/developer'),
     utils     = require('../lib/utils');
 

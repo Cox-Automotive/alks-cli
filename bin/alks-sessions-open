@@ -25,11 +25,13 @@ program
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
+    .option('-N, --newSession', 'forces a new session to be generated')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var alksAccount       = program.account,
     alksRole          = program.role,
+    forceNewSession   = program.newSession,
     hasAlksAcctRole   = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
     output            = program.output,
     logger            = 'sessions-open';
