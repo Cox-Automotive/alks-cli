@@ -98,7 +98,7 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 ### `sessions open`
 
-`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life of 36 hours and automatically renew them when necessary.
+`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life and automatically renew them when necessary. If you would like to do IAM work you'll need to pass the `-i` flag.
 
 Optional arguments:
 
@@ -135,7 +135,7 @@ Optional arguments:
 
 ### `iam createrole`
 
-`alks iam createrole` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life of 36 hours and automatically renew them when necessary.
+`alks iam createrole` Creates a new IAM role for the requested type in the specified AWS account.
 
 Optional arguments:
 
