@@ -123,7 +123,8 @@ async.waterfall([
         utils.deprecationWarning('alks keys console is deprecated. Please use alks sessions console.');
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate(function(){
-            process.exit(1);
+            Developer.trackActivity(logger);
+            setTimeout(function(){ process.exit(1); }), 3000);
         });
     });
 });

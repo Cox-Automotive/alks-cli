@@ -84,4 +84,5 @@ async.waterfall([
     utils.deprecationWarning('alks keys create is deprecated. Please use alks sessions open.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

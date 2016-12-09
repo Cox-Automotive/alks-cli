@@ -46,6 +46,7 @@ var onComplete = function(err, key){
 
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 }
 
 if(_.isUndefined(program.iam)){

@@ -61,4 +61,5 @@ async.waterfall([
     utils.deprecationWarning('alks developer switch is deprecated. Please use alks sessions.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

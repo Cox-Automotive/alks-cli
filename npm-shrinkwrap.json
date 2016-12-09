@@ -939,6 +939,18 @@
       "from": "underscore.string@>=3.3.4 <4.0.0",
       "resolved": "https://registry.npmjs.org/underscore.string/-/underscore.string-3.3.4.tgz"
     },
+    "universal-analytics": {
+      "version": "0.4.8",
+      "from": "universal-analytics@latest",
+      "resolved": "http://registry.npmjs.org/universal-analytics/-/universal-analytics-0.4.8.tgz",
+      "dependencies": {
+        "async": {
+          "version": "1.2.1",
+          "from": "async@>=1.2.0 <1.3.0",
+          "resolved": "https://registry.npmjs.org/async/-/async-1.2.1.tgz"
+        }
+      }
+    },
     "util-deprecate": {
       "version": "1.0.2",
       "from": "util-deprecate@>=1.0.1 <1.1.0",

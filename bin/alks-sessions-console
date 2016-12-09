@@ -10,6 +10,7 @@ var program    = require('commander'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
     Sessions   = require('../lib/sessions'),
+    Developer  = require('../lib/developer'),
     Iam        = require('../lib/iam');
 
 var outputValues = utils.getOutputValues();
@@ -47,7 +48,8 @@ var onComplete = function(err, key){
 
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate(function(){
-            process.exit(1);
+            Developer.trackActivity(logger);
+            setTimeout(function(){ process.exit(1); }, 3000);
         });
     });
 }
