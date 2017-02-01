@@ -40,7 +40,7 @@ async.waterfall([
     // now retrieve the keys
     function(password, callback){
         utils.log(program, logger, 'getting existing keys');
-        keys.getKeys(password, callback);
+        keys.getKeys(password, false, callback);
     },
     // it's dangerous to go alone, choose a key...
     function(foundKeys, callback){
@@ -120,8 +120,11 @@ async.waterfall([
         var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
         opn(url, opts);
 
+        utils.deprecationWarning('alks keys console is deprecated. Please use alks sessions console.');
         utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        process.exit(1);
+        utils.checkForUpdate(function(){
+            Developer.trackActivity(logger);
+            setTimeout(function(){ process.exit(1); }), 3000);
+        });
     });
 });

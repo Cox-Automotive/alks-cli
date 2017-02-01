@@ -31,7 +31,7 @@ async.waterfall([
     },
     // get alks account
     function(developer, callback){
-        Developer.getALKSAccount(program, null, function(err, alks){
+        Developer.getALKSAccount(program, {}, function(err, alks){
             callback(err, developer, alks.alksAccount, alks.alksRole);
         });
     },
@@ -58,6 +58,8 @@ async.waterfall([
         utils.errorAndExit(err);
     }
 
+    utils.deprecationWarning('alks developer switch is deprecated. Please use alks sessions.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

@@ -44,7 +44,7 @@ async.waterfall([
     // now retrieve the keys
     function(password, callback){
         utils.log(program, logger, 'getting existing keys');
-        keys.getKeys(password, callback);
+        keys.getKeys(password, false, callback);
     },
     // it's dangerous to go alone, choose a key...
     function(foundKeys, callback){
@@ -114,6 +114,8 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(program.output, selectedKey, program.namedProfile, program.force));
 
+    utils.deprecationWarning('alks keys list is deprecated. Please use alks sessions open.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

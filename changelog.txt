@@ -1,11 +1,11 @@
-Release Notes: 2016-12-07
+Release Notes: 2017-02-01
 ============================
 
-Thanks for upgrading to the latest version of the ALKS CLI! :)
+Thanks for upgrading to the latest version of the ALKS CLI!
 
-- Adds support for `alks sessions console` - finally!
-- Reduced session duration, resolves an EB bug where it was not honoring the max time
-- Changes supported key durations to: 2, 6, 12, 18
-- Adds `-N` argument to `alks sessions open`, this will force new session
+- Adds support for creating IAM roles: `alks iam help createrole`
+- Adds support for displaying available role types: `alks iam roletypes`
+- Sessions now support starting an IAM session, simply pass: `--iam`
+- Deprecates `alks keys`, please migrate to `alks sessions`
 
-Happy Holidays! 🎄
+Happy Clouding! ☁☁☁

@@ -32,4 +32,5 @@ Developer.getPasswordFromPrompt(function(err, password){
 
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });
