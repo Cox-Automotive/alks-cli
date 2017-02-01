@@ -48,4 +48,5 @@ function(err, results){
 
     utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

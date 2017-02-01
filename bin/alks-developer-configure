@@ -90,25 +90,14 @@ async.waterfall([
     function(previousData, server, userid, password, savePassword, callback){
         utils.log(program, logger, 'getting alks accounts');
         alks.getAccounts(server, userid, password, {}, function(err, accounts){
-            callback(err, server, userid, password, savePassword, accounts);
-        })
-    },
-    // ask which ALKS account/role to use
-    function(server, userid, password, savePassword, alksAccounts, callback){
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'alksAccount',
-                message: 'Please select an ALKS account/role',
-                choices: alksAccounts
+            if(!accounts.length){
+                return utils.errorAndExit('Your account does not have any AWS accounts available.');
             }
-        ]).then(function(answers){
-            var data = answers.alksAccount.split(alks.getAccountSelectorDelimiter()),
-                alksAccount = data[0],
-                alksRole = data[1];
 
-            callback(null, server, userid, password, savePassword, alksAccount, alksRole);
-        });
+            // select first account by default, remove this when we kill of keys subcommand
+            var tmp = accounts[0].split(alks.getAccountSelectorDelimiter());
+            callback(err, server, userid, password, savePassword, tmp[0], tmp[1]);
+        })
     }
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
     // did any of our steps have issues?
@@ -139,4 +128,5 @@ async.waterfall([
 
     utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });

@@ -27,7 +27,8 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 
 * ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com/rest)
 * Network Username: Your network username
-* Network Password: Your network password, this is optional but recommended
+* Network Password: Your network password (needed for loading list of accounts/roles)
+* Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
 * Account/Role: Select one of the available ALKS accounts/roles
 
 ## Running
@@ -40,7 +41,7 @@ After installing the ALKS CLI it will be available on your path. Simply run the 
 
 To see a what options are available to a command ask for help on it:
 
-    alks keys help create
+    alks sessions help open
 
 ### Password
 
@@ -97,14 +98,15 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 ### `sessions open`
 
-`alks sessions open [index]` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an index you'll be prompted for the account/role you'd like to use. If you provide the index (1-n) there's no need to select the account/role. Alternatively you can provide the account and role as flags.
+`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life and automatically renew them when necessary. If you would like to do IAM work you'll need to pass the `-i` flag.
 
 Optional arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
+* `-i` Specifies you wish to work as an IAM user
+* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
@@ -117,17 +119,46 @@ Output values:
 
 ### `sessions console`
 
-`alks sessions console [index]` - Open the AWS console in the default browser for the specified ALKS session.
+`alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
 
 Optional arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM user
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-p [password]` Your password
 
+
+## IAM
+
+### `iam createrole`
+
+`alks iam createrole` Creates a new IAM role for the requested type in the specified AWS account.
+
+Optional arguments:
+
+* `-p [password]` Your password
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
+* `-d`: Include default policies, defaults to false
+
+Outputs the created role's ARN.
+
+### `iam roletypes`
+
+`alks iam roletypes` - List the available IAM role types.
+
+Optional arguments:
+
+* `-o [output]` Output format. Supports: `json`, `list`
+
+Outputs a list of available role types.
+
 ## Keys
+
+Please note that the keys subcommand is being deprecated in favor of the new sessions subcommand.
 
 ### `keys create`
 
@@ -154,7 +185,7 @@ Output values:
 Optional arguments:
 
 * `-p [password]` Your password
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
+* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
@@ -172,8 +203,8 @@ Optional arguments:
 
 ALKS CLI will output in a variety of formats:
 
-* `json`: Outputs a JSON object
 * `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`
+* `json`: Outputs a JSON object
 * `docker`: Outputs environment arguments to pass to a Docker run call
 * `creds`: Updates the AWS credentials file
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`

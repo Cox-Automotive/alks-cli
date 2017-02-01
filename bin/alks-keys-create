@@ -7,7 +7,6 @@ var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
-    moment    = require('moment'),
     alks      = require('alks-node'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
@@ -65,14 +64,13 @@ async.waterfall([
     // now deal with the session data
     function(key, developer, password, callback){
         // calculate expiration
-        var expires = moment().add(duration, 'hours');
         console.error(clc.white([ 'AWS session data generated for "', developer.alksAccount,
-                                 '" and expires ', expires.calendar() ].join('')));
+                                 '" and expires ', key.expires.calendar() ].join('')));
 
         // store session data in DB
         utils.log(program, logger, 'saving key in DB');
-        keys.addKey(key.accessKey, key.secretKey, key.sessionToken, key.consoleURL,
-                    key.alksAccount, key.alksRole, expires.toDate(), password);
+        keys.addKey(key.accessKey, key.secretKey, key.sessionToken,
+                    key.alksAccount, key.alksRole, key.expires.toDate(), password, false);
 
         callback(null, key);
     }
@@ -83,6 +81,8 @@ async.waterfall([
 
     console.log(keys.getKeyOutput(output, data, program.namedProfile, program.force));
 
+    utils.deprecationWarning('alks keys create is deprecated. Please use alks sessions open.');
     utils.log(program, logger, 'checking for updates');
     utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });
