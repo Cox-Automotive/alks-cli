@@ -67,11 +67,17 @@ async.waterfall([
             callback(err, previousData, server, userid);
         });
     },
-    // ask for password
+    // check for existing password
     function(previousData, server, userid, callback){
+        Developer.getPasswordFromKeystore(function(pass){
+            callback(null, previousData, server, userid, pass)
+        });
+    },
+    // ask for password
+    function(previousData, server, userid, currentPassword, callback){
         Developer.getPasswordFromPrompt(function(err, password){
             callback(err, previousData, server, userid, password);
-        }, 'Network Password');
+        }, 'Network Password', currentPassword);
     },
     // ask if they want to save password
     function(previousData, server, userid, password, callback){
@@ -90,6 +96,9 @@ async.waterfall([
     function(previousData, server, userid, password, savePassword, callback){
         utils.log(program, logger, 'getting alks accounts');
         alks.getAccounts(server, userid, password, {}, function(err, accounts){
+            if(err){
+                return callback(err);
+            }
             if(!accounts.length){
                 return utils.errorAndExit('Your account does not have any AWS accounts available.');
             }
@@ -109,7 +118,7 @@ async.waterfall([
         server: server,
         userid: userid,
         password: password,
-        savePassword: savePassword,
+        savePassword: savePassword === 'Yes',
         alksAccount: alksAccount,
         alksRole: alksRole
     };
