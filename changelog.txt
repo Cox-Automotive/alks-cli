@@ -1,12 +1,13 @@
-Release Notes: 2017-02-01
+Release Notes: 2017-02-16
 ============================
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-- Adds support for creating IAM roles: `alks iam help createrole`
-- Adds support for displaying available role types: `alks iam roletypes`
-- Sessions now support starting an IAM session, simply pass: `--iam`
-- Deprecates `alks keys`, please migrate to `alks sessions`
-- Fuel Documention Updated: https://fuel.coxautoinc.com/docs/DOC-97406
+- Fixes issue where region and format would be removed from `.aws/credentials`
+- Fixes crash when entering invalid password
+- Fixes issue where not forcing on existing creds output would log the user out
+- Selecting 'No' to Save Password will now clear previous password
+- On Linux, `.netrc` is now R+W owner only
+- Creates `.aws/credentials` if it doesn't exist
 
-Happy Clouding! ☁☁☁
+☁☁☁  Happy Clouding! ☁☁☁
