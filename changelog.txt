@@ -7,5 +7,6 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 - Adds support for displaying available role types: `alks iam roletypes`
 - Sessions now support starting an IAM session, simply pass: `--iam`
 - Deprecates `alks keys`, please migrate to `alks sessions`
+- Fuel Documention Updated: https://fuel.coxautoinc.com/docs/DOC-97406
 
 Happy Clouding! ☁☁☁
