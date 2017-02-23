@@ -166,38 +166,6 @@ Optional arguments:
 
 Outputs a list of available role types.
 
-## Keys
-
-Please note that the keys subcommand is being deprecated in favor of the new sessions subcommand.
-
-### `keys create`
-
-`alks keys create` - Create a new session key with the ALKS service
-
-Optional arguments:
-
-* `-p [password]` Your password
-* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`, `idea`
-* `-n` If output is set to creds, use this named profile (defaults to default)
-* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
-
-Output values:
-
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-* `AWS_SESSION_TOKEN`
-
-### `keys console`
-
-`alks keys console` - Open the AWS console in the default browser for the selected key.
-
-Optional arguments:
-
-* `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
-* `-p [password]` Your password
-
-
 # Output Formats
 
 ALKS CLI will output in a variety of formats:
