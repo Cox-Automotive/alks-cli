@@ -29,7 +29,7 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 * Network Username: Your network username
 * Network Password: Your network password (needed for loading list of accounts/roles)
 * Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
-* Account/Role: Select one of the available ALKS accounts/roles
+* Default Account/Role: Select the default ALKS account/role to use
 
 ## Running
 
@@ -109,6 +109,7 @@ Optional arguments:
 * `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
+* `-d` Uses your default account from `alks developer configure`
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
@@ -129,6 +130,7 @@ Optional arguments:
 * `-i` Specifies you wish to work as an IAM user
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-N` Forces a new session to be generated
+* `-d` Uses your default account from `alks developer configure`
 * `-p [password]` Your password
 
 

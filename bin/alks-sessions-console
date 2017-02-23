@@ -24,15 +24,25 @@ program
     .option('-i, --iam', 'create an IAM session')
     .option('-p, --password [password]', 'my password')
     .option('-N, --newSession', 'forces a new session to be generated')
+    .option('-d, --default', 'uses your default account from "alks developer configure"')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var alksAccount       = program.account,
     alksRole          = program.role,
-    hasAlksAcctRole   = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
     forceNewSession   = program.newSession,
+    useDefaultAcct    = program.default,
     output            = program.output,
     logger            = 'sessions-console';
+
+var execute = function(){
+    if(_.isUndefined(program.iam)){
+        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
+    }
+    else{
+        Iam.getIAMKey(program, logger, alksAccount, alksRole, onComplete);
+    }
+};
 
 var onComplete = function(err, key){
     if(err){
@@ -54,11 +64,17 @@ var onComplete = function(err, key){
             setTimeout(function(){ process.exit(1); }, 3000);
         });
     });
-}
+};
 
-if(_.isUndefined(program.iam)){
-    Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, false, forceNewSession, onComplete);
+if(useDefaultAcct){
+    Developer.getDeveloper(function(err, dev){
+        if(err) return utils.errorAndExit('Unable to load default account!', err);
+
+        alksAccount = dev.alksAccount;
+        alksRole = dev.alksRole;
+        execute();
+    });
 }
 else{
-    Iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, onComplete);
+    execute();
 }

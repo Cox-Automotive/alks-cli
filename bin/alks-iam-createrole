@@ -31,8 +31,7 @@ var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g,
     roleType        = program.roletype,
     incDefPolicies  = program.defaultPolicies,
     alksAccount     = program.account,
-    alksRole        = program.role,
-    hasAlksAcctRole = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole);
+    alksRole        = program.role;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
@@ -44,7 +43,7 @@ if(_.isEmpty(roleType)){
     utils.errorAndExit('The role type is required');
 }
 
-Iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, alksAccount, alksRole, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }
