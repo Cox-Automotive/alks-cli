@@ -23,12 +23,14 @@ program
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
     .option('-p, --password [password]', 'my password')
+    .option('-N, --newSession', 'forces a new session to be generated')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var alksAccount       = program.account,
     alksRole          = program.role,
     hasAlksAcctRole   = !_.isEmpty(alksAccount) && !_.isEmpty(alksRole),
+    forceNewSession   = program.newSession,
     output            = program.output,
     logger            = 'sessions-console';
 
@@ -55,7 +57,7 @@ var onComplete = function(err, key){
 }
 
 if(_.isUndefined(program.iam)){
-    Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, false, onComplete);
+    Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, false, forceNewSession, onComplete);
 }
 else{
     Iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, onComplete);

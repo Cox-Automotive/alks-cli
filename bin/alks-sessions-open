@@ -50,7 +50,7 @@ var onComplete = function(err, key){
 }
 
 if(_.isUndefined(program.iam)){
-    Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, false, onComplete);
+    Sessions.getSessionKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, false, forceNewSession, onComplete);
 }
 else{
     Iam.getIAMKey(program, logger, hasAlksAcctRole, alksAccount, alksRole, onComplete);

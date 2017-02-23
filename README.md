@@ -128,6 +128,7 @@ Optional arguments:
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-i` Specifies you wish to work as an IAM user
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
+* `-N` Forces a new session to be generated
 * `-p [password]` Your password
 
 
