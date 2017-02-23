@@ -1,13 +1,15 @@
-Release Notes: 2017-02-16
+Release Notes: 2017-02-23
 ============================
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-- Fixes issue where region and format would be removed from `.aws/credentials`
-- Fixes crash when entering invalid password
-- Fixes issue where not forcing on existing creds output would log the user out
-- Selecting 'No' to Save Password will now clear previous password
-- On Linux, `.netrc` is now R+W owner only
-- Creates `.aws/credentials` if it doesn't exist
+- The keys subcommand is now removed, enjoy the ease of using sessions
+- You can now select your default account in `alks developer configure`
+- You can now use your default account with sessions, just pass `-d` to bypass the account picker
+- Added `alks sessions list` to list all active sessions (IAM and non-IAM)
+- Account picker will now default to the last account/role you used
+- Better error messaging when providing invalid accounts (`-a` / `-r`)
+- Fixes bug where forcing a new session (`-N`) did not generate a new session
+- You no longer have to type your password during `alks developer configure` if it hasn't changed
 
 ☁☁☁  Happy Clouding! ☁☁☁
