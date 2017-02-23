@@ -94,19 +94,20 @@ async.waterfall([
     },
     // request list of accounts from ALKS
     function(previousData, server, userid, password, savePassword, callback){
-        utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(server, userid, password, {}, function(err, accounts){
-            if(err){
-                return callback(err);
-            }
-            if(!accounts.length){
-                return utils.errorAndExit('Your account does not have any AWS accounts available.');
-            }
+        utils.log(program, logger, 'Getting ALKS accounts');
+        var prompt = 'Please select your default ALKS account/role';
 
-            // select first account by default, remove this when we kill of keys subcommand
-            var tmp = accounts[0].split(alks.getAccountSelectorDelimiter());
-            callback(err, server, userid, password, savePassword, tmp[0], tmp[1]);
-        })
+        program.password = password; // this ensures getALKSAccount() doesnt prompt..
+        var opts = {
+            prompt: prompt,
+            dontDefault: true,
+            server: server,
+            userid: userid
+        }
+        Developer.getALKSAccount(program, opts, function(err, data){
+            if(err) return callback(err);
+            callback(null, server, userid, password, savePassword, data.alksAccount, data.alksRole);
+        });
     }
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
     // did any of our steps have issues?

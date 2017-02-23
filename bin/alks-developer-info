@@ -36,8 +36,18 @@ async.series({
     }
 },
 function(err, results){
+    var ignores = [ 'lastVersion', 'lastAcctUsed' ],
+        mapping = {
+        'server': 'ALKS Server',
+        'userid': 'Network Login',
+        'alksAccount': 'Default ALKS Account',
+        'alksRole': 'Default ALKS Role'
+    };
+
     _.each(results.developer, function(val, key){
-        table.push([key, _.isEmpty(val) ? '' : val]);
+        if(!_.contains(ignores, key)){
+            table.push([mapping[key], _.isEmpty(val) ? '' : val]);
+        }
     });
 
     var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
