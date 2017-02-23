@@ -133,6 +133,13 @@ Optional arguments:
 * `-d` Uses your default account from `alks developer configure`
 * `-p [password]` Your password
 
+### `sessions list`
+
+`alks sessions list` - List active ALKS sessions, this includes both IAM and non-IAM sessions.
+
+Optional arguments:
+
+* `-p [password]` Your password
 
 ## IAM
 
@@ -180,17 +187,6 @@ Output values:
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
-
-### `keys list`
-
-`alks keys list` - List existing ALKS keys as well as output them. Your keys are stored encrypted using AES-256.
-
-Optional arguments:
-
-* `-p [password]` Your password
-* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
-* `-n` If output is set to creds, use this named profile (defaults to default)
-* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 ### `keys console`
 
