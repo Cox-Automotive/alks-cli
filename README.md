@@ -45,7 +45,7 @@ To see a what options are available to a command ask for help on it:
 
 ### Password
 
-Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this. 
+Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this.
 
 1. **Recommended:** Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and on Linux we use netrc. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
 2. Provide your password as an argument, simply pass `-p 'my pass!'`. Note this will appear in your Bash history.
@@ -60,7 +60,7 @@ We will attempt to lookup your password in the following order:
 1. CLI argument
 2. Environment variable
 3. Keystore
-4. Prompt user  
+4. Prompt user
 
 ## Docker
 
@@ -76,9 +76,9 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 ### `developer configure`
 
-`alks developer configure` - Configures ALKS 
+`alks developer configure` - Configures ALKS
 
-### `developer switch` 
+### `developer switch`
 
 `alks developer switch` - Switch the active ALKS account/role
 
@@ -98,7 +98,9 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 ### `sessions open`
 
-`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS keys for you. If you don't provide an account/role you'll be prompted for the one you'd like to use.This will create your keys with the maximum life and automatically renew them when necessary. If you would like to do IAM work you'll need to pass the `-i` flag.
+`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS session for you. If you don't provide an account/role you'll be prompted for the one you'd like to use. Alternative you can use your default account/role by passing `-d`.
+
+This will create your sessions with the maximum life and automatically renew them when necessary. If you would like to do IAM work you'll need to pass the `-i` flag.
 
 Optional arguments:
 
@@ -170,7 +172,7 @@ Outputs a list of available role types.
 
 ALKS CLI will output in a variety of formats:
 
-* `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`
+* `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks sessions open -d)`
 * `json`: Outputs a JSON object
 * `docker`: Outputs environment arguments to pass to a Docker run call
 * `creds`: Updates the AWS credentials file
