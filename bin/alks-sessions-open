@@ -38,7 +38,6 @@ var alksAccount       = program.account,
     logger            = 'sessions-open';
 
 var execute = function(){
-    console.log(alksAccount, alksRole)
     if(_.isUndefined(program.iam)){
         Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
     }

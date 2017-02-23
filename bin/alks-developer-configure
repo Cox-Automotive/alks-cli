@@ -97,7 +97,8 @@ async.waterfall([
         utils.log(program, logger, 'Getting ALKS accounts');
         var prompt = 'Please select your default ALKS account/role';
 
-        Developer.getALKSAccount(program, { prompt: prompt }, function(err, data){
+        program.password = password; // this ensures getALKSAccount() doesnt prompt..
+        Developer.getALKSAccount(program, { prompt: prompt, dontDefault: true }, function(err, data){
             if(err) return callback(err);
             callback(null, server, userid, password, savePassword, data.alksAccount, data.alksRole);
         });
