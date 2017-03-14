@@ -4,5 +4,6 @@ Release Notes: 2017-03-14
 Thanks for upgrading to the latest version of the ALKS CLI!
 
 - You can now list all of your available ALKS accounts, both standard and IAM by running the new accounts command: `alks developer accounts`.
+- You can now see where the password is being accessed from in verbose (`-v`) mode.
 
 ☁☁☁  Happy Clouding! ☁☁☁
