@@ -94,6 +94,10 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer info` - Show your current developer configuration
 
+### `developer accounts`
+
+`alks developer accounts` - Show all available ALKS accounts (both Standard and IAM)
+
 ## Sessions
 
 ### `sessions open`

@@ -11,7 +11,7 @@ var program = require('commander'),
 program
     .version(config.version)
     .command('configure', 'configures developer')
-    .command('switch', 'switches alks account')
+    .command('accounts', 'shows available account/roles')
     .command('info', 'shows current developer configuration')
     .command('login', 'stores password')
     .command('logout', 'removes password')

@@ -1,0 +1,69 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    alks      = require('alks-node'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('shows current developer configuration')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var table = new Table({
+    head: [clc.white.bold('Account'), clc.white.bold('Role'), clc.white.bold('Type')],
+    colWidths: [50, 50, 25]
+});
+
+var logger = 'dev-accounts';
+
+async.waterfall([
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    function(developer, callback){
+        Developer.getPassword(null, function(err, password){
+            utils.log(program, logger, 'getting password');
+            callback(err, developer, password);
+        }); // null means dont prompt
+    },
+    function(developer, password, callback){
+        utils.log(program, logger, 'getting alks accounts');
+        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: false } }, function(err, alksAccounts){
+            callback(err, developer, password, alksAccounts);
+        });
+    },
+    function(developer, password, alksAccounts, callback){
+        utils.log(program, logger, 'getting alks iam accounts');
+        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: true } }, function(err, alksIamAccounts){
+            callback(err, developer, password, alksAccounts, alksIamAccounts);
+        });
+    }
+],
+function(err, developer, password, alksAccounts, alksIamAccounts){
+    _.each(alksAccounts, function(val, key){
+        table.push(val.split(alks.getAccountSelectorDelimiter()).concat('Standard'));
+    });
+
+    _.each(alksIamAccounts, function(val, key){
+        table.push(val.split(alks.getAccountSelectorDelimiter()).concat('IAM'));
+    });
+
+    console.error(clc.white.underline.bold('\nAvailable Accounts'));
+    console.error(clc.white(table.toString()));
+
+    utils.log(program, logger, 'checking for update');
+    utils.checkForUpdate();
+    Developer.trackActivity(logger);
+});
