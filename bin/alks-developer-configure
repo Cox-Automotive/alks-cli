@@ -105,8 +105,12 @@ async.waterfall([
             userid: userid
         }
         Developer.getALKSAccount(program, opts, function(err, data){
-            if(err) return callback(err);
-            callback(null, server, userid, password, savePassword, data.alksAccount, data.alksRole);
+            if(err){
+                if(err.message.indexOf('No accounts') === -1){
+                    return callback(err);
+                }
+            }
+            callback(null, server, userid, password, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
         });
     }
 ], function(err, server, userid, password, savePassword, alksAccount, alksRole){
