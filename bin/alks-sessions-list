@@ -77,7 +77,7 @@ async.waterfall([
             });
         });
 
-        if(!keys.length){
+        if(!foundKeys.length){
             table.push([ { colSpan: 5, content: clc.yellow.bold('No active sessions found.') } ]);
         }
 
