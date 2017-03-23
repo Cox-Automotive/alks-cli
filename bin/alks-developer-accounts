@@ -17,6 +17,7 @@ program
     .version(config.version)
     .description('shows current developer configuration')
     .option('-v, --verbose', 'be verbose')
+    .option('-e, --export', 'export accounts to environment variables')
     .parse(process.argv);
 
 var table = new Table({
@@ -24,7 +25,32 @@ var table = new Table({
     colWidths: [50, 50, 25]
 });
 
-var logger = 'dev-accounts';
+var logger       = 'dev-accounts',
+    doExport     = program['export'],
+    accountRegex = utils.getAccountRegex(),
+    accounts     = [];
+
+function getUniqueAccountName(accountName){
+    var i = 1,
+        test = accountName;
+
+    while(_.contains(accounts, test)){
+        test = accountName + i++;
+    }
+
+    return test;
+}
+
+function accountExport(account, suffix){
+    var match;
+    while(match = accountRegex.exec(account)){
+        if(match && account.indexOf('ALKS_') === -1){ // ignore legacy accounts
+            var accountName = getUniqueAccountName(match[6].toLowerCase() + '_' + match[4].toLowerCase() + suffix);
+            accounts.push(accountName)
+            console.log('export ' + accountName + '="' + account + '"')
+        }
+    }
+}
 
 async.waterfall([
     // get developer
@@ -52,16 +78,33 @@ async.waterfall([
     }
 ],
 function(err, developer, password, alksAccounts, alksIamAccounts){
+
     _.each(alksAccounts, function(val, key){
-        table.push(val.split(alks.getAccountSelectorDelimiter()).concat('Standard'));
+        var data = val.split(alks.getAccountSelectorDelimiter());
+
+        if(doExport){
+            accountExport(data[0], '')
+        }
+        else{
+            table.push(data.concat('Standard'));
+        }
     });
 
     _.each(alksIamAccounts, function(val, key){
-        table.push(val.split(alks.getAccountSelectorDelimiter()).concat('IAM'));
+        var data = val.split(alks.getAccountSelectorDelimiter());
+
+        if(doExport){
+            accountExport(data[0], '');
+        }
+        else{
+            table.push(data.concat('IAM'));
+        }
     });
 
-    console.error(clc.white.underline.bold('\nAvailable Accounts'));
-    console.error(clc.white(table.toString()));
+    if(!doExport){
+        console.error(clc.white.underline.bold('\nAvailable Accounts'));
+        console.error(clc.white(table.toString()));
+    }
 
     utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();
