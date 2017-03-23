@@ -35,6 +35,11 @@ var alksAccount       = program.account,
     output            = program.output,
     logger            = 'sessions-console';
 
+if(_.isUndefined(alksRole)){
+    utils.log(program, logger, 'trying to extract role from account');
+    alksRole = utils.tryToExtractRole(alksAccount);
+}
+
 var execute = function(){
     if(_.isUndefined(program.iam)){
         Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
