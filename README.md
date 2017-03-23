@@ -98,6 +98,11 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer accounts` - Show all available ALKS accounts (both Standard and IAM)
 
+Optional arguments:
+
+* `-e` Output as environment variables for creating account shortcuts
+
+
 ## Sessions
 
 ### `sessions open`

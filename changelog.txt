@@ -1,9 +1,12 @@
-Release Notes: 2017-03-21
-============================
+★ Release Notes: 2017-03-23 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+- Export account shortcuts: eval $(alks developer accounts -e)
+- After exporting you can make simpler calls: alks sessions open -a "$awsacsnp"
+- Role is now inferred from account for security v2 accounts, so -r is optional
 - Fix for issue running configure with only IAM accounts
-- Fix for list sessions reporting no active sessions
+- Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
-☁☁☁  Happy Clouding! ☁☁☁
+☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
