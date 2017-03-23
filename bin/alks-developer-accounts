@@ -41,11 +41,11 @@ function getUniqueAccountName(accountName){
     return test;
 }
 
-function accountExport(account, suffix){
+function accountExport(account){
     var match;
     while(match = accountRegex.exec(account)){
         if(match && account.indexOf('ALKS_') === -1){ // ignore legacy accounts
-            var accountName = getUniqueAccountName(match[6].toLowerCase() + '_' + match[4].toLowerCase() + suffix);
+            var accountName = getUniqueAccountName([ match[6].toLowerCase(), match[4].toLowerCase() ].join('_'));
             accounts.push(accountName)
             console.log('export ' + accountName + '="' + account + '"')
         }
@@ -83,7 +83,7 @@ function(err, developer, password, alksAccounts, alksIamAccounts){
         var data = val.split(alks.getAccountSelectorDelimiter());
 
         if(doExport){
-            accountExport(data[0], '')
+            accountExport(data[0])
         }
         else{
             table.push(data.concat('Standard'));
@@ -94,7 +94,7 @@ function(err, developer, password, alksAccounts, alksIamAccounts){
         var data = val.split(alks.getAccountSelectorDelimiter());
 
         if(doExport){
-            accountExport(data[0], '');
+            accountExport(data[0]);
         }
         else{
             table.push(data.concat('IAM'));

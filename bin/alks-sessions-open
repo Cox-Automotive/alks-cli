@@ -40,7 +40,6 @@ var alksAccount       = program.account,
 if(_.isUndefined(alksRole)){
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
-    console.log(alksRole)
 }
 
 var execute = function(){
