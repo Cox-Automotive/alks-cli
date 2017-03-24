@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/Cox-Automotive/ALKS-CLI.svg?branch=master)](https://travis-ci.org/Cox-Automotive/ALKS-CLI)
 
 ## About
-CLI for working with the [ALKS](https://github.com/Cox-Automotive/ALKS) service.
+CLI for working with the ALKS service.
 
 ### Prerequisites
 
