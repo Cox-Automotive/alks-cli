@@ -28,6 +28,7 @@ var table = new Table({
 var logger       = 'dev-accounts',
     doExport     = program['export'],
     accountRegex = utils.getAccountRegex(),
+    exportCmd    = utils.isWindows() ? 'SET' : 'export',
     accounts     = [];
 
 function getUniqueAccountName(accountName){
@@ -47,7 +48,7 @@ function accountExport(account){
         if(match && account.indexOf('ALKS_') === -1){ // ignore legacy accounts
             var accountName = getUniqueAccountName([ match[6].toLowerCase(), match[4].toLowerCase() ].join('_'));
             accounts.push(accountName)
-            console.log('export ' + accountName + '="' + account + '"')
+            console.log(exportCmd + ' ' + accountName + '="' + account + '"');
         }
     }
 }
