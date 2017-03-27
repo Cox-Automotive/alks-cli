@@ -60,10 +60,10 @@ async.waterfall([
         Developer.getDeveloper(callback);
     },
     function(developer, callback){
-        Developer.getPassword(null, function(err, password){
+        Developer.getPassword(program, function(err, password){
             utils.log(program, logger, 'getting password');
             callback(err, developer, password);
-        }); // null means dont prompt
+        });
     },
     function(developer, password, callback){
         utils.log(program, logger, 'getting alks accounts');
