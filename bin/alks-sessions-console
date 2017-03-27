@@ -35,7 +35,7 @@ var alksAccount       = program.account,
     output            = program.output,
     logger            = 'sessions-console';
 
-if(_.isUndefined(alksRole)){
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
 }
