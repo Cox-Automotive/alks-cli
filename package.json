@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -36,7 +36,7 @@
     "alks"
   ],
   "dependencies": {
-    "alks-node": "^0.2.1",
+    "alks-node": "^0.3.1",
     "async": "^2.0.0-rc.6",
     "chmod": "^0.2.1",
     "cli-color": "^1.1.0",

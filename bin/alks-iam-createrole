@@ -43,7 +43,7 @@ if(_.isEmpty(roleType)){
     utils.errorAndExit('The role type is required');
 }
 
-if(_.isUndefined(alksRole)){
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
 }
@@ -57,7 +57,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, function(err, key, develop
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create role: ' + JSON.stringify(data));
 
-    alks.createIamRole(data, password, roleName, roleType, incDefPolicies, function(err, data){
+    alks.createIamRole(data, password, roleName, roleType, incDefPolicies, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }

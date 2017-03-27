@@ -3,9 +3,9 @@
   "version": "2.7.2",
   "dependencies": {
     "alks-node": {
-      "version": "0.2.1",
-      "from": "alks-node@>=0.2.1 <0.3.0",
-      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.2.1.tgz"
+      "version": "0.3.1",
+      "from": "alks-node@>=0.3.1 <0.4.0",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.3.1.tgz"
     },
     "ansi-escapes": {
       "version": "1.4.0",

@@ -67,13 +67,13 @@ async.waterfall([
     },
     function(developer, password, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: false } }, function(err, alksAccounts){
+        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: false }, debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
             callback(err, developer, password, alksAccounts);
         });
     },
     function(developer, password, alksAccounts, callback){
         utils.log(program, logger, 'getting alks iam accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: true } }, function(err, alksIamAccounts){
+        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: true }, debug: program.verbose, ua: utils.getUA() }, function(err, alksIamAccounts){
             callback(err, developer, password, alksAccounts, alksIamAccounts);
         });
     }
