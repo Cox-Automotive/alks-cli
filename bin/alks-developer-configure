@@ -133,10 +133,10 @@ async.waterfall([
     Developer.saveDeveloper(developerPayload, function(err){
         if(err){
             utils.log(program, logger, 'error saving! ' + err.message);
-            console.error(clc.red.bold('Error saving developer!'));
+            console.error(clc.red.bold('There was an error updating your developer configuration.'));
         }
         else{
-            console.error(clc.white('Developer saved!'));
+            console.error(clc.white('Your developer configuration has been updated.'));
         }
     });
 
