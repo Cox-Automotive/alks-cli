@@ -3,6 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+- New and improved user-input mechanism
 - Lots of under-the-hood updates
 - USERPROFILE takes precendence over HOMEPATH on Windows
 - Verbiage updates
