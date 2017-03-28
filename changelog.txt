@@ -3,10 +3,11 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-- New and improved user-input mechanism
-- Lots of under-the-hood updates
-- USERPROFILE takes precendence over HOMEPATH on Windows
-- Verbiage updates
-- Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
+→ New and improved user-input mechanism
+→ Expanded account selection picker
+→ Lots of under-the-hood updates
+→ USERPROFILE takes precendence over HOMEPATH on Windows
+→ Verbiage updates
+→ Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
