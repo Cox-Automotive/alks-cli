@@ -5,7 +5,6 @@ process.title = 'ALKS';
 
 var program   = require('commander'),
     clc       = require('cli-color'),
-    prompt    = require('prompt'),
     inquirer  = require('inquirer'),
     async     = require('async'),
     _         = require('underscore'),
@@ -23,29 +22,18 @@ program
 var logger = 'dev-config';
 
 function getPrompt(field, data, text, validator, callback){
-    var promptConfig = {
+    inquirer.prompt([{
+        type: 'input',
         name: field,
-        description: text,
-        required: true
-    };
-
-    if(!_.isEmpty(data[field])){
-        promptConfig.default = data[field];
-    }
-
-    if(_.isFunction(validator)){
-        promptConfig.conform = validator;
-    }
-
-    prompt.start();
-    prompt.message = '';
-    prompt.get([ promptConfig ], function(err, result){
-        if(err){
-            callback(err);
+        message: text,
+        default: function(){
+            return data[field];
+        },
+        validate: validator ? validator : function(val){
+            return (!_.isEmpty(val)) ? true : 'Please enter a value for ' + text + '.';
         }
-        else{
-            callback(null, result[field]);
-        }
+    }]).then(function(answers){
+        callback(null, answers[field]);
     });
 }
 
@@ -83,10 +71,9 @@ async.waterfall([
     function(previousData, server, userid, password, callback){
         inquirer.prompt([
             {
-                type: 'list',
+                type: 'confirm',
                 name: 'savePassword',
                 message: 'Save password',
-                choices: [ 'Yes', 'No' ]
             }
         ]).then(function(answers){
             callback(null, previousData, server, userid, password, answers.savePassword);
@@ -123,7 +110,7 @@ async.waterfall([
         server: server,
         userid: userid,
         password: password,
-        savePassword: savePassword === 'Yes',
+        savePassword: savePassword,
         alksAccount: alksAccount,
         alksRole: alksRole
     };
@@ -133,10 +120,10 @@ async.waterfall([
     Developer.saveDeveloper(developerPayload, function(err){
         if(err){
             utils.log(program, logger, 'error saving! ' + err.message);
-            console.error(clc.red.bold('Error saving developer!'));
+            console.error(clc.red.bold('There was an error updating your developer configuration.'));
         }
         else{
-            console.error(clc.white('Developer saved!'));
+            console.error(clc.white('Your developer configuration has been updated.'));
         }
     });
 

@@ -35,7 +35,7 @@ var alksAccount       = program.account,
     output            = program.output,
     logger            = 'sessions-console';
 
-if(_.isUndefined(alksRole)){
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
 }
@@ -55,7 +55,7 @@ var onComplete = function(err, key){
     }
 
     utils.log(program, logger, 'calling aws to generate 15min console URL');
-    alks.generateConsoleUrl(key, function(err, url){
+    alks.generateConsoleUrl(key, { debug: program.verbose, ua: utils.getUA() }, function(err, url){
         if(err){
             utils.errorAndExit(err);
         }

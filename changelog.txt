@@ -1,14 +1,14 @@
-★ Release Notes: 2017-03-24 ★
+★ Release Notes: 2017-03-28 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-- Adds account export support for Windows
-- Export account shortcuts: eval $(alks developer accounts -e)
-- After exporting you can make simpler calls: alks sessions open -a "$awsacsnp_poweruser"
-- Note that shortcuts are <account_name>_<role>
-- Role is now inferred from account for security v2 accounts, so -r is optional
-- Fix for issue running configure with only IAM accounts
-- Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
+→ New and improved user-input mechanism
+→ Expanded account selection picker
+→ Lots of under-the-hood updates
+→ USERPROFILE takes precendence over HOMEPATH on Windows
+→ Verbiage updates
+→ Enhanced debugging with -v
+→ Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁

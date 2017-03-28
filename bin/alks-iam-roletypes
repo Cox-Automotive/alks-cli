@@ -44,7 +44,7 @@ async.waterfall([
     // load available account/roles
     function(developer, password, cb){
         utils.log(program, logger, 'getting list of role types from REST API');
-        alks.getIamRoleTypes(developer.server, developer.userid, password, cb);
+        alks.getIamRoleTypes(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, cb);
     }
 ], function(err, roleTypes){
     if(err){
