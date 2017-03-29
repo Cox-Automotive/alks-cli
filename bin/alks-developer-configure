@@ -97,6 +97,7 @@ async.waterfall([
                     return callback(err);
                 }
             }
+
             callback(null, server, userid, password, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
         });
     }
@@ -125,9 +126,9 @@ async.waterfall([
         else{
             console.error(clc.white('Your developer configuration has been updated.'));
         }
-    });
 
-    utils.log(program, logger, 'checking for update');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
+        utils.log(program, logger, 'checking for update');
+        utils.checkForUpdate();
+        Developer.trackActivity(logger);
+    });
 });
