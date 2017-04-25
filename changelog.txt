@@ -1,14 +1,12 @@
-★ Release Notes: 2017-03-29 ★
+★ Release Notes: 2017-04-25 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ New and improved user-input mechanism
-→ Expanded account selection picker
-→ Lots of under-the-hood updates
-→ USERPROFILE takes precendence over HOMEPATH on Windows
-→ Verbiage updates
-→ Enhanced debugging with -v
+→ Better aligns functionality with ALKS website
+  → Admin and IAMAdmin roles now show up without -i for sessions
+  → You'll still need to pass -i to get an IAM session
+→ Performance increase
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
