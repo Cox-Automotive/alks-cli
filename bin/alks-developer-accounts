@@ -67,38 +67,21 @@ async.waterfall([
     },
     function(developer, password, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: false }, debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
             callback(err, developer, password, alksAccounts);
-        });
-    },
-    function(developer, password, alksAccounts, callback){
-        utils.log(program, logger, 'getting alks iam accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { filters: { iamOnly: true }, debug: program.verbose, ua: utils.getUA() }, function(err, alksIamAccounts){
-            callback(err, developer, password, alksAccounts, alksIamAccounts);
         });
     }
 ],
-function(err, developer, password, alksAccounts, alksIamAccounts){
+function(err, developer, password, alksAccounts){
 
     _.each(alksAccounts, function(val, key){
-        var data = val.split(alks.getAccountSelectorDelimiter());
+        var data = [ val.account, val.role ]
 
         if(doExport){
             accountExport(data[0])
         }
         else{
-            table.push(data.concat('Standard'));
-        }
-    });
-
-    _.each(alksIamAccounts, function(val, key){
-        var data = val.split(alks.getAccountSelectorDelimiter());
-
-        if(doExport){
-            accountExport(data[0]);
-        }
-        else{
-            table.push(data.concat('IAM'));
+            table.push(data.concat(val.iam ? 'IAM' : 'Standard'));
         }
     });
 
