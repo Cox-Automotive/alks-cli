@@ -45,7 +45,7 @@ var execute = function(){
         Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
     }
     else{
-        Iam.getIAMKey(program, logger, alksAccount, alksRole, onComplete);
+        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, onComplete);
     }
 };
 
