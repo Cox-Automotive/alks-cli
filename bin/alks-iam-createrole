@@ -48,7 +48,7 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-Iam.getIAMKey(program, logger, alksAccount, alksRole, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, alksAccount, alksRole, false, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }

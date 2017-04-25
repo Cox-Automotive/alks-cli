@@ -109,14 +109,14 @@ Optional arguments:
 
 `alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS session for you. If you don't provide an account/role you'll be prompted for the one you'd like to use. Alternative you can use your default account/role by passing `-d`.
 
-This will create your sessions with the maximum life and automatically renew them when necessary. If you would like to do IAM work you'll need to pass the `-i` flag.
+This will create your sessions with the maximum life and automatically renew them when necessary. If you would like to do IAM/Admin work you'll need to pass the `-i` flag.
 
 Optional arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
-* `-i` Specifies you wish to work as an IAM user
+* `-i` Specifies you wish to work as an IAM/Admin user
 * `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
@@ -138,7 +138,7 @@ Optional arguments:
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
-* `-i` Specifies you wish to work as an IAM user
+* `-i` Specifies you wish to work as an IAM/Admin user
 * `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
