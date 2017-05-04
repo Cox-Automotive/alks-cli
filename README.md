@@ -98,7 +98,7 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer accounts` - Show all available ALKS accounts (both Standard and IAM)
 
-Optional arguments:
+Arguments:
 
 * `-e` Output as environment variables for creating account shortcuts
 
@@ -111,7 +111,7 @@ Optional arguments:
 
 This will create your sessions with the maximum life and automatically renew them when necessary. If you would like to do IAM/Admin work you'll need to pass the `-i` flag.
 
-Optional arguments:
+Arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
@@ -133,7 +133,7 @@ Output values:
 
 `alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
 
-Optional arguments:
+Arguments:
 
 * `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
@@ -148,7 +148,7 @@ Optional arguments:
 
 `alks sessions list` - List active ALKS sessions, this includes both IAM and non-IAM sessions.
 
-Optional arguments:
+Arguments:
 
 * `-p [password]` Your password
 
@@ -158,7 +158,7 @@ Optional arguments:
 
 `alks iam createrole` Creates a new IAM role for the requested type in the specified AWS account.
 
-Optional arguments:
+Arguments:
 
 * `-p [password]` Your password
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
@@ -167,11 +167,20 @@ Optional arguments:
 
 Outputs the created role's ARN.
 
+### `iam deleterole`
+
+`alks iam deleterole` Deletes a previously created IAM role in the specified AWS account. Note this only works for IAM roles that were created with ALKS.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+
 ### `iam roletypes`
 
 `alks iam roletypes` - List the available IAM role types.
 
-Optional arguments:
+Arguments:
 
 * `-o [output]` Output format. Supports: `json`, `list`
 
