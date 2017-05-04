@@ -28,6 +28,11 @@ var roleName        = program.rolename,
     alksAccount     = program.account,
     alksRole        = program.role;
 
+utils.log(program, logger, 'validating role name: ' + roleName);
+if(_.isEmpty(roleName)){
+    utils.errorAndExit('The role name must be provided.');
+}
+
 Iam.getIAMKey(program, logger, alksAccount, alksRole, false, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
