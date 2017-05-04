@@ -10,8 +10,8 @@ var program   = require('commander'),
 program
     .version(config.version)
     .command('createrole', 'create IAM role')
+    .command('deleterole',  'remove an IAM role')
     .command('roletypes',  'list the available iam role types')
-    .command('delete',  'remove an IAM role')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'iam');
