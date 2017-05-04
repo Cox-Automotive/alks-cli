@@ -55,7 +55,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, function(err, key, 
 
     // create the role
     var data = _.extend({}, developer, key);
-    utils.log(program, logger, 'calling api to create role: ' + JSON.stringify(data));
+    utils.log(program, logger, 'calling api to create role: ' + roleName);
 
     alks.createIamRole(data, password, roleName, roleType, incDefPolicies, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
