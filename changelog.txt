@@ -1,9 +1,9 @@
-★ Release Notes: 2017-05-04 ★
+★ Release Notes: 2017-05-09 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Adds support for deleting IAM roles: alks iam help deleterole
+→ Adds support for displaying new error messages from ALKS API
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁

@@ -1,11 +1,11 @@
 {
   "name": "alks",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "dependencies": {
     "alks-node": {
-      "version": "0.5.0",
-      "from": "alks-node@0.5.0",
-      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.5.0.tgz"
+      "version": "0.5.1",
+      "from": "alks-node@0.5.1",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.5.1.tgz"
     },
     "ansi-escapes": {
       "version": "1.4.0",
