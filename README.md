@@ -70,6 +70,12 @@ If you would rather run the ALKS CLI as a Docker container, simply run the follo
 docker run -it -v ~:/root coxauto/alks-cli
 ```
 
+If you are on a windows host and need SET instead of export then add a PLATFORM env:
+
+```
+docker run -it -e PLATFORM=windows -v %cd%:/root coxauto/alks-cli sessions open -a %AWS_ACCT% -r %AWS_ROLE% -o env 
+```
+
 # Commands
 
 ## Developer
