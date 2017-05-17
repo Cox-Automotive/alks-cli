@@ -5,6 +5,7 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 
 → Improved error messaging for create role
 → Now outputs the instance profile ARN of a role (if applicable)
+→ Windows Docker improvements
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
