@@ -63,6 +63,9 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, function(err, key, 
         }
 
         console.error(clc.white(['The role: ', data.roleName, ' was created with the ARN: '].join('')) + clc.white.underline(data.roleArn));
+        if(data.instanceProfileArn){
+            console.error(clc.white(['An instance profile was also created with the ARN: '].join('')) + clc.white.underline(data.instanceProfileArn));
+        }
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate();
         Developer.trackActivity(logger);
