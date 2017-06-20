@@ -22,6 +22,7 @@ program
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
+    .option('-F, --favorites', 'filters favorite accounts')
     .option('-p, --password [password]', 'my password')
     .option('-N, --newSession', 'forces a new session to be generated')
     .option('-d, --default', 'uses your default account from "alks developer configure"')
@@ -33,6 +34,7 @@ var alksAccount       = program.account,
     forceNewSession   = program.newSession,
     useDefaultAcct    = program.default,
     output            = program.output,
+    filterFaves       = program.favorites || false,
     logger            = 'sessions-console';
 
 if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
@@ -42,10 +44,10 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
 
 var execute = function(){
     if(_.isUndefined(program.iam)){
-        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
+        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves, onComplete);
     }
     else{
-        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, onComplete);
+        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves, onComplete);
     }
 };
 
