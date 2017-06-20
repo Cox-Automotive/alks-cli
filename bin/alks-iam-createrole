@@ -23,6 +23,7 @@ program
     .option('-d, --defaultPolicies', 'include default policies, default: false', false)
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
+    .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
@@ -31,7 +32,8 @@ var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g,
     roleType        = program.roletype,
     incDefPolicies  = program.defaultPolicies,
     alksAccount     = program.account,
-    alksRole        = program.role;
+    alksRole        = program.role,
+    filterFaves     = program.favorites || false;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
@@ -48,7 +50,7 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-Iam.getIAMKey(program, logger, alksAccount, alksRole, false, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }
