@@ -1,11 +1,11 @@
-★ Release Notes: 2017-05-17 ★
+★ Release Notes: 2017-06-20 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Improved error messaging for create role
-→ Now outputs the instance profile ARN of a role (if applicable)
-→ Windows Docker improvements
+→ You can now set favorite accounts: `alks developer favorites`
+→ `alks sessions open` now floats your favorites to the top
+→ `alks sessions open` now supports `-F` to filter your favorites
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁

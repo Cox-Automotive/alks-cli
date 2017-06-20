@@ -1,0 +1,94 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    alks      = require('alks-node'),
+    inquirer  = require('inquirer'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('configure which accounts are favorites')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var logger       = 'dev-favorites',
+    doExport     = program['export'],
+    accountRegex = utils.getAccountRegex(),
+    accounts     = [];
+
+async.waterfall([
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    function(developer, callback){
+        Developer.getPassword(program, function(err, password){
+            utils.log(program, logger, 'getting password');
+            callback(err, developer, password);
+        });
+    },
+    function(developer, password, callback){
+        utils.log(program, logger, 'getting alks accounts');
+        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+            callback(err, developer, password, alksAccounts);
+        });
+    },
+    function(developer, password, accounts, callback){
+        utils.log(program, logger, 'getting favorite accounts');
+        Developer.getFavorites(function(err, data){
+            callback(null, developer, password, accounts, data.favorites);
+        });
+    }
+],
+function(err, developer, password, alksAccounts, favorites){
+    var choices  = [],
+        deferred = [];
+
+    utils.log(program, logger, 'rendering favorite accounts');
+    choices.push(new inquirer.Separator(' = Standard = '))
+    _.each(alksAccounts, function(val, key){
+        if(!val.iam){
+            var name = [val.account, val.role].join(Developer.getAccountDelim());
+            choices.push({
+                name: name,
+                checked: _.contains(favorites, name)
+            });
+        }
+        else deferred.push(val)
+    });
+
+    choices.push(new inquirer.Separator(' = IAM = '))
+    _.each(deferred, function(val, key){
+        var name = [val.account, val.role].join(Developer.getAccountDelim());
+        choices.push({
+            name: name,
+            checked: _.contains(favorites, name)
+        });
+    });
+
+    inquirer.prompt([{
+        type: 'checkbox',
+        message: 'Select favorites',
+        name: 'favorites',
+        choices: choices,
+        pageSize: 25
+    }]).then(function(faves){
+        Developer.saveFavorites({accounts: faves}, function(err, resp){
+            console.log('Favorites have been saved!');
+
+            utils.log(program, logger, 'checking for update');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+        });
+    });
+});

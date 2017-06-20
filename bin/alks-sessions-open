@@ -25,6 +25,7 @@ program
     .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
+    .option('-F, --favorites', 'filters favorite accounts')
     .option('-N, --newSession', 'forces a new session to be generated')
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .option('-v, --verbose', 'be verbose')
@@ -35,6 +36,7 @@ var alksAccount       = program.account,
     forceNewSession   = program.newSession,
     useDefaultAcct    = program.default,
     output            = program.output,
+    filterFaves       = program.favorites || false,
     logger            = 'sessions-open';
 
 if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
@@ -44,10 +46,10 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
 
 var execute = function(){
     if(_.isUndefined(program.iam)){
-        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, onComplete);
+        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves, onComplete);
     }
     else{
-        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, onComplete);
+        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves, onComplete);
     }
 };
 
