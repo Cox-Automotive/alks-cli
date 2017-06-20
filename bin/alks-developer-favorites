@@ -58,7 +58,7 @@ function(err, developer, password, alksAccounts, favorites){
     choices.push(new inquirer.Separator(' = Standard = '))
     _.each(alksAccounts, function(val, key){
         if(!val.iam){
-            var name = [val.account, val.role].join(' ');
+            var name = [val.account, val.role].join(Developer.getAccountDelim());
             choices.push({
                 name: name,
                 checked: _.contains(favorites, name)
@@ -69,7 +69,7 @@ function(err, developer, password, alksAccounts, favorites){
 
     choices.push(new inquirer.Separator(' = IAM = '))
     _.each(deferred, function(val, key){
-        var name = [val.account, val.role].join(' ');
+        var name = [val.account, val.role].join(Developer.getAccountDelim());
         choices.push({
             name: name,
             checked: _.contains(favorites, name)
