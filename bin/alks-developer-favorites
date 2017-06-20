@@ -42,32 +42,53 @@ async.waterfall([
         alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
             callback(err, developer, password, alksAccounts);
         });
+    },
+    function(developer, password, accounts, callback){
+        utils.log(program, logger, 'getting favorite accounts');
+        Developer.getFavorites(function(err, data){
+            callback(null, developer, password, accounts, data.favorites);
+        });
     }
 ],
-function(err, developer, password, alksAccounts){
+function(err, developer, password, alksAccounts, favorites){
     var choices  = [],
         deferred = [];
 
+    utils.log(program, logger, 'rendering favorite accounts');
     choices.push(new inquirer.Separator(' = Standard = '))
     _.each(alksAccounts, function(val, key){
-        if(!val.iam) choices.push({ name: ' ' + val.account + ' ' + val.role });
+        if(!val.iam){
+            var name = [val.account, val.role].join(' ');
+            choices.push({
+                name: name,
+                checked: _.contains(favorites, name)
+            });
+        }
         else deferred.push(val)
     });
 
     choices.push(new inquirer.Separator(' = IAM = '))
     _.each(deferred, function(val, key){
-        choices.push({ name: ' ' + val.account + ' ' + val.role });
+        var name = [val.account, val.role].join(' ');
+        choices.push({
+            name: name,
+            checked: _.contains(favorites, name)
+        });
     });
 
     inquirer.prompt([{
         type: 'checkbox',
-        message: 'Select favorites (use space)',
+        message: 'Select favorites',
         name: 'favorites',
         choices: choices,
         pageSize: 25
-    }]);
+    }]).then(function(faves){
+        Developer.saveFavorites({accounts: faves}, function(err, resp){
+            console.log('Favorites have been saved!');
 
-    utils.log(program, logger, 'checking for update');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
+            utils.log(program, logger, 'checking for update');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+        });
+    });
 });
