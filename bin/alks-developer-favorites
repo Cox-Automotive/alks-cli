@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    alks      = require('alks-node'),
+    inquirer  = require('inquirer'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('configure which accounts are favorites')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var logger       = 'dev-favorites',
+    doExport     = program['export'],
+    accountRegex = utils.getAccountRegex(),
+    accounts     = [];
+
+async.waterfall([
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    function(developer, callback){
+        Developer.getPassword(program, function(err, password){
+            utils.log(program, logger, 'getting password');
+            callback(err, developer, password);
+        });
+    },
+    function(developer, password, callback){
+        utils.log(program, logger, 'getting alks accounts');
+        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+            callback(err, developer, password, alksAccounts);
+        });
+    }
+],
+function(err, developer, password, alksAccounts){
+    var choices  = [],
+        deferred = [];
+
+    choices.push(new inquirer.Separator(' = Standard = '))
+    _.each(alksAccounts, function(val, key){
+        if(!val.iam) choices.push({ name: ' ' + val.account + ' ' + val.role });
+        else deferred.push(val)
+    });
+
+    choices.push(new inquirer.Separator(' = IAM = '))
+    _.each(deferred, function(val, key){
+        choices.push({ name: ' ' + val.account + ' ' + val.role });
+    });
+
+    inquirer.prompt([{
+        type: 'checkbox',
+        message: 'Select favorites (use space)',
+        name: 'favorites',
+        choices: choices,
+        pageSize: 25
+    }]);
+
+    utils.log(program, logger, 'checking for update');
+    utils.checkForUpdate();
+    Developer.trackActivity(logger);
+});

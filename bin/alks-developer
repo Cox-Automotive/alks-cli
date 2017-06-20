@@ -12,6 +12,7 @@ program
     .version(config.version)
     .command('configure', 'configures developer')
     .command('accounts', 'shows available account/roles')
+    .command('favorites', 'configure which accounts are favorites')
     .command('info', 'shows current developer configuration')
     .command('login', 'stores password')
     .command('logout', 'removes password')
