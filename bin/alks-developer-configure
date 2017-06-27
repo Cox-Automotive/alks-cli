@@ -22,7 +22,7 @@ program
 var logger = 'dev-config';
 
 function getPrompt(field, data, text, validator, callback){
-    inquirer.prompt([{
+    utils.getStdErrPrompt()([{
         type: 'input',
         name: field,
         message: text,

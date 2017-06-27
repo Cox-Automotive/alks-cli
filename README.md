@@ -84,6 +84,10 @@ docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessi
 
 `alks developer configure` - Configures ALKS
 
+### `developer favorites`
+
+`alks developer favorites` - Configure which accounts are favorites
+
 ### `developer switch`
 
 `alks developer switch` - Switch the active ALKS account/role
@@ -128,6 +132,7 @@ Arguments:
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
+* `-F` Filters favorite accounts
 
 Output values:
 
@@ -149,6 +154,7 @@ Arguments:
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
 * `-p [password]` Your password
+* `-F` Filters favorite accounts
 
 ### `sessions list`
 
@@ -170,6 +176,7 @@ Arguments:
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
 * `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
 * `-d`: Include default policies, defaults to false
+* `-F` Filters favorite accounts
 
 Outputs the created role's ARN.
 
