@@ -199,6 +199,29 @@ Arguments:
 
 Outputs a list of available role types.
 
+### `iam createltk`
+
+`alks iam createrltk` Creates a new long term key in the specified AWS account.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-n [iamusername]` The name of the IAM user associated with the LTK, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
+* `-d`: Include default policies, defaults to false
+* `-F` Filters favorite accounts
+
+Outputs the created user's ARN along with the long term access key and long term secret key.
+
+### `iam deleteltk`
+
+`alks iam deleteltk` Deletes a previously created LTK in the specified AWS account.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-n [iamusername]` The name of the IAM user, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+
 # Output Formats
 
 ALKS CLI will output in a variety of formats:
