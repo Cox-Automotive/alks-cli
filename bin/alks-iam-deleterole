@@ -21,19 +21,21 @@ program
     .option('-n, --rolename [rolename]', 'the name of the role to delete')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
+    .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var roleName        = program.rolename,
-    alksAccount     = program.account,
-    alksRole        = program.role;
+var roleName    = program.rolename,
+    alksAccount = program.account,
+    alksRole    = program.role,
+    filterFaves = program.favorites || false;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName)){
     utils.errorAndExit('The role name must be provided.');
 }
 
-Iam.getIAMKey(program, logger, alksAccount, alksRole, false, false, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
     }
