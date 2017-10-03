@@ -1,10 +1,11 @@
-★ Release Notes: 2017-06-20 ★
+★ Release Notes: 2017-10-03 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
 → You can now create long term keys: `alks iam createltk`
 → You can remove long term keys: `alks iam deleteltk`
+→ Sessions now provide the expiration time as: `env.AWS_SESSION_EXPIRES`
 → `alks iam deleterole` now supports `-F` to filter your favorites
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
