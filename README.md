@@ -135,6 +135,10 @@ Output values:
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
 
+Example: 
+
+`alks sessions open -a "12345678909/dev - webdevact" -r "Dev"`
+
 ### `sessions console`
 
 `alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
