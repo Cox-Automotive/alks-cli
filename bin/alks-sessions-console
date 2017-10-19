@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program    = require('commander'),
+    _          = require('underscore'),
+    opn        = require('opn'),
+    alks       = require('alks-node'),
+    config     = require('../package.json'),
+    utils      = require('../lib/utils'),
+    Sessions   = require('../lib/sessions'),
+    Developer  = require('../lib/developer'),
+    Iam        = require('../lib/iam');
+
+var outputValues = utils.getOutputValues();
+
+program
+    .version(config.version)
+    .description('open an AWS console in your browser')
+    .option('-o, --openWith [appName]', 'open in a different app (optional)')
+    .option('-a, --account [alksAccount]', 'alks account to use')
+    .option('-r, --role [alksRole]', 'alks role to use')
+    .option('-i, --iam', 'create an IAM session')
+    .option('-F, --favorites', 'filters favorite accounts')
+    .option('-p, --password [password]', 'my password')
+    .option('-N, --newSession', 'forces a new session to be generated')
+    .option('-d, --default', 'uses your default account from "alks developer configure"')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var alksAccount       = program.account,
+    alksRole          = program.role,
+    forceNewSession   = program.newSession,
+    useDefaultAcct    = program.default,
+    output            = program.output,
+    filterFaves       = program.favorites || false,
+    logger            = 'sessions-console';
+
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
+    utils.log(program, logger, 'trying to extract role from account');
+    alksRole = utils.tryToExtractRole(alksAccount);
+}
+
+var execute = function(){
+    if(_.isUndefined(program.iam)){
+        Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves, onComplete);
+    }
+    else{
+        Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves, onComplete);
+    }
+};
+
+var onComplete = function(err, key){
+    if(err){
+        return utils.errorAndExit(err);
+    }
+
+    utils.log(program, logger, 'calling aws to generate 15min console URL');
+    alks.generateConsoleUrl(key, { debug: program.verbose, ua: utils.getUA() }, function(err, url){
+        if(err){
+            utils.errorAndExit(err);
+        }
+
+        var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+        opn(url, opts);
+
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate(function(){
+            Developer.trackActivity(logger);
+            setTimeout(function(){ process.exit(1); }, 3000);
+        });
+    });
+};
+
+if(useDefaultAcct){
+    Developer.getDeveloper(function(err, dev){
+        if(err) return utils.errorAndExit('Unable to load default account!', err);
+
+        alksAccount = dev.alksAccount;
+        alksRole = dev.alksRole;
+        execute();
+    });
+}
+else{
+    execute();
+}

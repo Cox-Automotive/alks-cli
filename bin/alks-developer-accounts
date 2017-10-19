@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    alks      = require('alks-node'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('shows current developer configuration')
+    .option('-v, --verbose', 'be verbose')
+    .option('-e, --export', 'export accounts to environment variables')
+    .parse(process.argv);
+
+var table = new Table({
+    head: [clc.white.bold('Account'), clc.white.bold('Role'), clc.white.bold('Type')],
+    colWidths: [50, 50, 25]
+});
+
+var logger       = 'dev-accounts',
+    doExport     = program['export'],
+    accountRegex = utils.getAccountRegex(),
+    exportCmd    = utils.isWindows() ? 'SET' : 'export',
+    accounts     = [];
+
+function getUniqueAccountName(accountName){
+    var i = 1,
+        test = accountName;
+
+    while(_.contains(accounts, test)){
+        test = accountName + i++;
+    }
+
+    return test;
+}
+
+function accountExport(account){
+    var match;
+    while(match = accountRegex.exec(account)){
+        if(match && account.indexOf('ALKS_') === -1){ // ignore legacy accounts
+            var accountName = getUniqueAccountName([ match[6].toLowerCase(), match[4].toLowerCase() ].join('_'));
+            accounts.push(accountName)
+            console.log(exportCmd + ' ' + accountName + '="' + account + '"');
+        }
+    }
+}
+
+async.waterfall([
+    // get developer
+    function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
+    },
+    function(developer, callback){
+        Developer.getPassword(program, function(err, password){
+            utils.log(program, logger, 'getting password');
+            callback(err, developer, password);
+        });
+    },
+    function(developer, password, callback){
+        utils.log(program, logger, 'getting alks accounts');
+        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+            callback(err, developer, password, alksAccounts);
+        });
+    }
+],
+function(err, developer, password, alksAccounts){
+
+    _.each(alksAccounts, function(val, key){
+        var data = [ val.account, val.role ]
+
+        if(doExport){
+            accountExport(data[0])
+        }
+        else{
+            table.push(data.concat(val.iam ? 'IAM' : 'Standard'));
+        }
+    });
+
+    if(!doExport){
+        console.error(clc.white.underline.bold('\nAvailable Accounts'));
+        console.error(clc.white(table.toString()));
+    }
+
+    utils.log(program, logger, 'checking for update');
+    utils.checkForUpdate();
+    Developer.trackActivity(logger);
+});

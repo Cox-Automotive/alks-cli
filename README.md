@@ -1,9 +1,11 @@
-#ALKS CLI
+# ALKS CLI
 
 [![NPM](https://nodei.co/npm/alks.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/alks/)
 
+[![Build Status](https://travis-ci.org/Cox-Automotive/alks-cli.svg?branch=master)](https://travis-ci.org/Cox-Automotive/alks-cli)
+
 ## About
-CLI for working with the [ALKS](https://github.com/Cox-Automotive/ALKS) service.
+CLI for working with the ALKS service.
 
 ### Prerequisites
 
@@ -23,11 +25,11 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 
     alks developer configure
 
-* ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com)
+* ALKS Server: The full URL to your ALKS server (ex: https://alks.company.com/rest)
 * Network Username: Your network username
-* Network Password: Your network password, this is optional but recommended
-* Account: The ALKS account to use (ex: 193118345547/ALKS_NP_Admin - awsfoolabs)
-* Role: The IAM role to use
+* Network Password: Your network password (needed for loading list of accounts/roles)
+* Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
+* Default Account/Role: Select the default ALKS account/role to use
 
 ## Running
 
@@ -39,13 +41,13 @@ After installing the ALKS CLI it will be available on your path. Simply run the 
 
 To see a what options are available to a command ask for help on it:
 
-    alks keys help create
+    alks sessions help open
 
 ### Password
 
-Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this. 
+Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this.
 
-1. Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and Linux uses Gnome Keyring. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
+1. **Recommended:** Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and on Linux we use netrc. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
 2. Provide your password as an argument, simply pass `-p 'my pass!'`. Note this will appear in your Bash history.
 3. Create an environment variable called `ALKS_PASSWORD` whose value is your password.
 4. Type your password. If we do not find a password we will prompt you on each use.
@@ -58,7 +60,7 @@ We will attempt to lookup your password in the following order:
 1. CLI argument
 2. Environment variable
 3. Keystore
-4. Prompt user  
+4. Prompt user
 
 ## Docker
 
@@ -68,13 +70,23 @@ If you would rather run the ALKS CLI as a Docker container, simply run the follo
 docker run -it -v ~:/root coxauto/alks-cli
 ```
 
+If you are on a windows host and need SET instead of export then add a PLATFORM env:
+
+```
+docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessions open -a %AWS_ACCT% -r %AWS_ROLE% -o env 
+```
+
 # Commands
 
 ## Developer
 
 ### `developer configure`
 
-`alks developer configure` - Configures ALKS 
+`alks developer configure` - Configures ALKS
+
+### `developer switch`
+
+`alks developer switch` - Switch the active ALKS account/role
 
 ### `developer login`
 
@@ -88,18 +100,33 @@ docker run -it -v ~:/root coxauto/alks-cli
 
 `alks developer info` - Show your current developer configuration
 
-## Keys
+### `developer accounts`
 
-### `keys create`
+`alks developer accounts` - Show all available ALKS accounts (both Standard and IAM)
 
-`alks keys create` - Create a new session key with the ALKS service
+Arguments:
 
-Optional arguments:
+* `-e` Output as environment variables for creating account shortcuts
+
+
+## Sessions
+
+### `sessions open`
+
+`alks sessions open` Creates/resumes an ALKS session, this is the preferred way of using ALKS as it automates the underlying ALKS session for you. If you don't provide an account/role you'll be prompted for the one you'd like to use. Alternative you can use your default account/role by passing `-d`.
+
+This will create your sessions with the maximum life and automatically renew them when necessary. If you would like to do IAM/Admin work you'll need to pass the `-i` flag.
+
+Arguments:
 
 * `-p [password]` Your password
-* `-d [duration]` Duration of the key, in hours. Supports: 2, 6, 12, 18, 24, 36
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM/Admin user
+* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
 * `-n` If output is set to creds, use this named profile (defaults to default)
+* `-N` Forces a new session to be generated
+* `-d` Uses your default account from `alks developer configure`
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 
 Output values:
@@ -108,30 +135,71 @@ Output values:
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
 
-### `keys list`
+### `sessions console`
 
-`alks keys list` - List existing ALKS keys as well as output them. Your keys are stored encrypted using AES-256.
+`alks sessions console` - Open the AWS console in the default browser for the specified ALKS session.
 
-Optional arguments:
+Arguments:
 
 * `-p [password]` Your password
-* `-o [output]` Output format. Supports: `json`, `env`, `docker`, `creds`
-* `-n` If output is set to creds, use this named profile (defaults to default)
-* `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM/Admin user
+* `-o [appName]` Open with an alternative app (safari, google-chrome, etc)
+* `-N` Forces a new session to be generated
+* `-d` Uses your default account from `alks developer configure`
+* `-p [password]` Your password
 
-Output values:
+### `sessions list`
 
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-* `AWS_SESSION_TOKEN`
+`alks sessions list` - List active ALKS sessions, this includes both IAM and non-IAM sessions.
+
+Arguments:
+
+* `-p [password]` Your password
+
+## IAM
+
+### `iam createrole`
+
+`alks iam createrole` Creates a new IAM role for the requested type in the specified AWS account.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
+* `-d`: Include default policies, defaults to false
+
+Outputs the created role's ARN.
+
+### `iam deleterole`
+
+`alks iam deleterole` Deletes a previously created IAM role in the specified AWS account. Note this only works for IAM roles that were created with ALKS.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+
+### `iam roletypes`
+
+`alks iam roletypes` - List the available IAM role types.
+
+Arguments:
+
+* `-o [output]` Output format. Supports: `json`, `list`
+
+Outputs a list of available role types.
 
 # Output Formats
 
 ALKS CLI will output in a variety of formats:
 
+* `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks sessions open -d)`
 * `json`: Outputs a JSON object
-* `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks keys create -o env)`
 * `docker`: Outputs environment arguments to pass to a Docker run call
 * `creds`: Updates the AWS credentials file
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
-	* If the named profile already exists you'll need to supply an override flag: `-f`
+	* If the named profile already exists you'll need to supply the overwrite flag: `-f`
+* `idea`: Outputs environment variables formatted for Intelli-J

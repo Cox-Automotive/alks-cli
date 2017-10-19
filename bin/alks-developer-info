@@ -3,18 +3,19 @@
 
 process.title = 'ALKS';
 
-var program = require('commander'),
-    clc     = require('cli-color'),
-    _       = require('underscore'),
-    async   = require('async'),
-    Table   = require('cli-table'),
-    config  = require('../package.json'),
-    account = require('../lib/account'),
-    utils   = require('../lib/utils');
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    async     = require('async'),
+    Table     = require('cli-table2'),
+    config    = require('../package.json'),
+    Developer = require('../lib/developer'),
+    utils     = require('../lib/utils');
 
 program
     .version(config.version)
     .description('shows current developer configuration')
+    .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
 var table = new Table({
@@ -22,18 +23,31 @@ var table = new Table({
     colWidths: [25, 50]
 });
 
+var logger = 'dev-info';
+
 async.series({
-    // get account
-    account: function(callback){
-        account.getAccount(callback);
+    // get developer
+    developer: function(callback){
+        utils.log(program, logger, 'getting developer');
+        Developer.getDeveloper(callback);
     },
     password: function(callback){
-        account.getPassword(null, callback); // null means dont prompt
+        Developer.getPassword(null, callback); // null means dont prompt
     }
 },
 function(err, results){
-    _.each(results.account, function(val, key){
-        table.push([key, _.isEmpty(val) ? '' : val]);
+    var ignores = [ 'lastVersion', 'lastAcctUsed' ],
+        mapping = {
+        'server': 'ALKS Server',
+        'userid': 'Network Login',
+        'alksAccount': 'Default ALKS Account',
+        'alksRole': 'Default ALKS Role'
+    };
+
+    _.each(results.developer, function(val, key){
+        if(!_.contains(ignores, key)){
+            table.push([mapping[key], _.isEmpty(val) ? '' : val]);
+        }
     });
 
     var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
@@ -42,4 +56,7 @@ function(err, results){
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.error(clc.white(table.toString()));
 
+    utils.log(program, logger, 'checking for update');
+    utils.checkForUpdate();
+    Developer.trackActivity(logger);
 });
