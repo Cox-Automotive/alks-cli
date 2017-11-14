@@ -25,10 +25,10 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var roleName        = program.rolename,
-    alksAccount     = program.account,
-    filterFaves     = program.favorites || false,
-    alksRole        = program.role;
+var roleName    = program.rolename,
+    alksAccount = program.account,
+    alksRole    = program.role,
+    filterFaves = program.favorites || false;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName)){
