@@ -45,7 +45,6 @@
     "commander": "^2.9.0",
     "crypto": "0.0.3",
     "express": "^4.16.2",
-    "forever": "^0.15.3",
     "fuzzy": "^0.1.1",
     "inquirer": "^1.1.2",
     "left-pad": "^1.1.3",
@@ -64,5 +63,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3"
+  },
+  "optionalDependencies": {
+    "forever": "^0.15.3"
   }
 }
