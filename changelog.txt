@@ -3,6 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+→ Updates encryption to aes-256-cbc with initialization vectors
 → Adds support for long term keys (ltk) for non-prod and lab accounts
 → You can now create long term keys: `alks iam createltk`
 → You can remove long term keys: `alks iam deleteltk`
