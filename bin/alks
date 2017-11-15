@@ -7,18 +7,15 @@ var path     = require('path'),
     clc      = require('cli-color'),
     _        = require('underscore'),
     program  = require('commander'),
-    fs       = require('fs'),
     fuzzy    = require('fuzzy'),
     utils    = require('../lib/utils'),
     pkg      = require(path.join(__dirname, '../', 'package.json'));
-
-var config   = utils.getFilePathInHome('alks.env'),
-    data     = [];
 
 program
     .command('sessions', 'manage aws sessions')
     .command('iam', 'manage iam resources')
     .command('developer', 'developer & account commands')
+    .command('server', 'ec2 metadata server')
     .version(pkg.version);
 
 if(process.stdout.isTTY){
