@@ -11,11 +11,11 @@ var program   = require('commander'),
 
 program
     .version(config.version)
-    .description('shows current developer configuration')
+    .description('stops the metadata server')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger = 'dev-server-stop';
+var logger = 'server-stop';
 
 if(!utils.isOSX()){
     console.error(clc.red('The metadata server is only supported on OSX.'));

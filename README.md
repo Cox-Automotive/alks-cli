@@ -84,14 +84,6 @@ docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessi
 
 `alks developer configure` - Configures ALKS
 
-### `developer favorites`
-
-`alks developer favorites` - Configure which accounts are favorites
-
-### `developer switch`
-
-`alks developer switch` - Switch the active ALKS account/role
-
 ### `developer login`
 
 `alks developer login` - Store your login credentials in the OS keychain.
@@ -108,10 +100,9 @@ docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessi
 
 `alks developer accounts` - Show all available ALKS accounts (both Standard and IAM)
 
-Arguments:
+### `developer favorites`
 
-* `-e` Output as environment variables for creating account shortcuts
-
+`alks developer favorites` - Configure which accounts are favorites
 
 ## Sessions
 
@@ -221,6 +212,31 @@ Arguments:
 
 * `-p [password]` Your password
 * `-n [iamusername]` The name of the IAM user, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+
+## Metadata Server
+
+The metadata server listens on http://169.254.169.254 and mimicks the [AWS EC2 Instance Metadata server](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html). If you request credentials from http://169.254.169.254/latest/meta-data/iam/security-credentials/alks it will ensure you have a valid set of up-to-date credentials from ALKS. The account and role used can be changed at any time by running `alks server configure`.
+
+### `server configure`
+
+`alks server configure` - Configure the account and role used by the metadata server. This can also be invoked while the server is running.
+
+Arguments:
+
+* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
+* `-i` Specifies you wish to work as an IAM/Admin user
+* `-F` Filters favorite accounts
+
+### `server start`
+
+`alks server start` - Start the metadata server.
+
+### `server stop`
+
+`alks server stop` - Stop the metadata server.
+
 
 # Output Formats
 
