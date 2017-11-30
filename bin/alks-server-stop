@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    forever   = require('forever'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils');
+
+program
+    .version(config.version)
+    .description('stops the metadata server')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var logger = 'server-stop';
+
+if(!utils.isOSX()){
+    console.error(clc.red('The metadata server is only supported on OSX.'));
+    process.exit(0);
+}
+
+console.error(clc.white('Stopping metadata server..'));
+
+forever.list(false, function(err, list){
+    if(list === null){
+        console.error(clc.white('Metadata server is not running.'));
+    }
+    else{
+        forever.stopAll();
+        console.error(clc.white('Metadata server stopped.'));
+    }
+});
