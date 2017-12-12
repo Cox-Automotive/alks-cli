@@ -22,7 +22,7 @@ program
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
     .option('-p, --password [password]', 'my password')
-    .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
+    .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + ')')
     .option('-n, --namedProfile [profile]', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .option('-F, --favorites', 'filters favorite accounts')
@@ -53,19 +53,16 @@ var execute = function(){
     }
 };
 
-var onComplete = function(err, key){
+var onComplete = function(err, key, developer){
     if(err){
         return utils.errorAndExit(err);
     }
 
-    console.error('');
-    Keys.getKeyOutput(output, key, program.namedProfile, program.force, function(keyOutput){
-        console.log(keyOutput);
+    console.log(Keys.getKeyOutput(output || developer.outputFormat, key, program.namedProfile, program.force));
 
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
-    });
+    utils.log(program, logger, 'checking for updates');
+    utils.checkForUpdate();
+    Developer.trackActivity(logger);
 };
 
 if(useDefaultAcct){

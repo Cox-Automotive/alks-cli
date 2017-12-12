@@ -8,7 +8,6 @@ var program   = require('commander'),
     inquirer  = require('inquirer'),
     async     = require('async'),
     _         = require('underscore'),
-    alks      = require('alks-node'),
     config    = require('../package.json'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer');
@@ -58,7 +57,7 @@ async.waterfall([
     // check for existing password
     function(previousData, server, userid, callback){
         Developer.getPasswordFromKeystore(function(pass){
-            callback(null, previousData, server, userid, pass)
+            callback(null, previousData, server, userid, pass);
         });
     },
     // ask for password
@@ -90,7 +89,8 @@ async.waterfall([
             dontDefault: true,
             server: server,
             userid: userid
-        }
+        };
+
         Developer.getALKSAccount(program, opts, function(err, data){
             if(err){
                 if(err.message.indexOf('No accounts') === -1){
@@ -98,10 +98,27 @@ async.waterfall([
                 }
             }
 
-            callback(null, server, userid, password, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
+            callback(null, previousData, server, userid, password, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
+        });
+    },
+    // select output format
+    function(previousData, server, userid, password, savePassword, alksAccount, alksRole, callback){
+        utils.log(program, logger, 'Getting output formats');
+
+        var promptData = {
+                type: 'list',
+                name: 'outputFormat',
+                default: previousData.outputFormat,
+                message: 'Please select your default output format',
+                choices: utils.getOutputValues(),
+                pageSize: 10
+        };
+
+        utils.getStdErrPrompt()([ promptData ]).then(function(answers){
+            callback(null, server, userid, password, savePassword, alksAccount, alksRole, answers.outputFormat);
         });
     }
-], function(err, server, userid, password, savePassword, alksAccount, alksRole){
+], function(err, server, userid, password, savePassword, alksAccount, alksRole, outputFormat){
     // did any of our steps have issues?
     if(err){
         return utils.errorAndExit('Error configuring developer: ' + err.message);
@@ -113,7 +130,8 @@ async.waterfall([
         password: password,
         savePassword: savePassword,
         alksAccount: alksAccount,
-        alksRole: alksRole
+        alksRole: alksRole,
+        outputFormat: outputFormat
     };
 
     // create developer
