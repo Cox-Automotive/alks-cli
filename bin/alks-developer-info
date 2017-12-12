@@ -41,7 +41,8 @@ function(err, results){
         'server': 'ALKS Server',
         'userid': 'Network Login',
         'alksAccount': 'Default ALKS Account',
-        'alksRole': 'Default ALKS Role'
+        'alksRole': 'Default ALKS Role',
+        'outputFormat': 'Default Output Format'
     };
 
     _.each(results.developer, function(val, key){

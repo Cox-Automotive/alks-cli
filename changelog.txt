@@ -1,14 +1,15 @@
-★ Release Notes: 2017-11-30 ★
+★ Release Notes: 2017-12-12 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+→ You can now set a default output format using `alks developer configure`
+→ Adds output support for PowerShell
 → Updates encryption to aes-256-cbc with initialization vectors
-→ Adds support for EC2 Metadata API emulation
-→ See `alks server` for more info on the EC2 Metadata API
-→ Adds support for long term keys (ltk) for non-prod and lab accounts
+→ Adds support for EC2 Metadata API emulation. See `alks server` for more
 → You can now create long term keys: `alks iam createltk`
 → You can remove long term keys: `alks iam deleteltk`
+
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
