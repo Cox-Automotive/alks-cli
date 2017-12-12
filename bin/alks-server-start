@@ -22,8 +22,7 @@ program
 var logger = 'server-start';
 
 if(!utils.isOSX()){
-    console.error(clc.red('The metadata server is only supported on OSX.'));
-    process.exit(0);
+    utils.errorAndExit('The metadata server is only supported on OSX.');
 }
 
 function runServerDaemon(){

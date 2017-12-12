@@ -118,7 +118,7 @@ Arguments:
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-i` Specifies you wish to work as an IAM/Admin user
-* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`
+* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`, `powershell`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
@@ -240,7 +240,7 @@ Arguments:
 
 # Output Formats
 
-ALKS CLI will output in a variety of formats:
+ALKS CLI will output in a variety of formats, it uses the developer default (set with `alks developer configure`) and can be overridden by passing a value via `-o`.
 
 * `env`: Outputs Bash/Windows environment variable string. You can wrap this call in an eval:  `eval $(alks sessions open -d)`
 * `json`: Outputs a JSON object
@@ -249,3 +249,4 @@ ALKS CLI will output in a variety of formats:
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
 	* If the named profile already exists you'll need to supply the overwrite flag: `-f`
 * `idea`: Outputs environment variables formatted for Intelli-J
+* `powershell`: Outputs environment variables for Windows PowerShell

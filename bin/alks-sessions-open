@@ -4,7 +4,6 @@
 process.title = 'ALKS';
 
 var program    = require('commander'),
-    clc        = require('cli-color'),
     _          = require('underscore'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
