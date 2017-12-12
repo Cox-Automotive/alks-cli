@@ -59,11 +59,13 @@ var onComplete = function(err, key){
     }
 
     console.error('');
-    console.log(Keys.getKeyOutput(output, key, program.namedProfile, program.force));
+    Keys.getKeyOutput(output, key, program.namedProfile, program.force, function(keyOutput){
+        console.log(keyOutput);
 
-    utils.log(program, logger, 'checking for updates');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate();
+        Developer.trackActivity(logger);
+    });
 };
 
 if(useDefaultAcct){
