@@ -22,6 +22,7 @@ program
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
+    .option('-o, --output [format]', 'output format (text, json)', 'text')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
@@ -29,7 +30,8 @@ var NAME_REGEX  = /^[a-zA-Z0-9!@+=._-]+$/g,
     iamUsername = program.iamusername,
     alksAccount = program.account,
     alksRole    = program.role,
-    filterFaves = program.favorites || false;
+    filterFaves = program.favorites || false,
+    output      = program.output || 'text';
 
 utils.log(program, logger, 'validating iam user name: ' + iamUsername);
 if(_.isEmpty(iamUsername) || !NAME_REGEX.test(iamUsername)){
@@ -57,9 +59,15 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
             return utils.errorAndExit(err);
         }
 
-        console.error(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(data.iamUserArn));
-        console.error(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(data.accessKey));
-        console.error(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(data.secretKey));
+        if(output === 'json'){
+            _.each([ 'alksAccount', 'alksRole' ], function(key){ delete data[key]; });
+            console.log(JSON.stringify(data, null, 4));
+        }
+        else{
+            console.error(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(data.iamUserArn));
+            console.error(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(data.accessKey));
+            console.error(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(data.secretKey));
+        }
 
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate();
