@@ -253,4 +253,4 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 * `export`: Outputs environment variables via `export`
 * `set`: Outputs environment variables via `SET`
 * `powershell`: Outputs environment variables for Windows PowerShell
-* 'fishshell`: Outputs environment variables for Fishshell
+* `fishshell`: Outputs environment variables for Fishshell
