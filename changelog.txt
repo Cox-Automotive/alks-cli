@@ -1,14 +1,12 @@
-★ Release Notes: 2017-12-12 ★
+★ Release Notes: 2018-02-16 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+★ First release of 2018! ★
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ You can now set a default output format using `alks developer configure`
-→ Adds output support for PowerShell
-→ Updates encryption to aes-256-cbc with initialization vectors
-→ Adds support for EC2 Metadata API emulation. See `alks server` for more
-→ You can now create long term keys: `alks iam createltk`
-→ You can remove long term keys: `alks iam deleteltk`
+→ Default output adds support for 'export', 'set' and 'fishshell'
+→ Long term keys now support Kinesis
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
