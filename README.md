@@ -250,7 +250,7 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 	* By default this will update the default profile, to use another named profile supply: `-n namedProfile`
 	* If the named profile already exists you'll need to supply the overwrite flag: `-f`
 * `idea`: Outputs environment variables formatted for Intelli-J
-* `export: Outputs environment variables via `export`
+* `export`: Outputs environment variables via `export`
 * `set`: Outputs environment variables via `SET`
 * `powershell`: Outputs environment variables for Windows PowerShell
 * 'fishshell`: Outputs environment variables for Fishshell
