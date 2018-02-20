@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "2.15.2",
+  "version": "2.15.3",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -24,9 +24,9 @@
       }
     },
     "alks-node": {
-      "version": "0.6.0",
-      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.6.0.tgz",
-      "integrity": "sha512-WteGqm41w6UvlgJOGx+uY7cqOvIX+nXqWxSNppfE2vCcDvA8Gh7M17eFptYjcokoTjfzLyq94ZH5wpmqRj2F+Q==",
+      "version": "0.6.2",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.6.2.tgz",
+      "integrity": "sha512-mUMTDgE3Cw1R+HjyCymc87AUzncDtecw2eFwD3x1W01OxUMiKi6dAdVA+jwZoP1hJR1kXjoNUda0j9NReR4qNA==",
       "requires": {
         "moment": "2.18.1",
         "request": "2.81.0",
