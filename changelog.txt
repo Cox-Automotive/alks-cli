@@ -1,10 +1,9 @@
-★ Release Notes: 2018-02-16 ★
+★ Release Notes: 2018-02-20 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-
-★ First release of 2018! ★
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+→ Fix for `createltk` not reporting on invalid account
 → Default output adds support for 'export', 'set' and 'fishshell'
 → Long term keys now support Kinesis
 
