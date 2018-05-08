@@ -196,12 +196,13 @@ Outputs a list of available role types.
 
 Arguments:
 
-* `-p [password]` Your password
-* `-a [account]` The ALKS account to use, be sure to wrap in quotes
-* `-r [role]` The ALKS role to use, be sure to wrap in quotes
-* `-n [iamusername]` The name of the IAM user associated with the LTK, be sure to wrap in quotes, alphanumeric including: `@+=._-`
-* `-o [output]` Output format. Supports: `text`, `json`. Default: `text`
-* `-F` Filters favorite accounts
+* Required
+    * `-a [account]` The ALKS account to use, be sure to wrap in quotes
+    * `-n [iamusername]` The name of the IAM user associated with the LTK, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* Optional
+    * `-o [output]` Output format. Supports: `text`, `json`. Default: `text`
+    * `-r [role]` The ALKS role to use, be sure to wrap in quotes
+    * `-F` Filters favorite accounts
 
 Outputs the created user's ARN along with the long term access key and long term secret key.
 
