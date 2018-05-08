@@ -1,11 +1,10 @@
-★ Release Notes: 2018-02-20 ★
+★ Release Notes: 2018-05-08 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Fix for `createltk` not reporting on invalid account
-→ Default output adds support for 'export', 'set' and 'fishshell'
-→ Long term keys now support Kinesis
+→ Support for running without configuring (supply $ALKS_SERVER & $ALKS_USERID)
+→ Fix for missing AWS credentials file
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
