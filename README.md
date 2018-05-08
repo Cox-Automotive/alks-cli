@@ -31,6 +31,8 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 * Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
 * Default Account/Role: Select the default ALKS account/role to use
 
+Some commands will also work without configuration if the `ALKS_SERVER` and `ALKS_USERID` environment variables are set.
+
 ## Running
 
 After installing the ALKS CLI it will be available on your path. Simply run the following to see a list of supported commands:
