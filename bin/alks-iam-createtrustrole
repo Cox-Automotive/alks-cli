@@ -20,7 +20,7 @@ program
     .version(config.version)
     .description('creates a new IAM Trust role')
     .option('-n, --rolename [rolename]', 'the name of the role, ' + roleNameDesc)
-    .option('-t, --roletype [roletype]', 'the role type, to see available roles: Cross Account, Inner Account')
+    .option('-t, --roletype [roletype]', 'the role type, to see available roles: Cross Account')
     .option('-T, --trustarn [trustarn]', 'trust arn, ' + trustArnDesc)
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
