@@ -20,7 +20,7 @@ program
     .version(config.version)
     .description('creates a new IAM Trust role')
     .option('-n, --rolename [rolename]', 'the name of the role, ' + roleNameDesc)
-    .option('-t, --roletype [roletype]', 'the role type, to see available roles: Cross Account')
+    .option('-t, --roletype [roletype]', 'the role type: Cross Account or Inner Account')
     .option('-T, --trustarn [trustarn]', 'trust arn, ' + trustArnDesc)
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
@@ -43,7 +43,7 @@ if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
 }
 
 utils.log(program, logger, 'validating role type: ' + roleType);
-if(_.isEmpty(roleType)){
+if(_.isEmpty(roleType) || (roleType !== "Cross Account" && roleType !== "Inner Account")){
     utils.errorAndExit('The role type is required');
 }
 
@@ -65,8 +65,8 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     // create the role
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create trust role: ' + roleName);
-    // TODO: Why alks rest api not working when we send password ?
-    alks.createIamTrustRole(data, "", roleName, roleType, trustArn, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    delete data.userid
+    alks.createIamTrustRole(data, null, roleName, roleType, trustArn, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }

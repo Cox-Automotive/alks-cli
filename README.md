@@ -181,7 +181,7 @@ Arguments:
 
 * `-T [trustarn]` Your trust arn
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
-* `-t [roleType]` The role type, `Cross Account`, be sure to wrap in quotes
+* `-t [roleType]` The role type `Cross Account` or `Inner Account`, be sure to wrap in quotes
 * `-a [alksAccount]`: ALKS account to use
 * `-r [alksRole]`: ALKS role to use
 * `-F` Filters favorite accounts
