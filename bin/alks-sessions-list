@@ -26,7 +26,12 @@ var logger = 'sessions-list';
 async.waterfall([
     // check to be sure were configured
     function(callback){
+        utils.log(program, logger, 'ensuring configured');
         Developer.ensureConfigured(callback);
+    },
+    function(callback){
+        utils.log(program, logger, 'removing expired keys');
+        keys.removeExpiredKeys(callback)
     },
     // get the password
     function(callback){
