@@ -75,7 +75,7 @@ docker run -it -v ~:/root coxauto/alks-cli
 If you are on a windows host and need SET instead of export then add a PLATFORM env:
 
 ```
-docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessions open -a %AWS_ACCT% -r %AWS_ROLE% -o env 
+docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessions open -a %AWS_ACCT% -r %AWS_ROLE% -o env
 ```
 
 # Commands
@@ -173,6 +173,21 @@ Arguments:
 
 Outputs the created role's ARN.
 
+### `iam createtrustrole`
+
+`alks iam createtrustrole` Creates a new IAM Trust role for the requested type in the specified AWS account.
+
+Arguments:
+
+* `-T [trustarn]` Your trust arn
+* `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-t [roleType]` The role type `Cross Account` or `Inner Account`, be sure to wrap in quotes
+* `-a [alksAccount]`: ALKS account to use
+* `-r [alksRole]`: ALKS role to use
+* `-F` Filters favorite accounts
+
+Outputs the created role's ARN.
+
 ### `iam deleterole`
 
 `alks iam deleterole` Deletes a previously created IAM role in the specified AWS account. Note this only works for IAM roles that were created with ALKS.
@@ -257,3 +272,4 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 * `set`: Outputs environment variables via `SET`
 * `powershell`: Outputs environment variables for Windows PowerShell
 * `fishshell`: Outputs environment variables for Fishshell
+* `terraform`: Outputs environment variables prefixed with `ALKS`
