@@ -1,10 +1,14 @@
-★ Release Notes: 2018-05-08 ★
+★ Release Notes: 2018-07-18 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Support for running without configuring (supply $ALKS_SERVER & $ALKS_USERID)
-→ Fix for missing AWS credentials file
+→ Developer configure will no longer show existing password in plaintext
+→ Improved error messaging during developer configure
+→ Output support for ALKS Terraform provider (`-o terraform`)
+→ ALKS DB location is configurable via env param (`ALKS_DB=`)
+→ Adds support for creating trust roles (`alks iam createtrustrole`)
+→ Resolves issue where `alks sessions list` would prune non-expired keys
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

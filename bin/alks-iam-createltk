@@ -34,7 +34,10 @@ var NAME_REGEX  = /^[a-zA-Z0-9!@+=._-]+$/g,
     output      = program.output || 'text';
 
 utils.log(program, logger, 'validating iam user name: ' + iamUsername);
-if(_.isEmpty(iamUsername) || !NAME_REGEX.test(iamUsername)){
+if(_.isEmpty(iamUsername)){
+    utils.errorAndExit('Please provide a username (-n)');
+}
+else if(!NAME_REGEX.test(iamUsername)){
     utils.errorAndExit('The username provided contains illegal characters. It must be ' + nameDesc);
 }
 
