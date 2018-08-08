@@ -35,6 +35,11 @@ if(_.isEmpty(roleName)){
     utils.errorAndExit('The role name must be provided.');
 }
 
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
+    utils.log(program, logger, 'trying to extract role from account');
+    alksRole = utils.tryToExtractRole(alksAccount);
+}
+
 Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, password){
     if(err){
         return utils.errorAndExit(err);
