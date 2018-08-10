@@ -15,6 +15,7 @@ program
     .command('favorites', 'configure which accounts are favorites')
     .command('info', 'shows current developer configuration')
     .command('login', 'stores password')
+    .command('login2fa', 'exchanges 2FA token for access token')
     .command('logout', 'removes password')
     .parse(process.argv);
 
