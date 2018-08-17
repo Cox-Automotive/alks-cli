@@ -28,9 +28,9 @@ Developer.getPasswordFromPrompt(function(err, password){
         else{
             console.error(clc.white('Password saved!'));
         }
-    });
 
-    utils.log(program, logger, 'checking for updates');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
+        utils.log(program, logger, 'checking for updates');
+        utils.checkForUpdate();
+        Developer.trackActivity(logger);
+    });
 });
