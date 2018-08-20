@@ -102,11 +102,11 @@ docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessi
 
 ### `developer login2fa`
 
-`alks developer login` - Store your 2FA refresh token in the OS keychain.
+`alks developer login2fa` - Store your 2FA refresh token in the OS keychain.
 
 ### `developer logout2fa`
 
-`alks developer logout` - Remove your 2FA refresh token from the OS keychain.
+`alks developer logout2fa` - Remove your 2FA refresh token from the OS keychain.
 
 ### `developer info`
 
