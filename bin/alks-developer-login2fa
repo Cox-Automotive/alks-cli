@@ -14,7 +14,7 @@ var program   = require('commander'),
 
 program
     .version(config.version)
-    .description('exchanges 2FA token for access token')
+    .description('stores your alks refresh token')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
