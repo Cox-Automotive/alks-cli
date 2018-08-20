@@ -22,7 +22,7 @@ var logger = 'dev-login-2fa';
 
 utils.log(program, logger, 'loading developer');
 Developer.getDeveloper(function(err, data){
-    console.error('Opening ALKS 2FA Page');
+    console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
     opn(data.server.replace(/rest/, 'login/getToken.htm'));
     console.error('Please copy your refresh token from ALKS and paste below..');
 
@@ -31,16 +31,17 @@ Developer.getDeveloper(function(err, data){
 
         alks.refreshTokenToAccessToken(data, refreshToken, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
             if(err){
-                return utils.errorAndExit(err);
+                return utils.errorAndExit('Error validating refresh token. ' +  err.message);
             }
 
-            Developer.storeToken(data.accessToken, function(err, saved){
+            console.error(clc.white('Refresh token validated!'));
+            Developer.storeToken(refreshToken, function(err, saved){
                 if(!saved){
                     utils.log(program, logger, 'error saving token! ' + err.message);
                     utils.passwordSaveErrorHandler(err);
                 }
                 else{
-                    console.error(clc.white('Access Token saved!'));
+                    console.error(clc.white('Refresh token saved!'));
                 }
 
                 utils.log(program, logger, 'checking for updates');

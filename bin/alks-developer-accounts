@@ -47,7 +47,7 @@ function accountExport(account){
     while(match = accountRegex.exec(account)){
         if(match && account.indexOf('ALKS_') === -1){ // ignore legacy accounts
             var accountName = getUniqueAccountName([ match[6].toLowerCase(), match[4].toLowerCase() ].join('_'));
-            accounts.push(accountName)
+            accounts.push(accountName);
             console.log(exportCmd + ' ' + accountName + '="' + account + '"');
         }
     }
@@ -59,21 +59,21 @@ async.waterfall([
         utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
     },
+    // get auth
     function(developer, callback){
-        Developer.getPassword(program, function(err, password){
-            utils.log(program, logger, 'getting password');
-            callback(err, developer, password);
+        utils.log(program, logger, 'getting auth');
+        Developer.getAuth(program, function(err, auth){
+            callback(err, developer, auth);
         });
     },
-    function(developer, password, callback){
+    function(developer, auth, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
-            callback(err, developer, password, alksAccounts);
+        alks.getAccounts(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+            callback(err, developer, auth, alksAccounts);
         });
     }
 ],
-function(err, developer, password, alksAccounts){
-
+function(err, developer, auth, alksAccounts){
     _.each(alksAccounts, function(val, key){
         var data = [ val.account, val.role ]
 

@@ -28,22 +28,24 @@ async.waterfall([
     function(callback){
         Developer.ensureConfigured(callback);
     },
-    // get the password
+    // get auth
     function(callback){
-        utils.log(program, logger, 'getting password');
-        Developer.getPassword(program, callback);
+        utils.log(program, logger, 'getting auth');
+        Developer.getAuth(program, function(err, auth){
+            callback(err, auth);
+        });
     },
     // now retrieve the keys
-    function(password, callback){
+    function(auth, callback){
         utils.log(program, logger, 'getting existing sesions');
-        keys.getKeys(password, false, function(err, nonIamkeys){
-            callback(err, password, nonIamkeys)
+        keys.getKeys(auth, false, function(err, nonIamkeys){
+            callback(err, auth, nonIamkeys);
         });
     },
     // now retrieve the iam keys
-    function(password, nonIamkeys, callback){
+    function(auth, nonIamkeys, callback){
         utils.log(program, logger, 'getting existing iam sesions');
-        keys.getKeys(password, true, function(err, iamKeys){
+        keys.getKeys(auth, true, function(err, iamKeys){
             callback(err, nonIamkeys.concat(iamKeys));
         });
     },

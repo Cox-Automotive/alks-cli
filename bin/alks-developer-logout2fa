@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'ALKS';
+
+var program   = require('commander'),
+    clc       = require('cli-color'),
+    _         = require('underscore'),
+    config    = require('../package.json'),
+    utils     = require('../lib/utils'),
+    Developer = require('../lib/developer');
+
+program
+    .version(config.version)
+    .description('removes alks refresh token')
+    .option('-v, --verbose', 'be verbose')
+    .parse(process.argv);
+
+var logger = 'dev-logout2fa';
+
+if(Developer.removeToken()){
+    console.error(clc.white('Token removed!'));
+}
+else{
+    console.error(clc.red.bold('Error removing toking!'));
+}
+
+utils.log(program, logger, 'checking for updates');
+utils.checkForUpdate();
+Developer.trackActivity(logger);

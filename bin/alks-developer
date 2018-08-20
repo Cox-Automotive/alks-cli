@@ -15,8 +15,9 @@ program
     .command('favorites', 'configure which accounts are favorites')
     .command('info', 'shows current developer configuration')
     .command('login', 'stores password')
-    .command('login2fa', 'exchanges 2FA token for access token')
     .command('logout', 'removes password')
+    .command('login2fa', 'stores your alks refresh token')
+    .command('logout2fa', 'removes your alks refresh token')
     .parse(process.argv);
 
 utils.subcommandSuggestion(program, 'developer');
