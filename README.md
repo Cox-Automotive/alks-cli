@@ -286,4 +286,5 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 * `set`: Outputs environment variables via `SET`
 * `powershell`: Outputs environment variables for Windows PowerShell
 * `fishshell`: Outputs environment variables for Fishshell
-* `terraform`: Outputs environment variables prefixed with `ALKS`
+* `terraformenv`: Outputs environment variables prefixed with `ALKS`
+* `terraformarg`: Outputs environment arguments to pass to a Docker run call prefixed with `ALKS`
