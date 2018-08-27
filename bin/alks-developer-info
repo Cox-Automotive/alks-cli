@@ -58,7 +58,7 @@ function(err, results){
 
     var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
     table.push(['Password', password]);
-console.log(JSON.stringify(results, null, 4));
+
     var token = !_.isEmpty(results.token) ? results.token.substring(0,4) + '**********' : clc.red('NOT SET');
     table.push(['2FA Token', token]);
 
