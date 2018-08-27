@@ -24,9 +24,9 @@
       }
     },
     "alks-node": {
-      "version": "0.7.1",
-      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.7.1.tgz",
-      "integrity": "sha512-fhjexROGxsYKbJC1HkLb7sW2wpwf/gGMbS5LcU/8NET+Qss66NdV9wwXB/yxEUor9/tThnyPqW0U2WMHPwKMGw==",
+      "version": "0.8.0",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.8.0.tgz",
+      "integrity": "sha512-Slic7xe0crLw+QncTKGu3XnbmhXN1RuPAagmit6+d8IsFiMfxJXL5r8Xo5OdAEz4imStnnsvTUWTbvhbWdJUYg==",
       "requires": {
         "moment": "^2.15.2",
         "request": "^2.72.0",
