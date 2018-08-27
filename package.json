@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "2.17.0",
+  "version": "3.0.0",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -36,7 +36,7 @@
     "alks"
   ],
   "dependencies": {
-    "alks-node": "^0.7.1",
+    "alks-node": "^0.8.0",
     "async": "^2.0.0-rc.6",
     "chmod": "^0.2.1",
     "cli-color": "^1.1.0",
@@ -51,7 +51,7 @@
     "moment": "^2.13.0",
     "node-netrc": "^0.1.0",
     "npm-registry-client": "^7.1.2",
-    "opn": "^4.0.2",
+    "opn": "^5.3.0",
     "prop-ini": "0.0.2",
     "request": "^2.72.0",
     "semver": "^5.3.0",

@@ -49,7 +49,7 @@ To see a what options are available to a command ask for help on it:
 
 Since ALKS requires you to pass your credentials, we've made the CLI provide multiple ways of handling this.
 
-1. **Recommended:** Store your password in the keychain. We offer the ability to store your password securely using build in OS functionality. On OS X we use Keychain, on Windows we use Credential Vault and on Linux we use netrc. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
+1. **Recommended:** Store your password in the keychain. We offer the ability to store your password securely using built in OS functionality. On MacOS we use Keychain, on Windows we use Credential Vault and on Linux we use netrc. To store your password simply run `alks developer login` and follow the prompt. You can remove your password at any time by running `alks developer logout`.
 2. Provide your password as an argument, simply pass `-p 'my pass!'`. Note this will appear in your Bash history.
 3. Create an environment variable called `ALKS_PASSWORD` whose value is your password.
 4. Type your password. If we do not find a password we will prompt you on each use.
@@ -63,6 +63,12 @@ We will attempt to lookup your password in the following order:
 2. Environment variable
 3. Keystore
 4. Prompt user
+
+### Two Factor Authentication
+
+The preferred authentication mechanism is two-factor authentication. Simply log into the ALKS GUI and get your refresh token which we will securely store just like your password. 
+
+*Note:* Credential authentication will be removed in a future release of the ALKS CLI. 
 
 ## Docker
 
@@ -93,6 +99,14 @@ docker run -it -e PLATFORM=windows -v %USERPROFILE%:/root coxauto/alks-cli sessi
 ### `developer logout`
 
 `alks developer logout` - Remove your login credentials from the OS keychain.
+
+### `developer login2fa`
+
+`alks developer login2fa` - Store your 2FA refresh token in the OS keychain.
+
+### `developer logout2fa`
+
+`alks developer logout2fa` - Remove your 2FA refresh token from the OS keychain.
 
 ### `developer info`
 
@@ -272,4 +286,5 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 * `set`: Outputs environment variables via `SET`
 * `powershell`: Outputs environment variables for Windows PowerShell
 * `fishshell`: Outputs environment variables for Fishshell
-* `terraform`: Outputs environment variables prefixed with `ALKS`
+* `terraformenv`: Outputs environment variables prefixed with `ALKS`
+* `terraformarg`: Outputs environment arguments to pass to a Docker run call prefixed with `ALKS`

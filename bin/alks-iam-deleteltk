@@ -39,7 +39,7 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(err, developer, password, alksAccount, alksRole){
+Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(err, developer, auth, alksAccount, alksRole){
     if(err){
         return utils.errorAndExit(err);
     }
@@ -50,7 +50,7 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
     data.alksRole = alksRole;
     utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
 
-    alks.deleteLongTermKey(data, password, iamUsername, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    alks.deleteLongTermKey(data, auth, iamUsername, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }

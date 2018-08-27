@@ -1,14 +1,13 @@
-★ Release Notes: 2018-07-18 ★
+★ Release Notes: 2018-08-27 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Developer configure will no longer show existing password in plaintext
-→ Improved error messaging during developer configure
-→ Output support for ALKS Terraform provider (`-o terraform`)
-→ ALKS DB location is configurable via env param (`ALKS_DB=`)
-→ Adds support for creating trust roles (`alks iam createtrustrole`)
-→ Resolves issue where `alks sessions list` would prune non-expired keys
+→ Adds two-factor authentication support for level 2 accounts
+→ 2FA Info: https://bit.ly/2of65eq
+→ To login: alks developer login2fa
+→ To logout: alks developer login2fa
+→ Note: credential authentication has been deprecated and will be removed soon
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

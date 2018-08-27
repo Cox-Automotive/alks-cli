@@ -35,7 +35,12 @@ if(_.isEmpty(roleName)){
     utils.errorAndExit('The role name must be provided.');
 }
 
-Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, password){
+if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
+    utils.log(program, logger, 'trying to extract role from account');
+    alksRole = utils.tryToExtractRole(alksAccount);
+}
+
+Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, auth){
     if(err){
         return utils.errorAndExit(err);
     }
@@ -43,7 +48,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to delete role: ' + roleName);
 
-    alks.deleteIamRole(data, password, roleName, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    alks.deleteIamRole(data, auth, roleName, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }

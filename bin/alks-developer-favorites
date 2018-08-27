@@ -30,31 +30,32 @@ async.waterfall([
         utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
     },
+    // get auth
     function(developer, callback){
-        Developer.getPassword(program, function(err, password){
-            utils.log(program, logger, 'getting password');
-            callback(err, developer, password);
+        utils.log(program, logger, 'getting auth');
+        Developer.getAuth(program, function(err, auth){
+            callback(err, developer, auth);
         });
     },
-    function(developer, password, callback){
+    function(developer, auth, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
-            callback(err, developer, password, alksAccounts);
+        alks.getAccounts(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
+            callback(err, developer, auth, alksAccounts);
         });
     },
-    function(developer, password, accounts, callback){
+    function(developer, auth, accounts, callback){
         utils.log(program, logger, 'getting favorite accounts');
         Developer.getFavorites(function(err, data){
-            callback(null, developer, password, accounts, data.favorites);
+            callback(null, developer, auth, accounts, data.favorites);
         });
     }
 ],
-function(err, developer, password, alksAccounts, favorites){
+function(err, developer, auth, alksAccounts, favorites){
     var choices  = [],
         deferred = [];
 
     utils.log(program, logger, 'rendering favorite accounts');
-    choices.push(new inquirer.Separator(' = Standard = '))
+    choices.push(new inquirer.Separator(' = Standard = '));
     _.each(alksAccounts, function(val, key){
         if(!val.iam){
             var name = [val.account, val.role].join(Developer.getAccountDelim());
@@ -63,10 +64,10 @@ function(err, developer, password, alksAccounts, favorites){
                 checked: _.contains(favorites, name)
             });
         }
-        else deferred.push(val)
+        else deferred.push(val);
     });
 
-    choices.push(new inquirer.Separator(' = IAM = '))
+    choices.push(new inquirer.Separator(' = IAM = '));
     _.each(deferred, function(val, key){
         var name = [val.account, val.role].join(Developer.getAccountDelim());
         choices.push({

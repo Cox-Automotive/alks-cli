@@ -56,18 +56,28 @@ async.waterfall([
     },
     // check for existing password
     function(previousData, server, userid, callback){
-        Developer.getPasswordFromKeystore(function(pass){
-            callback(null, previousData, server, userid, pass);
+        utils.log(program, logger, 'getting existing auth');
+        Developer.getAuth(program, function(err, auth){
+            callback(err, previousData, server, userid, auth);
+        });
+    },
+    function(previousData, server, userid, auth, callback){
+        utils.log(program, logger, 'getting existing password');
+        Developer.getPasswordFromKeystore(function(password){
+            auth.password = password;
+            callback(null, previousData, server, userid, auth);
         });
     },
     // ask for password
-    function(previousData, server, userid, currentPassword, callback){
+    function(previousData, server, userid, auth, callback){
+        utils.log(program, logger, 'getting password');
         Developer.getPasswordFromPrompt(function(err, password){
-            callback(err, previousData, server, userid, password);
-        }, 'Network Password', currentPassword);
+            auth.password = password;
+            callback(err, previousData, server, userid, auth);
+        }, 'Network Password', auth.password);
     },
     // ask if they want to save password
-    function(previousData, server, userid, password, callback){
+    function(previousData, server, userid, auth, callback){
         inquirer.prompt([
             {
                 type: 'confirm',
@@ -75,15 +85,15 @@ async.waterfall([
                 message: 'Save password',
             }
         ]).then(function(answers){
-            callback(null, previousData, server, userid, password, answers.savePassword);
+            callback(null, previousData, server, userid, auth, answers.savePassword);
         });
     },
     // request list of accounts from ALKS
-    function(previousData, server, userid, password, savePassword, callback){
+    function(previousData, server, userid, auth, savePassword, callback){
         utils.log(program, logger, 'Getting ALKS accounts');
         var prompt = 'Please select your default ALKS account/role';
 
-        program.password = password; // this ensures getALKSAccount() doesnt prompt..
+        program.auth = auth; // this ensures getALKSAccount() doesnt prompt..
         var opts = {
             prompt: prompt,
             dontDefault: true,
@@ -98,11 +108,11 @@ async.waterfall([
                 }
             }
 
-            callback(null, previousData, server, userid, password, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
+            callback(null, previousData, server, userid, auth, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
         });
     },
     // select output format
-    function(previousData, server, userid, password, savePassword, alksAccount, alksRole, callback){
+    function(previousData, server, userid, auth, savePassword, alksAccount, alksRole, callback){
         utils.log(program, logger, 'Getting output formats');
 
         var promptData = {
@@ -115,10 +125,10 @@ async.waterfall([
         };
 
         utils.getStdErrPrompt()([ promptData ]).then(function(answers){
-            callback(null, server, userid, password, savePassword, alksAccount, alksRole, answers.outputFormat);
+            callback(null, server, userid, auth, savePassword, alksAccount, alksRole, answers.outputFormat);
         });
     }
-], function(err, server, userid, password, savePassword, alksAccount, alksRole, outputFormat){
+], function(err, server, userid, auth, savePassword, alksAccount, alksRole, outputFormat){
     // did any of our steps have issues?
     if(err){
         return utils.errorAndExit('Error configuring developer: ' + err.message);
@@ -127,7 +137,7 @@ async.waterfall([
     var developerPayload = {
         server: server,
         userid: userid,
-        password: password,
+        password: auth.password,
         savePassword: savePassword,
         alksAccount: alksAccount,
         alksRole: alksRole,

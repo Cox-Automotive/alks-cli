@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "2.17.0",
+  "version": "3.0.0",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -24,9 +24,9 @@
       }
     },
     "alks-node": {
-      "version": "0.7.1",
-      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.7.1.tgz",
-      "integrity": "sha512-fhjexROGxsYKbJC1HkLb7sW2wpwf/gGMbS5LcU/8NET+Qss66NdV9wwXB/yxEUor9/tThnyPqW0U2WMHPwKMGw==",
+      "version": "0.8.0",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.8.0.tgz",
+      "integrity": "sha512-Slic7xe0crLw+QncTKGu3XnbmhXN1RuPAagmit6+d8IsFiMfxJXL5r8Xo5OdAEz4imStnnsvTUWTbvhbWdJUYg==",
       "requires": {
         "moment": "^2.15.2",
         "request": "^2.72.0",
@@ -2159,6 +2159,11 @@
       "resolved": "https://registry.npmjs.org/is-promise/-/is-promise-2.1.0.tgz",
       "integrity": "sha1-eaKp7OfwlugPNtKy87wWwf9L8/o="
     },
+    "is-wsl": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/is-wsl/-/is-wsl-1.1.0.tgz",
+      "integrity": "sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0="
+    },
     "isarray": {
       "version": "1.0.0",
       "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
@@ -2824,32 +2829,11 @@
       "integrity": "sha1-ofeDj4MUxRbwXs78vEzP4EtO14k="
     },
     "opn": {
-      "version": "4.0.2",
-      "resolved": "https://registry.npmjs.org/opn/-/opn-4.0.2.tgz",
-      "integrity": "sha1-erwi5kTf9jsKltWrfyeQwPAavJU=",
+      "version": "5.3.0",
+      "resolved": "https://registry.npmjs.org/opn/-/opn-5.3.0.tgz",
+      "integrity": "sha512-bYJHo/LOmoTd+pfiYhfZDnf9zekVJrY+cnS2a5F2x+w5ppvTqObojTP7WiFG+kVZs9Inw+qQ/lw7TroWwhdd2g==",
       "requires": {
-        "object-assign": "^4.0.1",
-        "pinkie-promise": "^2.0.0"
-      },
-      "dependencies": {
-        "object-assign": {
-          "version": "4.1.1",
-          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz",
-          "integrity": "sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM="
-        },
-        "pinkie": {
-          "version": "2.0.4",
-          "resolved": "https://registry.npmjs.org/pinkie/-/pinkie-2.0.4.tgz",
-          "integrity": "sha1-clVrgM+g1IqXToDnckjoDtT3+HA="
-        },
-        "pinkie-promise": {
-          "version": "2.0.1",
-          "resolved": "https://registry.npmjs.org/pinkie-promise/-/pinkie-promise-2.0.1.tgz",
-          "integrity": "sha1-ITXW36ejWMBprJsXh3YogihFD/o=",
-          "requires": {
-            "pinkie": "^2.0.0"
-          }
-        }
+        "is-wsl": "^1.1.0"
       }
     },
     "optimist": {

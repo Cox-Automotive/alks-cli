@@ -65,7 +65,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     // create the role
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create trust role: ' + roleName);
-    delete data.userid
+    delete data.userid;
     alks.createIamTrustRole(data, null, roleName, roleType, trustArn, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);

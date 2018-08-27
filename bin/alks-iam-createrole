@@ -50,7 +50,7 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, password){
+Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, function(err, key, developer, auth){
     if(err){
         return utils.errorAndExit(err);
     }
@@ -59,7 +59,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create role: ' + roleName);
 
-    alks.createIamRole(data, password, roleName, roleType, incDefPolicies, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    alks.createIamRole(data, auth, roleName, roleType, incDefPolicies, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }

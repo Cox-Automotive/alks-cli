@@ -34,17 +34,17 @@ async.waterfall([
         utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(cb);
     },
-    // get password
-    function(developer, cb){
-        utils.log(program, logger, 'getting password');
-        Developer.getPassword(program, function(err, password){
-            cb(err, developer, password);
+    // get auth
+    function(developer, callback){
+        utils.log(program, logger, 'getting auth');
+        Developer.getAuth(program, function(err, auth){
+            callback(err, developer, auth);
         });
     },
     // load available account/roles
-    function(developer, password, cb){
+    function(developer, auth, cb){
         utils.log(program, logger, 'getting list of role types from REST API');
-        alks.getIamRoleTypes(developer.server, developer.userid, password, { debug: program.verbose, ua: utils.getUA() }, cb);
+        alks.getIamRoleTypes(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, cb);
     }
 ], function(err, roleTypes){
     if(err){

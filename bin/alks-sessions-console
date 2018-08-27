@@ -68,7 +68,7 @@ var onComplete = function(err, key){
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate(function(){
             Developer.trackActivity(logger);
-            setTimeout(function(){ process.exit(1); }, 3000);
+            setTimeout(function(){ process.exit(0); }, 3000); // needed for if browser is still open
         });
     });
 };
