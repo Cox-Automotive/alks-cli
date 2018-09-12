@@ -6,7 +6,7 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 → Adds two-factor authentication support for level 2 accounts
 → 2FA Info: https://bit.ly/2of65eq
 → To login: alks developer login2fa
-→ To logout: alks developer login2fa
+→ To logout: alks developer logout2fa
 → Note: credential authentication has been deprecated and will be removed soon
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
