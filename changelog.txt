@@ -1,13 +1,9 @@
-★ Release Notes: 2018-08-27 ★
+★ Release Notes: 2018-12-10 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Adds two-factor authentication support for level 2 accounts
-→ 2FA Info: https://bit.ly/2of65eq
-→ To login: alks developer login2fa
-→ To logout: alks developer login2fa
-→ Note: credential authentication has been deprecated and will be removed soon
+→ Updates subcommands to output non-interactive data to standard out
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

@@ -56,7 +56,7 @@ async.waterfall([
 
     if(output === 'list'){
         _.each(roleTypes, function(roleType, i){
-            console.error(clc.white([ (i < 9 ? ' ' : ''), i+1, ') ', roleType ].join('')));
+            console.log(clc.white([ (i < 9 ? ' ' : ''), i+1, ') ', roleType ].join('')));
         });
     }
     else{

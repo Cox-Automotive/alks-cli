@@ -87,7 +87,7 @@ function(err, developer, auth, alksAccounts){
 
     if(!doExport){
         console.error(clc.white.underline.bold('\nAvailable Accounts'));
-        console.error(clc.white(table.toString()));
+        console.log(clc.white(table.toString()));
     }
 
     utils.log(program, logger, 'checking for update');

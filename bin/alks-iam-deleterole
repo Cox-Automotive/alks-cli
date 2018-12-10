@@ -53,7 +53,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
             return utils.errorAndExit(err);
         }
 
-        console.error(clc.white(['The role ', roleName, ' was deleted'].join('')));
+        console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate();
         Developer.trackActivity(logger);
