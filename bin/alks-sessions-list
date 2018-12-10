@@ -83,7 +83,7 @@ async.waterfall([
         }
 
         console.error(clc.white.underline.bold('\Active Sessions'));
-        console.error(clc.white(table.toString()));
+        console.log(clc.white(table.toString()));
         callback(null);
     }
 ], function(err, selectedKey){

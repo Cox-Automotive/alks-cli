@@ -63,7 +63,7 @@ function(err, results){
     table.push(['2FA Token', token]);
 
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
-    console.error(clc.white(table.toString()));
+    console.log(clc.white(table.toString()));
 
     utils.log(program, logger, 'checking for update');
     utils.checkForUpdate();

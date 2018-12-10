@@ -67,9 +67,9 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
             console.log(JSON.stringify(data, null, 4));
         }
         else{
-            console.error(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(data.iamUserArn));
-            console.error(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(data.accessKey));
-            console.error(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(data.secretKey));
+            console.log(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(data.iamUserArn));
+            console.log(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(data.accessKey));
+            console.log(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(data.secretKey));
         }
 
         utils.log(program, logger, 'checking for updates');

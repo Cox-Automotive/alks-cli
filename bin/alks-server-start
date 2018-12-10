@@ -64,10 +64,10 @@ if(!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')){
         }
     ], function(err, data){
         if(err){
-            console.error(clc.red('Error installing metadata daemon.'), err);
+            console.log(clc.red('Error installing metadata daemon.'), err);
         }
         else{
-            console.error(clc.white('Successfully installed metadata daemon.'));
+            console.log(clc.white('Successfully installed metadata daemon.'));
             runServerDaemon();
         }
     });

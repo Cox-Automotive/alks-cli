@@ -55,7 +55,7 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
             return utils.errorAndExit(err);
         }
 
-        console.error(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
+        console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
 
         utils.log(program, logger, 'checking for updates');
         utils.checkForUpdate();

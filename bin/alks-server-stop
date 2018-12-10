@@ -26,10 +26,10 @@ console.error(clc.white('Stopping metadata server..'));
 
 forever.list(false, function(err, list){
     if(list === null){
-        console.error(clc.white('Metadata server is not running.'));
+        console.log(clc.white('Metadata server is not running.'));
     }
     else{
         forever.stopAll();
-        console.error(clc.white('Metadata server stopped.'));
+        console.log(clc.white('Metadata server stopped.'));
     }
 });
