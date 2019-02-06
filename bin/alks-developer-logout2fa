@@ -22,7 +22,7 @@ if(Developer.removeToken()){
     console.error(clc.white('Token removed!'));
 }
 else{
-    console.error(clc.red.bold('Error removing toking!'));
+    console.error(clc.red.bold('Error removing token!'));
 }
 
 utils.log(program, logger, 'checking for updates');
