@@ -1,9 +1,9 @@
-★ Release Notes: 2018-12-10 ★
+★ Release Notes: 2019-03-29 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Updates subcommands to output non-interactive data to standard out
+→ Adds support for per-role max session durations coming soon to ALKS
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
