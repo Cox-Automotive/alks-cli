@@ -23,7 +23,7 @@ var logger = 'dev-login-2fa';
 utils.log(program, logger, 'loading developer');
 Developer.getDeveloper(function(err, data){
     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
-    opn(data.server.replace(/rest/, 'login/getToken.htm'));
+    opn(data.server.replace(/rest/, 'token-management'));
     console.error('Please copy your refresh token from ALKS and paste below..');
 
     Developer.getPasswordFromPrompt(function(err, refreshToken){
