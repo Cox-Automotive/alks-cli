@@ -1,9 +1,11 @@
-★ Release Notes: 2019-03-29 ★
+★ Release Notes: 2019-12-19 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Adds support for per-role max session durations coming soon to ALKS
+→ Updates the ALKS refresh token URL (developer login2fa)
+→ Adds support for exporting the AWS Console URL (session console -u)
+→ Fixes a bug with netrc on Linux
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
