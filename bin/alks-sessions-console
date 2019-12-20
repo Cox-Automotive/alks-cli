@@ -18,6 +18,7 @@ var outputValues = utils.getOutputValues();
 program
     .version(config.version)
     .description('open an AWS console in your browser')
+    .option('-u, --url', 'just print the url')
     .option('-o, --openWith [appName]', 'open in a different app (optional)')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
@@ -62,14 +63,18 @@ var onComplete = function(err, key){
             utils.errorAndExit(err);
         }
 
-        var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
-        opn(url, opts);
+        if (program.url) {
+            console.log(url);
+        } else {
+            var opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+            opn(url, opts);
 
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate(function(){
-            Developer.trackActivity(logger);
-            setTimeout(function(){ process.exit(0); }, 3000); // needed for if browser is still open
-        });
+            utils.log(program, logger, 'checking for updates');
+            utils.checkForUpdate(function(){
+                Developer.trackActivity(logger);
+                setTimeout(function(){ process.exit(0); }, 3000); // needed for if browser is still open
+            });
+        }
     });
 };
 
