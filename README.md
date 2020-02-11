@@ -288,4 +288,4 @@ ALKS CLI will output in a variety of formats, it uses the developer default (set
 * `fishshell`: Outputs environment variables for Fishshell
 * `terraformenv`: Outputs environment variables prefixed with `ALKS`
 * `terraformarg`: Outputs environment arguments to pass to a Docker run call prefixed with `ALKS`
-* `aws`: Outputs environment arguments to pass to AWS
+* `aws`: Outputs environment arguments to pass to AWS (docs)[https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sourcing-external.html]
