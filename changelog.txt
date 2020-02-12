@@ -1,11 +1,10 @@
-★ Release Notes: 2019-12-19 ★
+★ Release Notes: 2020-02-12 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Updates the ALKS refresh token URL (developer login2fa)
-→ Adds support for exporting the AWS Console URL (session console -u)
-→ Fixes a bug with netrc on Linux
+→ Adds support for exporting credentials to the AWS CLI
+→ Fixes a minor bug with createtrustrole
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
