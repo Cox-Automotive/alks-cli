@@ -66,6 +66,6 @@
   "optionalDependencies": {
     "express": "^4.16.2",
     "express-list-endpoints": "^3.0.1",
-    "forever": "^0.15.3"
+    "forever": "^2.0.0"
   }
 }
