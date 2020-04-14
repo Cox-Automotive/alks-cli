@@ -44,6 +44,7 @@
     "clortho": "Cox-Automotive/clortho#1.2.3",
     "commander": "^2.9.0",
     "crypto": "0.0.3",
+    "fsevents": "^2.1.2",
     "fuzzy": "^0.1.1",
     "inquirer": "^6.0.0",
     "left-pad": "^1.1.3",
