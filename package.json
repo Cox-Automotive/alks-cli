@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "CLI for working with ALKS",
   "main": "bin/alks",
   "scripts": {
@@ -41,7 +41,7 @@
     "chmod": "^0.2.1",
     "cli-color": "^1.1.0",
     "cli-table3": "^0.5.0",
-    "clortho": "Cox-Automotive/clortho#1.2.3",
+    "clortho": "https://github.com/Cox-Automotive/clortho/archive/1.2.3.tar.gz",
     "commander": "^2.9.0",
     "crypto": "0.0.3",
     "fuzzy": "^0.1.1",
