@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -743,8 +743,8 @@
       "optional": true
     },
     "clortho": {
-      "version": "github:Cox-Automotive/clortho#bb96e8473d8935450349978c8d894aadc39600f9",
-      "from": "github:Cox-Automotive/clortho#1.2.3",
+      "version": "https://github.com/Cox-Automotive/clortho/archive/1.2.3.tar.gz",
+      "integrity": "sha512-ZN+OMQjRH2JWn5Cs49ETwpaZed6IfhOXbj+0F8ixXpUDhAo1cZm7MT56pSzzSRfggBP1M+c2fZ74Jm6jIBFibQ==",
       "requires": {
         "inquirer": "^0.11.0",
         "js-string-escape": "^1.0.0",
@@ -1082,7 +1082,7 @@
     },
     "escape-string-regexp": {
       "version": "1.0.5",
-      "resolved": false,
+      "resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz",
       "integrity": "sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ="
     },
     "etag": {
@@ -2196,7 +2196,7 @@
     },
     "inherits": {
       "version": "2.0.3",
-      "resolved": false,
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz",
       "integrity": "sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4="
     },
     "ini": {
@@ -4541,7 +4541,7 @@
     },
     "through": {
       "version": "2.3.8",
-      "resolved": false,
+      "resolved": "https://registry.npmjs.org/through/-/through-2.3.8.tgz",
       "integrity": "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU="
     },
     "tmp": {
