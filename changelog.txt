@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Fixes warning messages when installing on MacOS
-→ Fixes a bug relating to creating a trust role
+→ Converts a dependency to a tarball to fix breakages on install
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
