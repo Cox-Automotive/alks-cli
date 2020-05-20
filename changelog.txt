@@ -1,9 +1,10 @@
-★ Release Notes: 2020-04-15 ★
+★ Release Notes: 2020-05-20 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Converts a dependency to a tarball to fix breakages on install
+→ Updated README.md to include `-o` and `-u` documentation
+→ Normalized the "expires" field when working with sessions
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
