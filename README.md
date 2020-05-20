@@ -134,7 +134,7 @@ Arguments:
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-i` Specifies you wish to work as an IAM/Admin user
-* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`, `export`, `set`, `powershell`
+* `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`, `export`, `set`, `powershell`, `aws`, `fishshell`, `terraformenv`, `terraformarg`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
@@ -154,6 +154,7 @@ Output values:
 Arguments:
 
 * `-p [password]` Your password
+* `-u [url]` Print the URL
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-i` Specifies you wish to work as an IAM/Admin user
