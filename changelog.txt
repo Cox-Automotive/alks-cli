@@ -1,10 +1,9 @@
-★ Release Notes: 2020-05-20 ★
+★ Release Notes: 2020-06-17 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Updated README.md to include `-o` and `-u` documentation
-→ Normalized the "expires" field when working with sessions
+→ [BUGFIX] Corrects an issue where the ALKS sessions command would return expired keys
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
