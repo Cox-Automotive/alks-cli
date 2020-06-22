@@ -1,9 +1,9 @@
-★ Release Notes: 2020-06-17 ★
+★ Release Notes: 2020-06-22 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ [BUGFIX] Corrects an issue where the ALKS sessions command would return expired keys
+→ [BUGFIX] Corrects an issue where IAM Keys would fail to generate
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
