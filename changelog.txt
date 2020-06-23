@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ [BUGFIX] Corrects an issue where IAM Keys would fail to generate
+→ Fixes a typo
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
