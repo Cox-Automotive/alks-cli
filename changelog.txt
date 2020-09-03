@@ -1,9 +1,9 @@
-★ Release Notes: 2020-06-22 ★
+★ Release Notes: 2020-09-03 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Fixes a typo
+→ Bumps alks-node version
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
