@@ -21,6 +21,7 @@ program
     .option('-n, --rolename [rolename]', 'the name of the role, ' + roleNameDesc)
     .option('-t, --roletype [roletype]', 'the role type, to see available roles: alks iam roletypes')
     .option('-d, --defaultPolicies', 'include default policies, default: false', false)
+    .option('-e, --enableAlksAccess', 'enable alks access (MI), default: false', false)
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
@@ -28,12 +29,13 @@ program
     .parse(process.argv);
 
 var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g,
-    roleName        = program.rolename,
-    roleType        = program.roletype,
-    incDefPolicies  = program.defaultPolicies,
-    alksAccount     = program.account,
-    alksRole        = program.role,
-    filterFaves     = program.favorites || false;
+    roleName            = program.rolename,
+    roleType            = program.roletype,
+    incDefPolicies      = program.defaultPolicies,
+    enableAlksAccess    = program.enableAlksAccess,
+    alksAccount         = program.account,
+    alksRole            = program.role,
+    filterFaves         = program.favorites || false;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
@@ -59,7 +61,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create role: ' + roleName);
 
-    alks.createIamRole(data, auth, roleName, roleType, incDefPolicies, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    alks.createIamRole(data, auth, roleName, roleType, incDefPolicies, enableAlksAccess, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }
