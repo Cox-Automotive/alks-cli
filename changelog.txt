@@ -4,6 +4,7 @@
 Thanks for upgrading to the latest version of the ALKS CLI!
 
 → Bumps alks-node version
+→ Adds flag for enabling MI for role and trust role
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
