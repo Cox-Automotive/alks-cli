@@ -22,20 +22,22 @@ program
     .option('-n, --rolename [rolename]', 'the name of the role, ' + roleNameDesc)
     .option('-t, --roletype [roletype]', 'the role type: Cross Account or Inner Account')
     .option('-T, --trustarn [trustarn]', 'trust arn, ' + trustArnDesc)
+    .option('-e, --enableAlksAccess', 'enable alks access (MI), default: false', false)
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g,
-    TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g,
-    roleName        = program.rolename,
-    roleType        = program.roletype,
-    trustArn        = program.trustarn,
-    alksAccount     = program.account,
-    alksRole        = program.role,
-    filterFaves     = program.favorites || false;
+var ROLE_NAME_REGEX     = /^[a-zA-Z0-9!@+=._-]+$/g,
+    TRUST_ARN_REGEX     = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g,
+    roleName            = program.rolename,
+    roleType            = program.roletype,
+    trustArn            = program.trustarn,
+    enableAlksAccess    = program.enableAlksAccess,
+    alksAccount         = program.account,
+    alksRole            = program.role,
+    filterFaves         = program.favorites || false;
 
 utils.log(program, logger, 'validating role name: ' + roleName);
 if(_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)){
@@ -66,7 +68,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create trust role: ' + roleName);
     delete data.userid;
-    alks.createIamTrustRole(data, auth, roleName, roleType, trustArn, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+    alks.createIamTrustRole(data, auth, roleName, roleType, trustArn, enableAlksAccess, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
         if(err){
             return utils.errorAndExit(err);
         }
