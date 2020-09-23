@@ -36,7 +36,7 @@
     "alks"
   ],
   "dependencies": {
-    "alks-node": "^0.10.2",
+    "alks-node": "^0.12.0",
     "async": "^2.0.0-rc.6",
     "chmod": "^0.2.1",
     "cli-color": "^1.1.0",
