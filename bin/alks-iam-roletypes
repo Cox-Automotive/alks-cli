@@ -7,7 +7,7 @@ var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
-    alks      = require('alks-node'),
+    alks2      = require('alks.js'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
     utils     = require('../lib/utils');
@@ -44,7 +44,30 @@ async.waterfall([
     // load available account/roles
     function(developer, auth, cb){
         utils.log(program, logger, 'getting list of role types from REST API');
-        alks.getIamRoleTypes(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, cb);
+
+        alks2.getAccessToken({
+            baseUrl: developer.server,
+            refreshToken: auth.token
+        }).then(tokenInfo => {
+            utils.log(program, logger, 'exchanging for access token');
+
+            let alksCreate = alks2.create({
+                baseUrl: developer.server,
+                accessToken: tokenInfo.accessToken
+            });
+
+            alksCreate.getAWSRoleTypes().then((iamRoleTypes) => {
+                cb(null, iamRoleTypes);
+            }).catch(error => {
+                utils.log(program, logger, 'error creating ltk: ' + error);
+                cb(error, null);
+                return utils.errorAndExit(error);
+            });
+
+        }).catch(error => {
+            utils.log(program, logger, 'error exchanging for access token: ' + error);
+            return utils.errorAndExit(error);
+        });
     }
 ], function(err, roleTypes){
     if(err){

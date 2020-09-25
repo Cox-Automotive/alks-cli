@@ -7,6 +7,7 @@ var program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
     alks      = require('alks-node'),
+    alks2      = require('alks.js'),
     Iam       = require('../lib/iam'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer'),
@@ -50,15 +51,34 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
     data.alksRole = alksRole;
     utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
 
-    alks.deleteLongTermKey(data, auth, iamUsername, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-        if(err){
+    alks2.getAccessToken({
+        baseUrl: data.server,
+        refreshToken: auth.token
+    }).then(tokenInfo => {
+        utils.log(program, logger, 'exchanging for access token');
+
+        let alksCreate = alks2.create({
+            baseUrl: data.server,
+            accessToken: tokenInfo.accessToken
+        });
+
+        alksCreate.deleteIAMUser({
+            account: data.alksAccount,
+            role: data.alksRole,
+            iamUserName: iamUsername
+        }).then(() => {
+            console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
+
+            utils.log(program, logger, 'checking for updates');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+
+        }).catch(error => {
+            utils.log(program, logger, 'error deleting ltk: ' + error);
             return utils.errorAndExit(err);
-        }
-
-        console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
-
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
+        });
+    }).catch(error => {
+        utils.log(program, logger, 'error exchanging for access token: ' + error);
+        return utils.errorAndExit(err);
     });
 });

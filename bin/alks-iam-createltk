@@ -6,7 +6,7 @@ process.title = 'ALKS';
 var program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
-    alks      = require('alks-node'),
+    alks     = require('alks.js'),
     Iam       = require('../lib/iam'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer'),
@@ -57,23 +57,43 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
     data.alksRole = alksRole;
     utils.log(program, logger, 'calling api to create ltk: ' + iamUsername);
 
-    alks.createLongTermKey(data, auth, iamUsername, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-        if(err){
-            return utils.errorAndExit(err);
-        }
+    alks.getAccessToken({
+        baseUrl: data.server,
+        refreshToken: auth.token
+    }).then(tokenInfo => {
+        utils.log(program, logger, 'exchanging for access token');
 
-        if(output === 'json'){
-            _.each([ 'alksAccount', 'alksRole' ], function(key){ delete data[key]; });
-            console.log(JSON.stringify(data, null, 4));
-        }
-        else{
-            console.log(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(data.iamUserArn));
-            console.log(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(data.accessKey));
-            console.log(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(data.secretKey));
-        }
+        let alksCreate = alks.create({
+            baseUrl: data.server,
+            accessToken: tokenInfo.accessToken
+        });
 
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
+        alksCreate.createAccessKeys({
+            account: data.alksAccount,
+            role: data.alksRole,
+            iamUserName: iamUsername
+        }).then((ltk) => {
+            utils.log(program, logger, 'creating ltk');
+
+            if (output === 'json') {
+                _.each([ 'alksAccount', 'alksRole' ], function(key){ delete data[key]; });
+                console.log(JSON.stringify(data, null, 4));
+            } else {
+                console.log(clc.white(['LTK created for IAM User: ', iamUsername, ' was created with the ARN: '].join('')) + clc.white.underline(ltk.iamUserArn));
+                console.log(clc.white(['LTK Access Key: '].join('')) + clc.white.underline(ltk.accessKey));
+                console.log(clc.white(['LTK Secret Key: '].join('')) + clc.white.underline(ltk.secretKey));
+            }
+
+            utils.log(program, logger, 'checking for updates');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+
+        }).catch(error => {
+            utils.log(program, logger, 'error creating ltk: ' + error);
+            return utils.errorAndExit(error);
+        });
+    }).catch(error => {
+        utils.log(program, logger, 'error exchanging for access token: ' + error);
+        return utils.errorAndExit(error);
     });
 });

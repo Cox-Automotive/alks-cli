@@ -8,7 +8,7 @@ var program   = require('commander'),
     _         = require('underscore'),
     async     = require('async'),
     Table     = require('cli-table3'),
-    alks      = require('alks-node'),
+    alks      = require('alks.js'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
     utils     = require('../lib/utils');
@@ -66,12 +66,44 @@ async.waterfall([
             callback(err, developer, auth);
         });
     },
-    function(developer, auth, callback){
+     function(developer, auth, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
-            callback(err, developer, auth, alksAccounts);
-        });
-    }
+
+         alks.getAccessToken({
+             baseUrl: developer.server,
+             refreshToken: auth.token
+         }).then(tokenInfo => {
+             utils.log(program, logger, 'exchanging for access token');
+
+             let alksCreate = alks.create({
+                 baseUrl: developer.server,
+                 accessToken: tokenInfo.accessToken
+             });
+
+             alksCreate.getAccounts().then(accounts => {
+                 utils.log(program, logger, 'getting accounts');
+
+                 let accountsSorted = [];
+
+                 accounts.forEach((item) => {
+                     accountsSorted.push({
+                         account: item.account,
+                         role: item.role,
+                         iam: item.iamKeyActive
+                     });
+                 });
+
+                 accountsSorted.sort( (a, b) => (a.account > b.account) ? 1 : -1)
+                 callback(null, developer, auth, accountsSorted);
+             }).catch(error => {
+                 utils.log(program, logger, 'error getting accounts: ' + error);
+                 callback(error, developer, auth, null);
+             });
+         }).catch(error => {
+             utils.log(program, logger, 'error exchanging for access token: ' + error);
+             callback(error, developer, auth, null);
+         });
+     }
 ],
 function(err, developer, auth, alksAccounts){
     _.each(alksAccounts, function(val, key){

@@ -6,7 +6,7 @@ process.title = 'ALKS';
 var program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
-    alks      = require('alks-node'),
+    alks      = require('alks.js'),
     Iam       = require('../lib/iam'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer'),
@@ -68,17 +68,40 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create trust role: ' + roleName);
     delete data.userid;
-    alks.createIamTrustRole(data, auth, roleName, roleType, trustArn, enableAlksAccess, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-        if(err){
-            return utils.errorAndExit(err);
-        }
 
-        console.log(clc.white(['The role: ', data.roleName, ' was created with the ARN: '].join('')) + clc.white.underline(data.roleArn));
-        if(data.instanceProfileArn){
-            console.log(clc.white(['An instance profile was also created with the ARN: '].join('')) + clc.white.underline(data.instanceProfileArn));
-        }
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
+    alks.getAccessToken({
+        baseUrl: developer.server,
+        refreshToken: auth.token
+    }).then(tokenInfo => {
+
+        let alksCreate = alks.create({
+            baseUrl: developer.server,
+            accessToken: tokenInfo.accessToken
+        });
+
+        alksCreate.createNonServiceRole({
+            account: data.alksAccount,
+            role: data.alksRole,
+            trustArn: trustArn,
+            roleName: roleName,
+            roleType: roleType,
+            enableAlksAccess: enableAlksAccess
+        }).then(iamTrustRole => {
+
+            console.log(clc.white(['The role: ', iamTrustRole.roleName, ' was created with the ARN: '].join('')) + clc.white.underline(iamTrustRole.roleArn));
+            if(data.instanceProfileArn){
+                console.log(clc.white(['An instance profile was also created with the ARN: '].join('')) + clc.white.underline(iamTrustRole.instanceProfileArn));
+            }
+            utils.log(program, logger, 'checking for updates');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+
+        }).catch(error => {
+            utils.log(program, logger, 'error creating iam trust role: ' + error);
+            return utils.errorAndExit(error);
+        });
+    }).catch(error => {
+        utils.log(program, logger, 'error exchanging for access token: ' + error);
+        return utils.errorAndExit(error);
     });
 });

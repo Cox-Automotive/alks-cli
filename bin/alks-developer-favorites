@@ -3,11 +3,11 @@
 
 process.title = 'ALKS';
 
+require('cli-color');
 var program   = require('commander'),
-    clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
-    alks      = require('alks-node'),
+    alks     = require('alks.js'),
     inquirer  = require('inquirer'),
     config    = require('../package.json'),
     Developer = require('../lib/developer'),
@@ -19,10 +19,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger       = 'dev-favorites',
-    doExport     = program['export'],
-    accountRegex = utils.getAccountRegex(),
-    accounts     = [];
+var logger       = 'dev-favorites';
 
 async.waterfall([
     // get developer
@@ -39,9 +36,42 @@ async.waterfall([
     },
     function(developer, auth, callback){
         utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
-            callback(err, developer, auth, alksAccounts);
+
+        alks.getAccessToken({
+            baseUrl: developer.server,
+            refreshToken: auth.token
+        }).then(tokenInfo => {
+            utils.log(program, logger, 'exchanging for access token');
+
+            let alksCreate = alks.create({
+                baseUrl: developer.server,
+                accessToken: tokenInfo.accessToken
+            });
+
+            alksCreate.getAccounts().then(accounts => {
+                utils.log(program, logger, 'getting accounts');
+
+                let accountsSorted = [];
+
+                accounts.forEach((item) => {
+                    accountsSorted.push({
+                        account: item.account,
+                        role: item.role,
+                        iam: item.iamKeyActive
+                    });
+                });
+
+                accountsSorted.sort( (a, b) => (a.account > b.account) ? 1 : -1)
+                callback(null, developer, auth, accountsSorted);
+            }).catch(error => {
+                utils.log(program, logger, 'error getting accounts: ' + error);
+                callback(error, developer, auth, null);
+            });
+        }).catch(error => {
+            utils.log(program, logger, 'error exchanging for access token: ' + error);
+            callback(error, developer, auth, null);
         });
+
     },
     function(developer, auth, accounts, callback){
         utils.log(program, logger, 'getting favorite accounts');
@@ -56,7 +86,7 @@ function(err, developer, auth, alksAccounts, favorites){
 
     utils.log(program, logger, 'rendering favorite accounts');
     choices.push(new inquirer.Separator(' = Standard = '));
-    _.each(alksAccounts, function(val, key){
+    _.each(alksAccounts, function(val){
         if(!val.iam){
             var name = [val.account, val.role].join(Developer.getAccountDelim());
             choices.push({
@@ -68,7 +98,7 @@ function(err, developer, auth, alksAccounts, favorites){
     });
 
     choices.push(new inquirer.Separator(' = IAM = '));
-    _.each(deferred, function(val, key){
+    _.each(deferred, function(val){
         var name = [val.account, val.role].join(Developer.getAccountDelim());
         choices.push({
             name: name,
@@ -83,7 +113,7 @@ function(err, developer, auth, alksAccounts, favorites){
         choices: choices,
         pageSize: 25
     }]).then(function(faves){
-        Developer.saveFavorites({accounts: faves}, function(err, resp){
+        Developer.saveFavorites({accounts: faves}, function(){
             console.log('Favorites have been saved!');
 
             utils.log(program, logger, 'checking for update');

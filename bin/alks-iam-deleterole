@@ -3,11 +3,11 @@
 
 process.title = 'ALKS';
 
+require('async');
 var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
-    async     = require('async'),
-    alks      = require('alks-node'),
+    alks     = require('alks.js'),
     config    = require('../package.json'),
     Iam       = require('../lib/iam'),
     Developer = require('../lib/developer'),
@@ -48,14 +48,34 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     var data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to delete role: ' + roleName);
 
-    alks.deleteIamRole(data, auth, roleName, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-        if(err){
-            return utils.errorAndExit(err);
-        }
+    alks.getAccessToken({
+        baseUrl: data.server,
+        refreshToken: auth.token
+    }).then(tokenInfo => {
+        utils.log(program, logger, 'exchanging for access token');
 
-        console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
+        let alksCreate = alks.create({
+            baseUrl: data.server,
+            accessToken: tokenInfo.accessToken
+        });
+
+        alksCreate.deleteRole({
+            account: data.alksAccount,
+            role: data.alksRole,
+            roleName: roleName
+        }).then((isDeleted) => {
+
+            console.log(clc.white(['The role ', roleName, ' was deleted: ', isDeleted ].join('')));
+            utils.log(program, logger, 'checking for updates');
+            utils.checkForUpdate();
+            Developer.trackActivity(logger);
+
+        }).catch(error => {
+            utils.log(program, logger, 'error deleting role: ' + error);
+            return utils.errorAndExit(err);
+        });
+    }).catch(error => {
+        utils.log(program, logger, 'error exchanging for access token: ' + error);
+        return utils.errorAndExit(err);
     });
 });

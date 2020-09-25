@@ -7,7 +7,7 @@ var program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     opn       = require('opn'),
-    alks      = require('alks-node'),
+    alks     = require('alks.js'),
     config    = require('../package.json'),
     utils     = require('../lib/utils'),
     Developer = require('../lib/developer');
@@ -29,18 +29,17 @@ Developer.getDeveloper(function(err, data){
     Developer.getPasswordFromPrompt(function(err, refreshToken){
         utils.log(program, logger, 'exchanging refresh token for access token');
 
-        alks.refreshTokenToAccessToken(data, refreshToken, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-            if(err){
-                return utils.errorAndExit('Error validating refresh token. ' +  err.message);
-            }
-
+        alks.getAccessToken({
+            baseUrl: data.server,
+            refreshToken: refreshToken
+        }).then(() => {
             console.error(clc.white('Refresh token validated!'));
-            Developer.storeToken(refreshToken, function(err, saved){
-                if(!saved){
+
+            Developer.storeToken(refreshToken, function (err, saved) {
+                if (!saved) {
                     utils.log(program, logger, 'error saving token! ' + err.message);
                     utils.passwordSaveErrorHandler(err);
-                }
-                else{
+                } else {
                     console.error(clc.white('Refresh token saved!'));
                 }
 
@@ -48,8 +47,13 @@ Developer.getDeveloper(function(err, data){
                 utils.checkForUpdate();
                 Developer.trackActivity(logger);
 
-                setTimeout(function(){ process.exit(0); }, 1000); // needed for if browser is still open
+                setTimeout(function () {
+                    process.exit(0);
+                }, 1000); // needed for if browser is still open
             });
+
+        }).catch(error => {
+            return utils.errorAndExit('Error validating refresh token: ' + error);
         });
     }, 'Refresh Token');
 });
