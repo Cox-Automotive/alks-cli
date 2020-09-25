@@ -6,14 +6,12 @@ process.title = 'ALKS';
 var program    = require('commander'),
     _          = require('underscore'),
     opn        = require('opn'),
-    alks       = require('alks-node'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
     Sessions   = require('../lib/sessions'),
     Developer  = require('../lib/developer'),
     Iam        = require('../lib/iam');
 
-var outputValues = utils.getOutputValues();
 
 program
     .version(config.version)
@@ -34,7 +32,6 @@ var alksAccount       = program.account,
     alksRole          = program.role,
     forceNewSession   = program.newSession,
     useDefaultAcct    = program.default,
-    output            = program.output,
     filterFaves       = program.favorites || false,
     logger            = 'sessions-console';
 
@@ -59,8 +56,7 @@ var onComplete = function(err, key){
 
     utils.log(program, logger, 'calling aws to generate 15min console URL');
 
-    // FIXME / TODO: Move this ALKS function to ALKS.js
-    alks.generateConsoleUrl(key, { debug: program.verbose, ua: utils.getUA() }, function(err, url){
+    utils.generateConsoleUrl(key, { debug: program.verbose, ua: utils.getUA() }, function(err, url){
         if(err){
             utils.errorAndExit(err);
         }
