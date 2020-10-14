@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
     alks      = require('alks-node'),
@@ -12,7 +12,7 @@ var program   = require('commander'),
     Developer = require('../lib/developer'),
     config    = require('../package.json');
 
-var logger       = 'iam-createtrustrole',
+let logger       = 'iam-createtrustrole',
     roleNameDesc = 'alphanumeric including @+=._-',
     trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
 
@@ -29,7 +29,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var ROLE_NAME_REGEX     = /^[a-zA-Z0-9!@+=._-]+$/g,
+let ROLE_NAME_REGEX     = /^[a-zA-Z0-9!@+=._-]+$/g,
     TRUST_ARN_REGEX     = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g,
     roleName            = program.rolename,
     roleType            = program.roletype,
@@ -65,7 +65,7 @@ Iam.getIAMKey(program, logger, alksAccount, alksRole, false, filterFaves, functi
     }
 
     // create the role
-    var data = _.extend({}, developer, key);
+    let data = _.extend({}, developer, key);
     utils.log(program, logger, 'calling api to create trust role: ' + roleName);
     delete data.userid;
     alks.createIamTrustRole(data, auth, roleName, roleType, trustArn, enableAlksAccess, { debug: program.verbose, ua: utils.getUA() }, function(err, data){

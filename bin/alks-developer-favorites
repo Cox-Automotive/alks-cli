@@ -3,8 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
-    clc       = require('cli-color'),
+let program   = require('commander'),
     _         = require('underscore'),
     async     = require('async'),
     alks      = require('alks-node'),
@@ -19,10 +18,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger       = 'dev-favorites',
-    doExport     = program['export'],
-    accountRegex = utils.getAccountRegex(),
-    accounts     = [];
+let logger       = 'dev-favorites';
 
 async.waterfall([
     // get developer
@@ -51,14 +47,14 @@ async.waterfall([
     }
 ],
 function(err, developer, auth, alksAccounts, favorites){
-    var choices  = [],
+    let choices  = [],
         deferred = [];
 
     utils.log(program, logger, 'rendering favorite accounts');
     choices.push(new inquirer.Separator(' = Standard = '));
-    _.each(alksAccounts, function(val, key){
+    _.each(alksAccounts, function(val){
         if(!val.iam){
-            var name = [val.account, val.role].join(Developer.getAccountDelim());
+            let name = [val.account, val.role].join(Developer.getAccountDelim());
             choices.push({
                 name: name,
                 checked: _.contains(favorites, name)
@@ -68,8 +64,8 @@ function(err, developer, auth, alksAccounts, favorites){
     });
 
     choices.push(new inquirer.Separator(' = IAM = '));
-    _.each(deferred, function(val, key){
-        var name = [val.account, val.role].join(Developer.getAccountDelim());
+    _.each(deferred, function(val){
+        let name = [val.account, val.role].join(Developer.getAccountDelim());
         choices.push({
             name: name,
             checked: _.contains(favorites, name)
@@ -83,7 +79,7 @@ function(err, developer, auth, alksAccounts, favorites){
         choices: choices,
         pageSize: 25
     }]).then(function(faves){
-        Developer.saveFavorites({accounts: faves}, function(err, resp){
+        Developer.saveFavorites({accounts: faves}, function(){
             console.log('Favorites have been saved!');
 
             utils.log(program, logger, 'checking for update');

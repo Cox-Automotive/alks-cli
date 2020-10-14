@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
@@ -12,7 +12,7 @@ var program   = require('commander'),
     Developer = require('../lib/developer'),
     utils     = require('../lib/utils');
 
-var logger     = 'iam-roletypes',
+let logger     = 'iam-roletypes',
     outputVals = [ 'list', 'json' ];
 
 program
@@ -22,7 +22,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var output = program.output;
+let output = program.output;
 
 if(!_.contains(outputVals, output)){
     utils.errorAndExit('The output provided ('+output+') is not in the allowed values: ' + outputVals.join(', '));
