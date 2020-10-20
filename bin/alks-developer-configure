@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     clc       = require('cli-color'),
     inquirer  = require('inquirer'),
     async     = require('async'),
@@ -18,7 +18,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger = 'dev-config';
+let logger = 'dev-config';
 
 function getPrompt(field, data, text, validator, callback){
     utils.getStdErrPrompt()([{
@@ -37,7 +37,7 @@ function getPrompt(field, data, text, validator, callback){
 }
 
 async.waterfall([
-    // check for an exisiting developer
+    // check for an existing developer
     function(callback){
         utils.log(program, logger, 'getting developer');
         Developer.getDeveloper(callback);
@@ -91,10 +91,10 @@ async.waterfall([
     // request list of accounts from ALKS
     function(previousData, server, userid, auth, savePassword, callback){
         utils.log(program, logger, 'Getting ALKS accounts');
-        var prompt = 'Please select your default ALKS account/role';
+        let prompt = 'Please select your default ALKS account/role';
 
         program.auth = auth; // this ensures getALKSAccount() doesnt prompt..
-        var opts = {
+        let opts = {
             prompt: prompt,
             dontDefault: true,
             server: server,
@@ -115,7 +115,7 @@ async.waterfall([
     function(previousData, server, userid, auth, savePassword, alksAccount, alksRole, callback){
         utils.log(program, logger, 'Getting output formats');
 
-        var promptData = {
+        let promptData = {
                 type: 'list',
                 name: 'outputFormat',
                 default: previousData.outputFormat,
@@ -134,7 +134,7 @@ async.waterfall([
         return utils.errorAndExit('Error configuring developer: ' + err.message);
     }
 
-    var developerPayload = {
+    let developerPayload = {
         server: server,
         userid: userid,
         password: auth.password,

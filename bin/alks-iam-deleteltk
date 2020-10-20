@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     _         = require('underscore'),
     clc       = require('cli-color'),
     alks      = require('alks-node'),
@@ -12,7 +12,7 @@ var program   = require('commander'),
     Developer = require('../lib/developer'),
     config    = require('../package.json');
 
-var logger       = 'iam-deleteltk';
+let logger       = 'iam-deleteltk';
 
 program
     .version(config.version)
@@ -24,7 +24,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var iamUsername = program.iamusername,
+let iamUsername = program.iamusername,
     alksAccount = program.account,
     alksRole    = program.role,
     filterFaves = program.favorites || false;
@@ -45,7 +45,7 @@ Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(
     }
 
     // delete the LTK
-    var data = _.extend({}, developer);
+    let data = _.extend({}, developer);
     data.alksAccount = alksAccount;
     data.alksRole = alksRole;
     utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);

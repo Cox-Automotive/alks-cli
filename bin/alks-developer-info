@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     clc       = require('cli-color'),
     _         = require('underscore'),
     async     = require('async'),
@@ -18,12 +18,12 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var table = new Table({
+let table = new Table({
     head: [clc.white.bold('Key'), clc.white.bold('Value')],
     colWidths: [25, 50]
 });
 
-var logger = 'dev-info';
+let logger = 'dev-info';
 
 async.series({
     // get developer
@@ -41,7 +41,7 @@ async.series({
     }
 },
 function(err, results){
-    var ignores = [ 'lastVersion', 'lastAcctUsed' ],
+    let ignores = [ 'lastVersion', 'lastAcctUsed' ],
         mapping = {
         'server': 'ALKS Server',
         'userid': 'Network Login',
@@ -56,10 +56,10 @@ function(err, results){
         }
     });
 
-    var password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
+    let password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
     table.push(['Password', password]);
 
-    var token = !_.isEmpty(results.token) ? results.token.substring(0,4) + '**********' : clc.red('NOT SET');
+    let token = !_.isEmpty(results.token) ? results.token.substring(0,4) + '**********' : clc.red('NOT SET');
     table.push(['2FA Token', token]);
 
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));

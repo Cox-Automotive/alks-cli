@@ -3,9 +3,8 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     clc       = require('cli-color'),
-    _         = require('underscore'),
     opn       = require('opn'),
     alks      = require('alks-node'),
     config    = require('../package.json'),
@@ -18,18 +17,18 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger = 'dev-login-2fa';
+let logger = 'dev-login-2fa';
 
 utils.log(program, logger, 'loading developer');
 Developer.getDeveloper(function(err, data){
     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
-    opn(data.server.replace(/rest/, 'token-management'));
+    opn(data.server.replace(/rest/, 'token-management')).then(() => {});
     console.error('Please copy your refresh token from ALKS and paste below..');
 
     Developer.getPasswordFromPrompt(function(err, refreshToken){
         utils.log(program, logger, 'exchanging refresh token for access token');
 
-        alks.refreshTokenToAccessToken(data, refreshToken, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
+        alks.refreshTokenToAccessToken(data, refreshToken, { debug: program.verbose, ua: utils.getUA() }, function(err){
             if(err){
                 return utils.errorAndExit('Error validating refresh token. ' +  err.message);
             }

@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     clc       = require('cli-color'),
     async     = require('async'),
     forever   = require('forever'),
@@ -19,7 +19,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var logger = 'server-start';
+let logger = 'server-start';
 
 if(!utils.isOSX()){
     utils.errorAndExit('The metadata server is only supported on OSX.');
@@ -40,7 +40,7 @@ utils.log(program, logger, 'Checking if forwarding daemon is already installed..
 
 if(!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')){
     console.error(clc.white('Installing metadata daemon rules. You may be prompted for your system password since this requires escalated privileges.'));
-    var servicePath = path.join(__dirname, '../service');
+    let servicePath = path.join(__dirname, '../service');
 
     async.waterfall([
         function(callback){
@@ -62,7 +62,7 @@ if(!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')){
                 callback(err);
             });
         }
-    ], function(err, data){
+    ], function(err){
         if(err){
             console.log(clc.red('Error installing metadata daemon.'), err);
         }
