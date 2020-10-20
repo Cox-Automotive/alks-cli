@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var path     = require('path'),
+let path     = require('path'),
     clc      = require('cli-color'),
     _        = require('underscore'),
     program  = require('commander'),

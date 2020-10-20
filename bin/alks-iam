@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program   = require('commander'),
+let program   = require('commander'),
     config    = require('../package.json'),
     utils     = require('../lib/utils');
 

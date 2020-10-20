@@ -3,7 +3,7 @@
 
 process.title = 'ALKS';
 
-var program    = require('commander'),
+let program    = require('commander'),
     _          = require('underscore'),
     config     = require('../package.json'),
     utils      = require('../lib/utils'),
@@ -12,7 +12,7 @@ var program    = require('commander'),
     Sessions   = require('../lib/sessions'),
     Iam        = require('../lib/iam');
 
-var outputValues = utils.getOutputValues();
+let outputValues = utils.getOutputValues();
 
 program
     .version(config.version)
@@ -30,7 +30,7 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-var alksAccount       = program.account,
+let alksAccount       = program.account,
     alksRole          = program.role,
     forceNewSession   = program.newSession,
     useDefaultAcct    = program.default,
@@ -43,7 +43,7 @@ if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-var execute = function(){
+let execute = function(){
     if(_.isUndefined(program.iam)){
         Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves, onComplete);
     }
@@ -52,7 +52,7 @@ var execute = function(){
     }
 };
 
-var onComplete = function(err, key, developer){
+let onComplete = function(err, key, developer){
     if(err){
         return utils.errorAndExit(err);
     }
