@@ -1,10 +1,9 @@
-★ Release Notes: 2020-10-20 ★
+★ Release Notes: 2020-11-10 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Bumps alks-node version which includes better error handling for our internal ALKS calls
-→ Updates syntax to be up to date with ES6
+→ Corrects a bug with date formatting for the AWS output type
 
 → Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
