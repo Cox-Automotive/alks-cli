@@ -9,7 +9,7 @@ CLI for working with the ALKS service.
 
 ### Prerequisites
 
-To install and use the ALKS CLI, you will need Node.js (version 4 or greater) and NPM ([nodejs.org](https://nodejs.org/en/download/package-manager)).
+To install and use the ALKS CLI, you will need Node.js (version 10 or greater) and NPM ([nodejs.org](https://nodejs.org/en/download/package-manager)).
 
 ## Installing
 

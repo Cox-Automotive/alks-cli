@@ -7,7 +7,7 @@
     "test": "./node_modules/.bin/mocha ./test"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=10.0.0"
   },
   "repository": {
     "type": "git",
