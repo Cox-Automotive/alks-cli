@@ -14,7 +14,7 @@
         "chmod": "^0.2.1",
         "cli-color": "^1.1.0",
         "cli-table3": "^0.5.0",
-        "clortho": "Cox-Automotive/clortho#semver:^1.2.4",
+        "clortho": "git://github.com/Cox-Automotive/clortho.git#semver:^1.2.4",
         "commander": "^2.9.0",
         "crypto": "0.0.3",
         "express": "^4.16.2",
@@ -985,7 +985,7 @@
     },
     "node_modules/clortho": {
       "version": "1.2.2",
-      "resolved": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
+      "resolved": "git://github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
       "license": "ISC",
       "dependencies": {
         "inquirer": "^7.3.3",
@@ -7009,8 +7009,8 @@
       "optional": true
     },
     "clortho": {
-      "version": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
-      "from": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
+      "version": "git://github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
+      "from": "git//github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
       "requires": {
         "inquirer": "^7.3.3",
         "js-string-escape": "^1.0.0",
