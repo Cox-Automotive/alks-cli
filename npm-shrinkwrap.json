@@ -8,7 +8,35 @@
       "name": "alks",
       "version": "3.1.3",
       "bundleDependencies": [
-        "clortho"
+        "clortho",
+        "ansi-escapes",
+        "ansi-styles",
+        "chalk",
+        "chardet",
+        "cli-cursor",
+        "cli-width",
+        "emoji-regex",
+        "escape-string-regexp",
+        "external-editor",
+        "figures",
+        "isexe",
+        "js-string-escape",
+        "keychain",
+        "lodash",
+        "mute-stream",
+        "onetime",
+        "os-tmpdir",
+        "restore-cursor",
+        "run-async",
+        "rxjs",
+        "safer-buffer",
+        "signal-exit",
+        "supports-color",
+        "through",
+        "tmp",
+        "tslib",
+        "type-fest",
+        "which"
       ],
       "license": "MIT",
       "dependencies": {
@@ -17,7 +45,7 @@
         "chmod": "^0.2.1",
         "cli-color": "^1.1.0",
         "cli-table3": "^0.5.0",
-        "clortho": "Cox-Automotive/clortho#semver:^1.2.4",
+        "clortho": "https://github.com/Cox-Automotive/clortho/archive/1.2.4.tar.gz",
         "commander": "^2.9.0",
         "crypto": "0.0.3",
         "express": "^4.16.2",
@@ -996,7 +1024,8 @@
     },
     "node_modules/clortho": {
       "version": "1.2.2",
-      "resolved": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
+      "resolved": "https://github.com/Cox-Automotive/clortho/archive/1.2.4.tar.gz",
+      "integrity": "sha512-g4CiE83rPq/NYk/a7Xot8pggSAg+2EB0pK0U1R52WFw6wZNSMegCDpFRzI+6EV9SbaFgqHZL8N9krqYRseOB2w==",
       "inBundle": true,
       "license": "ISC",
       "dependencies": {
@@ -7051,8 +7080,8 @@
       "optional": true
     },
     "clortho": {
-      "version": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
-      "from": "git+ssh://git@github.com/Cox-Automotive/clortho.git#16d89e5ccac326d52430e3422e34b4063d0fd026",
+      "version": "https://github.com/Cox-Automotive/clortho/archive/1.2.4.tar.gz",
+      "integrity": "sha512-g4CiE83rPq/NYk/a7Xot8pggSAg+2EB0pK0U1R52WFw6wZNSMegCDpFRzI+6EV9SbaFgqHZL8N9krqYRseOB2w==",
       "requires": {
         "inquirer": "^7.3.3",
         "js-string-escape": "^1.0.0",
