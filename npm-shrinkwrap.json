@@ -49,9 +49,9 @@
       }
     },
     "alks.js": {
-      "version": "1.11.4",
-      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.11.4.tgz",
-      "integrity": "sha512-mSoIkQrCBMNciEwwHolaoK9W5Lxev7pjvPeuvwC29cvcJ3ax4rNM8dxUotsBehBMkKlRbEDKqHPqXMAt1n7c2Q==",
+      "version": "1.12.0",
+      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.12.0.tgz",
+      "integrity": "sha512-mVVsNywSkXssF6nO+XpMfAI901tEUsQAi51z7PyHhRNafF+59kbVtsO7vW6XdoDPpplif80M0EbLctxyCkUqsA==",
       "requires": {
         "node-fetch": "^2.3.0"
       }
@@ -3148,7 +3148,7 @@
     },
     "object-assign": {
       "version": "4.1.0",
-      "resolved": "",
+      "resolved": false,
       "integrity": "sha1-ejs9DpgGPUP0wD8uiubNUahog6A="
     },
     "object-copy": {
