@@ -3,14 +3,15 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    inquirer  = require('inquirer'),
-    async     = require('async'),
-    _         = require('underscore'),
-    config    = require('../package.json'),
-    utils     = require('../lib/utils'),
-    Developer = require('../lib/developer');
+const program = require('commander');
+const clc = require('cli-color');
+const inquirer = require('inquirer');
+const async = require('async');
+const _ = require('underscore');
+const config = require('../package.json');
+const utils = require('../lib/utils');
+const Developer = require('../lib/developer');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
     .version(config.version)
@@ -18,104 +19,74 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let logger = 'dev-config';
+const logger = 'dev-config';
 
-function getPrompt(field, data, text, validator, callback){
-    utils.getStdErrPrompt()([{
+async function getPrompt(field, data, text, validator) {
+    const answers = await utils.getStdErrPrompt()([{
         type: 'input',
         name: field,
         message: text,
-        default: function(){
+        default: () => {
             return data[field];
         },
-        validate: validator ? validator : function(val){
+        validate: validator ? validator : (val) => {
             return (!_.isEmpty(val)) ? true : 'Please enter a value for ' + text + '.';
         }
-    }]).then(function(answers){
-        callback(null, answers[field]);
-    });
+    }]);
+    return answers[field];
 }
 
-async.waterfall([
-    // check for an existing developer
-    function(callback){
+(async function() {
+    try {
         utils.log(program, logger, 'getting developer');
-        Developer.getDeveloper(callback);
-    },
-    // ask for server
-    function(previousData, callback){
-        getPrompt('server', previousData, 'ALKS server', utils.isURL, function(err, server){
-            callback(err, previousData, server);
-        });
-    },
-    // ask for username
-    function(previousData, server, callback){
-        getPrompt('userid', previousData, 'Network Username', null, function(err, userid){
-            callback(err, previousData, server, userid);
-        });
-    },
-    // check for existing password
-    function(previousData, server, userid, callback){
+        const previousData = await Developer.getDeveloper();
+
+        const server = await getPrompt('server', previousData, 'ALKS server', utils.isURL);
+
+        const userid = await getPrompt('userid', previousData, 'Network Username', null);
+
         utils.log(program, logger, 'getting existing auth');
-        Developer.getAuth(program, function(err, auth){
-            callback(err, previousData, server, userid, auth);
-        });
-    },
-    function(previousData, server, userid, auth, callback){
+        const auth = await Developer.getAuth(program);
+
         utils.log(program, logger, 'getting existing password');
-        Developer.getPasswordFromKeystore(function(password){
-            auth.password = password;
-            callback(null, previousData, server, userid, auth);
-        });
-    },
-    // ask for password
-    function(previousData, server, userid, auth, callback){
+        auth.password = await Developer.getPasswordFromKeystore();
+
         utils.log(program, logger, 'getting password');
-        Developer.getPasswordFromPrompt(function(err, password){
-            auth.password = password;
-            callback(err, previousData, server, userid, auth);
-        }, 'Network Password', auth.password);
-    },
-    // ask if they want to save password
-    function(previousData, server, userid, auth, callback){
-        inquirer.prompt([
+        auth.password = await Developer.getPasswordFromPrompt('Network Password', auth.password);
+
+        const answers = await inquirer.prompt([
             {
                 type: 'confirm',
                 name: 'savePassword',
                 message: 'Save password',
             }
-        ]).then(function(answers){
-            callback(null, previousData, server, userid, auth, answers.savePassword);
-        });
-    },
-    // request list of accounts from ALKS
-    function(previousData, server, userid, auth, savePassword, callback){
+        ]);
+        const savePassword = answers.savePassword;
+
         utils.log(program, logger, 'Getting ALKS accounts');
-        let prompt = 'Please select your default ALKS account/role';
+        const prompt = 'Please select your default ALKS account/role';
 
         program.auth = auth; // this ensures getALKSAccount() doesnt prompt..
-        let opts = {
+        const opts = {
             prompt: prompt,
             dontDefault: true,
             server: server,
             userid: userid
         };
 
-        Developer.getALKSAccount(program, opts, function(err, data){
-            if(err){
-                if(err.message.indexOf('No accounts') === -1){
-                    return callback(err);
-                }
+        let data;
+        try {
+            data = await Developer.getALKSAccount(program, opts);
+        } catch (e) {
+            if (e.message.indexOf('No accounts') === -1) {
+                throw e;
             }
+        }
+        const { alksAccount = '', alksRole = '' } = data;
 
-            callback(null, previousData, server, userid, auth, savePassword, data? data.alksAccount : '', data? data.alksRole : '');
-        });
-    },
-    // select output format
-    function(previousData, server, userid, auth, savePassword, alksAccount, alksRole, callback){
         utils.log(program, logger, 'Getting output formats');
 
-        let promptData = {
+        const promptData = {
                 type: 'list',
                 name: 'outputFormat',
                 default: previousData.outputFormat,
@@ -124,39 +95,37 @@ async.waterfall([
                 pageSize: 10
         };
 
-        utils.getStdErrPrompt()([ promptData ]).then(function(answers){
-            callback(null, server, userid, auth, savePassword, alksAccount, alksRole, answers.outputFormat);
-        });
-    }
-], function(err, server, userid, auth, savePassword, alksAccount, alksRole, outputFormat){
-    // did any of our steps have issues?
-    if(err){
-        return utils.errorAndExit('Error configuring developer: ' + err.message);
-    }
+        const answers2 = await utils.getStdErrPrompt()([ promptData ]);
+        const outputFormat = answers2.outputFormat;
 
-    let developerPayload = {
-        server: server,
-        userid: userid,
-        password: auth.password,
-        savePassword: savePassword,
-        alksAccount: alksAccount,
-        alksRole: alksRole,
-        outputFormat: outputFormat
-    };
+        const developerPayload = {
+            server: server,
+            userid: userid,
+            password: auth.password,
+            savePassword: savePassword,
+            alksAccount: alksAccount,
+            alksRole: alksRole,
+            outputFormat: outputFormat,
+        };
 
-    // create developer
-    utils.log(program, logger, 'saving developer');
-    Developer.saveDeveloper(developerPayload, function(err){
-        if(err){
-            utils.log(program, logger, 'error saving! ' + err.message);
-            console.error(clc.red.bold('There was an error updating your developer configuration.'));
-        }
-        else{
-            console.error(clc.white('Your developer configuration has been updated.'));
+        // create developer
+        utils.log(program, logger, 'saving developer');
+        try {
+            await Developer.saveDeveloper(developerPayload);
+        } catch (e2) {
+            if (e2) {
+                utils.log(program, logger, 'error saving! ' + e2.message);
+                console.error(clc.red.bold('There was an error updating your developer configuration.'));
+            } else {
+                console.error(clc.white('Your developer configuration has been updated.'));
+            }
         }
 
         utils.log(program, logger, 'checking for update');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
-    });
-});
+        await checkForUpdate();
+
+        await Developer.trackActivity(logger);
+    } catch (err) {
+        return utils.errorAndExit('Error configuring developer: ' + err.message);
+    }
+})().catch(err => utils.errorAndExit(err.message, err));

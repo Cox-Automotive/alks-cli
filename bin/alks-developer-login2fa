@@ -3,13 +3,14 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    opn       = require('opn'),
-    alks      = require('alks-node'),
-    config    = require('../package.json'),
-    utils     = require('../lib/utils'),
-    Developer = require('../lib/developer');
+const program = require('commander');
+const clc = require('cli-color');
+const opn = require('opn');
+const Alks = require('../lib/alks');
+const config = require('../package.json');
+const utils = require('../lib/utils');
+const Developer = require('../lib/developer');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
     .version(config.version)
@@ -17,38 +18,50 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let logger = 'dev-login-2fa';
+const logger = 'dev-login-2fa';
 
-utils.log(program, logger, 'loading developer');
-Developer.getDeveloper(function(err, data){
+(async function() {
+    utils.log(program, logger, 'loading developer');
+    const data = await Developer.getDeveloper();
+
     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
-    opn(data.server.replace(/rest/, 'token-management')).then(() => {});
+    const url = data.server.replace(/rest/, 'token-management')
+    try {
+        await opn(url);
+    } catch (err) {
+        console.error(`Failed to open ${url}`);
+        console.error('Please open the url in the browser of your choice');
+    }
+
     console.error('Please copy your refresh token from ALKS and paste below..');
+    
+    const refreshToken = await Developer.getPasswordFromPrompt('Refresh Token');
+    utils.log(program, logger, 'exchanging refresh token for access token');
 
-    Developer.getPasswordFromPrompt(function(err, refreshToken){
-        utils.log(program, logger, 'exchanging refresh token for access token');
+    const alks = await Alks.getAlks({
+        baseUrl: data.server,
+    });
 
-        alks.refreshTokenToAccessToken(data, refreshToken, { debug: program.verbose, ua: utils.getUA() }, function(err){
-            if(err){
-                return utils.errorAndExit('Error validating refresh token. ' +  err.message);
-            }
+    try {
+        await alks.getAccessToken({
+            refreshToken,
+        });    
+    } catch (err) {
+        return utils.errorAndExit('Error validating refresh token. ' +  err.message);
+    }
 
-            console.error(clc.white('Refresh token validated!'));
-            Developer.storeToken(refreshToken, function(err, saved){
-                if(!saved){
-                    utils.log(program, logger, 'error saving token! ' + err.message);
-                    utils.passwordSaveErrorHandler(err);
-                }
-                else{
-                    console.error(clc.white('Refresh token saved!'));
-                }
+    console.error(clc.white('Refresh token validated!'));
+    try {
+        await Developer.storeToken(refreshToken)
+        console.error(clc.white('Refresh token saved!'));
+    } catch (err) {
+        utils.log(program, logger, 'error saving token! ' + err.message);
+        utils.passwordSaveErrorHandler(err);
+    }
 
-                utils.log(program, logger, 'checking for updates');
-                utils.checkForUpdate();
-                Developer.trackActivity(logger);
+    utils.log(program, logger, 'checking for updates');
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
 
-                setTimeout(function(){ process.exit(0); }, 1000); // needed for if browser is still open
-            });
-        });
-    }, 'Refresh Token');
-});
+    setTimeout(() => { process.exit(0); }, 1000); // needed for if browser is still open
+})().catch(err => utils.errorAndExit(err.message, err));

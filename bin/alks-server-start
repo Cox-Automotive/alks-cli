@@ -3,15 +3,14 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    async     = require('async'),
-    forever   = require('forever'),
-    fs        = require('fs'),
-    path      = require('path'),
-    exec      = require('child_process').exec,
-    config    = require('../package.json'),
-    utils     = require('../lib/utils');
+const program = require('commander');
+const clc = require('cli-color');
+const forever = require('forever');
+const fs = require('fs');
+const path = require('path');
+const execSync = require('child_process').execSync;
+const config = require('../package.json');
+const utils = require('../lib/utils');
 
 program
     .version(config.version)
@@ -19,13 +18,13 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let logger = 'server-start';
+const logger = 'server-start';
 
-if(!utils.isOSX()){
+if (!utils.isOSX()) {
     utils.errorAndExit('The metadata server is only supported on OSX.');
 }
 
-function runServerDaemon(){
+function runServerDaemon() {
     console.error(clc.white('Starting metadata server..'));
 
     forever.startDaemon(path.join(__dirname, '../lib') + '/metadata-server.js', {
@@ -38,41 +37,27 @@ function runServerDaemon(){
 
 utils.log(program, logger, 'Checking if forwarding daemon is already installed..');
 
-if(!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')){
+if (!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')) {
     console.error(clc.white('Installing metadata daemon rules. You may be prompted for your system password since this requires escalated privileges.'));
-    let servicePath = path.join(__dirname, '../service');
+    const servicePath = path.join(__dirname, '../service');
 
-    async.waterfall([
-        function(callback){
+    (async function() {
+        try {
             utils.log(program, logger, 'Adding pf.anchor');
+            execSync('sudo cp '+servicePath+'/com.coxautodev.alks /etc/pf.anchors/');
 
-            exec('sudo cp '+servicePath+'/com.coxautodev.alks /etc/pf.anchors/', function(err, stdout, stderr){
-                callback(err);
-            });
-        },
-        function(callback){
             utils.log(program, logger, 'Adding launch daemon');
-            exec('sudo cp '+servicePath+'/com.coxautodev.alks.Ec2MetaDataFirewall.plist /Library/LaunchDaemons/', function(err, stdout, stderr){
-                callback(err);
-            });
-        },
-        function(callback){
+            execSync('sudo cp '+servicePath+'/com.coxautodev.alks.Ec2MetaDataFirewall.plist /Library/LaunchDaemons/');
+
             utils.log(program, logger, 'Loading launch daemon');
-            exec('sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist', function(err, stdout, stderr){
-                callback(err);
-            });
-        }
-    ], function(err){
-        if(err){
+            execSync('sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist');
+        } catch (err) {
             console.log(clc.red('Error installing metadata daemon.'), err);
         }
-        else{
-            console.log(clc.white('Successfully installed metadata daemon.'));
-            runServerDaemon();
-        }
-    });
-}
-else{
+        console.log(clc.white('Successfully installed metadata daemon.'));
+        runServerDaemon();
+    })().catch(err => utils.errorAndExit(err.message, err));
+} else {
     utils.log(program, logger, 'Daemon is already installed..');
     runServerDaemon();
 }

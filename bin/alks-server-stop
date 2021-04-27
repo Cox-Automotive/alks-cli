@@ -3,11 +3,11 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    forever   = require('forever'),
-    config    = require('../package.json'),
-    utils     = require('../lib/utils');
+const program = require('commander');
+const clc = require('cli-color');
+const forever = require('forever');
+const config = require('../package.json');
+const utils = require('../lib/utils');
 
 program
     .version(config.version)
@@ -15,19 +15,17 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-
-if(!utils.isOSX()){
+if (!utils.isOSX()) {
     console.error(clc.red('The metadata server is only supported on OSX.'));
     process.exit(0);
 }
 
 console.error(clc.white('Stopping metadata server..'));
 
-forever.list(false, function(err, list){
-    if(list === null){
+forever.list(false, function(err, list) {
+    if (list === null) {
         console.log(clc.white('Metadata server is not running.'));
-    }
-    else{
+    } else{
         forever.stopAll();
         console.log(clc.white('Metadata server stopped.'));
     }

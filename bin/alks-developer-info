@@ -3,14 +3,14 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    _         = require('underscore'),
-    async     = require('async'),
-    Table     = require('cli-table3'),
-    config    = require('../package.json'),
-    Developer = require('../lib/developer'),
-    utils     = require('../lib/utils');
+const program = require('commander');
+const clc = require('cli-color');
+const _ = require('underscore');
+const Table = require('cli-table3');
+const config = require('../package.json');
+const Developer = require('../lib/developer');
+const utils = require('../lib/utils');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
     .version(config.version)
@@ -18,31 +18,25 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let table = new Table({
+const table = new Table({
     head: [clc.white.bold('Key'), clc.white.bold('Value')],
     colWidths: [25, 50]
 });
 
-let logger = 'dev-info';
+const logger = 'dev-info';
 
-async.series({
-    // get developer
-    developer: function(callback){
-        utils.log(program, logger, 'getting developer');
-        Developer.getDeveloper(callback);
-    },
-    password: function(callback){
-        utils.log(program, logger, 'getting password');
-        Developer.getPassword(null, callback); // null means dont prompt
-    },
-    token: function(callback){
-        utils.log(program, logger, 'getting 2fa token');
-        Developer.getToken(function(token){ callback(null, token); });
-    }
-},
-function(err, results){
-    let ignores = [ 'lastVersion', 'lastAcctUsed' ],
-        mapping = {
+(async function() {
+    utils.log(program, logger, 'getting developer');
+    const developer = await Developer.getDeveloper();
+
+    utils.log(program, logger, 'getting password');
+    const password = await Developer.getPassword(null); // null means dont prompt
+
+    utils.log(program, logger, 'getting 2fa token');
+    const token = await Developer.getToken();
+
+    const ignores = [ 'lastVersion', 'lastAcctUsed' ];
+    const mapping = {
         'server': 'ALKS Server',
         'userid': 'Network Login',
         'alksAccount': 'Default ALKS Account',
@@ -50,22 +44,22 @@ function(err, results){
         'outputFormat': 'Default Output Format'
     };
 
-    _.each(results.developer, function(val, key){
-        if(!_.contains(ignores, key)){
+    _.each(developer, (val, key) => {
+        if (!_.contains(ignores, key)) {
             table.push([mapping[key], _.isEmpty(val) ? '' : val]);
         }
     });
 
-    let password = !_.isEmpty(results.password) ? '**********' : clc.red('NOT SET');
-    table.push(['Password', password]);
+    const tablePassword = !_.isEmpty(password) ? '**********' : clc.red('NOT SET');
+    table.push(['Password', tablePassword]);
 
-    let token = !_.isEmpty(results.token) ? results.token.substring(0,4) + '**********' : clc.red('NOT SET');
-    table.push(['2FA Token', token]);
+    const tableToken = !_.isEmpty(token) ? token.substring(0,4) + '**********' : clc.red('NOT SET');
+    table.push(['2FA Token', tableToken]);
 
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.log(clc.white(table.toString()));
 
     utils.log(program, logger, 'checking for update');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
-});
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
+})().catch(err => utils.errorAndExit(err.message, err));

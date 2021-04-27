@@ -3,16 +3,17 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    _         = require('underscore'),
-    clc       = require('cli-color'),
-    alks      = require('alks-node'),
-    Iam       = require('../lib/iam'),
-    utils     = require('../lib/utils'),
-    Developer = require('../lib/developer'),
-    config    = require('../package.json');
+const program = require('commander');
+const _ = require('underscore');
+const clc = require('cli-color');
+const Alks = require('../alks')
+const Iam = require('../lib/iam');
+const utils = require('../lib/utils');
+const Developer = require('../lib/developer');
+const config = require('../package.json');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
-let logger       = 'iam-deleteltk';
+const logger = 'iam-deleteltk';
 
 program
     .version(config.version)
@@ -24,41 +25,53 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let iamUsername = program.iamusername,
-    alksAccount = program.account,
-    alksRole    = program.role,
-    filterFaves = program.favorites || false;
+const iamUsername = program.iamusername;
+let alksAccount = program.account;
+let alksRole = program.role;
+const filterFaves = program.favorites || false;
 
 utils.log(program, logger, 'validating iam user name: ' + iamUsername);
-if(_.isEmpty(iamUsername)){
+if (_.isEmpty(iamUsername)) {
     utils.errorAndExit('The IAM username is required.');
 }
 
-if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
+if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves, function(err, developer, auth, alksAccount, alksRole){
-    if(err){
+(async function() {
+    let iamAccount;
+    try {
+        iamAccount = await Iam.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves);
+    } catch (err) {
+        return utils.errorAndExit(err);    
+    }
+    const { developer, auth } = iamAccount;
+    ({ account: alksAccount, role: alksRole } = iamAccount);
+
+    const alks = await Alks.getAlks({
+        baseUrl: developer.server,
+        userid: developer.userid,
+        password: auth.password,
+        token: auth.token,
+    });
+
+    utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
+
+    try {
+        await alks.deleteIAMUser({
+            account: alksAccount,
+            role: alksRole,
+            iamUserName: iamUsername,
+        });
+    } catch (err) {
         return utils.errorAndExit(err);
     }
 
-    // delete the LTK
-    let data = _.extend({}, developer);
-    data.alksAccount = alksAccount;
-    data.alksRole = alksRole;
-    utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
+    console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
 
-    alks.deleteLongTermKey(data, auth, iamUsername, { debug: program.verbose, ua: utils.getUA() }, function(err, data){
-        if(err){
-            return utils.errorAndExit(err);
-        }
-
-        console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
-
-        utils.log(program, logger, 'checking for updates');
-        utils.checkForUpdate();
-        Developer.trackActivity(logger);
-    });
-});
+    utils.log(program, logger, 'checking for updates');
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
+})().catch(err => utils.errorAndExit(err.message, err));

@@ -3,14 +3,14 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    _         = require('underscore'),
-    async     = require('async'),
-    alks      = require('alks-node'),
-    inquirer  = require('inquirer'),
-    config    = require('../package.json'),
-    Developer = require('../lib/developer'),
-    utils     = require('../lib/utils');
+const program = require('commander');
+const _ = require('underscore');
+const Alks = require('../lib/alks');
+const inquirer = require('inquirer');
+const config = require('../package.json');
+const Developer = require('../lib/developer');
+const utils = require('../lib/utils');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
     .version(config.version)
@@ -18,73 +18,66 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let logger       = 'dev-favorites';
+const logger = 'dev-favorites';
 
-async.waterfall([
-    // get developer
-    function(callback){
-        utils.log(program, logger, 'getting developer');
-        Developer.getDeveloper(callback);
-    },
-    // get auth
-    function(developer, callback){
-        utils.log(program, logger, 'getting auth');
-        Developer.getAuth(program, function(err, auth){
-            callback(err, developer, auth);
-        });
-    },
-    function(developer, auth, callback){
-        utils.log(program, logger, 'getting alks accounts');
-        alks.getAccounts(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, function(err, alksAccounts){
-            callback(err, developer, auth, alksAccounts);
-        });
-    },
-    function(developer, auth, accounts, callback){
-        utils.log(program, logger, 'getting favorite accounts');
-        Developer.getFavorites(function(err, data){
-            callback(null, developer, auth, accounts, data.favorites);
-        });
-    }
-],
-function(err, developer, auth, alksAccounts, favorites){
-    let choices  = [],
-        deferred = [];
+(async function() {
+    utils.log(program, logger, 'getting developer');
+    const developer = await Developer.getDeveloper();
+
+    utils.log(program, logger, 'getting auth');
+    const auth = await Developer.getAuth(program);
+
+    const alks = await Alks.getAlks({
+        baseUrl: developer.server,
+        userid: developer.userid,
+        password: auth.password,
+        token: auth.token,
+    });
+
+    utils.log(program, logger, 'getting alks accounts');
+    const alksAccounts = await alks.getAccounts();
+
+    utils.log(program, logger, 'getting favorite accounts');
+    const favorites = await Developer.getFavorites();
+
+    const choices = [];
+    const deferred = [];
 
     utils.log(program, logger, 'rendering favorite accounts');
     choices.push(new inquirer.Separator(' = Standard = '));
-    _.each(alksAccounts, function(val){
-        if(!val.iam){
-            let name = [val.account, val.role].join(Developer.getAccountDelim());
+    alksAccounts.forEach((alksAccount) => {
+        if (!alksAccount.iam) {
+            const name = [alksAccount.account, alksAccount.role].join(Developer.getAccountDelim());
             choices.push({
                 name: name,
                 checked: _.contains(favorites, name)
             });
+        } else {
+            deferred.push(alksAccount);
         }
-        else deferred.push(val);
     });
 
     choices.push(new inquirer.Separator(' = IAM = '));
-    _.each(deferred, function(val){
-        let name = [val.account, val.role].join(Developer.getAccountDelim());
+    deferred.forEach((val) => {
+        const name = [val.account, val.role].join(Developer.getAccountDelim());
         choices.push({
             name: name,
             checked: _.contains(favorites, name)
         });
     });
 
-    inquirer.prompt([{
+    const faves = await inquirer.prompt([{
         type: 'checkbox',
         message: 'Select favorites',
         name: 'favorites',
         choices: choices,
         pageSize: 25
-    }]).then(function(faves){
-        Developer.saveFavorites({accounts: faves}, function(){
-            console.log('Favorites have been saved!');
+    }]);
 
-            utils.log(program, logger, 'checking for update');
-            utils.checkForUpdate();
-            Developer.trackActivity(logger);
-        });
-    });
-});
+    await Developer.saveFavorites({accounts: faves});
+    console.log('Favorites have been saved!');
+
+    utils.log(program, logger, 'checking for update');
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
+})().catch(err => utils.errorAndExit(err.message, err));

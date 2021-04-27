@@ -3,9 +3,9 @@
 
 process.title = 'ALKS';
 
-let program = require('commander'),
-    utils   = require('../lib/utils'),
-    config  = require('../package.json');
+const program = require('commander');
+const utils = require('../lib/utils');
+const config = require('../package.json');
 
 program
     .version(config.version)

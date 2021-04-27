@@ -3,14 +3,15 @@
 
 process.title = 'ALKS';
 
-let program    = require('commander'),
-    clc        = require('cli-color'),
-    _          = require('underscore'),
-    config     = require('../package.json'),
-    utils      = require('../lib/utils'),
-    Developer  = require('../lib/developer'),
-    Sessions   = require('../lib/sessions'),
-    Iam        = require('../lib/iam');
+const program = require('commander');
+const clc = require('cli-color');
+const _ = require('underscore');
+const config = require('../package.json');
+const utils = require('../lib/utils');
+const Developer = require('../lib/developer');
+const Sessions = require('../lib/sessions');
+const Iam = require('../lib/iam');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
     .version(config.version)
@@ -23,40 +24,41 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let alksAccount       = program.account,
-    alksRole          = program.role,
-    forceNewSession   = program.newSession,
-    filterFaves       = program.favorites || false,
-    logger            = 'server-configure';
+const alksAccount = program.account;
+let alksRole = program.role;
+const forceNewSession = program.newSession;
+const filterFaves = program.favorites || false;
+const logger = 'server-configure';
 
-if(!_.isUndefined(alksAccount) && _.isUndefined(alksRole)){
+if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     utils.log(program, logger, 'trying to extract role from account');
     alksRole = utils.tryToExtractRole(alksAccount);
 }
 
-let onComplete = function(err, key){
-    if(err){
+(async function() {
+    let key;
+    try {
+        if (_.isUndefined(program.iam)) {
+            key = await Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves);
+        } else {
+            key = await Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves);
+        }
+    } catch (err) {
         return utils.errorAndExit(err);
     }
 
-    setTimeout(function(){
-        Developer.saveMetadata({alksAccount: key.alksAccount, alksRole: key.alksRole, isIAM: key.isIAM}, function(err, resp){
-            if(err){
-                return utils.errorAndExit('Unable to save metadata!', err);
-            }
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-            console.error(clc.white('Metadata has been saved!'));
+    try {
+        await Developer.saveMetadata({alksAccount: key.alksAccount, alksRole: key.alksRole, isIAM: key.isIAM});
+    } catch (err) {
+        return utils.errorAndExit('Unable to save metadata!', err);
+    }
 
-            utils.log(program, logger, 'checking for updates');
-            utils.checkForUpdate();
-            Developer.trackActivity(logger);
-        });
-    }, 1000);
-};
+    console.error(clc.white('Metadata has been saved!'));
 
-if(_.isUndefined(program.iam)){
-    Sessions.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves, onComplete);
-}
-else{
-    Iam.getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves, onComplete);
-}
+    utils.log(program, logger, 'checking for updates');
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
+})().catch(err => utils.errorAndExit(err.message, err));
+

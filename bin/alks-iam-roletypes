@@ -3,17 +3,17 @@
 
 process.title = 'ALKS';
 
-let program   = require('commander'),
-    clc       = require('cli-color'),
-    _         = require('underscore'),
-    async     = require('async'),
-    alks      = require('alks-node'),
-    config    = require('../package.json'),
-    Developer = require('../lib/developer'),
-    utils     = require('../lib/utils');
+const program = require('commander');
+const clc = require('cli-color');
+const _ = require('underscore');
+const Alks = require('../lib/alks');
+const config = require('../package.json');
+const Developer = require('../lib/developer');
+const utils = require('../lib/utils');
+const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
-let logger     = 'iam-roletypes',
-    outputVals = [ 'list', 'json' ];
+const logger = 'iam-roletypes';
+const outputVals = [ 'list', 'json' ];
 
 program
     .version(config.version)
@@ -22,48 +22,46 @@ program
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 
-let output = program.output;
+const output = program.output;
 
-if(!_.contains(outputVals, output)){
+if (!_.contains(outputVals, output)) {
     utils.errorAndExit('The output provided ('+output+') is not in the allowed values: ' + outputVals.join(', '));
 }
 
-async.waterfall([
-    // get developer
-    function(cb){
-        utils.log(program, logger, 'getting developer');
-        Developer.getDeveloper(cb);
-    },
-    // get auth
-    function(developer, callback){
-        utils.log(program, logger, 'getting auth');
-        Developer.getAuth(program, function(err, auth){
-            callback(err, developer, auth);
-        });
-    },
-    // load available account/roles
-    function(developer, auth, cb){
-        utils.log(program, logger, 'getting list of role types from REST API');
-        alks.getIamRoleTypes(developer.server, developer.userid, auth, { debug: program.verbose, ua: utils.getUA() }, cb);
-    }
-], function(err, roleTypes){
-    if(err){
+(async function() {
+    utils.log(program, logger, 'getting developer');
+    const developer = await Developer.getDeveloper();
+
+    utils.log(program, logger, 'getting auth');
+    const auth = await Developer.getAuth(program);
+
+    const alks = await Alks.getAlks({
+        baseUrl: developer.server,
+        userid: developer.userid,
+        password: auth.password,
+        token: auth.token,
+    });
+
+    utils.log(program, logger, 'getting list of role types from REST API');
+    let roleTypes;
+    try {
+        roleTypes = await alks.getAllAWSRoleTypes({});
+    } catch (err) {
         return utils.errorAndExit(err);
     }
 
     utils.log(program, logger, 'outputting list of ' + (roleTypes ? roleTypes.length : -1) + ' role types');
     console.error(clc.white.underline.bold('\nAvailable IAM Role Types'));
 
-    if(output === 'list'){
-        _.each(roleTypes, function(roleType, i){
-            console.log(clc.white([ (i < 9 ? ' ' : ''), i+1, ') ', roleType ].join('')));
+    if (output === 'list') {
+        _.each(roleTypes, (roleType, i) => {
+            console.log(clc.white([ (i < 9 ? ' ' : ''), i+1, ') ', roleType.roleTypeName ].join('')));
         });
-    }
-    else{
-        console.log(JSON.stringify(roleTypes));
+    } else {
+        console.log(JSON.stringify(roleTypes.map(roleType => roleType.roleTypeName)));
     }
 
     utils.log(program, logger, 'checking for updates');
-    utils.checkForUpdate();
-    Developer.trackActivity(logger);
-});
+    await checkForUpdate();
+    await Developer.trackActivity(logger);
+})().catch(err => utils.errorAndExit(err.message, err));
