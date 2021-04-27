@@ -12,6 +12,7 @@ var prop_ini_1 = require("prop-ini");
 var cli_color_1 = require("cli-color");
 var left_pad_1 = tslib_1.__importDefault(require("left-pad"));
 var utils_1 = require("./utils");
+var developer_1 = require("./developer");
 var db = new lokijs_1.default(utils_1.getDBFile());
 var ALGORITHM = 'aes-256-cbc';
 var ENCODING = 'hex';
@@ -109,7 +110,7 @@ function addKey(accessKey, secretKey, sessionToken, alksAccount, alksRole, expir
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    enc = auth.token || auth.password;
+                    enc = developer_1.isTokenAuth(auth) ? auth.token : auth.password;
                     return [4 /*yield*/, getKeysCollection()];
                 case 1:
                     keys = _a.sent();
@@ -120,7 +121,7 @@ function addKey(accessKey, secretKey, sessionToken, alksAccount, alksRole, expir
                         alksAccount: encrypt(alksAccount, enc),
                         alksRole: encrypt(alksRole, enc),
                         isIAM: isIAM,
-                        expires: expires.toDate(),
+                        expires: expires,
                     });
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             db.save(function (err) {
@@ -146,7 +147,7 @@ function getKeys(auth, isIAM) {
                 case 1:
                     keys = _a.sent();
                     now = moment_1.default();
-                    enc = auth.token || auth.password;
+                    enc = developer_1.isTokenAuth(auth) ? auth.token : auth.password;
                     // first delete any expired keys
                     keys.removeWhere({ expires: { $lte: now.toDate() } });
                     return [2 /*return*/, new Promise(function (resolve, reject) {
@@ -188,10 +189,6 @@ function getKeys(auth, isIAM) {
 exports.getKeys = getKeys;
 // if adding new output types be sure to update utils.js:getOutputValues
 function getKeyOutput(format, key, profile, force) {
-    // strip un-needed data
-    ['meta', '$loki', 'isIAM', 'alksAccount', 'alksRole'].forEach(function (attr) {
-        delete key[attr];
-    });
     var keyExpires = moment_1.default(key.expires).format();
     switch (format) {
         case 'docker': {
@@ -205,7 +202,13 @@ function getKeyOutput(format, key, profile, force) {
             return cmd + " ALKS_ACCESS_KEY_ID=" + key.accessKey + " && " + cmd + " ALKS_SECRET_ACCESS_KEY=" + key.secretKey + " && " + cmd + " ALKS_SESSION_TOKEN=" + key.sessionToken + " && " + cmd + " ALKS_SESSION_EXPIRES=" + keyExpires;
         }
         case 'json': {
-            return JSON.stringify(key, null, 4);
+            var keyData = {
+                accessKey: key.accessKey,
+                secretKey: key.secretKey,
+                sessionToken: key.sessionToken,
+                expires: key.expires, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
+            };
+            return JSON.stringify(keyData, null, 4);
         }
         case 'creds': {
             if (updateCreds(key, profile, force)) {

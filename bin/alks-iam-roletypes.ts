@@ -45,9 +45,7 @@ if (!_.contains(outputVals, output)) {
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   utils.log(program, logger, 'getting list of role types from REST API');

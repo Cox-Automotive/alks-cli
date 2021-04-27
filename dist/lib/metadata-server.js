@@ -44,10 +44,10 @@ app.get('/latest/meta-data/iam/security-credentials/*', function (_req, resp) { 
             case 0: return [4 /*yield*/, developer_js_1.getMetadata()];
             case 1:
                 metadata = _a.sent();
-                if (!metadata.isIAM) return [3 /*break*/, 3];
+                if (!metadata.isIam) return [3 /*break*/, 3];
                 return [4 /*yield*/, iam_js_1.getIAMKey({}, logger, metadata.alksAccount, metadata.alksRole, false, false)];
             case 2:
-                key = (_a.sent()).key;
+                key = _a.sent();
                 resp.json(generateResponse(key));
                 return [3 /*break*/, 5];
             case 3: return [4 /*yield*/, sessions_js_1.getSessionKey({}, logger, metadata.alksAccount, metadata.alksRole, false, false, false)];

@@ -60,7 +60,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     return [4 /*yield*/, Developer.saveMetadata({
                             alksAccount: key.alksAccount,
                             alksRole: key.alksRole,
-                            isIAM: key.isIAM,
+                            isIam: key.isIAM,
                         })];
                 case 9:
                     _a.sent();

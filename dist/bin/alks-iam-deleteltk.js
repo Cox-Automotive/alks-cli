@@ -51,12 +51,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                 case 3:
                     developer = iamAccount.developer, auth = iamAccount.auth;
                     (alksAccount = iamAccount.account, alksRole = iamAccount.role);
-                    return [4 /*yield*/, Alks.getAlks({
-                            baseUrl: developer.server,
-                            userid: developer.userid,
-                            password: auth.password,
-                            token: auth.token,
-                        })];
+                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 4:
                     alks = _a.sent();
                     utils.log(commander_1.default, logger, 'calling api to delete ltk: ' + iamUsername);

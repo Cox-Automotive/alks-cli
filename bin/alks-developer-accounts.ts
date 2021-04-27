@@ -68,9 +68,7 @@ function accountExport(account: string) {
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   utils.log(program, logger, 'getting alks accounts');

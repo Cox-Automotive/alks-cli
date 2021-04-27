@@ -1,7 +1,7 @@
 /*jslint node: true */
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.trackActivity = exports.getPassword = exports.getAuth = exports.getALKSAccount = exports.getMetadata = exports.saveMetadata = exports.getFavorites = exports.saveFavorites = exports.getDeveloper = exports.saveDeveloper = exports.ensureConfigured = exports.getToken = exports.removeToken = exports.storeToken = exports.getPasswordFromPrompt = exports.removePassword = exports.storePassword = exports.getPasswordFromKeystore = exports.getVersionAtStart = exports.getAccountDelim = void 0;
+exports.trackActivity = exports.getPassword = exports.getUserid = exports.getAuth = exports.isTokenAuth = exports.getAlksAccount = exports.getMetadata = exports.saveMetadata = exports.getFavorites = exports.saveFavorites = exports.getDeveloper = exports.savePassword = exports.saveDeveloper = exports.ensureConfigured = exports.getToken = exports.removeToken = exports.storeToken = exports.getPasswordFromPrompt = exports.getUseridFromPrompt = exports.removePassword = exports.storePassword = exports.getPasswordFromKeystore = exports.getVersionAtStart = exports.getAccountDelim = void 0;
 var tslib_1 = require("tslib");
 var underscore_1 = require("underscore");
 var lokijs_1 = tslib_1.__importDefault(require("lokijs"));
@@ -22,7 +22,7 @@ var db = new lokijs_1.default(utils_1.getDBFile());
 var visitor = null;
 var delim = ' :: ';
 var logger = 'developer';
-var vAtSt = null;
+var vAtSt;
 function getAccountDelim() {
     return delim;
 }
@@ -132,6 +132,36 @@ function removePassword() {
     });
 }
 exports.removePassword = removePassword;
+function getUseridFromPrompt(text, currentUserid) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var answers;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    utils_1.log(null, logger, 'getting userid from prompt');
+                    return [4 /*yield*/, utils_1.getStdErrPrompt()([
+                            {
+                                type: 'input',
+                                name: 'userid',
+                                message: text ? text : 'Network Username',
+                                default: function () {
+                                    return underscore_1.isEmpty(currentUserid) ? '' : currentUserid;
+                                },
+                                validate: function (val) {
+                                    return !underscore_1.isEmpty(val)
+                                        ? true
+                                        : 'Please enter a value for network username.';
+                                },
+                            },
+                        ])];
+                case 1:
+                    answers = _a.sent();
+                    return [2 /*return*/, utils_1.trim(answers.userid)];
+            }
+        });
+    });
+}
+exports.getUseridFromPrompt = getUseridFromPrompt;
 function getPasswordFromPrompt(text, currentPassword) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var answers;
@@ -257,84 +287,81 @@ function ensureConfigured() {
     });
 }
 exports.ensureConfigured = ensureConfigured;
-function saveDeveloper(data) {
+function saveDeveloper(developer) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var dev, e_4;
+        var collection;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     utils_1.log(null, logger, 'saving developer');
                     return [4 /*yield*/, getCollection('account')];
                 case 1:
-                    dev = _a.sent();
-                    dev.removeDataOnly();
-                    dev.insert({
-                        server: utils_1.trim(data.server),
-                        userid: utils_1.trim(data.userid),
-                        alksAccount: utils_1.trim(data.alksAccount),
-                        alksRole: utils_1.trim(data.alksRole),
-                        lastAcctUsed: data.lastAcctUsed,
+                    collection = _a.sent();
+                    collection.removeDataOnly();
+                    collection.insert({
+                        server: developer.server && utils_1.trim(developer.server),
+                        userid: developer.userid && utils_1.trim(developer.userid),
+                        alksAccount: developer.alksAccount && utils_1.trim(developer.alksAccount),
+                        alksRole: developer.alksRole && utils_1.trim(developer.alksRole),
                         lastVersion: package_json_1.default.version,
-                        outputFormat: utils_1.trim(data.outputFormat),
+                        outputFormat: developer.outputFormat && utils_1.trim(developer.outputFormat),
                     });
-                    if (!(data.savePassword && !underscore_1.isEmpty(data.password))) return [3 /*break*/, 5];
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, storePassword(data.password)];
-                case 3:
-                    _a.sent();
-                    return [3 /*break*/, 5];
-                case 4:
-                    e_4 = _a.sent();
-                    utils_1.passwordSaveErrorHandler(e_4);
-                    return [3 /*break*/, 5];
-                case 5:
-                    if (!(!underscore_1.isUndefined(data.savePassword) && !data.savePassword)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, removePassword()];
-                case 6:
-                    _a.sent();
-                    _a.label = 7;
-                case 7: return [2 /*return*/, new Promise(function (resolve, reject) {
-                        db.save(function (err) {
-                            if (err) {
-                                reject(err);
-                            }
-                            else {
-                                resolve();
-                            }
-                        });
-                    })];
+                    return [2 /*return*/, new Promise(function (resolve, reject) {
+                            db.save(function (err) {
+                                if (err) {
+                                    reject(err);
+                                }
+                                else {
+                                    resolve();
+                                }
+                            });
+                        })];
             }
         });
     });
 }
 exports.saveDeveloper = saveDeveloper;
+function savePassword(password) {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var e_4;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, storePassword(password)];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    e_4 = _a.sent();
+                    utils_1.passwordSaveErrorHandler(e_4);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.savePassword = savePassword;
 function getDeveloper() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var dev, data, resp;
+        var collection, developerConfigs, developer;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getCollection('account')];
                 case 1:
-                    dev = _a.sent();
-                    data = dev.chain().data()[0];
-                    resp = {
-                        server: data ? data.server : null,
-                        userid: data ? data.userid : null,
-                        alksAccount: data ? data.alksAccount : null,
-                        alksRole: data ? data.alksRole : null,
-                        lastVersion: data ? data.lastVersion : null,
-                        lastAcctUsed: data ? data.lastAcctUsed : null,
-                        outputFormat: data ? data.outputFormat : null,
-                    };
+                    collection = _a.sent();
+                    developerConfigs = collection.chain().data();
+                    if (developerConfigs.length === 0) {
+                        throw new Error('Developer not configured. Please run `alks developer configure`');
+                    }
+                    developer = developerConfigs[0];
                     if (process.env.ALKS_SERVER) {
-                        resp.server = process.env.ALKS_SERVER;
+                        developer.server = process.env.ALKS_SERVER;
                     }
                     if (process.env.ALKS_USERID) {
-                        resp.userid = process.env.ALKS_USERID;
+                        developer.userid = process.env.ALKS_USERID;
                     }
-                    return [2 /*return*/, resp];
+                    return [2 /*return*/, developer];
             }
         });
     });
@@ -434,50 +461,54 @@ function getMetadata() {
     });
 }
 exports.getMetadata = getMetadata;
-function getALKSAccount(program, options) {
+function getAlksAccount(program, options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var opts, developer, auth, alks, alksAccounts, favorites, indexedAlksAccounts, promptData, answers, acctStr, data, alksAccount, alksRole;
+        var developer, e_5, opts, auth, alks, alksAccounts, favorites, indexedAlksAccounts, promptData, prompt, answers, acctStr, data, alksAccount, alksRole;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     utils_1.log(program, logger, 'retreiving alks account');
-                    opts = underscore_1.extend({
-                        iamOnly: false,
-                        prompt: 'Please select an ALKS account/role',
-                        dontDefault: false,
-                        server: null,
-                        userid: null,
-                        filterFavorites: false,
-                    }, options);
-                    return [4 /*yield*/, getDeveloper()];
+                    _a.label = 1;
                 case 1:
-                    developer = _a.sent();
-                    // setup defaults in case they are using this from `developer configure`
-                    if (!opts.server)
-                        opts.server = developer.server;
-                    if (!opts.userid)
-                        opts.userid = developer.userid;
-                    return [4 /*yield*/, getAuth(program)];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, getDeveloper()];
                 case 2:
-                    auth = _a.sent();
-                    return [4 /*yield*/, alks_1.getAlks({
-                            baseUrl: opts.server,
-                            token: auth.token,
-                            userid: opts.userid,
-                            password: auth.password,
-                        })];
+                    developer = _a.sent();
+                    return [3 /*break*/, 4];
                 case 3:
+                    e_5 = _a.sent();
+                    return [3 /*break*/, 4];
+                case 4:
+                    opts = {
+                        iamOnly: options.iamOnly || false,
+                        prompt: options.prompt || 'Please select an ALKS account/role',
+                        filterFavorites: options.filterFavorites || false,
+                        server: options.server || (developer === null || developer === void 0 ? void 0 : developer.server),
+                    };
+                    if (!opts.server) {
+                        throw new Error('No server URL configured');
+                    }
+                    return [4 /*yield*/, getAuth(program)];
+                case 5:
+                    auth = _a.sent();
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: opts.server }, auth))];
+                case 6:
                     alks = _a.sent();
                     return [4 /*yield*/, alks.getAccounts()];
-                case 4:
+                case 7:
                     alksAccounts = _a.sent();
                     return [4 /*yield*/, getFavorites()];
-                case 5:
+                case 8:
                     favorites = _a.sent();
                     indexedAlksAccounts = alksAccounts
                         .filter(function (alksAccount) { return !opts.iamOnly || alksAccount.iamKeyActive; }) // Filter out non-iam-active accounts if iamOnly flag is passed
-                        .filter(function (alksAccount) { return !opts.filterFavorites || favorites.contains(alksAccount); }) // Filter out non-favorites if filterFavorites flag is passed
-                        .sort(function (a, b) { return favorites.includes(b) - favorites.includes(a); }) // Move favorites to the front of the list, non-favorites to the back
+                        .filter(function (alksAccount) {
+                        return !opts.filterFavorites || favorites.includes(alksAccount.account);
+                    }) // Filter out non-favorites if filterFavorites flag is passed
+                        .sort(function (a, b) {
+                        return Number(favorites.includes(b.account)) -
+                            Number(favorites.includes(a.account));
+                    }) // Move favorites to the front of the list, non-favorites to the back
                         .map(function (alksAccount) {
                         return [alksAccount.account, alksAccount.role].join(getAccountDelim());
                     });
@@ -491,39 +522,37 @@ function getALKSAccount(program, options) {
                         choices: indexedAlksAccounts,
                         pageSize: 15,
                     };
-                    if (!opts.dontDefault) {
-                        promptData.default = developer.lastAcctUsed;
+                    if (developer) {
+                        promptData.default = [developer.alksAccount, developer.alksRole].join(getAccountDelim());
                     }
-                    return [4 /*yield*/, utils_1.getStdErrPrompt()([promptData])];
-                case 6:
+                    prompt = utils_1.getStdErrPrompt();
+                    return [4 /*yield*/, prompt([promptData])];
+                case 9:
                     answers = _a.sent();
                     acctStr = answers.alksAccount;
                     data = acctStr.split(getAccountDelim());
                     alksAccount = data[0];
                     alksRole = data[1];
-                    developer.lastAcctUsed = acctStr; // remember what account they last used
-                    return [4 /*yield*/, saveDeveloper(developer)];
-                case 7:
-                    _a.sent();
-                    // dont set these until we save or theyll overwrite the user's default account
-                    developer.alksAccount = alksAccount;
-                    developer.alksRole = alksRole;
-                    return [2 /*return*/, developer];
+                    return [2 /*return*/, {
+                            alksAccount: alksAccount,
+                            alksRole: alksRole,
+                        }];
             }
         });
     });
 }
-exports.getALKSAccount = getALKSAccount;
-function getAuth(program) {
+exports.getAlksAccount = getAlksAccount;
+function isTokenAuth(auth) {
+    return Boolean(auth.token);
+}
+exports.isTokenAuth = isTokenAuth;
+function getAuth(program, prompt) {
+    if (prompt === void 0) { prompt = true; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var auth, token, _a;
-        return tslib_1.__generator(this, function (_b) {
-            switch (_b.label) {
+        var token, auth, userid, password, auth;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    auth = {
-                        token: null,
-                        password: null,
-                    };
                     if (program.auth) {
                         utils_1.log(program, logger, 'using cached auth object');
                         return [2 /*return*/, program.auth];
@@ -531,23 +560,68 @@ function getAuth(program) {
                     utils_1.log(program, logger, 'checking for access token');
                     return [4 /*yield*/, getToken()];
                 case 1:
-                    token = _b.sent();
+                    token = _a.sent();
                     if (!token) return [3 /*break*/, 2];
-                    auth.token = token;
+                    auth = { token: token };
+                    program.auth = auth;
                     return [2 /*return*/, auth];
                 case 2:
                     utils_1.log(program, logger, 'no access token found, falling back to password');
-                    _a = auth;
-                    return [4 /*yield*/, getPassword(program)];
+                    return [4 /*yield*/, getUserid(program, prompt)];
                 case 3:
-                    _a.password = _b.sent();
+                    userid = _a.sent();
+                    return [4 /*yield*/, getPassword(program, prompt)];
+                case 4:
+                    password = _a.sent();
+                    auth = { userid: userid, password: password };
+                    program.auth = auth;
                     return [2 /*return*/, auth];
             }
         });
     });
 }
 exports.getAuth = getAuth;
-function getPassword(program) {
+function getUserid(program, prompt) {
+    if (prompt === void 0) { prompt = true; }
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var developer, userid;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(program && !underscore_1.isEmpty(program.userid))) return [3 /*break*/, 1];
+                    // first check userid from CLI argument
+                    utils_1.log(program, logger, 'using userid from CLI arg');
+                    return [2 /*return*/, program.userid];
+                case 1:
+                    if (!!underscore_1.isEmpty(process.env.ALKS_USERID)) return [3 /*break*/, 2];
+                    // then check for an environment variable
+                    utils_1.log(program, logger, 'using userid from environment variable');
+                    return [2 /*return*/, process.env.ALKS_USERID];
+                case 2: return [4 /*yield*/, getDeveloper()];
+                case 3:
+                    developer = _a.sent();
+                    userid = developer.userid;
+                    if (!underscore_1.isEmpty(userid)) {
+                        utils_1.log(program, logger, 'using stored userid');
+                        return [2 /*return*/, userid];
+                    }
+                    else if (prompt) {
+                        // otherwise prompt the user (if we have program)
+                        utils_1.log(program, logger, 'no userid found, prompting user');
+                        return [2 /*return*/, program ? getUseridFromPrompt() : null];
+                    }
+                    else {
+                        throw new Error('No userid was configured');
+                    }
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getUserid = getUserid;
+function getPassword(program, prompt) {
+    if (prompt === void 0) { prompt = true; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var password;
         return tslib_1.__generator(this, function (_a) {
@@ -569,10 +643,13 @@ function getPassword(program) {
                         utils_1.log(program, logger, 'using password from keystore');
                         return [2 /*return*/, password];
                     }
-                    else {
+                    else if (prompt) {
                         // otherwise prompt the user (if we have program)
                         utils_1.log(program, logger, 'no password found, prompting user');
                         return [2 /*return*/, program ? getPasswordFromPrompt() : null];
+                    }
+                    else {
+                        throw new Error('No password was configured');
                     }
                     _a.label = 4;
                 case 4: return [2 /*return*/];
@@ -581,7 +658,7 @@ function getPassword(program) {
     });
 }
 exports.getPassword = getPassword;
-function trackActivity(activity) {
+function trackActivity(logger) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var dev;
         return tslib_1.__generator(this, function (_a) {
@@ -592,11 +669,14 @@ function trackActivity(activity) {
                 case 1:
                     dev = _a.sent();
                     utils_1.log(null, logger, 'creating tracker for: ' + dev.userid);
-                    visitor = universal_analytics_1.default(GA_ID, dev.userid, { https: true, strictCidFormat: false });
+                    visitor = universal_analytics_1.default(GA_ID, String(dev.userid), {
+                        https: true,
+                        strictCidFormat: false,
+                    });
                     _a.label = 2;
                 case 2:
-                    utils_1.log(null, logger, 'tracking activity: ' + activity);
-                    visitor.event('activity', activity).send();
+                    utils_1.log(null, logger, 'tracking activity: ' + logger);
+                    visitor.event('activity', logger).send();
                     return [2 /*return*/];
             }
         });

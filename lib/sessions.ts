@@ -5,15 +5,16 @@ import { white } from 'cli-color';
 import { isEmpty, last, sortBy, where } from 'underscore';
 import { getAlks } from './alks';
 import { log, getBadAccountMessage } from '../lib/utils';
-import { getKeys, addKey } from './keys';
+import { getKeys, addKey, Key } from './keys';
 import {
   ensureConfigured,
   getDeveloper,
   getAuth,
-  getALKSAccount,
+  getAlksAccount,
 } from './developer';
 import moment from 'moment';
 import commander from 'commander';
+import ALKS from 'alks.js';
 
 export async function getSessionKey(
   program: commander.Command,
@@ -23,7 +24,7 @@ export async function getSessionKey(
   iamOnly: boolean,
   forceNewSession: boolean,
   filterFavorites: boolean
-) {
+): Promise<Key> {
   await ensureConfigured();
 
   log(program, logger, 'getting developer');
@@ -32,24 +33,19 @@ export async function getSessionKey(
   log(program, logger, 'getting auth');
   const auth = await getAuth(program);
 
-  // set password so they dont get prompted again
-  program.auth = auth;
-
   // only lookup alks account if they didnt provide
   if (isEmpty(alksAccount) || isEmpty(alksRole)) {
     log(program, logger, 'getting accounts');
-    const opts: any = {};
-
-    if (iamOnly) opts.iamOnly = true;
-    if (filterFavorites) opts.filterFavorites = true;
-
-    ({ alksAccount, alksRole } = await getALKSAccount(program, opts));
+    ({ alksAccount, alksRole } = await getAlksAccount(program, {
+      iamOnly,
+      filterFavorites,
+    }));
   } else {
     log(program, logger, 'using provided account/role');
   }
 
   log(program, logger, 'getting existing keys');
-  const existingKeys: any = await getKeys(auth, false);
+  const existingKeys: Key[] = await getKeys(auth, false);
 
   if (existingKeys.length && !forceNewSession) {
     log(
@@ -83,9 +79,7 @@ export async function getSessionKey(
 
   const alks = await getAlks({
     baseUrl: developer.server,
-    token: auth.token,
-    userid: developer.userid,
-    password: auth.password,
+    ...auth,
   });
 
   const loginRole = await alks.getLoginRole({
@@ -106,9 +100,9 @@ export async function getSessionKey(
     )
   );
 
-  let key: any;
+  let alksKey: ALKS.Key;
   try {
-    key = await alks.getKeys({
+    alksKey = await alks.getKeys({
       account: alksAccount,
       role: alksRole,
       sessionTime: duration,
@@ -116,7 +110,13 @@ export async function getSessionKey(
   } catch (e) {
     throw new Error(getBadAccountMessage());
   }
-  key.expires = moment().add(duration, 'hours');
+  const key: Key = {
+    ...alksKey,
+    expires: moment().add(duration, 'hours').toDate(),
+    alksAccount,
+    alksRole,
+    isIAM: true,
+  };
 
   log(program, logger, 'storing key: ' + JSON.stringify(key));
   addKey(

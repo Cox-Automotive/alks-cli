@@ -11,7 +11,7 @@ var utils_1 = require("./utils");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 function getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filterFavorites) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var developer, auth, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, key, e_1;
+        var developer, auth, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, alksKey, e_1, key;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -26,11 +26,9 @@ function getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filt
                     return [4 /*yield*/, developer_1.getAuth(program)];
                 case 3:
                     auth = _b.sent();
-                    // set auth so they dont get prompted again
-                    program.auth = auth;
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 5];
                     utils_1.log(program, logger, 'getting accounts');
-                    return [4 /*yield*/, developer_1.getALKSAccount(program, {
+                    return [4 /*yield*/, developer_1.getAlksAccount(program, {
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
@@ -60,12 +58,7 @@ function getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filt
                     if (forceNewSession) {
                         utils_1.log(program, logger, 'forcing a new session');
                     }
-                    return [4 /*yield*/, alks_1.getAlks({
-                            baseUrl: developer.server,
-                            token: auth.token,
-                            userid: developer.userid,
-                            password: auth.password,
-                        })];
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 8:
                     alks = _b.sent();
                     return [4 /*yield*/, alks.getLoginRole({
@@ -85,13 +78,14 @@ function getIAMKey(program, logger, alksAccount, alksRole, forceNewSession, filt
                             sessionTime: duration,
                         })];
                 case 11:
-                    key = _b.sent();
+                    alksKey = _b.sent();
                     return [3 /*break*/, 13];
                 case 12:
                     e_1 = _b.sent();
                     throw new Error(utils_1.getBadAccountMessage());
                 case 13:
-                    key.expires = moment_1.default().add(duration, 'hours');
+                    key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: moment_1.default().add(duration, 'hours').toDate(), alksAccount: alksAccount,
+                        alksRole: alksRole, isIAM: true });
                     utils_1.log(program, logger, 'storing key: ' + JSON.stringify(key));
                     keys_1.addKey(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true);
                     return [2 /*return*/, key];
@@ -117,11 +111,9 @@ function getIAMAccount(program, logger, alksAccount, alksRole, filterFavorites) 
                     return [4 /*yield*/, developer_1.getAuth(program)];
                 case 3:
                     auth = _b.sent();
-                    // set auth so they dont get prompted again
-                    program.auth = auth;
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 5];
                     utils_1.log(program, logger, 'getting accounts');
-                    return [4 /*yield*/, developer_1.getALKSAccount(program, {
+                    return [4 /*yield*/, developer_1.getAlksAccount(program, {
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];

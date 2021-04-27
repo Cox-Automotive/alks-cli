@@ -31,8 +31,8 @@ program
 
 const NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
 const iamUsername = program.iamusername;
-let alksAccount = program.account;
-let alksRole = program.role;
+let alksAccount: string | undefined = program.account;
+let alksRole: string | undefined = program.role;
 const filterFaves = program.favorites || false;
 const output = program.output || 'text';
 
@@ -68,38 +68,37 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   utils.log(program, logger, 'calling api to create ltk: ' + iamUsername);
 
-  let ltk;
-  try {
-    ltk = await alks.createAccessKeys({
-      account: alksAccount,
-      role: alksRole,
-      iamUserName: iamUsername,
-    });
-  } catch (err) {
-    return utils.errorAndExit(err);
+  if (!alksAccount || !alksRole) {
+    throw new Error('Must specifify ALKS Account and Role');
   }
-  const ltkData: any = {
-    accessKey: ltk.accessKey,
-    secretKey: ltk.secretKey,
+  const ltk = await alks.createAccessKeys({
+    account: alksAccount,
+    role: alksRole,
     iamUserName: iamUsername,
-    iamUserArn: ltk.iamUserArn,
-    alksAccount,
-    alksRole,
-  };
+  });
 
   if (output === 'json') {
-    _.each(['alksAccount', 'alksRole'], (key) => {
-      delete ltkData[key];
-    });
+    const ltkData = {
+      accessKey: ltk.accessKey,
+      secretKey: ltk.secretKey,
+      iamUserName: iamUsername,
+      iamUserArn: ltk.iamUserArn,
+    };
     console.log(JSON.stringify(ltkData, null, 4));
   } else {
+    const ltkData = {
+      accessKey: ltk.accessKey,
+      secretKey: ltk.secretKey,
+      iamUserName: iamUsername,
+      iamUserArn: ltk.iamUserArn,
+      alksAccount,
+      alksRole,
+    };
     console.log(
       clc.white(
         [

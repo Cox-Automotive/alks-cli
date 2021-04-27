@@ -13,7 +13,7 @@ var fs_1 = require("fs");
 var chmod_1 = tslib_1.__importDefault(require("chmod"));
 var inquirer_1 = require("inquirer");
 var package_json_1 = require("../package.json");
-var programCacher = null;
+var programCacher;
 var accountRegex = /([0-9]*)(\/)(ALKS)([a-zA-Z]*)([- ]*)([a-zA-Z0-9_-]*)/g;
 function errorAndExit(errorMsg, errorObj) {
     console.error(cli_color_1.red(errorMsg));
@@ -104,13 +104,12 @@ function showBorderedMessage(cols, msg) {
     console.error(table.toString());
 }
 exports.showBorderedMessage = showBorderedMessage;
-function subcommandSuggestion(program, subcommand) {
+function subcommandSuggestion(program, subCommand) {
     var commands = underscore_1.map(program.commands, '_name');
-    var requestedCommand = underscore_1.head(program.args);
-    if (program.args.length && !underscore_1.includes(commands, requestedCommand)) {
-        var prefix = "alks " + subcommand;
-        var msg = [prefix, requestedCommand, ' is not a valid ALKS command.'];
-        var suggests = fuzzy_1.filter(requestedCommand, commands);
+    if (program.args.length && !underscore_1.includes(commands, subCommand)) {
+        var prefix = "alks " + subCommand;
+        var msg = [prefix, subCommand, ' is not a valid ALKS command.'];
+        var suggests = fuzzy_1.filter(subCommand, commands);
         var suggest = suggests.map(function (sug) { return sug.string; });
         if (suggest.length) {
             msg.push(cli_color_1.white(' Did you mean '));
@@ -169,7 +168,7 @@ function tryToExtractRole(account) {
             return match[4];
         }
     }
-    return null;
+    return undefined;
 }
 exports.tryToExtractRole = tryToExtractRole;
 function getUA() {

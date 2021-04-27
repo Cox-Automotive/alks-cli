@@ -31,12 +31,7 @@ var logger = 'dev-favorites';
                     return [4 /*yield*/, Developer.getAuth(commander_1.default)];
                 case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, Alks.getAlks({
-                            baseUrl: developer.server,
-                            userid: developer.userid,
-                            password: auth.password,
-                            token: auth.token,
-                        })];
+                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 3:
                     alks = _a.sent();
                     utils.log(commander_1.default, logger, 'getting alks accounts');

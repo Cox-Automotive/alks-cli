@@ -1,7 +1,7 @@
 /*jslint node: true */
 'use strict';
 
-import { isEmpty, isUndefined, extend } from 'underscore';
+import { isEmpty } from 'underscore';
 import loki from 'lokijs';
 import c from 'clortho';
 import netrc, { update } from 'node-netrc';
@@ -32,7 +32,7 @@ const db = new loki(getDBFile());
 let visitor: ua.Visitor | null = null;
 const delim = ' :: ';
 const logger = 'developer';
-let vAtSt: string | null = null;
+let vAtSt: string | undefined;
 
 export function getAccountDelim() {
   return delim;
@@ -42,9 +42,11 @@ export function getVersionAtStart() {
   return vAtSt;
 }
 
-async function getCollection(name: string) {
+async function getCollection<T extends object>(
+  name: string
+): Promise<Collection<T>> {
   return new Promise((resolve, reject) => {
-    db.loadDatabase({}, (err) => {
+    db.loadDatabase({}, (err: Error) => {
       if (err) {
         reject(err);
         return;
@@ -108,6 +110,30 @@ export async function removePassword() {
   }
 }
 
+export async function getUseridFromPrompt(
+  text?: string,
+  currentUserid?: string
+) {
+  log(null, logger, 'getting userid from prompt');
+  const answers = await getStdErrPrompt()([
+    {
+      type: 'input',
+      name: 'userid',
+      message: text ? text : 'Network Username',
+      default() {
+        return isEmpty(currentUserid) ? '' : currentUserid;
+      },
+      validate(val) {
+        return !isEmpty(val)
+          ? true
+          : 'Please enter a value for network username.';
+      },
+    },
+  ]);
+
+  return trim(answers.userid);
+}
+
 export async function getPasswordFromPrompt(
   text?: string,
   currentPassword?: string
@@ -165,7 +191,7 @@ export async function getToken() {
       return null;
     }
   } else {
-    let auth = netrc(SERVICETKN);
+    const auth = netrc(SERVICETKN);
     if (!isEmpty(auth.password)) {
       return auth.password;
     } else {
@@ -186,76 +212,20 @@ export async function ensureConfigured() {
   }
 }
 
-export async function saveDeveloper(data: any): Promise<void> {
+export async function saveDeveloper(developer: NewDeveloper): Promise<void> {
   log(null, logger, 'saving developer');
-  const dev: any = await getCollection('account');
+  const collection: Collection<Developer> = await getCollection('account');
 
-  dev.removeDataOnly();
+  collection.removeDataOnly();
 
-  dev.insert({
-    server: trim(data.server),
-    userid: trim(data.userid),
-    alksAccount: trim(data.alksAccount),
-    alksRole: trim(data.alksRole),
-    lastAcctUsed: data.lastAcctUsed, // dont trim, we need the space padding
+  collection.insert({
+    server: developer.server && trim(developer.server),
+    userid: developer.userid && trim(developer.userid),
+    alksAccount: developer.alksAccount && trim(developer.alksAccount),
+    alksRole: developer.alksRole && trim(developer.alksRole),
     lastVersion: pkg.version,
-    outputFormat: trim(data.outputFormat),
+    outputFormat: developer.outputFormat && trim(developer.outputFormat),
   });
-
-  // if they supplied a password and want to save then store it
-  if (data.savePassword && !isEmpty(data.password)) {
-    try {
-      await storePassword(data.password);
-    } catch (e) {
-      passwordSaveErrorHandler(e);
-    }
-  }
-
-  // otherwise clear any previously stored passwords if they said no
-  if (!isUndefined(data.savePassword) && !data.savePassword) {
-    await removePassword();
-  }
-
-  return new Promise((resolve, reject) => {
-    db.save(function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-export async function getDeveloper() {
-  const dev: any = await getCollection('account');
-
-  let data = dev.chain().data()[0];
-  let resp = {
-    server: data ? data.server : null,
-    userid: data ? data.userid : null,
-    alksAccount: data ? data.alksAccount : null,
-    alksRole: data ? data.alksRole : null,
-    lastVersion: data ? data.lastVersion : null,
-    lastAcctUsed: data ? data.lastAcctUsed : null,
-    outputFormat: data ? data.outputFormat : null,
-  };
-  if (process.env.ALKS_SERVER) {
-    resp.server = process.env.ALKS_SERVER;
-  }
-  if (process.env.ALKS_USERID) {
-    resp.userid = process.env.ALKS_USERID;
-  }
-  return resp;
-}
-
-export async function saveFavorites(data: any): Promise<void> {
-  log(null, logger, 'saving favorites');
-  const favorites: any = await getCollection('favorites');
-
-  favorites.removeDataOnly();
-
-  favorites.insert(data.accounts);
 
   return new Promise((resolve, reject) => {
     db.save((err) => {
@@ -268,9 +238,80 @@ export async function saveFavorites(data: any): Promise<void> {
   });
 }
 
-export async function getFavorites() {
+export async function savePassword(password: string) {
+  try {
+    await storePassword(password);
+  } catch (e) {
+    passwordSaveErrorHandler(e);
+  }
+}
+
+export interface BaseDeveloper {
+  server: string;
+  userid: string;
+  alksAccount: string;
+  alksRole: string;
+  outputFormat: string;
+}
+
+export interface DeveloperMetadata {
+  lastVersion: string;
+}
+
+export interface Developer extends BaseDeveloper, DeveloperMetadata {}
+
+export interface NewDeveloper
+  extends BaseDeveloper,
+    Partial<DeveloperMetadata> {}
+
+export async function getDeveloper(): Promise<Developer> {
+  const collection: Collection<Developer> = await getCollection('account');
+
+  const developerConfigs = collection.chain().data();
+  if (developerConfigs.length === 0) {
+    throw new Error(
+      'Developer not configured. Please run `alks developer configure`'
+    );
+  }
+  const developer = developerConfigs[0];
+
+  if (process.env.ALKS_SERVER) {
+    developer.server = process.env.ALKS_SERVER;
+  }
+  if (process.env.ALKS_USERID) {
+    developer.userid = process.env.ALKS_USERID;
+  }
+  return developer;
+}
+
+export async function saveFavorites(data: {
+  accounts: Favorites;
+}): Promise<void> {
+  log(null, logger, 'saving favorites');
+  const favorites: Collection<Favorites> = await getCollection('favorites');
+
+  favorites.removeDataOnly();
+
+  favorites.insert(data.accounts);
+
+  return new Promise((resolve, reject) => {
+    db.save((err?: Error) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+export interface Favorites {
+  favorites: string[];
+}
+
+export async function getFavorites(): Promise<string[]> {
   log(null, logger, 'retreiving favorites');
-  const favorites: any = await getCollection('favorites');
+  const favorites: Collection<Favorites> = await getCollection('favorites');
   const data = favorites.chain().data()[0];
   if (data && data.favorites) {
     return data.favorites;
@@ -279,15 +320,15 @@ export async function getFavorites() {
   }
 }
 
-export async function saveMetadata(data: any): Promise<void> {
+export async function saveMetadata(data: Metadata): Promise<void> {
   log(null, logger, 'saving metadata');
-  const md: any = await getCollection('metadata');
+  const md: Collection<Metadata> = await getCollection('metadata');
   md.removeDataOnly();
 
   md.insert(data);
 
   return new Promise((resolve, reject) => {
-    db.save((err) => {
+    db.save((err?: Error) => {
       if (err) {
         reject(err);
       } else {
@@ -297,41 +338,65 @@ export async function saveMetadata(data: any): Promise<void> {
   });
 }
 
-export async function getMetadata() {
+export interface Metadata {
+  isIam: boolean;
+  alksAccount: string;
+  alksRole: string;
+}
+
+export async function getMetadata(): Promise<Metadata> {
   log(null, logger, 'retreiving metadata');
-  const md: any = await getCollection('metadata');
-  let data = md.chain().data()[0];
+  const md: Collection<Metadata> = await getCollection('metadata');
+  const data = md.chain().data()[0];
   return data || [];
 }
 
-export async function getALKSAccount(program: commander.Command, options: any) {
+export interface GetAlksAccountProps {
+  iamOnly: boolean;
+  prompt: string;
+  server?: string;
+  filterFavorites: boolean;
+}
+
+export interface AlksAccountPromptData {
+  type: string;
+  name: string;
+  message: string;
+  choices: string[];
+  pageSize: number;
+  default?: string;
+}
+
+export async function getAlksAccount(
+  program: commander.Command,
+  options: Partial<GetAlksAccountProps>
+): Promise<{ alksAccount: string; alksRole: string }> {
   log(program, logger, 'retreiving alks account');
-  let opts = extend(
-    {
-      iamOnly: false,
-      prompt: 'Please select an ALKS account/role',
-      dontDefault: false,
-      server: null,
-      userid: null,
-      filterFavorites: false,
-    },
-    options
-  );
 
-  const developer = await getDeveloper();
+  let developer: Developer | undefined;
+  try {
+    developer = await getDeveloper();
+  } catch (e) {
+    // It's ok if developer isn't set yet since this may be called during the initial setup
+  }
 
-  // setup defaults in case they are using this from `developer configure`
-  if (!opts.server) opts.server = developer.server;
-  if (!opts.userid) opts.userid = developer.userid;
+  const opts: GetAlksAccountProps = {
+    iamOnly: options.iamOnly || false,
+    prompt: options.prompt || 'Please select an ALKS account/role',
+    filterFavorites: options.filterFavorites || false,
+    server: options.server || developer?.server,
+  };
+
+  if (!opts.server) {
+    throw new Error('No server URL configured');
+  }
 
   const auth = await getAuth(program);
 
   // load available account/roles
   const alks = await getAlks({
     baseUrl: opts.server,
-    token: auth.token,
-    userid: opts.userid,
-    password: auth.password,
+    ...auth,
   });
 
   const alksAccounts = await alks.getAccounts();
@@ -341,9 +406,14 @@ export async function getALKSAccount(program: commander.Command, options: any) {
   const indexedAlksAccounts = alksAccounts
     .filter((alksAccount) => !opts.iamOnly || alksAccount.iamKeyActive) // Filter out non-iam-active accounts if iamOnly flag is passed
     .filter(
-      (alksAccount) => !opts.filterFavorites || favorites.contains(alksAccount)
+      (alksAccount) =>
+        !opts.filterFavorites || favorites.includes(alksAccount.account)
     ) // Filter out non-favorites if filterFavorites flag is passed
-    .sort((a, b) => favorites.includes(b) - favorites.includes(a)) // Move favorites to the front of the list, non-favorites to the back
+    .sort(
+      (a, b) =>
+        Number(favorites.includes(b.account)) -
+        Number(favorites.includes(a.account))
+    ) // Move favorites to the front of the list, non-favorites to the back
     .map((alksAccount) =>
       [alksAccount.account, alksAccount.role].join(getAccountDelim())
     );
@@ -352,7 +422,7 @@ export async function getALKSAccount(program: commander.Command, options: any) {
     throw new Error('No accounts found.');
   }
 
-  const promptData: any = {
+  const promptData: AlksAccountPromptData = {
     type: 'list',
     name: 'alksAccount',
     message: opts.prompt,
@@ -360,35 +430,45 @@ export async function getALKSAccount(program: commander.Command, options: any) {
     pageSize: 15,
   };
 
-  if (!opts.dontDefault) {
-    promptData.default = developer.lastAcctUsed;
+  if (developer) {
+    promptData.default = [developer.alksAccount, developer.alksRole].join(
+      getAccountDelim()
+    );
   }
 
   // ask user which account/role
-  const answers = await getStdErrPrompt()([promptData]);
+  const prompt = getStdErrPrompt();
+  const answers = await prompt([promptData]);
 
   const acctStr = answers.alksAccount;
   const data = acctStr.split(getAccountDelim());
   const alksAccount = data[0];
   const alksRole = data[1];
 
-  developer.lastAcctUsed = acctStr; // remember what account they last used
-
-  await saveDeveloper(developer);
-
-  // dont set these until we save or theyll overwrite the user's default account
-  developer.alksAccount = alksAccount;
-  developer.alksRole = alksRole;
-
-  return developer;
+  return {
+    alksAccount,
+    alksRole,
+  };
 }
 
-export async function getAuth(program: commander.Command) {
-  let auth = {
-    token: null,
-    password: null,
-  };
+export interface TokenAuth {
+  token: string;
+}
 
+export interface PasswordAuth {
+  userid: string;
+  password: string;
+}
+
+export type Auth = TokenAuth | PasswordAuth;
+export function isTokenAuth(auth: Auth): auth is TokenAuth {
+  return Boolean((auth as TokenAuth).token);
+}
+
+export async function getAuth(
+  program: commander.Command,
+  prompt: boolean = true
+): Promise<Auth> {
   if (program.auth) {
     log(program, logger, 'using cached auth object');
     return program.auth;
@@ -397,16 +477,52 @@ export async function getAuth(program: commander.Command) {
   log(program, logger, 'checking for access token');
   const token = await getToken();
   if (token) {
-    auth.token = token;
+    const auth = { token };
+    program.auth = auth;
     return auth;
   } else {
     log(program, logger, 'no access token found, falling back to password');
-    auth.password = await getPassword(program);
+    const userid = await getUserid(program, prompt);
+    const password = await getPassword(program, prompt);
+    const auth = { userid, password };
+    program.auth = auth;
     return auth;
   }
 }
 
-export async function getPassword(program: commander.Command | null) {
+export async function getUserid(
+  program: commander.Command,
+  prompt: boolean = true
+) {
+  if (program && !isEmpty(program.userid)) {
+    // first check userid from CLI argument
+    log(program, logger, 'using userid from CLI arg');
+    return program.userid;
+  } else if (!isEmpty(process.env.ALKS_USERID)) {
+    // then check for an environment variable
+    log(program, logger, 'using userid from environment variable');
+    return process.env.ALKS_USERID;
+  } else {
+    // then check for stored userid
+    const developer = await getDeveloper();
+    const userid = developer.userid;
+    if (!isEmpty(userid)) {
+      log(program, logger, 'using stored userid');
+      return userid;
+    } else if (prompt) {
+      // otherwise prompt the user (if we have program)
+      log(program, logger, 'no userid found, prompting user');
+      return program ? getUseridFromPrompt() : null;
+    } else {
+      throw new Error('No userid was configured');
+    }
+  }
+}
+
+export async function getPassword(
+  program: commander.Command | null,
+  prompt: boolean = true
+) {
   if (program && !isEmpty(program.password)) {
     // first check password from CLI argument
     log(program, logger, 'using password from CLI arg');
@@ -421,20 +537,25 @@ export async function getPassword(program: commander.Command | null) {
     if (!isEmpty(password)) {
       log(program, logger, 'using password from keystore');
       return password;
-    } else {
+    } else if (prompt) {
       // otherwise prompt the user (if we have program)
       log(program, logger, 'no password found, prompting user');
       return program ? getPasswordFromPrompt() : null;
+    } else {
+      throw new Error('No password was configured');
     }
   }
 }
 
-export async function trackActivity(activity: any) {
+export async function trackActivity(logger: string) {
   if (!visitor) {
     const dev = await getDeveloper();
     log(null, logger, 'creating tracker for: ' + dev.userid);
-    visitor = ua(GA_ID, dev.userid, { https: true, strictCidFormat: false });
+    visitor = ua(GA_ID, String(dev.userid), {
+      https: true,
+      strictCidFormat: false,
+    });
   }
-  log(null, logger, 'tracking activity: ' + activity);
-  visitor.event('activity', activity).send();
+  log(null, logger, 'tracking activity: ' + logger);
+  visitor.event('activity', logger).send();
 }

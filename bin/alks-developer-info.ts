@@ -34,8 +34,8 @@ const logger = 'dev-info';
   utils.log(program, logger, 'getting 2fa token');
   const token = await Developer.getToken();
 
-  const ignores = ['lastVersion', 'lastAcctUsed'];
-  const mapping: any = {
+  const ignores = ['lastVersion'];
+  const mapping: Record<string, string> = {
     server: 'ALKS Server',
     userid: 'Network Login',
     alksAccount: 'Default ALKS Account',

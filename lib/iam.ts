@@ -5,12 +5,13 @@ import {
   ensureConfigured,
   getDeveloper,
   getAuth,
-  getALKSAccount,
+  getAlksAccount,
 } from './developer';
-import { getKeys, addKey } from './keys';
+import { getKeys, addKey, Key } from './keys';
 import { log, getBadAccountMessage } from './utils';
 import moment from 'moment';
 import commander from 'commander';
+import ALKS from 'alks.js';
 
 export async function getIAMKey(
   program: commander.Command,
@@ -19,7 +20,7 @@ export async function getIAMKey(
   alksRole: string,
   forceNewSession: boolean,
   filterFavorites: boolean
-) {
+): Promise<Key> {
   await ensureConfigured();
 
   log(program, logger, 'getting developer');
@@ -28,13 +29,10 @@ export async function getIAMKey(
   log(program, logger, 'getting auth');
   const auth = await getAuth(program);
 
-  // set auth so they dont get prompted again
-  program.auth = auth;
-
   // only lookup alks account if they didnt provide
   if (isEmpty(alksAccount) || isEmpty(alksRole)) {
     log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await getALKSAccount(program, {
+    ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly: true,
       filterFavorites,
     }));
@@ -43,7 +41,7 @@ export async function getIAMKey(
   }
 
   log(program, logger, 'getting existing keys');
-  const existingKeys: any = await getKeys(auth, true);
+  const existingKeys: Key[] = await getKeys(auth, true);
   log(program, logger, 'got existing keys');
 
   if (existingKeys.length && !forceNewSession) {
@@ -78,9 +76,7 @@ export async function getIAMKey(
 
   const alks = await getAlks({
     baseUrl: developer.server,
-    token: auth.token,
-    userid: developer.userid,
-    password: auth.password,
+    ...auth,
   });
 
   const loginRole = await alks.getLoginRole({
@@ -96,9 +92,9 @@ export async function getIAMKey(
     )
   );
 
-  let key: any;
+  let alksKey: ALKS.Key;
   try {
-    key = await alks.getIAMKeys({
+    alksKey = await alks.getIAMKeys({
       account: alksAccount,
       role: alksRole,
       sessionTime: duration,
@@ -106,7 +102,13 @@ export async function getIAMKey(
   } catch (e) {
     throw new Error(getBadAccountMessage());
   }
-  key.expires = moment().add(duration, 'hours');
+  const key: Key = {
+    ...alksKey,
+    expires: moment().add(duration, 'hours').toDate(),
+    alksAccount,
+    alksRole,
+    isIAM: true,
+  };
 
   log(program, logger, 'storing key: ' + JSON.stringify(key));
   addKey(
@@ -126,8 +128,8 @@ export async function getIAMKey(
 export async function getIAMAccount(
   program: commander.Command,
   logger: string,
-  alksAccount: string,
-  alksRole: string,
+  alksAccount: string | undefined,
+  alksRole: string | undefined,
   filterFavorites: boolean
 ) {
   await ensureConfigured();
@@ -138,13 +140,10 @@ export async function getIAMAccount(
   log(program, logger, 'getting auth');
   const auth = await getAuth(program);
 
-  // set auth so they dont get prompted again
-  program.auth = auth;
-
   // only lookup alks account if they didnt provide
   if (isEmpty(alksAccount) || isEmpty(alksRole)) {
     log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await getALKSAccount(program, {
+    ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly: true,
       filterFavorites,
     }));

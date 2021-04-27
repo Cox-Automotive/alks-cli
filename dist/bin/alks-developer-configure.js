@@ -17,7 +17,7 @@ commander_1.default
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
 var logger = 'dev-config';
-function getPrompt(field, data, text, validator) {
+function getPrompt(field, defaultValue, text, validator) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var answers;
         return tslib_1.__generator(this, function (_a) {
@@ -28,7 +28,7 @@ function getPrompt(field, data, text, validator) {
                             name: field,
                             message: text,
                             default: function () {
-                                return data[field];
+                                return defaultValue;
                             },
                             validate: validator
                                 ? validator
@@ -48,35 +48,37 @@ function getPrompt(field, data, text, validator) {
 }
 (function () {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var previousData, server, userid, auth, _a, _b, answers, savePassword, prompt, opts, data, e_1, _c, _d, alksAccount, _e, alksRole, promptData, answers2, outputFormat, developerPayload, e2_1, err_1;
-        return tslib_1.__generator(this, function (_f) {
-            switch (_f.label) {
+        var previousDeveloper, e_1, server, userid, password, answers, savePassword, auth, e_2, prompt, opts, _a, alksAccount, alksRole, promptData, answers2, outputFormat, newDeveloper, e2_1, err_1;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _f.trys.push([0, 19, , 20]);
+                    _b.trys.push([0, 24, , 25]);
                     utils.log(commander_1.default, logger, 'getting developer');
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    previousDeveloper = void 0;
+                    _b.label = 1;
                 case 1:
-                    previousData = _f.sent();
-                    return [4 /*yield*/, getPrompt('server', previousData, 'ALKS server', utils.isURL)];
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, Developer.getDeveloper()];
                 case 2:
-                    server = _f.sent();
-                    return [4 /*yield*/, getPrompt('userid', previousData, 'Network Username', null)];
+                    previousDeveloper = _b.sent();
+                    return [3 /*break*/, 4];
                 case 3:
-                    userid = _f.sent();
-                    utils.log(commander_1.default, logger, 'getting existing auth');
-                    return [4 /*yield*/, Developer.getAuth(commander_1.default)];
-                case 4:
-                    auth = _f.sent();
-                    utils.log(commander_1.default, logger, 'getting existing password');
-                    _a = auth;
-                    return [4 /*yield*/, Developer.getPasswordFromKeystore()];
+                    e_1 = _b.sent();
+                    return [3 /*break*/, 4];
+                case 4: return [4 /*yield*/, getPrompt('server', previousDeveloper === null || previousDeveloper === void 0 ? void 0 : previousDeveloper.server, 'ALKS server', utils.isURL)];
                 case 5:
-                    _a.password = _f.sent();
-                    utils.log(commander_1.default, logger, 'getting password');
-                    _b = auth;
-                    return [4 /*yield*/, Developer.getPasswordFromPrompt('Network Password', auth.password)];
+                    server = _b.sent();
+                    return [4 /*yield*/, getPrompt('userid', previousDeveloper === null || previousDeveloper === void 0 ? void 0 : previousDeveloper.userid, 'Network Username', null)];
                 case 6:
-                    _b.password = _f.sent();
+                    userid = _b.sent();
+                    utils.log(commander_1.default, logger, 'getting existing password');
+                    return [4 /*yield*/, Developer.getPasswordFromKeystore()];
+                case 7:
+                    password = _b.sent();
+                    utils.log(commander_1.default, logger, 'getting password');
+                    return [4 /*yield*/, Developer.getPasswordFromPrompt('Network Password', password)];
+                case 8:
+                    password = _b.sent();
                     return [4 /*yield*/, inquirer_1.default.prompt([
                             {
                                 type: 'confirm',
@@ -84,67 +86,74 @@ function getPrompt(field, data, text, validator) {
                                 message: 'Save password',
                             },
                         ])];
-                case 7:
-                    answers = _f.sent();
+                case 9:
+                    answers = _b.sent();
                     savePassword = answers.savePassword;
+                    if (!savePassword) return [3 /*break*/, 11];
+                    return [4 /*yield*/, Developer.savePassword(password)];
+                case 10:
+                    _b.sent();
+                    _b.label = 11;
+                case 11:
+                    auth = void 0;
+                    _b.label = 12;
+                case 12:
+                    _b.trys.push([12, 14, , 15]);
+                    utils.log(commander_1.default, logger, 'getting existing auth');
+                    return [4 /*yield*/, Developer.getAuth(commander_1.default, false)];
+                case 13:
+                    auth = _b.sent();
+                    return [3 /*break*/, 15];
+                case 14:
+                    e_2 = _b.sent();
+                    // it's ok if no auth exists since we're configuring it now
+                    auth = {};
+                    return [3 /*break*/, 15];
+                case 15:
+                    // Cache password in program object for faster lookup
+                    commander_1.default.auth = tslib_1.__assign({ userid: userid,
+                        password: password }, auth);
                     utils.log(commander_1.default, logger, 'Getting ALKS accounts');
                     prompt = 'Please select your default ALKS account/role';
-                    commander_1.default.auth = auth; // this ensures getALKSAccount() doesnt prompt..
                     opts = {
                         prompt: prompt,
-                        dontDefault: true,
                         server: server,
                         userid: userid,
                     };
-                    data = void 0;
-                    _f.label = 8;
-                case 8:
-                    _f.trys.push([8, 10, , 11]);
-                    return [4 /*yield*/, Developer.getALKSAccount(commander_1.default, opts)];
-                case 9:
-                    data = _f.sent();
-                    return [3 /*break*/, 11];
-                case 10:
-                    e_1 = _f.sent();
-                    if (e_1.message.indexOf('No accounts') === -1) {
-                        throw e_1;
-                    }
-                    return [3 /*break*/, 11];
-                case 11:
-                    _c = data, _d = _c.alksAccount, alksAccount = _d === void 0 ? '' : _d, _e = _c.alksRole, alksRole = _e === void 0 ? '' : _e;
+                    return [4 /*yield*/, Developer.getAlksAccount(commander_1.default, opts)];
+                case 16:
+                    _a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole;
                     utils.log(commander_1.default, logger, 'Getting output formats');
                     promptData = {
                         type: 'list',
                         name: 'outputFormat',
-                        default: previousData.outputFormat,
+                        default: previousDeveloper === null || previousDeveloper === void 0 ? void 0 : previousDeveloper.outputFormat,
                         message: 'Please select your default output format',
                         choices: utils.getOutputValues(),
                         pageSize: 10,
                     };
                     return [4 /*yield*/, utils.getStdErrPrompt()([promptData])];
-                case 12:
-                    answers2 = _f.sent();
+                case 17:
+                    answers2 = _b.sent();
                     outputFormat = answers2.outputFormat;
-                    developerPayload = {
+                    newDeveloper = {
                         server: server,
                         userid: userid,
-                        password: auth.password,
-                        savePassword: savePassword,
                         alksAccount: alksAccount,
                         alksRole: alksRole,
                         outputFormat: outputFormat,
                     };
                     // create developer
                     utils.log(commander_1.default, logger, 'saving developer');
-                    _f.label = 13;
-                case 13:
-                    _f.trys.push([13, 15, , 16]);
-                    return [4 /*yield*/, Developer.saveDeveloper(developerPayload)];
-                case 14:
-                    _f.sent();
-                    return [3 /*break*/, 16];
-                case 15:
-                    e2_1 = _f.sent();
+                    _b.label = 18;
+                case 18:
+                    _b.trys.push([18, 20, , 21]);
+                    return [4 /*yield*/, Developer.saveDeveloper(newDeveloper)];
+                case 19:
+                    _b.sent();
+                    return [3 /*break*/, 21];
+                case 20:
+                    e2_1 = _b.sent();
                     if (e2_1) {
                         utils.log(commander_1.default, logger, 'error saving! ' + e2_1.message);
                         console.error(cli_color_1.default.red.bold('There was an error updating your developer configuration.'));
@@ -152,20 +161,20 @@ function getPrompt(field, data, text, validator) {
                     else {
                         console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
                     }
-                    return [3 /*break*/, 16];
-                case 16:
+                    return [3 /*break*/, 21];
+                case 21:
                     utils.log(commander_1.default, logger, 'checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 17:
-                    _f.sent();
+                case 22:
+                    _b.sent();
                     return [4 /*yield*/, Developer.trackActivity(logger)];
-                case 18:
-                    _f.sent();
-                    return [3 /*break*/, 20];
-                case 19:
-                    err_1 = _f.sent();
+                case 23:
+                    _b.sent();
+                    return [3 /*break*/, 25];
+                case 24:
+                    err_1 = _b.sent();
                     return [2 /*return*/, utils.errorAndExit('Error configuring developer: ' + err_1.message)];
-                case 20: return [2 /*return*/];
+                case 25: return [2 /*return*/];
             }
         });
     });

@@ -39,7 +39,7 @@ var logger = 'dev-info';
                     return [4 /*yield*/, Developer.getToken()];
                 case 3:
                     token = _a.sent();
-                    ignores = ['lastVersion', 'lastAcctUsed'];
+                    ignores = ['lastVersion'];
                     mapping = {
                         server: 'ALKS Server',
                         userid: 'Network Login',

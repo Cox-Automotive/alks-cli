@@ -21,7 +21,7 @@ if (!utils.isOSX()) {
 
 console.error(clc.white('Stopping metadata server..'));
 
-forever.list(false, (_err: Error | null, list: any[] | null) => {
+forever.list(false, (_err: Error | null, list: unknown | null) => {
   if (list === null) {
     console.log(clc.white('Metadata server is not running.'));
   } else {

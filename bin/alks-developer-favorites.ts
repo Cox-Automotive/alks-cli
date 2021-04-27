@@ -10,6 +10,7 @@ import config from '../package.json';
 import * as Developer from '../lib/developer';
 import * as utils from '../lib/utils';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import ALKS from 'alks.js';
 
 program
   .version(config.version)
@@ -28,9 +29,7 @@ const logger = 'dev-favorites';
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   utils.log(program, logger, 'getting alks accounts');
@@ -40,7 +39,7 @@ const logger = 'dev-favorites';
   const favorites = await Developer.getFavorites();
 
   const choices = [];
-  const deferred: any[] = [];
+  const deferred: ALKS.Account[] = [];
 
   utils.log(program, logger, 'rendering favorite accounts');
   choices.push(new inquirer.Separator(' = Standard = '));

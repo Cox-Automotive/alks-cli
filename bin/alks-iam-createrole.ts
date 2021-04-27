@@ -68,7 +68,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 (async function () {
   if (_.isEmpty(alksAccount) || _.isEmpty(alksRole)) {
     utils.log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await Developer.getALKSAccount(program, {
+    ({ alksAccount, alksRole } = await Developer.getAlksAccount(program, {
       iamOnly: true,
       filterFavorites,
     }));
@@ -84,9 +84,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   let role;

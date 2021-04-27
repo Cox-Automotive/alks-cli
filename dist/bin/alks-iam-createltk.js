@@ -43,7 +43,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
 }
 (function () {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var iamAccount, err_1, developer, auth, alks, ltk, err_2, ltkData;
+        var iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -58,45 +58,38 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                 case 3:
                     developer = iamAccount.developer, auth = iamAccount.auth;
                     (alksAccount = iamAccount.account, alksRole = iamAccount.role);
-                    return [4 /*yield*/, Alks.getAlks({
-                            baseUrl: developer.server,
-                            userid: developer.userid,
-                            password: auth.password,
-                            token: auth.token,
-                        })];
+                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 4:
                     alks = _a.sent();
                     utils.log(commander_1.default, logger, 'calling api to create ltk: ' + iamUsername);
-                    _a.label = 5;
-                case 5:
-                    _a.trys.push([5, 7, , 8]);
+                    if (!alksAccount || !alksRole) {
+                        throw new Error('Must specifify ALKS Account and Role');
+                    }
                     return [4 /*yield*/, alks.createAccessKeys({
                             account: alksAccount,
                             role: alksRole,
                             iamUserName: iamUsername,
                         })];
-                case 6:
+                case 5:
                     ltk = _a.sent();
-                    return [3 /*break*/, 8];
-                case 7:
-                    err_2 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit(err_2)];
-                case 8:
-                    ltkData = {
-                        accessKey: ltk.accessKey,
-                        secretKey: ltk.secretKey,
-                        iamUserName: iamUsername,
-                        iamUserArn: ltk.iamUserArn,
-                        alksAccount: alksAccount,
-                        alksRole: alksRole,
-                    };
                     if (output === 'json') {
-                        underscore_1.default.each(['alksAccount', 'alksRole'], function (key) {
-                            delete ltkData[key];
-                        });
+                        ltkData = {
+                            accessKey: ltk.accessKey,
+                            secretKey: ltk.secretKey,
+                            iamUserName: iamUsername,
+                            iamUserArn: ltk.iamUserArn,
+                        };
                         console.log(JSON.stringify(ltkData, null, 4));
                     }
                     else {
+                        ltkData = {
+                            accessKey: ltk.accessKey,
+                            secretKey: ltk.secretKey,
+                            iamUserName: iamUsername,
+                            iamUserArn: ltk.iamUserArn,
+                            alksAccount: alksAccount,
+                            alksRole: alksRole,
+                        };
                         console.log(cli_color_1.default.white([
                             'LTK created for IAM User: ',
                             iamUsername,
@@ -109,10 +102,10 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     }
                     utils.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 9:
+                case 6:
                     _a.sent();
                     return [4 /*yield*/, Developer.trackActivity(logger)];
-                case 10:
+                case 7:
                     _a.sent();
                     return [2 /*return*/];
             }

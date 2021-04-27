@@ -64,7 +64,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                 case 0:
                     if (!(underscore_1.default.isEmpty(alksAccount) || underscore_1.default.isEmpty(alksRole))) return [3 /*break*/, 2];
                     utils.log(commander_1.default, logger, 'getting accounts');
-                    return [4 /*yield*/, Developer.getALKSAccount(commander_1.default, {
+                    return [4 /*yield*/, Developer.getAlksAccount(commander_1.default, {
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
@@ -81,12 +81,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                 case 5:
                     auth = _b.sent();
                     utils.log(commander_1.default, logger, 'calling api to create trust role: ' + roleName);
-                    return [4 /*yield*/, Alks.getAlks({
-                            baseUrl: developer.server,
-                            userid: developer.userid,
-                            password: auth.password,
-                            token: auth.token,
-                        })];
+                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 6:
                     alks = _b.sent();
                     _b.label = 7;

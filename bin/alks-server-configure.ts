@@ -67,7 +67,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     await Developer.saveMetadata({
       alksAccount: key.alksAccount,
       alksRole: key.alksRole,
-      isIAM: key.isIAM,
+      isIam: key.isIAM,
     });
   } catch (err) {
     return utils.errorAndExit('Unable to save metadata!', err);

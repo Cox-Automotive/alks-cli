@@ -7,12 +7,13 @@ import { getIAMKey } from './iam.js';
 import { getSessionKey } from './sessions.js';
 import listEnds from 'express-list-endpoints';
 import commander from 'commander';
+import { Key } from './keys';
 
-let app = express();
+const app = express();
 
 const logger = 'metadata-server';
 
-function generateResponse(key: any) {
+function generateResponse(key: Key) {
   return {
     Code: 'Success',
     LastUpdated: new Date().toISOString(),
@@ -49,8 +50,8 @@ app.get(
 
 app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
   const metadata = await getMetadata();
-  if (metadata.isIAM) {
-    const { key } = await getIAMKey(
+  if (metadata.isIam) {
+    const key = await getIAMKey(
       {} as commander.Command,
       logger,
       metadata.alksAccount,

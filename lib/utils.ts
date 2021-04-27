@@ -1,7 +1,7 @@
 /*jslint node: true */
 'use strict';
 
-import { isEmpty, times, map, head, includes } from 'underscore';
+import { isEmpty, times, map, includes } from 'underscore';
 import { filter } from 'fuzzy';
 import { red, white, yellow } from 'cli-color';
 import Table from 'cli-table3';
@@ -11,11 +11,12 @@ import { existsSync, appendFileSync } from 'fs';
 import chmod from 'chmod';
 import { createPromptModule } from 'inquirer';
 import { version } from '../package.json';
+import commander from 'commander';
 
-let programCacher: any = null;
+let programCacher: commander.Command | undefined;
 const accountRegex = /([0-9]*)(\/)(ALKS)([a-zA-Z]*)([- ]*)([a-zA-Z0-9_-]*)/g;
 
-export function errorAndExit(errorMsg: string, errorObj?: any) {
+export function errorAndExit(errorMsg: string, errorObj?: Error) {
   console.error(red(errorMsg));
   if (errorObj) {
     console.error(red(JSON.stringify(errorObj, null, 4)));
@@ -114,14 +115,16 @@ export function showBorderedMessage(cols: number, msg: string) {
   console.error(table.toString());
 }
 
-export function subcommandSuggestion(program: any, subcommand: string) {
+export function subcommandSuggestion(
+  program: commander.Command,
+  subCommand: string
+) {
   const commands = map(program.commands, '_name');
-  const requestedCommand = head(program.args);
 
-  if (program.args.length && !includes(commands, requestedCommand)) {
-    const prefix = `alks ${subcommand}`;
-    const msg = [prefix, requestedCommand, ' is not a valid ALKS command.'];
-    const suggests = filter(requestedCommand, commands);
+  if (program.args.length && !includes(commands, subCommand)) {
+    const prefix = `alks ${subCommand}`;
+    const msg = [prefix, subCommand, ' is not a valid ALKS command.'];
+    const suggests = filter(subCommand, commands);
     const suggest = suggests.map((sug) => sug.string);
 
     if (suggest.length) {
@@ -156,7 +159,11 @@ export function isURL(url: string) {
   return pattern.test(url) || 'Please enter a valid URL.';
 }
 
-export function log(program: any, section: string, msg: string) {
+export function log(
+  program: commander.Command | null,
+  section: string,
+  msg: string
+) {
   if (program && !programCacher) programCacher = program; // so hacky!
 
   if (programCacher && programCacher.verbose) {
@@ -180,7 +187,7 @@ export function getAccountRegex() {
   return accountRegex;
 }
 
-export function tryToExtractRole(account: string) {
+export function tryToExtractRole(account: string): string | undefined {
   let match;
   while ((match = accountRegex.exec(account))) {
     if (match && account.indexOf('ALKS_') === -1) {
@@ -188,7 +195,7 @@ export function tryToExtractRole(account: string) {
       return match[4];
     }
   }
-  return null;
+  return undefined;
 }
 
 export function getUA() {

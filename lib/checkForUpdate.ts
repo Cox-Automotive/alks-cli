@@ -21,11 +21,11 @@ export async function checkForUpdate() {
   const app = name;
   const client = new npm({ log: { verbose: noop, info: noop, http: noop } });
 
-  const data: any = await new Promise((resolve, reject) => {
+  const data: { version: string } = await new Promise((resolve, reject) => {
     client.get(
       `https://registry.npmjs.org/${app}/latest`,
       { timeout: 1000 },
-      (error: Error, data: any) => {
+      (error: Error, data: { version: string }) => {
         if (error) {
           reject(error);
         } else {
@@ -56,7 +56,7 @@ export async function checkForUpdate() {
     const lastRunVerion = getVersionAtStart();
 
     // check if they just updated
-    if (lastRunVerion !== null && gt(currentVersion, lastRunVerion)) {
+    if (lastRunVerion && gt(currentVersion, lastRunVerion)) {
       _log(null, logger, 'user updated, updating db with version');
       // give them release notes
       showBorderedMessage(110, white(getChangeLog()));

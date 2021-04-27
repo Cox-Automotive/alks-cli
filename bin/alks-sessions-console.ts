@@ -12,6 +12,7 @@ import * as Sessions from '../lib/sessions';
 import * as Developer from '../lib/developer';
 import * as Iam from '../lib/iam';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { Key } from '../lib/keys';
 
 program
   .version(config.version)
@@ -55,7 +56,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     }
   }
 
-  let key: any;
+  let key: Key;
   try {
     if (_.isUndefined(program.iam)) {
       key = await Sessions.getSessionKey(

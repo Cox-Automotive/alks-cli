@@ -15,7 +15,7 @@ import {
   addNewLineToEOF,
   isWindows,
 } from './utils';
-import Alks from 'alks.js';
+import { Auth, isTokenAuth } from './developer';
 
 const db = new loki(getDBFile());
 
@@ -65,10 +65,23 @@ function decrypt(text: string, key: string) {
   return decrypt.toString();
 }
 
-async function getKeysCollection() {
+export interface AwsKey {
+  accessKey: string;
+  secretKey: string;
+  sessionToken: string;
+}
+
+export interface Key extends AwsKey {
+  alksAccount: string;
+  alksRole: string;
+  isIAM: boolean;
+  expires: Date;
+}
+
+async function getKeysCollection(): Promise<Collection<Key>> {
   return new Promise((resolve, reject) => {
     // have the DB load from disk
-    db.loadDatabase({}, (err) => {
+    db.loadDatabase({}, (err?: Error) => {
       if (err) {
         reject(err);
         return;
@@ -84,7 +97,7 @@ async function getKeysCollection() {
   });
 }
 
-function updateCreds(key: Alks.Key, profile: string, force: boolean) {
+function updateCreds(key: AwsKey, profile: string, force: boolean) {
   const credPath = getFilePathInHome('.aws');
   const credFile = credPath + '/credentials';
 
@@ -137,13 +150,13 @@ export async function addKey(
   sessionToken: string,
   alksAccount: string,
   alksRole: string,
-  expires: moment.Moment,
-  auth: any,
+  expires: Date,
+  auth: Auth,
   isIAM: boolean
 ): Promise<void> {
-  const enc = auth.token || auth.password;
+  const enc = isTokenAuth(auth) ? auth.token : auth.password;
 
-  const keys: any = await getKeysCollection();
+  const keys = await getKeysCollection();
 
   keys.insert({
     accessKey: encrypt(accessKey, enc),
@@ -152,7 +165,7 @@ export async function addKey(
     alksAccount: encrypt(alksAccount, enc),
     alksRole: encrypt(alksRole, enc),
     isIAM,
-    expires: expires.toDate(),
+    expires,
   });
 
   return new Promise((resolve, reject) => {
@@ -166,10 +179,13 @@ export async function addKey(
   });
 }
 
-export async function getKeys(auth: any, isIAM: boolean): Promise<any[]> {
-  const keys: any = await getKeysCollection();
+export async function getKeys(
+  auth: Auth,
+  isIAM: boolean
+): Promise<(Key & LokiObj)[]> {
+  const keys = await getKeysCollection();
   const now = moment();
-  const enc = auth.token || auth.password;
+  const enc = isTokenAuth(auth) ? auth.token : auth.password;
 
   // first delete any expired keys
   keys.removeWhere({ expires: { $lte: now.toDate() } });
@@ -189,7 +205,7 @@ export async function getKeys(auth: any, isIAM: boolean): Promise<any[]> {
         .simplesort('expires')
         .data();
 
-      const dataOut: any[] = [];
+      const dataOut: (Key & LokiObj)[] = [];
       each(data, (keydata) => {
         // try catch here since we upgraded encryption and previously encrypted sessions will fail to decrypt
         try {
@@ -213,15 +229,10 @@ export async function getKeys(auth: any, isIAM: boolean): Promise<any[]> {
 // if adding new output types be sure to update utils.js:getOutputValues
 export function getKeyOutput(
   format: string,
-  key: any,
+  key: Key,
   profile: string,
   force: boolean
 ) {
-  // strip un-needed data
-  ['meta', '$loki', 'isIAM', 'alksAccount', 'alksRole'].forEach((attr) => {
-    delete key[attr];
-  });
-
   const keyExpires = moment(key.expires).format();
 
   switch (format) {
@@ -236,7 +247,13 @@ export function getKeyOutput(
       return `${cmd} ALKS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} ALKS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} ALKS_SESSION_TOKEN=${key.sessionToken} && ${cmd} ALKS_SESSION_EXPIRES=${keyExpires}`;
     }
     case 'json': {
-      return JSON.stringify(key, null, 4);
+      const keyData = {
+        accessKey: key.accessKey,
+        secretKey: key.secretKey,
+        sessionToken: key.sessionToken,
+        expires: key.expires, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
+      };
+      return JSON.stringify(keyData, null, 4);
     }
     case 'creds': {
       if (updateCreds(key, profile, force)) {

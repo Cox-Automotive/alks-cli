@@ -55,7 +55,7 @@ function checkForUpdate() {
                 case 2:
                     currentVersion = package_json_1.version;
                     lastRunVerion = developer_js_1.getVersionAtStart();
-                    if (!(lastRunVerion !== null && semver_1.gt(currentVersion, lastRunVerion))) return [3 /*break*/, 5];
+                    if (!(lastRunVerion && semver_1.gt(currentVersion, lastRunVerion))) return [3 /*break*/, 5];
                     utils_1.log(null, logger, 'user updated, updating db with version');
                     // give them release notes
                     utils_1.showBorderedMessage(110, cli_color_1.white(getChangeLog()));

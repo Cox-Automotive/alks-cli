@@ -60,9 +60,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 
   const alks = await Alks.getAlks({
     baseUrl: developer.server,
-    userid: developer.userid,
-    password: auth.password,
-    token: auth.token,
+    ...auth,
   });
 
   utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
