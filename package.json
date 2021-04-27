@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test",
     "prettier": "prettier --write",
-    "tslint": "tslint --fix --force"
+    "tslint": "tslint --fix --force",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -84,16 +85,10 @@
   "bundledDependencies": [
     "clortho"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "{**/*.{js,ts,json,md},bin/alks*}": [
       "tslint --fix --force",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "prettier": {
