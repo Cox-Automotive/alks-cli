@@ -11,26 +11,26 @@ const Developer = require('../lib/developer');
 const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
-    .version(config.version)
-    .description('stores password')
-    .option('-v, --verbose', 'be verbose')
-    .parse(process.argv);
+  .version(config.version)
+  .description('stores password')
+  .option('-v, --verbose', 'be verbose')
+  .parse(process.argv);
 
 const logger = 'dev-login';
 
-(async function() {
-    const password = await Developer.getPasswordFromPrompt();
+(async function () {
+  const password = await Developer.getPasswordFromPrompt();
 
-    utils.log(program, logger, 'saving password');
-    const saved = await Developer.storePassword(password);
-    if (!saved) {
-        utils.log(program, logger, 'error saving password! ' + err.message);
-        utils.passwordSaveErrorHandler(err);
-    } else {
-        console.error(clc.white('Password saved!'));
-    }
+  utils.log(program, logger, 'saving password');
+  const saved = await Developer.storePassword(password);
+  if (!saved) {
+    utils.log(program, logger, 'error saving password! ' + err.message);
+    utils.passwordSaveErrorHandler(err);
+  } else {
+    console.error(clc.white('Password saved!'));
+  }
 
-    utils.log(program, logger, 'checking for updates');
-    await checkForUpdate();
-    await Developer.trackActivity(logger);
-})().catch(err => utils.errorAndExit(err.message, err));
+  utils.log(program, logger, 'checking for updates');
+  await checkForUpdate();
+  await Developer.trackActivity(logger);
+})().catch((err) => utils.errorAndExit(err.message, err));

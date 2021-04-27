@@ -13,71 +13,75 @@ const utils = require('../lib/utils');
 const checkForUpdate = require('../lib/checkForUpdate').checkForUpdate;
 
 program
-    .version(config.version)
-    .description('configure which accounts are favorites')
-    .option('-v, --verbose', 'be verbose')
-    .parse(process.argv);
+  .version(config.version)
+  .description('configure which accounts are favorites')
+  .option('-v, --verbose', 'be verbose')
+  .parse(process.argv);
 
 const logger = 'dev-favorites';
 
-(async function() {
-    utils.log(program, logger, 'getting developer');
-    const developer = await Developer.getDeveloper();
+(async function () {
+  utils.log(program, logger, 'getting developer');
+  const developer = await Developer.getDeveloper();
 
-    utils.log(program, logger, 'getting auth');
-    const auth = await Developer.getAuth(program);
+  utils.log(program, logger, 'getting auth');
+  const auth = await Developer.getAuth(program);
 
-    const alks = await Alks.getAlks({
-        baseUrl: developer.server,
-        userid: developer.userid,
-        password: auth.password,
-        token: auth.token,
+  const alks = await Alks.getAlks({
+    baseUrl: developer.server,
+    userid: developer.userid,
+    password: auth.password,
+    token: auth.token,
+  });
+
+  utils.log(program, logger, 'getting alks accounts');
+  const alksAccounts = await alks.getAccounts();
+
+  utils.log(program, logger, 'getting favorite accounts');
+  const favorites = await Developer.getFavorites();
+
+  const choices = [];
+  const deferred = [];
+
+  utils.log(program, logger, 'rendering favorite accounts');
+  choices.push(new inquirer.Separator(' = Standard = '));
+  alksAccounts.forEach((alksAccount) => {
+    if (!alksAccount.iam) {
+      const name = [alksAccount.account, alksAccount.role].join(
+        Developer.getAccountDelim()
+      );
+      choices.push({
+        name,
+        checked: _.contains(favorites, name),
+      });
+    } else {
+      deferred.push(alksAccount);
+    }
+  });
+
+  choices.push(new inquirer.Separator(' = IAM = '));
+  deferred.forEach((val) => {
+    const name = [val.account, val.role].join(Developer.getAccountDelim());
+    choices.push({
+      name,
+      checked: _.contains(favorites, name),
     });
+  });
 
-    utils.log(program, logger, 'getting alks accounts');
-    const alksAccounts = await alks.getAccounts();
+  const faves = await inquirer.prompt([
+    {
+      type: 'checkbox',
+      message: 'Select favorites',
+      name: 'favorites',
+      choices,
+      pageSize: 25,
+    },
+  ]);
 
-    utils.log(program, logger, 'getting favorite accounts');
-    const favorites = await Developer.getFavorites();
+  await Developer.saveFavorites({ accounts: faves });
+  console.log('Favorites have been saved!');
 
-    const choices = [];
-    const deferred = [];
-
-    utils.log(program, logger, 'rendering favorite accounts');
-    choices.push(new inquirer.Separator(' = Standard = '));
-    alksAccounts.forEach((alksAccount) => {
-        if (!alksAccount.iam) {
-            const name = [alksAccount.account, alksAccount.role].join(Developer.getAccountDelim());
-            choices.push({
-                name: name,
-                checked: _.contains(favorites, name)
-            });
-        } else {
-            deferred.push(alksAccount);
-        }
-    });
-
-    choices.push(new inquirer.Separator(' = IAM = '));
-    deferred.forEach((val) => {
-        const name = [val.account, val.role].join(Developer.getAccountDelim());
-        choices.push({
-            name: name,
-            checked: _.contains(favorites, name)
-        });
-    });
-
-    const faves = await inquirer.prompt([{
-        type: 'checkbox',
-        message: 'Select favorites',
-        name: 'favorites',
-        choices: choices,
-        pageSize: 25
-    }]);
-
-    await Developer.saveFavorites({accounts: faves});
-    console.log('Favorites have been saved!');
-
-    utils.log(program, logger, 'checking for update');
-    await checkForUpdate();
-    await Developer.trackActivity(logger);
-})().catch(err => utils.errorAndExit(err.message, err));
+  utils.log(program, logger, 'checking for update');
+  await checkForUpdate();
+  await Developer.trackActivity(logger);
+})().catch((err) => utils.errorAndExit(err.message, err));
