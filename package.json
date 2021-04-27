@@ -95,8 +95,7 @@
   "lint-staged": {
     "{lib,bin,test,typescript-module-definitions}/**/*.{js,ts,json,md}": [
       "tslint --fix --force",
-      "prettier --write",
-      "npm run build"
+      "prettier --write"
     ]
   },
   "prettier": {

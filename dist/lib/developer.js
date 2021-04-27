@@ -154,7 +154,7 @@ function getPasswordFromPrompt(text, currentPassword) {
                         ])];
                 case 1:
                     answers = _a.sent();
-                    return [2 /*return*/, utils_1.trim(answers['password'])];
+                    return [2 /*return*/, utils_1.trim(answers.password)];
             }
         });
     });
@@ -492,7 +492,7 @@ function getALKSAccount(program, options) {
                         pageSize: 15,
                     };
                     if (!opts.dontDefault) {
-                        promptData['default'] = developer.lastAcctUsed;
+                        promptData.default = developer.lastAcctUsed;
                     }
                     return [4 /*yield*/, utils_1.getStdErrPrompt()([promptData])];
                 case 6:
