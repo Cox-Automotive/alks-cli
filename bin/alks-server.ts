@@ -3,7 +3,7 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import * as utils from '../lib/utils';
+import { subcommandSuggestion } from '../lib/utils';
 import config from '../package.json';
 
 program
@@ -13,4 +13,4 @@ program
   .command('stop', 'stops the alks ec2 metadat server')
   .parse(process.argv);
 
-utils.subcommandSuggestion(program, 'server');
+subcommandSuggestion(program, 'server');

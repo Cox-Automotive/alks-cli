@@ -7,12 +7,12 @@ import _ from 'underscore';
 import opn from 'opn';
 import alksNode from 'alks-node';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Sessions from '../lib/sessions';
-import * as Developer from '../lib/developer';
-import * as Iam from '../lib/iam';
 import { checkForUpdate } from '../lib/checkForUpdate';
 import { Key } from '../lib/keys';
+import { log, tryToExtractRole, errorAndExit, getUA } from '../lib/utils';
+import { getDeveloper, trackActivity } from '../lib/developer';
+import { getSessionKey } from '../lib/sessions';
+import { getIAMKey } from '../lib/iam';
 
 program
   .version(config.version)
@@ -40,26 +40,26 @@ const filterFaves = program.favorites || false;
 const logger = 'sessions-console';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   if (useDefaultAcct) {
     try {
-      const dev = await Developer.getDeveloper();
+      const dev = await getDeveloper();
 
       alksAccount = dev.alksAccount;
       alksRole = dev.alksRole;
     } catch (err) {
-      return utils.errorAndExit('Unable to load default account!', err);
+      return errorAndExit('Unable to load default account!', err);
     }
   }
 
   let key: Key;
   try {
     if (_.isUndefined(program.iam)) {
-      key = await Sessions.getSessionKey(
+      key = await getSessionKey(
         program,
         logger,
         alksAccount,
@@ -69,7 +69,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
         filterFaves
       );
     } else {
-      key = await Iam.getIAMKey(
+      key = await getIAMKey(
         program,
         logger,
         alksAccount,
@@ -79,18 +79,18 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       );
     }
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
-  utils.log(program, logger, 'calling aws to generate 15min console URL');
+  log(program, logger, 'calling aws to generate 15min console URL');
 
   const url = await new Promise((resolve) => {
     alksNode.generateConsoleUrl(
       key,
-      { debug: program.verbose, ua: utils.getUA() },
+      { debug: program.verbose, ua: getUA() },
       (err: Error, consoleUrl: string) => {
         if (err) {
-          utils.errorAndExit(err.message, err);
+          errorAndExit(err.message, err);
         } else {
           resolve(consoleUrl);
         }
@@ -109,10 +109,10 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       console.error('Please open the url in the browser of your choice');
     }
 
-    utils.log(program, logger, 'checking for updates');
+    log(program, logger, 'checking for updates');
     await checkForUpdate();
-    await Developer.trackActivity(logger);
+    await trackActivity(logger);
     await new Promise((resolve) => setTimeout(resolve, 3000)); // needed for if browser is still open
     process.exit(0);
   }
-})().catch((err) => utils.errorAndExit(err.message, err));
+})().catch((err) => errorAndExit(err.message, err));

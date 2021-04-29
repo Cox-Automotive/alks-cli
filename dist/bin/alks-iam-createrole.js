@@ -6,11 +6,11 @@ process.title = 'ALKS';
 var commander_1 = tslib_1.__importDefault(require("commander"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
-var Alks = tslib_1.__importStar(require("../lib/alks"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var alks_1 = require("../lib/alks");
+var developer_1 = require("../lib/developer");
 var logger = 'iam-createrole';
 var roleNameDesc = 'alphanumeric including @+=._-';
 commander_1.default
@@ -33,18 +33,18 @@ var enableAlksAccess = commander_1.default.enableAlksAccess;
 var alksAccount = commander_1.default.account;
 var alksRole = commander_1.default.role;
 var filterFavorites = commander_1.default.favorites || false;
-utils.log(commander_1.default, logger, 'validating role name: ' + roleName);
+utils_1.log(commander_1.default, logger, 'validating role name: ' + roleName);
 if (underscore_1.default.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
-    utils.errorAndExit('The role name provided contains illegal characters. It must be ' +
+    utils_1.errorAndExit('The role name provided contains illegal characters. It must be ' +
         roleNameDesc);
 }
-utils.log(commander_1.default, logger, 'validating role type: ' + roleType);
+utils_1.log(commander_1.default, logger, 'validating role type: ' + roleType);
 if (underscore_1.default.isEmpty(roleType)) {
-    utils.errorAndExit('The role type is required');
+    utils_1.errorAndExit('The role type is required');
 }
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
-    utils.log(commander_1.default, logger, 'trying to extract role from account');
-    alksRole = utils.tryToExtractRole(alksAccount);
+    utils_1.log(commander_1.default, logger, 'trying to extract role from account');
+    alksRole = utils_1.tryToExtractRole(alksAccount);
 }
 (function () {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -54,8 +54,8 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
             switch (_b.label) {
                 case 0:
                     if (!(underscore_1.default.isEmpty(alksAccount) || underscore_1.default.isEmpty(alksRole))) return [3 /*break*/, 2];
-                    utils.log(commander_1.default, logger, 'getting accounts');
-                    return [4 /*yield*/, Developer.getAlksAccount(commander_1.default, {
+                    utils_1.log(commander_1.default, logger, 'getting accounts');
+                    return [4 /*yield*/, developer_1.getAlksAccount(commander_1.default, {
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
@@ -63,16 +63,16 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
                     return [3 /*break*/, 3];
                 case 2:
-                    utils.log(commander_1.default, logger, 'using provided account/role');
+                    utils_1.log(commander_1.default, logger, 'using provided account/role');
                     _b.label = 3;
-                case 3: return [4 /*yield*/, Developer.getDeveloper()];
+                case 3: return [4 /*yield*/, developer_1.getDeveloper()];
                 case 4:
                     developer = _b.sent();
-                    return [4 /*yield*/, Developer.getAuth(commander_1.default)];
+                    return [4 /*yield*/, developer_1.getAuth(commander_1.default)];
                 case 5:
                     auth = _b.sent();
-                    utils.log(commander_1.default, logger, 'calling api to create role: ' + roleName);
-                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
+                    utils_1.log(commander_1.default, logger, 'calling api to create role: ' + roleName);
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 6:
                     alks = _b.sent();
                     _b.label = 7;
@@ -91,22 +91,22 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     return [3 /*break*/, 10];
                 case 9:
                     err_1 = _b.sent();
-                    return [2 /*return*/, utils.errorAndExit(err_1)];
+                    return [2 /*return*/, utils_1.errorAndExit(err_1)];
                 case 10:
                     console.log(cli_color_1.default.white(['The role: ', roleName, ' was created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.roleArn));
                     if (role.instanceProfileArn) {
                         console.log(cli_color_1.default.white(['An instance profile was also created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.instanceProfileArn));
                     }
-                    utils.log(commander_1.default, logger, 'checking for updates');
+                    utils_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 11:
                     _b.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 12:
                     _b.sent();
                     return [2 /*return*/];
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-iam-createrole.js.map

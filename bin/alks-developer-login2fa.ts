@@ -7,9 +7,14 @@ import clc from 'cli-color';
 import opn from 'opn';
 import { getAlks, Props as AlksProps } from '../lib/alks';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, passwordSaveErrorHandler } from '../lib/utils';
+import {
+  getDeveloper,
+  getPasswordFromPrompt,
+  storeToken,
+  trackActivity,
+} from '../lib/developer';
 
 program
   .version(config.version)
@@ -20,8 +25,8 @@ program
 const logger = 'dev-login-2fa';
 
 (async function () {
-  utils.log(program, logger, 'loading developer');
-  const data = await Developer.getDeveloper();
+  log(program, logger, 'loading developer');
+  const data = await getDeveloper();
 
   console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
   const url = data.server.replace(/rest/, 'token-management');
@@ -34,8 +39,8 @@ const logger = 'dev-login-2fa';
 
   console.error('Please copy your refresh token from ALKS and paste below..');
 
-  const refreshToken = await Developer.getPasswordFromPrompt('Refresh Token');
-  utils.log(program, logger, 'exchanging refresh token for access token');
+  const refreshToken = await getPasswordFromPrompt('Refresh Token');
+  log(program, logger, 'exchanging refresh token for access token');
 
   const alks = await getAlks({
     baseUrl: data.server,
@@ -46,23 +51,23 @@ const logger = 'dev-login-2fa';
       refreshToken,
     });
   } catch (err) {
-    return utils.errorAndExit('Error validating refresh token. ' + err.message);
+    return errorAndExit('Error validating refresh token. ' + err.message);
   }
 
   console.error(clc.white('Refresh token validated!'));
   try {
-    await Developer.storeToken(refreshToken);
+    await storeToken(refreshToken);
     console.error(clc.white('Refresh token saved!'));
   } catch (err) {
-    utils.log(program, logger, 'error saving token! ' + err.message);
-    utils.passwordSaveErrorHandler(err);
+    log(program, logger, 'error saving token! ' + err.message);
+    passwordSaveErrorHandler(err);
   }
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
+  await trackActivity(logger);
 
   setTimeout(() => {
     process.exit(0);
   }, 1000); // needed for if browser is still open
-})().catch((err) => utils.errorAndExit(err.message, err));
+})().catch((err) => errorAndExit(err.message, err));

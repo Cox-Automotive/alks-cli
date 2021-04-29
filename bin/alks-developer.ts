@@ -3,7 +3,7 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import * as utils from '../lib/utils';
+import { subcommandSuggestion } from '../lib/utils';
 import config from '../package.json';
 
 program
@@ -18,4 +18,4 @@ program
   .command('logout2fa', 'removes your alks refresh token')
   .parse(process.argv);
 
-utils.subcommandSuggestion(program, 'developer');
+subcommandSuggestion(program, 'developer');

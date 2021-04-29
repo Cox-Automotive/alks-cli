@@ -7,8 +7,8 @@ var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var commander_1 = tslib_1.__importDefault(require("commander"));
 var fuzzy_1 = tslib_1.__importDefault(require("fuzzy"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
+var utils_1 = require("../lib/utils");
 commander_1.default.command('test', 'does a test');
 commander_1.default
     .command('sessions', 'manage aws sessions')
@@ -34,6 +34,6 @@ else if (!underscore_1.default.includes(commands, requestedCommand)) {
         msg.push(cli_color_1.default.white.underline(suggest[0]));
         msg.push(cli_color_1.default.white('?'));
     }
-    utils.errorAndExit(msg.join(''));
+    utils_1.errorAndExit(msg.join(''));
 }
 //# sourceMappingURL=alks.js.map

@@ -7,9 +7,25 @@ import clc from 'cli-color';
 import inquirer from 'inquirer';
 import _ from 'underscore';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import {
+  errorAndExit,
+  getOutputValues,
+  getStdErrPrompt,
+  isURL,
+  log,
+} from '../lib/utils';
+import {
+  Auth,
+  Developer,
+  getAlksAccount,
+  getAuth,
+  getDeveloper,
+  getPasswordFromKeystore,
+  getPasswordFromPrompt,
+  saveDeveloper,
+  trackActivity,
+} from '../lib/developer';
 
 program
   .version(config.version)
@@ -25,7 +41,7 @@ async function getPrompt(
   text: string,
   validator: ((str: string) => boolean | string) | null
 ): Promise<string> {
-  const answers = await utils.getStdErrPrompt()([
+  const answers = await getStdErrPrompt()([
     {
       type: 'input',
       name: field,
@@ -47,10 +63,10 @@ async function getPrompt(
 
 (async function () {
   try {
-    utils.log(program, logger, 'getting developer');
-    let previousDeveloper: Developer.Developer | undefined;
+    log(program, logger, 'getting developer');
+    let previousDeveloper: Developer | undefined;
     try {
-      previousDeveloper = await Developer.getDeveloper();
+      previousDeveloper = await getDeveloper();
     } catch (e) {
       // it's ok if no developer exists since we're configuring it now
     }
@@ -59,7 +75,7 @@ async function getPrompt(
       'server',
       previousDeveloper?.server,
       'ALKS server',
-      utils.isURL
+      isURL
     );
 
     const userid = await getPrompt(
@@ -69,14 +85,11 @@ async function getPrompt(
       null
     );
 
-    utils.log(program, logger, 'getting existing password');
-    let password = await Developer.getPasswordFromKeystore();
+    log(program, logger, 'getting existing password');
+    let password = await getPasswordFromKeystore();
 
-    utils.log(program, logger, 'getting password');
-    password = await Developer.getPasswordFromPrompt(
-      'Network Password',
-      password
-    );
+    log(program, logger, 'getting password');
+    password = await getPasswordFromPrompt('Network Password', password);
 
     const answers = await inquirer.prompt([
       {
@@ -87,17 +100,17 @@ async function getPrompt(
     ]);
     const savePassword = answers.savePassword;
     if (savePassword) {
-      await Developer.savePassword(password);
+      await savePassword(password);
     }
 
     // Get existing auth so we don't erase any tokens that might exist
-    let auth: Developer.Auth;
+    let auth: Auth;
     try {
-      utils.log(program, logger, 'getting existing auth');
-      auth = await Developer.getAuth(program, false);
+      log(program, logger, 'getting existing auth');
+      auth = await getAuth(program, false);
     } catch (e) {
       // it's ok if no auth exists since we're configuring it now
-      auth = {} as Developer.Auth;
+      auth = {} as Auth;
     }
 
     // Cache password in program object for faster lookup
@@ -107,7 +120,7 @@ async function getPrompt(
       ...auth,
     };
 
-    utils.log(program, logger, 'Getting ALKS accounts');
+    log(program, logger, 'Getting ALKS accounts');
     const prompt = 'Please select your default ALKS account/role';
 
     const opts = {
@@ -116,23 +129,20 @@ async function getPrompt(
       userid,
     };
 
-    const { alksAccount, alksRole } = await Developer.getAlksAccount(
-      program,
-      opts
-    );
+    const { alksAccount, alksRole } = await getAlksAccount(program, opts);
 
-    utils.log(program, logger, 'Getting output formats');
+    log(program, logger, 'Getting output formats');
 
     const promptData = {
       type: 'list',
       name: 'outputFormat',
       default: previousDeveloper?.outputFormat,
       message: 'Please select your default output format',
-      choices: utils.getOutputValues(),
+      choices: getOutputValues(),
       pageSize: 10,
     };
 
-    const answers2 = await utils.getStdErrPrompt()([promptData]);
+    const answers2 = await getStdErrPrompt()([promptData]);
     const outputFormat = answers2.outputFormat as string;
 
     const newDeveloper = {
@@ -144,12 +154,12 @@ async function getPrompt(
     };
 
     // create developer
-    utils.log(program, logger, 'saving developer');
+    log(program, logger, 'saving developer');
     try {
-      await Developer.saveDeveloper(newDeveloper);
+      await saveDeveloper(newDeveloper);
     } catch (e2) {
       if (e2) {
-        utils.log(program, logger, 'error saving! ' + e2.message);
+        log(program, logger, 'error saving! ' + e2.message);
         console.error(
           clc.red.bold(
             'There was an error updating your developer configuration.'
@@ -162,10 +172,10 @@ async function getPrompt(
       }
     }
 
-    utils.log(program, logger, 'checking for update');
+    log(program, logger, 'checking for update');
     await checkForUpdate();
-    await Developer.trackActivity(logger);
+    await trackActivity(logger);
   } catch (err) {
-    return utils.errorAndExit('Error configuring developer: ' + err.message);
+    return errorAndExit('Error configuring developer: ' + err.message);
   }
-})().catch((err) => utils.errorAndExit(err.message, err));
+})().catch((err) => errorAndExit(err.message, err));

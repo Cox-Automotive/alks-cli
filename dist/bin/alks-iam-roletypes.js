@@ -6,11 +6,11 @@ process.title = 'ALKS';
 var commander_1 = tslib_1.__importDefault(require("commander"));
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
-var Alks = tslib_1.__importStar(require("../lib/alks"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var alks_1 = require("../lib/alks");
+var developer_1 = require("../lib/developer");
 var logger = 'iam-roletypes';
 var outputVals = ['list', 'json'];
 commander_1.default
@@ -21,7 +21,7 @@ commander_1.default
     .parse(process.argv);
 var output = commander_1.default.output;
 if (!underscore_1.default.contains(outputVals, output)) {
-    utils.errorAndExit('The output provided (' +
+    utils_1.errorAndExit('The output provided (' +
         output +
         ') is not in the allowed values: ' +
         outputVals.join(', '));
@@ -32,18 +32,18 @@ if (!underscore_1.default.contains(outputVals, output)) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    utils.log(commander_1.default, logger, 'getting developer');
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    utils_1.log(commander_1.default, logger, 'getting developer');
+                    return [4 /*yield*/, developer_1.getDeveloper()];
                 case 1:
                     developer = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting auth');
-                    return [4 /*yield*/, Developer.getAuth(commander_1.default)];
+                    utils_1.log(commander_1.default, logger, 'getting auth');
+                    return [4 /*yield*/, developer_1.getAuth(commander_1.default)];
                 case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 3:
                     alks = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting list of role types from REST API');
+                    utils_1.log(commander_1.default, logger, 'getting list of role types from REST API');
                     _a.label = 4;
                 case 4:
                     _a.trys.push([4, 6, , 7]);
@@ -53,9 +53,9 @@ if (!underscore_1.default.contains(outputVals, output)) {
                     return [3 /*break*/, 7];
                 case 6:
                     err_1 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit(err_1)];
+                    return [2 /*return*/, utils_1.errorAndExit(err_1)];
                 case 7:
-                    utils.log(commander_1.default, logger, 'outputting list of ' + (roleTypes ? roleTypes.length : -1) + ' role types');
+                    utils_1.log(commander_1.default, logger, 'outputting list of ' + (roleTypes ? roleTypes.length : -1) + ' role types');
                     console.error(cli_color_1.default.white.underline.bold('\nAvailable IAM Role Types'));
                     if (output === 'list') {
                         underscore_1.default.each(roleTypes, function (roleType, i) {
@@ -65,16 +65,16 @@ if (!underscore_1.default.contains(outputVals, output)) {
                     else {
                         console.log(JSON.stringify(roleTypes.map(function (roleType) { return roleType.roleTypeName; })));
                     }
-                    utils.log(commander_1.default, logger, 'checking for updates');
+                    utils_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 8:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 9:
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-iam-roletypes.js.map

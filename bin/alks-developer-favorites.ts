@@ -4,13 +4,20 @@ process.title = 'ALKS';
 
 import program from 'commander';
 import _ from 'underscore';
-import * as Alks from '../lib/alks';
 import inquirer from 'inquirer';
 import config from '../package.json';
-import * as Developer from '../lib/developer';
-import * as utils from '../lib/utils';
 import { checkForUpdate } from '../lib/checkForUpdate';
 import ALKS from 'alks.js';
+import { errorAndExit, log } from '../lib/utils';
+import { getAlks } from '../lib/alks';
+import {
+  getDeveloper,
+  getAuth,
+  getFavorites,
+  getAccountDelim,
+  saveFavorites,
+  trackActivity,
+} from '../lib/developer';
 
 program
   .version(config.version)
@@ -21,32 +28,32 @@ program
 const logger = 'dev-favorites';
 
 (async function () {
-  utils.log(program, logger, 'getting developer');
-  const developer = await Developer.getDeveloper();
+  log(program, logger, 'getting developer');
+  const developer = await getDeveloper();
 
-  utils.log(program, logger, 'getting auth');
-  const auth = await Developer.getAuth(program);
+  log(program, logger, 'getting auth');
+  const auth = await getAuth(program);
 
-  const alks = await Alks.getAlks({
+  const alks = await getAlks({
     baseUrl: developer.server,
     ...auth,
   });
 
-  utils.log(program, logger, 'getting alks accounts');
+  log(program, logger, 'getting alks accounts');
   const alksAccounts = await alks.getAccounts();
 
-  utils.log(program, logger, 'getting favorite accounts');
-  const favorites = await Developer.getFavorites();
+  log(program, logger, 'getting favorite accounts');
+  const favorites = await getFavorites();
 
   const choices = [];
   const deferred: ALKS.Account[] = [];
 
-  utils.log(program, logger, 'rendering favorite accounts');
+  log(program, logger, 'rendering favorite accounts');
   choices.push(new inquirer.Separator(' = Standard = '));
   alksAccounts.forEach((alksAccount) => {
     if (!alksAccount.iamKeyActive) {
       const name = [alksAccount.account, alksAccount.role].join(
-        Developer.getAccountDelim()
+        getAccountDelim()
       );
       choices.push({
         name,
@@ -59,7 +66,7 @@ const logger = 'dev-favorites';
 
   choices.push(new inquirer.Separator(' = IAM = '));
   deferred.forEach((val) => {
-    const name = [val.account, val.role].join(Developer.getAccountDelim());
+    const name = [val.account, val.role].join(getAccountDelim());
     choices.push({
       name,
       checked: _.contains(favorites, name),
@@ -76,10 +83,10 @@ const logger = 'dev-favorites';
     },
   ]);
 
-  await Developer.saveFavorites({ accounts: faves });
+  await saveFavorites({ accounts: faves });
   console.log('Favorites have been saved!');
 
-  utils.log(program, logger, 'checking for update');
+  log(program, logger, 'checking for update');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

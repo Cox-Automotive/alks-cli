@@ -8,11 +8,11 @@ var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var opn_1 = tslib_1.__importDefault(require("opn"));
 var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
-var Sessions = tslib_1.__importStar(require("../lib/sessions"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
-var Iam = tslib_1.__importStar(require("../lib/iam"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var developer_1 = require("../lib/developer");
+var sessions_1 = require("../lib/sessions");
+var iam_1 = require("../lib/iam");
 commander_1.default
     .version(package_json_1.default.version)
     .description('open an AWS console in your browser')
@@ -34,8 +34,8 @@ var useDefaultAcct = commander_1.default.default;
 var filterFaves = commander_1.default.favorites || false;
 var logger = 'sessions-console';
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
-    utils.log(commander_1.default, logger, 'trying to extract role from account');
-    alksRole = utils.tryToExtractRole(alksAccount);
+    utils_1.log(commander_1.default, logger, 'trying to extract role from account');
+    alksRole = utils_1.tryToExtractRole(alksAccount);
 }
 (function () {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -47,7 +47,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    return [4 /*yield*/, developer_1.getDeveloper()];
                 case 2:
                     dev = _a.sent();
                     alksAccount = dev.alksAccount;
@@ -55,28 +55,28 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit('Unable to load default account!', err_1)];
+                    return [2 /*return*/, utils_1.errorAndExit('Unable to load default account!', err_1)];
                 case 4:
                     _a.trys.push([4, 9, , 10]);
                     if (!underscore_1.default.isUndefined(commander_1.default.iam)) return [3 /*break*/, 6];
-                    return [4 /*yield*/, Sessions.getSessionKey(commander_1.default, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    return [4 /*yield*/, sessions_1.getSessionKey(commander_1.default, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 5:
                     key = _a.sent();
                     return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, Iam.getIAMKey(commander_1.default, logger, alksAccount, alksRole, forceNewSession, filterFaves)];
+                case 6: return [4 /*yield*/, iam_1.getIAMKey(commander_1.default, logger, alksAccount, alksRole, forceNewSession, filterFaves)];
                 case 7:
                     key = _a.sent();
                     _a.label = 8;
                 case 8: return [3 /*break*/, 10];
                 case 9:
                     err_2 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit(err_2)];
+                    return [2 /*return*/, utils_1.errorAndExit(err_2)];
                 case 10:
-                    utils.log(commander_1.default, logger, 'calling aws to generate 15min console URL');
+                    utils_1.log(commander_1.default, logger, 'calling aws to generate 15min console URL');
                     return [4 /*yield*/, new Promise(function (resolve) {
-                            alks_node_1.default.generateConsoleUrl(key, { debug: commander_1.default.verbose, ua: utils.getUA() }, function (err, consoleUrl) {
+                            alks_node_1.default.generateConsoleUrl(key, { debug: commander_1.default.verbose, ua: utils_1.getUA() }, function (err, consoleUrl) {
                                 if (err) {
-                                    utils.errorAndExit(err.message, err);
+                                    utils_1.errorAndExit(err.message, err);
                                 }
                                 else {
                                     resolve(consoleUrl);
@@ -103,11 +103,11 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     console.error('Please open the url in the browser of your choice');
                     return [3 /*break*/, 16];
                 case 16:
-                    utils.log(commander_1.default, logger, 'checking for updates');
+                    utils_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 17:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 18:
                     _a.sent();
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
@@ -119,5 +119,5 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-sessions-console.js.map

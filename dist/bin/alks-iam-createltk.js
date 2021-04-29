@@ -6,12 +6,12 @@ process.title = 'ALKS';
 var commander_1 = tslib_1.__importDefault(require("commander"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
-var Alks = tslib_1.__importStar(require("../lib/alks"));
-var Iam = tslib_1.__importStar(require("../lib/iam"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var alks_1 = require("../lib/alks");
+var developer_1 = require("../lib/developer");
+var iam_1 = require("../lib/iam");
 var logger = 'iam-createltk';
 var nameDesc = 'alphanumeric including @+=._-';
 commander_1.default
@@ -30,16 +30,16 @@ var alksAccount = commander_1.default.account;
 var alksRole = commander_1.default.role;
 var filterFaves = commander_1.default.favorites || false;
 var output = commander_1.default.output || 'text';
-utils.log(commander_1.default, logger, 'validating iam user name: ' + iamUsername);
+utils_1.log(commander_1.default, logger, 'validating iam user name: ' + iamUsername);
 if (underscore_1.default.isEmpty(iamUsername)) {
-    utils.errorAndExit('Please provide a username (-n)');
+    utils_1.errorAndExit('Please provide a username (-n)');
 }
 else if (!NAME_REGEX.test(iamUsername)) {
-    utils.errorAndExit('The username provided contains illegal characters. It must be ' + nameDesc);
+    utils_1.errorAndExit('The username provided contains illegal characters. It must be ' + nameDesc);
 }
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
-    utils.log(commander_1.default, logger, 'trying to extract role from account');
-    alksRole = utils.tryToExtractRole(alksAccount);
+    utils_1.log(commander_1.default, logger, 'trying to extract role from account');
+    alksRole = utils_1.tryToExtractRole(alksAccount);
 }
 (function () {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -48,20 +48,20 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, Iam.getIAMAccount(commander_1.default, logger, alksAccount, alksRole, filterFaves)];
+                    return [4 /*yield*/, iam_1.getIAMAccount(commander_1.default, logger, alksAccount, alksRole, filterFaves)];
                 case 1:
                     iamAccount = _a.sent();
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit(err_1)];
+                    return [2 /*return*/, utils_1.errorAndExit(err_1)];
                 case 3:
                     developer = iamAccount.developer, auth = iamAccount.auth;
                     (alksAccount = iamAccount.account, alksRole = iamAccount.role);
-                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 4:
                     alks = _a.sent();
-                    utils.log(commander_1.default, logger, 'calling api to create ltk: ' + iamUsername);
+                    utils_1.log(commander_1.default, logger, 'calling api to create ltk: ' + iamUsername);
                     if (!alksAccount || !alksRole) {
                         throw new Error('Must specifify ALKS Account and Role');
                     }
@@ -100,16 +100,16 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                         console.log(cli_color_1.default.white(['LTK Secret Key: '].join('')) +
                             cli_color_1.default.white.underline(ltkData.secretKey));
                     }
-                    utils.log(commander_1.default, logger, 'checking for updates');
+                    utils_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 6:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 7:
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-iam-createltk.js.map

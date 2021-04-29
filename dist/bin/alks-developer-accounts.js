@@ -7,11 +7,11 @@ var commander_1 = tslib_1.__importDefault(require("commander"));
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
-var Alks = tslib_1.__importStar(require("../lib/alks"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var alks_1 = require("../lib/alks");
+var developer_1 = require("../lib/developer");
 commander_1.default
     .version(package_json_1.default.version)
     .description('shows current developer configuration')
@@ -28,8 +28,8 @@ var table = new cli_table3_1.default({
 });
 var logger = 'dev-accounts';
 var doExport = commander_1.default.export;
-var accountRegex = utils.getAccountRegex();
-var exportCmd = utils.isWindows() ? 'SET' : 'export';
+var accountRegex = utils_1.getAccountRegex();
+var exportCmd = utils_1.isWindows() ? 'SET' : 'export';
 var accounts = [];
 function getUniqueAccountName(accountName) {
     var i = 1;
@@ -56,18 +56,18 @@ function accountExport(account) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    utils.log(commander_1.default, logger, 'getting developer');
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    utils_1.log(commander_1.default, logger, 'getting developer');
+                    return [4 /*yield*/, developer_1.getDeveloper()];
                 case 1:
                     developer = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting auth');
-                    return [4 /*yield*/, Developer.getAuth(commander_1.default)];
+                    utils_1.log(commander_1.default, logger, 'getting auth');
+                    return [4 /*yield*/, developer_1.getAuth(commander_1.default)];
                 case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, Alks.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
+                    return [4 /*yield*/, alks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 3:
                     alks = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting alks accounts');
+                    utils_1.log(commander_1.default, logger, 'getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
                 case 4:
                     alksAccounts = _a.sent();
@@ -84,16 +84,16 @@ function accountExport(account) {
                         console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
                         console.log(cli_color_1.default.white(table.toString()));
                     }
-                    utils.log(commander_1.default, logger, 'checking for update');
+                    utils_1.log(commander_1.default, logger, 'checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 6:
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-developer-accounts.js.map

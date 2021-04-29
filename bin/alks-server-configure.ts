@@ -6,11 +6,11 @@ import program from 'commander';
 import clc from 'cli-color';
 import _ from 'underscore';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
-import * as Sessions from '../lib/sessions';
-import * as Iam from '../lib/iam';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, tryToExtractRole } from '../lib/utils';
+import { saveMetadata, trackActivity } from '../lib/developer';
+import { getIAMKey } from '../lib/iam';
+import { getSessionKey } from '../lib/sessions';
 
 program
   .version(config.version)
@@ -30,15 +30,15 @@ const filterFaves = program.favorites || false;
 const logger = 'server-configure';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   let key;
   try {
     if (_.isUndefined(program.iam)) {
-      key = await Sessions.getSessionKey(
+      key = await getSessionKey(
         program,
         logger,
         alksAccount,
@@ -48,7 +48,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
         filterFaves
       );
     } else {
-      key = await Iam.getIAMKey(
+      key = await getIAMKey(
         program,
         logger,
         alksAccount,
@@ -58,24 +58,24 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       );
     }
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {
-    await Developer.saveMetadata({
+    await saveMetadata({
       alksAccount: key.alksAccount,
       alksRole: key.alksRole,
       isIam: key.isIAM,
     });
   } catch (err) {
-    return utils.errorAndExit('Unable to save metadata!', err);
+    return errorAndExit('Unable to save metadata!', err);
   }
 
   console.error(clc.white('Metadata has been saved!'));
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

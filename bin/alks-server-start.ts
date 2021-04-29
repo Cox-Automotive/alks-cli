@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import config from '../package.json';
-import * as utils from '../lib/utils';
+import { errorAndExit, isOSX, log } from '../lib/utils';
 
 program
   .version(config.version)
@@ -19,8 +19,8 @@ program
 
 const logger = 'server-start';
 
-if (!utils.isOSX()) {
-  utils.errorAndExit('The metadata server is only supported on OSX.');
+if (!isOSX()) {
+  errorAndExit('The metadata server is only supported on OSX.');
 }
 
 function runServerDaemon() {
@@ -34,11 +34,7 @@ function runServerDaemon() {
   console.error(clc.white('Metadata server now listening on: 169.254.169.254'));
 }
 
-utils.log(
-  program,
-  logger,
-  'Checking if forwarding daemon is already installed..'
-);
+log(program, logger, 'Checking if forwarding daemon is already installed..');
 
 if (!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')) {
   console.error(
@@ -50,19 +46,19 @@ if (!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')) {
 
   (async function () {
     try {
-      utils.log(program, logger, 'Adding pf.anchor');
+      log(program, logger, 'Adding pf.anchor');
       execSync(
         'sudo cp ' + servicePath + '/com.coxautodev.alks /etc/pf.anchors/'
       );
 
-      utils.log(program, logger, 'Adding launch daemon');
+      log(program, logger, 'Adding launch daemon');
       execSync(
         'sudo cp ' +
           servicePath +
           '/com.coxautodev.alks.Ec2MetaDataFirewall.plist /Library/LaunchDaemons/'
       );
 
-      utils.log(program, logger, 'Loading launch daemon');
+      log(program, logger, 'Loading launch daemon');
       execSync(
         'sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist'
       );
@@ -71,8 +67,8 @@ if (!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')) {
     }
     console.log(clc.white('Successfully installed metadata daemon.'));
     runServerDaemon();
-  })().catch((err) => utils.errorAndExit(err.message, err));
+  })().catch((err) => errorAndExit(err.message, err));
 } else {
-  utils.log(program, logger, 'Daemon is already installed..');
+  log(program, logger, 'Daemon is already installed..');
   runServerDaemon();
 }

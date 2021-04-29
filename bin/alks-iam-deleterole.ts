@@ -5,11 +5,16 @@ process.title = 'ALKS';
 import program from 'commander';
 import clc from 'cli-color';
 import _ from 'underscore';
-import * as Alks from '../lib/alks';
 import config from '../package.json';
-import * as Developer from '../lib/developer';
-import * as utils from '../lib/utils';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, tryToExtractRole } from '../lib/utils';
+import { getAlks } from '../lib/alks';
+import {
+  getAlksAccount,
+  getDeveloper,
+  getAuth,
+  trackActivity,
+} from '../lib/developer';
 
 const logger = 'iam-delete';
 
@@ -28,34 +33,34 @@ let alksAccount = program.account;
 let alksRole = program.role;
 const filterFavorites = program.favorites || false;
 
-utils.log(program, logger, 'validating role name: ' + roleName);
+log(program, logger, 'validating role name: ' + roleName);
 if (_.isEmpty(roleName)) {
-  utils.errorAndExit('The role name must be provided.');
+  errorAndExit('The role name must be provided.');
 }
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   if (_.isEmpty(alksAccount) || _.isEmpty(alksRole)) {
-    utils.log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await Developer.getAlksAccount(program, {
+    log(program, logger, 'getting accounts');
+    ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly: true,
       filterFavorites,
     }));
   } else {
-    utils.log(program, logger, 'using provided account/role');
+    log(program, logger, 'using provided account/role');
   }
 
-  const developer = await Developer.getDeveloper();
+  const developer = await getDeveloper();
 
-  const auth = await Developer.getAuth(program);
+  const auth = await getAuth(program);
 
-  utils.log(program, logger, 'calling api to delete role: ' + roleName);
+  log(program, logger, 'calling api to delete role: ' + roleName);
 
-  const alks = await Alks.getAlks({
+  const alks = await getAlks({
     baseUrl: developer.server,
     ...auth,
   });
@@ -67,11 +72,11 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       roleName,
     });
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
   console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

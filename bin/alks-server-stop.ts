@@ -6,7 +6,7 @@ import program from 'commander';
 import clc from 'cli-color';
 import forever from 'forever';
 import config from '../package.json';
-import * as utils from '../lib/utils';
+import { isOSX } from '../lib/utils';
 
 program
   .version(config.version)
@@ -14,7 +14,7 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-if (!utils.isOSX()) {
+if (!isOSX()) {
   console.error(clc.red('The metadata server is only supported on OSX.'));
   process.exit(0);
 }

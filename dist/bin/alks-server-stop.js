@@ -7,13 +7,13 @@ var commander_1 = tslib_1.__importDefault(require("commander"));
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var forever_1 = tslib_1.__importDefault(require("forever"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
+var utils_1 = require("../lib/utils");
 commander_1.default
     .version(package_json_1.default.version)
     .description('stops the metadata server')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-if (!utils.isOSX()) {
+if (!utils_1.isOSX()) {
     console.error(cli_color_1.default.red('The metadata server is only supported on OSX.'));
     process.exit(0);
 }

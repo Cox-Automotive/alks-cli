@@ -5,14 +5,19 @@ process.title = 'ALKS';
 import program from 'commander';
 import _ from 'underscore';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Keys from '../lib/keys';
-import * as Developer from '../lib/developer';
-import * as Sessions from '../lib/sessions';
-import * as Iam from '../lib/iam';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import {
+  errorAndExit,
+  getOutputValues,
+  log,
+  tryToExtractRole,
+} from '../lib/utils';
+import { getDeveloper, trackActivity } from '../lib/developer';
+import { getSessionKey } from '../lib/sessions';
+import { getIAMKey } from '../lib/iam';
+import { getKeyOutput } from '../lib/keys';
 
-const outputValues = utils.getOutputValues();
+const outputValues = getOutputValues();
 
 program
   .version(config.version)
@@ -51,16 +56,16 @@ const filterFaves = program.favorites || false;
 const logger = 'sessions-open';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   let developer;
   try {
-    developer = await Developer.getDeveloper();
+    developer = await getDeveloper();
   } catch (err) {
-    return utils.errorAndExit('Unable to load default account!', err);
+    return errorAndExit('Unable to load default account!', err);
   }
 
   if (useDefaultAcct) {
@@ -71,7 +76,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
   let key;
   try {
     if (_.isUndefined(program.iam)) {
-      key = await Sessions.getSessionKey(
+      key = await getSessionKey(
         program,
         logger,
         alksAccount,
@@ -81,7 +86,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
         filterFaves
       );
     } else {
-      key = await Iam.getIAMKey(
+      key = await getIAMKey(
         program,
         logger,
         alksAccount,
@@ -91,11 +96,11 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       );
     }
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
   console.log(
-    Keys.getKeyOutput(
+    getKeyOutput(
       output || developer.outputFormat,
       key,
       program.namedProfile,
@@ -103,7 +108,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     )
   );
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

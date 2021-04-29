@@ -6,11 +6,11 @@ import program from 'commander';
 import clc from 'cli-color';
 import _ from 'underscore';
 import Table from 'cli-table3';
-import * as Alks from '../lib/alks';
 import config from '../package.json';
-import * as Developer from '../lib/developer';
-import * as utils from '../lib/utils';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, getAccountRegex, isWindows, log } from '../lib/utils';
+import { getAlks } from '../lib/alks';
+import { getDeveloper, getAuth, trackActivity } from '../lib/developer';
 
 program
   .version(config.version)
@@ -30,8 +30,8 @@ const table = new Table({
 
 const logger = 'dev-accounts';
 const doExport = program.export;
-const accountRegex = utils.getAccountRegex();
-const exportCmd = utils.isWindows() ? 'SET' : 'export';
+const accountRegex = getAccountRegex();
+const exportCmd = isWindows() ? 'SET' : 'export';
 const accounts: string[] = [];
 
 function getUniqueAccountName(accountName: string) {
@@ -60,18 +60,18 @@ function accountExport(account: string) {
 }
 
 (async function () {
-  utils.log(program, logger, 'getting developer');
-  const developer = await Developer.getDeveloper();
+  log(program, logger, 'getting developer');
+  const developer = await getDeveloper();
 
-  utils.log(program, logger, 'getting auth');
-  const auth = await Developer.getAuth(program);
+  log(program, logger, 'getting auth');
+  const auth = await getAuth(program);
 
-  const alks = await Alks.getAlks({
+  const alks = await getAlks({
     baseUrl: developer.server,
     ...auth,
   });
 
-  utils.log(program, logger, 'getting alks accounts');
+  log(program, logger, 'getting alks accounts');
   const alksAccounts = await alks.getAccounts();
 
   alksAccounts.forEach((alksAccount) => {
@@ -89,7 +89,7 @@ function accountExport(account: string) {
     console.log(clc.white(table.toString()));
   }
 
-  utils.log(program, logger, 'checking for update');
+  log(program, logger, 'checking for update');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

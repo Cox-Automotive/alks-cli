@@ -5,9 +5,13 @@ process.title = 'ALKS';
 import program from 'commander';
 import clc from 'cli-color';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, passwordSaveErrorHandler } from '../lib/utils';
+import {
+  getPasswordFromPrompt,
+  storePassword,
+  trackActivity,
+} from '../lib/developer';
 
 program
   .version(config.version)
@@ -18,18 +22,18 @@ program
 const logger = 'dev-login';
 
 (async function () {
-  const password = await Developer.getPasswordFromPrompt();
+  const password = await getPasswordFromPrompt();
 
-  utils.log(program, logger, 'saving password');
+  log(program, logger, 'saving password');
   try {
-    await Developer.storePassword(password);
+    await storePassword(password);
     console.error(clc.white('Password saved!'));
   } catch (err) {
-    utils.log(program, logger, 'error saving password! ' + err.message);
-    utils.passwordSaveErrorHandler(err);
+    log(program, logger, 'error saving password! ' + err.message);
+    passwordSaveErrorHandler(err);
   }
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

@@ -5,12 +5,12 @@ process.title = 'ALKS';
 import program from 'commander';
 import _ from 'underscore';
 import clc from 'cli-color';
-import * as Alks from '../lib/alks';
-import * as Iam from '../lib/iam';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
 import config from '../package.json';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, tryToExtractRole } from '../lib/utils';
+import { getAlks } from '../lib/alks';
+import { trackActivity } from '../lib/developer';
+import { getIAMAccount } from '../lib/iam';
 
 const logger = 'iam-deleteltk';
 
@@ -32,20 +32,20 @@ let alksAccount = program.account;
 let alksRole = program.role;
 const filterFaves = program.favorites || false;
 
-utils.log(program, logger, 'validating iam user name: ' + iamUsername);
+log(program, logger, 'validating iam user name: ' + iamUsername);
 if (_.isEmpty(iamUsername)) {
-  utils.errorAndExit('The IAM username is required.');
+  errorAndExit('The IAM username is required.');
 }
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   let iamAccount;
   try {
-    iamAccount = await Iam.getIAMAccount(
+    iamAccount = await getIAMAccount(
       program,
       logger,
       alksAccount,
@@ -53,17 +53,17 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       filterFaves
     );
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
   const { developer, auth } = iamAccount;
   ({ account: alksAccount, role: alksRole } = iamAccount);
 
-  const alks = await Alks.getAlks({
+  const alks = await getAlks({
     baseUrl: developer.server,
     ...auth,
   });
 
-  utils.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
+  log(program, logger, 'calling api to delete ltk: ' + iamUsername);
 
   try {
     await alks.deleteIAMUser({
@@ -72,12 +72,12 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       iamUserName: iamUsername,
     });
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
   console.log(clc.white(['LTK deleted for IAM User: ', iamUsername].join('')));
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

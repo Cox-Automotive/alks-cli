@@ -5,12 +5,17 @@ process.title = 'ALKS';
 import program from 'commander';
 import _ from 'underscore';
 import clc from 'cli-color';
-import * as Alks from '../lib/alks';
 import ALKS from 'alks.js';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
 import config from '../package.json';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log, tryToExtractRole } from '../lib/utils';
+import { getAlks } from '../lib/alks';
+import {
+  getAlksAccount,
+  getDeveloper,
+  getAuth,
+  trackActivity,
+} from '../lib/developer';
 
 const logger = 'iam-createtrustrole';
 const roleNameDesc = 'alphanumeric including @+=._-';
@@ -46,53 +51,53 @@ let alksAccount = program.account;
 let alksRole = program.role;
 const filterFavorites = program.favorites || false;
 
-utils.log(program, logger, 'validating role name: ' + roleName);
+log(program, logger, 'validating role name: ' + roleName);
 if (_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
-  utils.errorAndExit(
+  errorAndExit(
     'The role name provided contains illegal characters. It must be ' +
       roleNameDesc
   );
 }
 
-utils.log(program, logger, 'validating role type: ' + roleType);
+log(program, logger, 'validating role type: ' + roleType);
 if (
   _.isEmpty(roleType) ||
   (roleType !== 'Cross Account' && roleType !== 'Inner Account')
 ) {
-  utils.errorAndExit('The role type is required');
+  errorAndExit('The role type is required');
 }
 
-utils.log(program, logger, 'validating trust arn: ' + trustArn);
+log(program, logger, 'validating trust arn: ' + trustArn);
 if (_.isEmpty(trustArn) || !TRUST_ARN_REGEX.test(trustArn)) {
-  utils.errorAndExit(
+  errorAndExit(
     'The trust arn provided contains illegal characters. It must be ' +
       trustArnDesc
   );
 }
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  utils.log(program, logger, 'trying to extract role from account');
-  alksRole = utils.tryToExtractRole(alksAccount);
+  log(program, logger, 'trying to extract role from account');
+  alksRole = tryToExtractRole(alksAccount);
 }
 
 (async function () {
   if (_.isEmpty(alksAccount) || _.isEmpty(alksRole)) {
-    utils.log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await Developer.getAlksAccount(program, {
+    log(program, logger, 'getting accounts');
+    ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly: true,
       filterFavorites,
     }));
   } else {
-    utils.log(program, logger, 'using provided account/role');
+    log(program, logger, 'using provided account/role');
   }
 
-  const developer = await Developer.getDeveloper();
+  const developer = await getDeveloper();
 
-  const auth = await Developer.getAuth(program);
+  const auth = await getAuth(program);
 
-  utils.log(program, logger, 'calling api to create trust role: ' + roleName);
+  log(program, logger, 'calling api to create trust role: ' + roleName);
 
-  const alks = await Alks.getAlks({
+  const alks = await getAlks({
     baseUrl: developer.server,
     ...auth,
   });
@@ -109,7 +114,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       includeDefaultPolicy: ALKS.PseudoBoolean.False,
     });
   } catch (err) {
-    return utils.errorAndExit(err);
+    return errorAndExit(err);
   }
 
   console.log(
@@ -124,7 +129,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
       ) + clc.white.underline(role.instanceProfileArn)
     );
   }
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

@@ -8,9 +8,9 @@ var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var underscore_1 = tslib_1.__importDefault(require("underscore"));
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var developer_1 = require("../lib/developer");
 commander_1.default
     .version(package_json_1.default.version)
     .description('shows current developer configuration')
@@ -27,16 +27,16 @@ var logger = 'dev-info';
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    utils.log(commander_1.default, logger, 'getting developer');
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    utils_1.log(commander_1.default, logger, 'getting developer');
+                    return [4 /*yield*/, developer_1.getDeveloper()];
                 case 1:
                     developer = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting password');
-                    return [4 /*yield*/, Developer.getPassword(null)];
+                    utils_1.log(commander_1.default, logger, 'getting password');
+                    return [4 /*yield*/, developer_1.getPassword(null)];
                 case 2:
                     password = _a.sent();
-                    utils.log(commander_1.default, logger, 'getting 2fa token');
-                    return [4 /*yield*/, Developer.getToken()];
+                    utils_1.log(commander_1.default, logger, 'getting 2fa token');
+                    return [4 /*yield*/, developer_1.getToken()];
                 case 3:
                     token = _a.sent();
                     ignores = ['lastVersion'];
@@ -62,16 +62,16 @@ var logger = 'dev-info';
                     table.push(['2FA Token', tableToken]);
                     console.error(cli_color_1.default.white.underline.bold('\nDeveloper Configuration'));
                     console.log(cli_color_1.default.white(table.toString()));
-                    utils.log(commander_1.default, logger, 'checking for update');
+                    utils_1.log(commander_1.default, logger, 'checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 5:
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-developer-info.js.map

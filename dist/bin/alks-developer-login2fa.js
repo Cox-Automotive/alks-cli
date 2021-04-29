@@ -8,9 +8,9 @@ var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var opn_1 = tslib_1.__importDefault(require("opn"));
 var alks_1 = require("../lib/alks");
 var package_json_1 = tslib_1.__importDefault(require("../package.json"));
-var utils = tslib_1.__importStar(require("../lib/utils"));
-var Developer = tslib_1.__importStar(require("../lib/developer"));
 var checkForUpdate_1 = require("../lib/checkForUpdate");
+var utils_1 = require("../lib/utils");
+var developer_1 = require("../lib/developer");
 commander_1.default
     .version(package_json_1.default.version)
     .description('stores your alks refresh token')
@@ -23,8 +23,8 @@ var logger = 'dev-login-2fa';
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    utils.log(commander_1.default, logger, 'loading developer');
-                    return [4 /*yield*/, Developer.getDeveloper()];
+                    utils_1.log(commander_1.default, logger, 'loading developer');
+                    return [4 /*yield*/, developer_1.getDeveloper()];
                 case 1:
                     data = _a.sent();
                     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
@@ -43,10 +43,10 @@ var logger = 'dev-login-2fa';
                     return [3 /*break*/, 5];
                 case 5:
                     console.error('Please copy your refresh token from ALKS and paste below..');
-                    return [4 /*yield*/, Developer.getPasswordFromPrompt('Refresh Token')];
+                    return [4 /*yield*/, developer_1.getPasswordFromPrompt('Refresh Token')];
                 case 6:
                     refreshToken = _a.sent();
-                    utils.log(commander_1.default, logger, 'exchanging refresh token for access token');
+                    utils_1.log(commander_1.default, logger, 'exchanging refresh token for access token');
                     return [4 /*yield*/, alks_1.getAlks({
                             baseUrl: data.server,
                         })];
@@ -63,28 +63,28 @@ var logger = 'dev-login-2fa';
                     return [3 /*break*/, 11];
                 case 10:
                     err_2 = _a.sent();
-                    return [2 /*return*/, utils.errorAndExit('Error validating refresh token. ' + err_2.message)];
+                    return [2 /*return*/, utils_1.errorAndExit('Error validating refresh token. ' + err_2.message)];
                 case 11:
                     console.error(cli_color_1.default.white('Refresh token validated!'));
                     _a.label = 12;
                 case 12:
                     _a.trys.push([12, 14, , 15]);
-                    return [4 /*yield*/, Developer.storeToken(refreshToken)];
+                    return [4 /*yield*/, developer_1.storeToken(refreshToken)];
                 case 13:
                     _a.sent();
                     console.error(cli_color_1.default.white('Refresh token saved!'));
                     return [3 /*break*/, 15];
                 case 14:
                     err_3 = _a.sent();
-                    utils.log(commander_1.default, logger, 'error saving token! ' + err_3.message);
-                    utils.passwordSaveErrorHandler(err_3);
+                    utils_1.log(commander_1.default, logger, 'error saving token! ' + err_3.message);
+                    utils_1.passwordSaveErrorHandler(err_3);
                     return [3 /*break*/, 15];
                 case 15:
-                    utils.log(commander_1.default, logger, 'checking for updates');
+                    utils_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 16:
                     _a.sent();
-                    return [4 /*yield*/, Developer.trackActivity(logger)];
+                    return [4 /*yield*/, developer_1.trackActivity(logger)];
                 case 17:
                     _a.sent();
                     setTimeout(function () {
@@ -94,5 +94,5 @@ var logger = 'dev-login-2fa';
             }
         });
     });
-})().catch(function (err) { return utils.errorAndExit(err.message, err); });
+})().catch(function (err) { return utils_1.errorAndExit(err.message, err); });
 //# sourceMappingURL=alks-developer-login2fa.js.map

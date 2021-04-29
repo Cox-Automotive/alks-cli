@@ -6,8 +6,8 @@ import clc from 'cli-color';
 import _ from 'underscore';
 import program from 'commander';
 import fuzzy from 'fuzzy';
-import * as utils from '../lib/utils';
 import pkg from '../package.json';
+import { errorAndExit } from '../lib/utils';
 
 program.command('test', 'does a test');
 
@@ -40,5 +40,5 @@ if (!program.args.length) {
     msg.push(clc.white('?'));
   }
 
-  utils.errorAndExit(msg.join(''));
+  errorAndExit(msg.join(''));
 }

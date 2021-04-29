@@ -7,9 +7,14 @@ import clc from 'cli-color';
 import _ from 'underscore';
 import Table from 'cli-table3';
 import config from '../package.json';
-import * as Developer from '../lib/developer';
-import * as utils from '../lib/utils';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { errorAndExit, log } from '../lib/utils';
+import {
+  getDeveloper,
+  getPassword,
+  getToken,
+  trackActivity,
+} from '../lib/developer';
 
 program
   .version(config.version)
@@ -25,14 +30,14 @@ const table = new Table({
 const logger = 'dev-info';
 
 (async function () {
-  utils.log(program, logger, 'getting developer');
-  const developer = await Developer.getDeveloper();
+  log(program, logger, 'getting developer');
+  const developer = await getDeveloper();
 
-  utils.log(program, logger, 'getting password');
-  const password = await Developer.getPassword(null); // null means dont prompt
+  log(program, logger, 'getting password');
+  const password = await getPassword(null); // null means dont prompt
 
-  utils.log(program, logger, 'getting 2fa token');
-  const token = await Developer.getToken();
+  log(program, logger, 'getting 2fa token');
+  const token = await getToken();
 
   const ignores = ['lastVersion'];
   const mapping: Record<string, string> = {
@@ -62,7 +67,7 @@ const logger = 'dev-info';
   console.error(clc.white.underline.bold('\nDeveloper Configuration'));
   console.log(clc.white(table.toString()));
 
-  utils.log(program, logger, 'checking for update');
+  log(program, logger, 'checking for update');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));

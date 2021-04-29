@@ -8,10 +8,10 @@ import _ from 'underscore';
 import Table from 'cli-table3';
 import moment from 'moment';
 import config from '../package.json';
-import * as utils from '../lib/utils';
-import * as Developer from '../lib/developer';
-import * as keys from '../lib/keys';
 import { checkForUpdate } from '../lib/checkForUpdate';
+import { ensureConfigured, getAuth, trackActivity } from '../lib/developer';
+import { errorAndExit, log, obfuscate } from '../lib/utils';
+import { getKeys } from '../lib/keys';
 
 program
   .version(config.version)
@@ -23,16 +23,16 @@ program
 const logger = 'sessions-list';
 
 (async function () {
-  await Developer.ensureConfigured();
+  await ensureConfigured();
 
-  utils.log(program, logger, 'getting auth');
-  const auth = await Developer.getAuth(program);
+  log(program, logger, 'getting auth');
+  const auth = await getAuth(program);
 
-  utils.log(program, logger, 'getting existing sesions');
-  const nonIamKeys = await keys.getKeys(auth, false);
+  log(program, logger, 'getting existing sesions');
+  const nonIamKeys = await getKeys(auth, false);
 
-  utils.log(program, logger, 'getting existing iam sesions');
-  const iamKeys = await keys.getKeys(auth, true);
+  log(program, logger, 'getting existing iam sesions');
+  const iamKeys = await getKeys(auth, true);
 
   const foundKeys = [...nonIamKeys, ...iamKeys];
 
@@ -57,8 +57,8 @@ const logger = 'sessions-list';
     _.each(keys, (keydata) => {
       console.log(JSON.stringify(keydata, null, 2));
       table.push([
-        utils.obfuscate(keydata.accessKey),
-        utils.obfuscate(keydata.secretKey),
+        obfuscate(keydata.accessKey),
+        obfuscate(keydata.secretKey),
         keydata.isIAM ? 'IAM' : 'Standard',
         moment(keydata.expires).calendar(),
         moment(keydata.meta.created).fromNow(),
@@ -75,7 +75,7 @@ const logger = 'sessions-list';
   console.error(clc.white.underline.bold('Active Sessions'));
   console.log(clc.white(table.toString()));
 
-  utils.log(program, logger, 'checking for updates');
+  log(program, logger, 'checking for updates');
   await checkForUpdate();
-  await Developer.trackActivity(logger);
-})().catch((err) => utils.errorAndExit(err.message, err));
+  await trackActivity(logger);
+})().catch((err) => errorAndExit(err.message, err));
