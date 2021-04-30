@@ -93,7 +93,7 @@
     "clortho"
   ],
   "lint-staged": {
-    "{lib,bin,test,typescript-module-definitions}/**/*.{js,ts,json,md}": [
+    "src/**/*.{js,ts,json,md}": [
       "tslint --fix --force",
       "prettier --write"
     ]

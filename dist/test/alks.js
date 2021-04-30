@@ -1,13 +1,13 @@
 /*jslint node: true */
 'use strict';
-var mashery = require('../lib/keys');
+var mashery = require('../src/model/keys');
 var assert = require('chai').assert;
 describe('alks-cli', function () {
     it('should write some tests', function (done) {
         done();
     });
     describe('utils', function () {
-        var utils = require('../lib/utils.js');
+        var utils = require('../src/lib/utils.js.js');
         // isWindows test added to verify that sniffing process.env.PLATFORM
         // doesn't break anything -- james.lance
         describe('isWindows', function () {

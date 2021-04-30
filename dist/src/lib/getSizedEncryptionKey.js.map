@@ -1,0 +1,1 @@
+{"version":3,"file":"getSizedEncryptionKey.js","sourceRoot":"","sources":["../../../src/lib/getSizedEncryptionKey.ts"],"names":[],"mappings":";;;;AAAA,8DAA0B;AAE1B,IAAM,OAAO,GAAG,EAAE,CAAC;AAEnB,SAAgB,qBAAqB,CAAC,GAAW;IAC/C,oCAAoC;IACpC,OAAO,kBAAE,CAAC,GAAG,EAAE,OAAO,EAAE,CAAC,CAAC,CAAC,SAAS,CAAC,CAAC,EAAE,OAAO,CAAC,CAAC;AACnD,CAAC;AAHD,sDAGC"}
