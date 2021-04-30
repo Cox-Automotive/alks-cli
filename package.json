@@ -2,13 +2,13 @@
   "name": "alks",
   "version": "3.1.4",
   "description": "CLI for working with ALKS",
-  "main": "dist/bin/alks.js",
+  "main": "dist/src/bin/alks.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha ./test",
     "prettier": "prettier --write",
     "tslint": "tslint --fix --force",
     "prepare": "husky install",
-    "build": "tsc"
+    "build": "rm -r dist/ && tsc"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -20,7 +20,7 @@
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "alks": "dist/bin/alks.js"
+    "alks": "dist/src/bin/alks.js"
   },
   "author": {
     "name": "Cox Automotive",
