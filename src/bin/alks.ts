@@ -9,6 +9,9 @@ import fuzzy from 'fuzzy';
 import pkg from '../../package.json';
 import { errorAndExit } from '../lib/errorAndExit';
 
+// Do not commit this line
+program.command('test', 'this is a test');
+
 program
   .command('sessions', 'manage aws sessions')
   .command('iam', 'manage iam resources')

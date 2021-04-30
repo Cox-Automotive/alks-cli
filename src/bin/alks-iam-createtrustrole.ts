@@ -41,15 +41,16 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
+const options = program.opts();
 const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
 const TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
-const roleName = program.rolename;
-const roleType = program.roletype;
-const trustArn = program.trustarn;
-const enableAlksAccess = program.enableAlksAccess;
-let alksAccount = program.account;
-let alksRole = program.role;
-const filterFavorites = program.favorites || false;
+const roleName = options.rolename;
+const roleType = options.roletype;
+const trustArn = options.trustarn;
+const enableAlksAccess = options.enableAlksAccess;
+let alksAccount = options.account;
+let alksRole = options.role;
+const filterFavorites = options.favorites || false;
 
 log(program, logger, 'validating role name: ' + roleName);
 if (_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {

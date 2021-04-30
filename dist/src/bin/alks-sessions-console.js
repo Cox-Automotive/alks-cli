@@ -31,11 +31,12 @@ commander_1.default
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var forceNewSession = commander_1.default.newSession;
-var useDefaultAcct = commander_1.default.default;
-var filterFaves = commander_1.default.favorites || false;
+var options = commander_1.default.opts();
+var alksAccount = options.account;
+var alksRole = options.role;
+var forceNewSession = options.newSession;
+var useDefaultAcct = options.default;
+var filterFaves = options.favorites || false;
 var logger = 'sessions-console';
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
     log_1.log(commander_1.default, logger, 'trying to extract role from account');
@@ -62,7 +63,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     return [2 /*return*/, errorAndExit_1.errorAndExit('Unable to load default account!', err_1)];
                 case 4:
                     _a.trys.push([4, 9, , 10]);
-                    if (!underscore_1.default.isUndefined(commander_1.default.iam)) return [3 /*break*/, 6];
+                    if (!underscore_1.default.isUndefined(options.iam)) return [3 /*break*/, 6];
                     return [4 /*yield*/, getSessionKey_1.getSessionKey(commander_1.default, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 5:
                     key = _a.sent();
@@ -78,7 +79,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                 case 10:
                     log_1.log(commander_1.default, logger, 'calling aws to generate 15min console URL');
                     return [4 /*yield*/, new Promise(function (resolve) {
-                            alks_node_1.default.generateConsoleUrl(key, { debug: commander_1.default.verbose, ua: getUserAgentString_1.getUserAgentString() }, function (err, consoleUrl) {
+                            alks_node_1.default.generateConsoleUrl(key, { debug: options.verbose, ua: getUserAgentString_1.getUserAgentString() }, function (err, consoleUrl) {
                                 if (err) {
                                     errorAndExit_1.errorAndExit(err.message, err);
                                 }
@@ -89,11 +90,11 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                         })];
                 case 11:
                     url = _a.sent();
-                    if (!commander_1.default.url) return [3 /*break*/, 12];
+                    if (!options.url) return [3 /*break*/, 12];
                     console.log(url);
                     return [3 /*break*/, 20];
                 case 12:
-                    opts = !underscore_1.default.isEmpty(commander_1.default.openWith) ? { app: commander_1.default.openWith } : {};
+                    opts = !underscore_1.default.isEmpty(options.openWith) ? { app: options.openWith } : {};
                     _a.label = 13;
                 case 13:
                     _a.trys.push([13, 15, , 16]);

@@ -31,12 +31,13 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
+const options = program.opts();
 const NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-const iamUsername = program.iamusername;
-let alksAccount: string | undefined = program.account;
-let alksRole: string | undefined = program.role;
-const filterFaves = program.favorites || false;
-const output = program.output || 'text';
+const iamUsername = options.iamusername;
+let alksAccount: string | undefined = options.account;
+let alksRole: string | undefined = options.role;
+const filterFaves = options.favorites || false;
+const output = options.output || 'text';
 
 log(program, logger, 'validating iam user name: ' + iamUsername);
 if (_.isEmpty(iamUsername)) {

@@ -26,12 +26,13 @@ commander_1.default
     .option('-o, --output [format]', 'output format (text, json)', 'text')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+var options = commander_1.default.opts();
 var NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-var iamUsername = commander_1.default.iamusername;
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var filterFaves = commander_1.default.favorites || false;
-var output = commander_1.default.output || 'text';
+var iamUsername = options.iamusername;
+var alksAccount = options.account;
+var alksRole = options.role;
+var filterFaves = options.favorites || false;
+var output = options.output || 'text';
 log_1.log(commander_1.default, logger, 'validating iam user name: ' + iamUsername);
 if (underscore_1.default.isEmpty(iamUsername)) {
     errorAndExit_1.errorAndExit('Please provide a username (-n)');

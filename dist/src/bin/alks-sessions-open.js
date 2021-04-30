@@ -32,12 +32,13 @@ commander_1.default
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var forceNewSession = commander_1.default.newSession;
-var useDefaultAcct = commander_1.default.default;
-var output = commander_1.default.output;
-var filterFaves = commander_1.default.favorites || false;
+var options = commander_1.default.opts();
+var alksAccount = options.account;
+var alksRole = options.role;
+var forceNewSession = options.newSession;
+var useDefaultAcct = options.default;
+var output = options.output;
+var filterFaves = options.favorites || false;
 var logger = 'sessions-open';
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
     log_1.log(commander_1.default, logger, 'trying to extract role from account');
@@ -65,7 +66,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     _a.label = 4;
                 case 4:
                     _a.trys.push([4, 9, , 10]);
-                    if (!underscore_1.default.isUndefined(commander_1.default.iam)) return [3 /*break*/, 6];
+                    if (!underscore_1.default.isUndefined(options.iam)) return [3 /*break*/, 6];
                     return [4 /*yield*/, getSessionKey_1.getSessionKey(commander_1.default, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 5:
                     key = _a.sent();
@@ -79,7 +80,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
                     err_2 = _a.sent();
                     return [2 /*return*/, errorAndExit_1.errorAndExit(err_2)];
                 case 10:
-                    console.log(getKeyOutput_1.getKeyOutput(output || developer.outputFormat, key, commander_1.default.namedProfile, commander_1.default.force));
+                    console.log(getKeyOutput_1.getKeyOutput(output || developer.outputFormat, key, options.namedProfile, options.force));
                     log_1.log(commander_1.default, logger, 'checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 11:

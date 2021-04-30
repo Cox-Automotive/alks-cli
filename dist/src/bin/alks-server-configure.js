@@ -25,10 +25,11 @@ commander_1.default
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var forceNewSession = commander_1.default.newSession;
-var filterFaves = commander_1.default.favorites || false;
+var options = commander_1.default.opts();
+var alksAccount = options.account;
+var alksRole = options.role;
+var forceNewSession = options.newSession;
+var filterFaves = options.favorites || false;
 var logger = 'server-configure';
 if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUndefined(alksRole)) {
     log_1.log(commander_1.default, logger, 'trying to extract role from account');
@@ -41,7 +42,7 @@ if (!underscore_1.default.isUndefined(alksAccount) && underscore_1.default.isUnd
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    if (!underscore_1.default.isUndefined(commander_1.default.iam)) return [3 /*break*/, 2];
+                    if (!underscore_1.default.isUndefined(options.iam)) return [3 /*break*/, 2];
                     return [4 /*yield*/, getSessionKey_1.getSessionKey(commander_1.default, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 1:
                     key = _a.sent();

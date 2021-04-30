@@ -22,7 +22,8 @@ commander_1.default
     .option('-o, --output [format]', 'output format (' + outputVals.join(', ') + '), default: ' + outputVals[0], outputVals[0])
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var output = commander_1.default.output;
+var options = commander_1.default.opts();
+var output = options.output;
 if (!underscore_1.default.contains(outputVals, output)) {
     errorAndExit_1.errorAndExit('The output provided (' +
         output +

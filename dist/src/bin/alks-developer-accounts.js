@@ -23,6 +23,7 @@ commander_1.default
     .option('-v, --verbose', 'be verbose')
     .option('-e, --export', 'export accounts to environment variables')
     .parse(process.argv);
+var options = commander_1.default.opts();
 var table = new cli_table3_1.default({
     head: [
         cli_color_1.default.white.bold('Account'),
@@ -32,7 +33,7 @@ var table = new cli_table3_1.default({
     colWidths: [50, 50, 25],
 });
 var logger = 'dev-accounts';
-var doExport = commander_1.default.export;
+var doExport = options.export;
 var accountRegex = getAccountRegex_1.getAccountRegex();
 var exportCmd = isWindows_1.isWindows() ? 'SET' : 'export';
 var accounts = [];

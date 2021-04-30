@@ -26,10 +26,11 @@ commander_1.default
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var roleName = commander_1.default.rolename;
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var filterFavorites = commander_1.default.favorites || false;
+var options = commander_1.default.opts();
+var roleName = options.rolename;
+var alksAccount = options.account;
+var alksRole = options.role;
+var filterFavorites = options.favorites || false;
 log_1.log(commander_1.default, logger, 'validating role name: ' + roleName);
 if (underscore_1.default.isEmpty(roleName)) {
     errorAndExit_1.errorAndExit('The role name must be provided.');

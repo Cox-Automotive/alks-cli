@@ -1,16 +1,21 @@
-import commander from 'commander';
+import { OptionValues } from 'commander';
 import { yellow } from 'cli-color';
 
-let programCacher: commander.Command | undefined;
+let cliOptionsCache: OptionValues | undefined;
 
 export function log(
-  program: commander.Command | null,
+  cliOptions: OptionValues | null,
   section: string,
   msg: string
 ) {
-  if (program && !programCacher) programCacher = program; // so hacky!
+  if (cliOptions || cliOptionsCache) {
+    cliOptionsCache = {
+      ...cliOptionsCache,
+      ...cliOptions,
+    };
+  }
 
-  if (programCacher && programCacher.verbose) {
+  if (cliOptionsCache?.verbose) {
     console.error(yellow(['[', section, ']: ', msg].join('')));
   }
 }

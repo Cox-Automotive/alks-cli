@@ -28,10 +28,11 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const roleName = program.rolename;
-let alksAccount = program.account;
-let alksRole = program.role;
-const filterFavorites = program.favorites || false;
+const options = program.opts();
+const roleName = options.rolename;
+let alksAccount = options.account;
+let alksRole = options.role;
+const filterFavorites = options.favorites || false;
 
 log(program, logger, 'validating role name: ' + roleName);
 if (_.isEmpty(roleName)) {

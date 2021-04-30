@@ -36,11 +36,12 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-let alksAccount = program.account;
-let alksRole = program.role;
-const forceNewSession = program.newSession;
-const useDefaultAcct = program.default;
-const filterFaves = program.favorites || false;
+const options = program.opts();
+let alksAccount = options.account;
+let alksRole = options.role;
+const forceNewSession = options.newSession;
+const useDefaultAcct = options.default;
+const filterFaves = options.favorites || false;
 const logger = 'sessions-console';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
@@ -62,7 +63,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 
   let key: Key;
   try {
-    if (_.isUndefined(program.iam)) {
+    if (_.isUndefined(options.iam)) {
       key = await getSessionKey(
         program,
         logger,
@@ -91,7 +92,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
   const url = await new Promise((resolve) => {
     alksNode.generateConsoleUrl(
       key,
-      { debug: program.verbose, ua: getUserAgentString() },
+      { debug: options.verbose, ua: getUserAgentString() },
       (err: Error, consoleUrl: string) => {
         if (err) {
           errorAndExit(err.message, err);
@@ -102,10 +103,10 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     );
   });
 
-  if (program.url) {
+  if (options.url) {
     console.log(url);
   } else {
-    const opts = !_.isEmpty(program.openWith) ? { app: program.openWith } : {};
+    const opts = !_.isEmpty(options.openWith) ? { app: options.openWith } : {};
     try {
       await opn(url, opts);
     } catch (err) {

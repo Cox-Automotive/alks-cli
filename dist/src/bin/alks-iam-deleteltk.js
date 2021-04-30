@@ -24,10 +24,11 @@ commander_1.default
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
-var iamUsername = commander_1.default.iamusername;
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var filterFaves = commander_1.default.favorites || false;
+var options = commander_1.default.opts();
+var iamUsername = options.iamusername;
+var alksAccount = options.account;
+var alksRole = options.role;
+var filterFaves = options.favorites || false;
 log_1.log(commander_1.default, logger, 'validating iam user name: ' + iamUsername);
 if (underscore_1.default.isEmpty(iamUsername)) {
     errorAndExit_1.errorAndExit('The IAM username is required.');

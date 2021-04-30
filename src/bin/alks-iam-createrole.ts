@@ -43,14 +43,15 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
+const options = program.opts();
 const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-const roleName = program.rolename;
-const roleType = program.roletype;
-const incDefPolicies = program.defaultPolicies;
-const enableAlksAccess = program.enableAlksAccess;
-let alksAccount = program.account;
-let alksRole = program.role;
-const filterFavorites = program.favorites || false;
+const roleName = options.rolename;
+const roleType = options.roletype;
+const incDefPolicies = options.defaultPolicies;
+const enableAlksAccess = options.enableAlksAccess;
+let alksAccount = options.account;
+let alksRole = options.role;
+const filterFavorites = options.favorites || false;
 
 log(program, logger, 'validating role name: ' + roleName);
 if (_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {

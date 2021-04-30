@@ -10,7 +10,7 @@ import config from '../../package.json';
 import { checkForUpdate } from '../lib/checkForUpdate';
 import { errorAndExit } from '../lib/errorAndExit';
 import { getAlksAccount } from '../lib/getAlksAccount';
-import { getAuth } from '../lib/getAuth';
+import { getAuth, saveAuth } from '../lib/getAuth';
 import { getDeveloper } from '../lib/getDeveloper';
 import { getOutputValues } from '../lib/getOutputValues';
 import { getPasswordFromKeystore } from '../lib/getPasswordFromKeystore';
@@ -110,11 +110,11 @@ async function getPrompt(
     }
 
     // Cache password in program object for faster lookup
-    program.auth = {
+    saveAuth({
       userid,
       password,
       ...auth,
-    };
+    });
 
     log(program, logger, 'Getting ALKS accounts');
     const prompt = 'Please select your default ALKS account/role';

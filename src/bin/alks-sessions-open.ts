@@ -46,12 +46,14 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-let alksAccount = program.account;
-let alksRole = program.role;
-const forceNewSession = program.newSession;
-const useDefaultAcct = program.default;
-const output = program.output;
-const filterFaves = program.favorites || false;
+const options = program.opts();
+
+let alksAccount = options.account;
+let alksRole = options.role;
+const forceNewSession = options.newSession;
+const useDefaultAcct = options.default;
+const output = options.output;
+const filterFaves = options.favorites || false;
 const logger = 'sessions-open';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
@@ -74,7 +76,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 
   let key;
   try {
-    if (_.isUndefined(program.iam)) {
+    if (_.isUndefined(options.iam)) {
       key = await getSessionKey(
         program,
         logger,
@@ -102,8 +104,8 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
     getKeyOutput(
       output || developer.outputFormat,
       key,
-      program.namedProfile,
-      program.force
+      options.namedProfile,
+      options.force
     )
   );
 

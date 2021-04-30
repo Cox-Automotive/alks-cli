@@ -7,27 +7,32 @@ import { getUserId } from './getUserId';
 
 const logger = 'auth';
 
+// TODO: find a better way to handle this
+export function saveAuth(newAuth: Auth) {
+  auth = newAuth;
+}
+
+let auth: Auth;
+
 export async function getAuth(
   program: commander.Command,
   prompt: boolean = true
 ): Promise<Auth> {
-  if (program.auth) {
+  if (auth) {
     log(program, logger, 'using cached auth object');
-    return program.auth;
+    return auth;
   }
 
   log(program, logger, 'checking for access token');
   const token = await getToken();
   if (token) {
-    const auth = { token };
-    program.auth = auth;
+    auth = { token };
     return auth;
   } else {
     log(program, logger, 'no access token found, falling back to password');
     const userid = await getUserId(program, prompt);
     const password = await getPassword(program, prompt);
-    const auth = { userid, password };
-    program.auth = auth;
+    auth = { userid, password };
     return auth;
   }
 }

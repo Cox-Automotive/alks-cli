@@ -26,10 +26,11 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const alksAccount = program.account;
-let alksRole = program.role;
-const forceNewSession = program.newSession;
-const filterFaves = program.favorites || false;
+const options = program.opts();
+const alksAccount = options.account;
+let alksRole = options.role;
+const forceNewSession = options.newSession;
+const filterFaves = options.favorites || false;
 const logger = 'server-configure';
 
 if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
@@ -40,7 +41,7 @@ if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
 (async function () {
   let key;
   try {
-    if (_.isUndefined(program.iam)) {
+    if (_.isUndefined(options.iam)) {
       key = await getSessionKey(
         program,
         logger,

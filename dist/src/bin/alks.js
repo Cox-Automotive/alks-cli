@@ -9,6 +9,8 @@ var commander_1 = tslib_1.__importDefault(require("commander"));
 var fuzzy_1 = tslib_1.__importDefault(require("fuzzy"));
 var package_json_1 = tslib_1.__importDefault(require("../../package.json"));
 var errorAndExit_1 = require("../lib/errorAndExit");
+// Do not commit this line
+commander_1.default.command('test', 'this is a test');
 commander_1.default
     .command('sessions', 'manage aws sessions')
     .command('iam', 'manage iam resources')

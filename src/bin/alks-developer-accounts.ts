@@ -24,6 +24,8 @@ program
   .option('-e, --export', 'export accounts to environment variables')
   .parse(process.argv);
 
+const options = program.opts();
+
 const table = new Table({
   head: [
     clc.white.bold('Account'),
@@ -34,7 +36,7 @@ const table = new Table({
 });
 
 const logger = 'dev-accounts';
-const doExport = program.export;
+const doExport = options.export;
 const accountRegex = getAccountRegex();
 const exportCmd = isWindows() ? 'SET' : 'export';
 const accounts: string[] = [];

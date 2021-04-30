@@ -47,7 +47,7 @@
     "cli-color": "^1.1.0",
     "cli-table3": "^0.5.0",
     "clortho": "https://github.com/Cox-Automotive/clortho/archive/1.2.4.tar.gz",
-    "commander": "^2.20.3",
+    "commander": "^7.2.0",
     "crypto": "0.0.3",
     "express-list-endpoints": "^3.0.1",
     "fuzzy": "^0.1.1",

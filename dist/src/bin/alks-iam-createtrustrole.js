@@ -32,15 +32,16 @@ commander_1.default
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-v, --verbose', 'be verbose')
     .parse(process.argv);
+var options = commander_1.default.opts();
 var ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
 var TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
-var roleName = commander_1.default.rolename;
-var roleType = commander_1.default.roletype;
-var trustArn = commander_1.default.trustarn;
-var enableAlksAccess = commander_1.default.enableAlksAccess;
-var alksAccount = commander_1.default.account;
-var alksRole = commander_1.default.role;
-var filterFavorites = commander_1.default.favorites || false;
+var roleName = options.rolename;
+var roleType = options.roletype;
+var trustArn = options.trustarn;
+var enableAlksAccess = options.enableAlksAccess;
+var alksAccount = options.account;
+var alksRole = options.role;
+var filterFavorites = options.favorites || false;
 log_1.log(commander_1.default, logger, 'validating role name: ' + roleName);
 if (underscore_1.default.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
     errorAndExit_1.errorAndExit('The role name provided contains illegal characters. It must be ' +

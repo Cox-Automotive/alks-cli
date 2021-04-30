@@ -28,7 +28,8 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const output = program.output;
+const options = program.opts();
+const output = options.output;
 
 if (!_.contains(outputVals, output)) {
   errorAndExit(

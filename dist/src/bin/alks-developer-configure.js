@@ -121,8 +121,8 @@ function getPrompt(field, defaultValue, text, validator) {
                     return [3 /*break*/, 15];
                 case 15:
                     // Cache password in program object for faster lookup
-                    commander_1.default.auth = tslib_1.__assign({ userid: userid,
-                        password: password }, auth);
+                    getAuth_1.saveAuth(tslib_1.__assign({ userid: userid,
+                        password: password }, auth));
                     log_1.log(commander_1.default, logger, 'Getting ALKS accounts');
                     prompt = 'Please select your default ALKS account/role';
                     opts = {

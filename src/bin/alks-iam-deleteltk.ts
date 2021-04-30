@@ -29,10 +29,11 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const iamUsername = program.iamusername;
-let alksAccount = program.account;
-let alksRole = program.role;
-const filterFaves = program.favorites || false;
+const options = program.opts();
+const iamUsername = options.iamusername;
+let alksAccount = options.account;
+let alksRole = options.role;
+const filterFaves = options.favorites || false;
 
 log(program, logger, 'validating iam user name: ' + iamUsername);
 if (_.isEmpty(iamUsername)) {
