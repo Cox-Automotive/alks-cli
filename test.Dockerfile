@@ -5,8 +5,8 @@ RUN apt-get update && \
 
 COPY . /
 
-RUN rm -r node_modules/
+RUN rm -r node_modules
 
-RUN npm install --no-optional alks -g
+RUN npm install --no-optional . -g
 
 ENTRYPOINT ["/bin/bash"]
