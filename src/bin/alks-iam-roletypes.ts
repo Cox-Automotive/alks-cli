@@ -3,18 +3,9 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import clc from 'cli-color';
-import _ from 'underscore';
 import config from '../../package.json';
-import { checkForUpdate } from '../lib/checkForUpdate';
-import { getAlks } from '../lib/getAlks';
-import { errorAndExit } from '../lib/errorAndExit';
-import { getAuth } from '../lib/getAuth';
-import { getDeveloper } from '../lib/getDeveloper';
-import { log } from '../lib/log';
-import { trackActivity } from '../lib/tractActivity';
+import { handleAlksIamRoleTypes } from '../lib/handlers/alks-iam-roletypes';
 
-const logger = 'iam-roletypes';
 const outputVals = ['list', 'json'];
 
 program
@@ -28,60 +19,4 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const options = program.opts();
-const output = options.output;
-
-if (!_.contains(outputVals, output)) {
-  errorAndExit(
-    'The output provided (' +
-      output +
-      ') is not in the allowed values: ' +
-      outputVals.join(', ')
-  );
-}
-
-(async function () {
-  log(program, logger, 'getting developer');
-  const developer = await getDeveloper();
-
-  log(program, logger, 'getting auth');
-  const auth = await getAuth(program);
-
-  const alks = await getAlks({
-    baseUrl: developer.server,
-    ...auth,
-  });
-
-  log(program, logger, 'getting list of role types from REST API');
-  let roleTypes;
-  try {
-    roleTypes = await alks.getAllAWSRoleTypes({});
-  } catch (err) {
-    return errorAndExit(err);
-  }
-
-  log(
-    program,
-    logger,
-    'outputting list of ' + (roleTypes ? roleTypes.length : -1) + ' role types'
-  );
-  console.error(clc.white.underline.bold('\nAvailable IAM Role Types'));
-
-  if (output === 'list') {
-    _.each(roleTypes, (roleType, i) => {
-      console.log(
-        clc.white(
-          [i < 9 ? ' ' : '', i + 1, ') ', roleType.roleTypeName].join('')
-        )
-      );
-    });
-  } else {
-    console.log(
-      JSON.stringify(roleTypes.map((roleType) => roleType.roleTypeName))
-    );
-  }
-
-  log(program, logger, 'checking for updates');
-  await checkForUpdate();
-  await trackActivity(logger);
-})().catch((err) => errorAndExit(err.message, err));
+handleAlksIamRoleTypes(program);

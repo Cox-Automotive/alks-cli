@@ -3,18 +3,9 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import _ from 'underscore';
 import config from '../../package.json';
-import { checkForUpdate } from '../lib/checkForUpdate';
-import { getSessionKey } from '../lib/getSessionKey';
-import { getIamKey } from '../lib/getIamKey';
-import { errorAndExit } from '../lib/errorAndExit';
-import { getDeveloper } from '../lib/getDeveloper';
-import { getKeyOutput } from '../lib/getKeyOutput';
 import { getOutputValues } from '../lib/getOutputValues';
-import { log } from '../lib/log';
-import { trackActivity } from '../lib/tractActivity';
-import { tryToExtractRole } from '../lib/tryToExtractRole';
+import { handleAlksSessionsOpen } from '../lib/handlers/alks-sessions-open';
 
 const outputValues = getOutputValues();
 
@@ -46,70 +37,4 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const options = program.opts();
-
-let alksAccount = options.account;
-let alksRole = options.role;
-const forceNewSession = options.newSession;
-const useDefaultAcct = options.default;
-const output = options.output;
-const filterFaves = options.favorites || false;
-const logger = 'sessions-open';
-
-if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  log(program, logger, 'trying to extract role from account');
-  alksRole = tryToExtractRole(alksAccount);
-}
-
-(async function () {
-  let developer;
-  try {
-    developer = await getDeveloper();
-  } catch (err) {
-    return errorAndExit('Unable to load default account!', err);
-  }
-
-  if (useDefaultAcct) {
-    alksAccount = developer.alksAccount;
-    alksRole = developer.alksRole;
-  }
-
-  let key;
-  try {
-    if (_.isUndefined(options.iam)) {
-      key = await getSessionKey(
-        program,
-        logger,
-        alksAccount,
-        alksRole,
-        false,
-        forceNewSession,
-        filterFaves
-      );
-    } else {
-      key = await getIamKey(
-        program,
-        logger,
-        alksAccount,
-        alksRole,
-        forceNewSession,
-        filterFaves
-      );
-    }
-  } catch (err) {
-    return errorAndExit(err);
-  }
-
-  console.log(
-    getKeyOutput(
-      output || developer.outputFormat,
-      key,
-      options.namedProfile,
-      options.force
-    )
-  );
-
-  log(program, logger, 'checking for updates');
-  await checkForUpdate();
-  await trackActivity(logger);
-})().catch((err) => errorAndExit(err.message, err));
+handleAlksSessionsOpen(program);

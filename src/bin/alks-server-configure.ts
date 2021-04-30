@@ -3,17 +3,8 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import clc from 'cli-color';
-import _ from 'underscore';
 import config from '../../package.json';
-import { checkForUpdate } from '../lib/checkForUpdate';
-import { getSessionKey } from '../lib/getSessionKey';
-import { errorAndExit } from '../lib/errorAndExit';
-import { log } from '../lib/log';
-import { saveMetadata } from '../lib/saveMetadata';
-import { trackActivity } from '../lib/tractActivity';
-import { tryToExtractRole } from '../lib/tryToExtractRole';
-import { getIamKey } from '../lib/getIamKey';
+import { handleAlksServerConfigure } from '../lib/handlers/alks-server-configure';
 
 program
   .version(config.version)
@@ -26,60 +17,4 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const options = program.opts();
-const alksAccount = options.account;
-let alksRole = options.role;
-const forceNewSession = options.newSession;
-const filterFaves = options.favorites || false;
-const logger = 'server-configure';
-
-if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  log(program, logger, 'trying to extract role from account');
-  alksRole = tryToExtractRole(alksAccount);
-}
-
-(async function () {
-  let key;
-  try {
-    if (_.isUndefined(options.iam)) {
-      key = await getSessionKey(
-        program,
-        logger,
-        alksAccount,
-        alksRole,
-        false,
-        forceNewSession,
-        filterFaves
-      );
-    } else {
-      key = await getIamKey(
-        program,
-        logger,
-        alksAccount,
-        alksRole,
-        forceNewSession,
-        filterFaves
-      );
-    }
-  } catch (err) {
-    return errorAndExit(err);
-  }
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  try {
-    await saveMetadata({
-      alksAccount: key.alksAccount,
-      alksRole: key.alksRole,
-      isIam: key.isIAM,
-    });
-  } catch (err) {
-    return errorAndExit('Unable to save metadata!', err);
-  }
-
-  console.error(clc.white('Metadata has been saved!'));
-
-  log(program, logger, 'checking for updates');
-  await checkForUpdate();
-  await trackActivity(logger);
-})().catch((err) => errorAndExit(err.message, err));
+handleAlksServerConfigure(program);

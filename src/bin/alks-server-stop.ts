@@ -3,10 +3,8 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import clc from 'cli-color';
-import forever from 'forever';
 import config from '../../package.json';
-import { isOsx } from '../lib/isOsx';
+import { handleAlksServerStop } from '../lib/handlers/alks-server-stop';
 
 program
   .version(config.version)
@@ -14,18 +12,4 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-if (!isOsx()) {
-  console.error(clc.red('The metadata server is only supported on OSX.'));
-  process.exit(0);
-}
-
-console.error(clc.white('Stopping metadata server..'));
-
-forever.list(false, (_err: Error | null, list: unknown | null) => {
-  if (list === null) {
-    console.log(clc.white('Metadata server is not running.'));
-  } else {
-    forever.stopAll();
-    console.log(clc.white('Metadata server stopped.'));
-  }
-});
+handleAlksServerStop(program);

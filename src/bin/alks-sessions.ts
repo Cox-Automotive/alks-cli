@@ -4,7 +4,7 @@ process.title = 'ALKS';
 
 import program from 'commander';
 import config from '../../package.json';
-import { subcommandSuggestion } from '../lib/subcommandSuggestion';
+import { handleAlksSessions } from '../lib/handlers/alks-sessions';
 
 program
   .version(config.version)
@@ -13,4 +13,4 @@ program
   .command('console', 'open an AWS console in your browser')
   .parse(process.argv);
 
-subcommandSuggestion(program, 'sessions');
+handleAlksSessions(program);

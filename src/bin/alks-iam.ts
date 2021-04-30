@@ -4,7 +4,7 @@ process.title = 'ALKS';
 
 import program from 'commander';
 import config from '../../package.json';
-import { subcommandSuggestion } from '../lib/subcommandSuggestion';
+import { handleAlksIam } from '../lib/handlers/alks-iam';
 
 program
   .version(config.version)
@@ -16,4 +16,4 @@ program
   .command('deleteltk', 'delete a longterm key')
   .parse(process.argv);
 
-subcommandSuggestion(program, 'iam');
+handleAlksIam(program);

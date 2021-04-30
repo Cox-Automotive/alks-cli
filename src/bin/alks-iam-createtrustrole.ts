@@ -3,21 +3,9 @@
 process.title = 'ALKS';
 
 import program from 'commander';
-import _ from 'underscore';
-import clc from 'cli-color';
-import ALKS from 'alks.js';
 import config from '../../package.json';
-import { checkForUpdate } from '../lib/checkForUpdate';
-import { getAlks } from '../lib/getAlks';
-import { errorAndExit } from '../lib/errorAndExit';
-import { getAlksAccount } from '../lib/getAlksAccount';
-import { getAuth } from '../lib/getAuth';
-import { getDeveloper } from '../lib/getDeveloper';
-import { log } from '../lib/log';
-import { trackActivity } from '../lib/tractActivity';
-import { tryToExtractRole } from '../lib/tryToExtractRole';
+import { handleAlksIamCreateTrustRole } from '../lib/handlers/alks-iam-createtrustrole';
 
-const logger = 'iam-createtrustrole';
 const roleNameDesc = 'alphanumeric including @+=._-';
 const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
 
@@ -41,96 +29,4 @@ program
   .option('-v, --verbose', 'be verbose')
   .parse(process.argv);
 
-const options = program.opts();
-const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-const TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
-const roleName = options.rolename;
-const roleType = options.roletype;
-const trustArn = options.trustarn;
-const enableAlksAccess = options.enableAlksAccess;
-let alksAccount = options.account;
-let alksRole = options.role;
-const filterFavorites = options.favorites || false;
-
-log(program, logger, 'validating role name: ' + roleName);
-if (_.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
-  errorAndExit(
-    'The role name provided contains illegal characters. It must be ' +
-      roleNameDesc
-  );
-}
-
-log(program, logger, 'validating role type: ' + roleType);
-if (
-  _.isEmpty(roleType) ||
-  (roleType !== 'Cross Account' && roleType !== 'Inner Account')
-) {
-  errorAndExit('The role type is required');
-}
-
-log(program, logger, 'validating trust arn: ' + trustArn);
-if (_.isEmpty(trustArn) || !TRUST_ARN_REGEX.test(trustArn)) {
-  errorAndExit(
-    'The trust arn provided contains illegal characters. It must be ' +
-      trustArnDesc
-  );
-}
-
-if (!_.isUndefined(alksAccount) && _.isUndefined(alksRole)) {
-  log(program, logger, 'trying to extract role from account');
-  alksRole = tryToExtractRole(alksAccount);
-}
-
-(async function () {
-  if (_.isEmpty(alksAccount) || _.isEmpty(alksRole)) {
-    log(program, logger, 'getting accounts');
-    ({ alksAccount, alksRole } = await getAlksAccount(program, {
-      iamOnly: true,
-      filterFavorites,
-    }));
-  } else {
-    log(program, logger, 'using provided account/role');
-  }
-
-  const developer = await getDeveloper();
-
-  const auth = await getAuth(program);
-
-  log(program, logger, 'calling api to create trust role: ' + roleName);
-
-  const alks = await getAlks({
-    baseUrl: developer.server,
-    ...auth,
-  });
-
-  let role;
-  try {
-    role = await alks.createNonServiceRole({
-      account: alksAccount,
-      role: alksRole,
-      roleName,
-      roleType,
-      trustArn,
-      enableAlksAccess,
-      includeDefaultPolicy: ALKS.PseudoBoolean.False,
-    });
-  } catch (err) {
-    return errorAndExit(err);
-  }
-
-  console.log(
-    clc.white(
-      ['The role: ', roleName, ' was created with the ARN: '].join('')
-    ) + clc.white.underline(role.roleArn)
-  );
-  if (role.instanceProfileArn) {
-    console.log(
-      clc.white(
-        ['An instance profile was also created with the ARN: '].join('')
-      ) + clc.white.underline(role.instanceProfileArn)
-    );
-  }
-  log(program, logger, 'checking for updates');
-  await checkForUpdate();
-  await trackActivity(logger);
-})().catch((err) => errorAndExit(err.message, err));
+handleAlksIamCreateTrustRole(program);
