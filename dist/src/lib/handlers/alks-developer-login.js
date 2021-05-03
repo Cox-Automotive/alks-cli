@@ -10,7 +10,7 @@ var log_1 = require("../log");
 var passwordSaveErrorHandler_1 = require("../passwordSaveErrorHandler");
 var storePassword_1 = require("../storePassword");
 var tractActivity_1 = require("../tractActivity");
-function handleAlksDeveloperLogin(program) {
+function handleAlksDeveloperLogin(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, password, err_1, err_2;
         return tslib_1.__generator(this, function (_a) {

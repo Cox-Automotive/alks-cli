@@ -13,7 +13,7 @@ var passwordSaveErrorHandler_1 = require("../passwordSaveErrorHandler");
 var storeToken_1 = require("../storeToken");
 var tractActivity_1 = require("../tractActivity");
 var opn_1 = tslib_1.__importDefault(require("opn"));
-function handleAlksDeveloperLogin2fa(program) {
+function handleAlksDeveloperLogin2fa(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, data, url, err_1, refreshToken, alks, err_2, err_3, err_4;
         return tslib_1.__generator(this, function (_a) {

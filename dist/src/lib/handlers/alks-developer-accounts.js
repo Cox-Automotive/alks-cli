@@ -14,7 +14,7 @@ var isWindows_1 = require("../isWindows");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
-function handleAlksDeveloperAccounts(program) {
+function handleAlksDeveloperAccounts(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         function getUniqueAccountName(accountName) {
             var i = 1;
@@ -35,11 +35,10 @@ function handleAlksDeveloperAccounts(program) {
                 }
             }
         }
-        var options, table, logger, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
+        var table, logger, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    options = program.opts();
                     table = new cli_table3_1.default({
                         head: [
                             cli_color_1.default.white.bold('Account'),

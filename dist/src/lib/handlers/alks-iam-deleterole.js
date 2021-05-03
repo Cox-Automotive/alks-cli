@@ -13,15 +13,14 @@ var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamDeleteRole(program) {
+function handleAlksIamDeleteRole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, options, roleName, alksAccount, alksRole, filterFavorites, developer, auth, alks, err_1, err_2;
+        var logger, roleName, alksAccount, alksRole, filterFavorites, developer, auth, alks, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     logger = 'iam-delete';
-                    options = program.opts();
                     roleName = options.rolename;
                     alksAccount = options.account;
                     alksRole = options.role;

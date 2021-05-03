@@ -14,13 +14,12 @@ var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var opn_1 = tslib_1.__importDefault(require("opn"));
-function handleAlksSessionsConsole(program) {
+function handleAlksSessionsConsole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var options, alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, logger, dev, err_1, key_1, err_2, url, opts, err_3, err_4;
+        var alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, logger, dev, err_1, key_1, err_2, url, opts, err_3, err_4;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    options = program.opts();
                     alksAccount = options.account;
                     alksRole = options.role;
                     forceNewSession = options.newSession;

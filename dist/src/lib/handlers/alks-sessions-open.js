@@ -12,13 +12,12 @@ var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksSessionsOpen(program) {
+function handleAlksSessionsOpen(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var options, alksAccount, alksRole, forceNewSession, useDefaultAcct, output, filterFaves, logger, developer, err_1, key, err_2, err_3;
+        var alksAccount, alksRole, forceNewSession, useDefaultAcct, output, filterFaves, logger, developer, err_1, key, err_2, err_3;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    options = program.opts();
                     alksAccount = options.account;
                     alksRole = options.role;
                     forceNewSession = options.newSession;

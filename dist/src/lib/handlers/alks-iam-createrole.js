@@ -13,16 +13,15 @@ var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamCreateRole(program) {
+function handleAlksIamCreateRole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, roleNameDesc, options, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, developer, auth, alks, role, err_1, err_2;
+        var logger, roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, developer, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     logger = 'iam-createrole';
                     roleNameDesc = 'alphanumeric including @+=._-';
-                    options = program.opts();
                     ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     roleName = options.rolename;
                     roleType = options.roletype;

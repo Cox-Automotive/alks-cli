@@ -11,15 +11,14 @@ var getIamAccount_1 = require("../getIamAccount");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamCreateLtk(program) {
+function handleAlksIamCreateLtk(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, nameDesc, options, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData, err_2;
+        var logger, nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     logger = 'iam-createltk';
                     nameDesc = 'alphanumeric including @+=._-';
-                    options = program.opts();
                     NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     iamUsername = options.iamusername;
                     alksAccount = options.account;

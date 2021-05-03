@@ -18,7 +18,7 @@ function runServerDaemon() {
     });
     console.error(cli_color_1.default.white('Metadata server now listening on: 169.254.169.254'));
 }
-function handleAlksServerStart(program) {
+function handleAlksServerStart(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, servicePath;
         return tslib_1.__generator(this, function (_a) {

@@ -18,7 +18,7 @@ var isUrl_1 = require("../isUrl");
 var log_1 = require("../log");
 var saveDeveloper_1 = require("../saveDeveloper");
 var tractActivity_1 = require("../tractActivity");
-function handleAlksDeveloperConfigure(program) {
+function handleAlksDeveloperConfigure(_, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         function getPrompt(field, defaultValue, text, validator) {
             return tslib_1.__awaiter(this, void 0, void 0, function () {

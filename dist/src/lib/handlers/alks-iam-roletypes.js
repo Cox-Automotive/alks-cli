@@ -11,15 +11,14 @@ var getAuth_1 = require("../getAuth");
 var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
-function handleAlksIamRoleTypes(program) {
+function handleAlksIamRoleTypes(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, outputVals, options, output, developer, auth, alks, roleTypes, err_1, err_2;
+        var logger, outputVals, output, developer, auth, alks, roleTypes, err_1, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     logger = 'iam-roletypes';
                     outputVals = ['list', 'json'];
-                    options = program.opts();
                     output = options.output;
                     if (!underscore_1.contains(outputVals, output)) {
                         errorAndExit_1.errorAndExit('The output provided (' +

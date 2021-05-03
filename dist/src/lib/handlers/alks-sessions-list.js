@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleSessionsList = void 0;
+exports.handleAlksSessionsList = void 0;
 var tslib_1 = require("tslib");
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
@@ -15,7 +15,7 @@ var getKeys_1 = require("../getKeys");
 var underscore_1 = require("underscore");
 var log_1 = require("../log");
 var logger = 'sessions-list';
-function handleSessionsList(program) {
+function handleAlksSessionsList(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var auth, nonIamKeys, iamKeys, foundKeys, table_1, groupedKeys, err_1;
         return tslib_1.__generator(this, function (_a) {
@@ -91,5 +91,5 @@ function handleSessionsList(program) {
         });
     });
 }
-exports.handleSessionsList = handleSessionsList;
+exports.handleAlksSessionsList = handleAlksSessionsList;
 //# sourceMappingURL=alks-sessions-list.js.map

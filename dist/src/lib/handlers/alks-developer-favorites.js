@@ -14,7 +14,7 @@ var getFavorites_1 = require("../getFavorites");
 var log_1 = require("../log");
 var saveFavorites_1 = require("../saveFavorites");
 var tractActivity_1 = require("../tractActivity");
-function handleAlksDeveloperFavorites(program) {
+function handleAlksDeveloperFavorites(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, developer, auth, alks, alksAccounts, favorites_1, choices_1, deferred_1, faves, err_1;
         return tslib_1.__generator(this, function (_a) {

@@ -5,7 +5,7 @@ var tslib_1 = require("tslib");
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var isOsx_1 = require("../isOsx");
 var forever_1 = tslib_1.__importDefault(require("forever"));
-function handleAlksServerStop(_) {
+function handleAlksServerStop(_options, _program) {
     if (!isOsx_1.isOsx()) {
         console.error(cli_color_1.default.red('The metadata server is only supported on OSX.'));
         process.exit(0);

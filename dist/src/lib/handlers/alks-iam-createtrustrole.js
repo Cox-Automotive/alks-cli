@@ -14,9 +14,9 @@ var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamCreateTrustRole(program) {
+function handleAlksIamCreateTrustRole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, roleNameDesc, trustArnDesc, options, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, filterFavorites, developer, auth, alks, role, err_1, err_2;
+        var logger, roleNameDesc, trustArnDesc, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, filterFavorites, developer, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -24,7 +24,6 @@ function handleAlksIamCreateTrustRole(program) {
                     logger = 'iam-createtrustrole';
                     roleNameDesc = 'alphanumeric including @+=._-';
                     trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
-                    options = program.opts();
                     ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
                     roleName = options.rolename;

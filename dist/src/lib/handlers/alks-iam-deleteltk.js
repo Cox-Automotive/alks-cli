@@ -11,14 +11,13 @@ var getIamAccount_1 = require("../getIamAccount");
 var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamDeleteLtk(program) {
+function handleAlksIamDeleteLtk(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, options, iamUsername, alksAccount, alksRole, filterFaves, iamAccount, err_1, developer, auth, alks, err_2, err_3;
+        var logger, iamUsername, alksAccount, alksRole, filterFaves, iamAccount, err_1, developer, auth, alks, err_2, err_3;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     logger = 'iam-deleteltk';
-                    options = program.opts();
                     iamUsername = options.iamusername;
                     alksAccount = options.account;
                     alksRole = options.role;

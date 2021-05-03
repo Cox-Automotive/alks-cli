@@ -12,7 +12,7 @@ var log_1 = require("../log");
 var tractActivity_1 = require("../tractActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var underscore_1 = require("underscore");
-function handleAlksDeveloperInfo(program) {
+function handleAlksDeveloperInfo(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var table, logger, developer, password, token, ignores_1, mapping_1, tablePassword, tableToken, err_1;
         return tslib_1.__generator(this, function (_a) {
