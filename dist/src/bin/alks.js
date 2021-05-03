@@ -1,26 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 process.title = 'ALKS';
-<<<<<<< HEAD
-<<<<<<< HEAD
-var commander_1 = tslib_1.__importDefault(require("commander"));
-var package_json_1 = tslib_1.__importDefault(require("../../package.json"));
-=======
-var commander_1 = require("commander");
-var package_json_1 = require("../../package.json");
->>>>>>> ec04039... [in progress] adds central program object
-var alks_1 = require("../lib/handlers/alks");
-commander_1.program
-    .version(package_json_1.version)
-    .command('sessions', 'manage aws sessions')
-    .command('iam', 'manage iam resources')
-    .command('developer', 'developer & account commands')
-    .command('server', 'ec2 metadata server')
-    .parse(process.argv);
-<<<<<<< HEAD
-alks_1.handleAlks(commander_1.default);
-=======
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var commander_1 = require("commander");
 var package_json_1 = require("../../package.json");
@@ -210,8 +192,4 @@ try {
 catch (err) {
     handleCommanderError_1.handleCommanderError(alks, err);
 }
->>>>>>> 750f252... adds util for getting most recent matching program object
-=======
-alks_1.handleAlks(commander_1.program);
->>>>>>> ec04039... [in progress] adds central program object
 //# sourceMappingURL=alks.js.map
