@@ -4,7 +4,7 @@
   "description": "CLI for working with ALKS",
   "main": "dist/src/bin/alks.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "prettier": "prettier --write",
     "tslint": "tslint --fix --force",
     "prepare": "husky install",
