@@ -11,10 +11,12 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamCreateRole(program: commander.Command) {
+export async function handleAlksIamCreateRole(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-createrole';
   const roleNameDesc = 'alphanumeric including @+=._-';
-  const options = program.opts();
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const roleName = options.rolename;
   const roleType = options.roletype;

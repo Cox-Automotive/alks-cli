@@ -11,10 +11,12 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamDeleteRole(program: commander.Command) {
+export async function handleAlksIamDeleteRole(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-delete';
 
-  const options = program.opts();
   const roleName = options.rolename;
   let alksAccount = options.account;
   let alksRole = options.role;

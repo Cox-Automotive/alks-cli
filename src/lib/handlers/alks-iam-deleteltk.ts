@@ -9,9 +9,11 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamDeleteLtk(program: commander.Command) {
+export async function handleAlksIamDeleteLtk(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-deleteltk';
-  const options = program.opts();
   const iamUsername = options.iamusername;
   let alksAccount = options.account;
   let alksRole = options.role;

@@ -18,7 +18,10 @@ import { log } from '../log';
 import { saveDeveloper } from '../saveDeveloper';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksDeveloperConfigure(program: commander.Command) {
+export async function handleAlksDeveloperConfigure(
+  _: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-config';
 
   async function getPrompt(

@@ -9,10 +9,12 @@ import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksIamRoleTypes(program: commander.Command) {
+export async function handleAlksIamRoleTypes(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-roletypes';
   const outputVals = ['list', 'json'];
-  const options = program.opts();
   const output = options.output;
 
   if (!contains(outputVals, output)) {

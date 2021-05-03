@@ -11,7 +11,9 @@ function handleAlks(program) {
     if (process.stdout.isTTY) {
         console.error(cli_color_1.default.whiteBright.bold('ALKS v%s'), package_json_1.default.version);
     }
+    console.log(program.commands);
     var commands = underscore_1.map(program.commands, '_name');
+    console.log(commands);
     var requestedCommand = underscore_1.head(program.args);
     if (!program.args.length) {
         program.help();

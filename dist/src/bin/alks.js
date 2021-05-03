@@ -1,19 +1,24 @@
 #!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
 process.title = 'ALKS';
+<<<<<<< HEAD
 <<<<<<< HEAD
 var commander_1 = tslib_1.__importDefault(require("commander"));
 var package_json_1 = tslib_1.__importDefault(require("../../package.json"));
+=======
+var commander_1 = require("commander");
+var package_json_1 = require("../../package.json");
+>>>>>>> ec04039... [in progress] adds central program object
 var alks_1 = require("../lib/handlers/alks");
-commander_1.default
+commander_1.program
+    .version(package_json_1.version)
     .command('sessions', 'manage aws sessions')
     .command('iam', 'manage iam resources')
     .command('developer', 'developer & account commands')
     .command('server', 'ec2 metadata server')
-    .version(package_json_1.default.version)
     .parse(process.argv);
+<<<<<<< HEAD
 alks_1.handleAlks(commander_1.default);
 =======
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
@@ -54,14 +59,12 @@ alks.configureOutput({
         if (!str.startsWith('error: unknown command')) {
             process.stderr.write(str);
         }
-    }
+    },
 });
-alks
-    .version(package_json_1.version)
-    .option('-v, --verbose', 'be verbose');
-var sessions = alks.command('sessions')
-    .description('manage aws sessions');
-sessions.command('open')
+alks.version(package_json_1.version).option('-v, --verbose', 'be verbose');
+var sessions = alks.command('sessions').description('manage aws sessions');
+sessions
+    .command('open')
     .description('creates or resumes a session')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
@@ -74,11 +77,13 @@ sessions.command('open')
     .option('-N, --newSession', 'forces a new session to be generated')
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .action(alks_sessions_open_1.handleAlksSessionsOpen);
-sessions.command('list')
+sessions
+    .command('list')
     .description('list active sessions')
     .option('-p, --password [password]', 'my password')
     .action(alks_sessions_list_1.handleAlksSessionsList);
-sessions.command('console')
+sessions
+    .command('console')
     .description('open an AWS console in your browser')
     .option('-u, --url', 'just print the url')
     .option('-o, --openWith [appName]', 'open in a different app (optional)')
@@ -90,27 +95,33 @@ sessions.command('console')
     .option('-N, --newSession', 'forces a new session to be generated')
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .action(alks_sessions_console_1.handleAlksSessionsConsole);
-var iam = alks.command('iam')
-    .description('manage iam resources');
-iam.command('roletypes')
+var iam = alks.command('iam').description('manage iam resources');
+iam
+    .command('roletypes')
     .description('list the available iam role types')
-    .option('-o, --output [format]', 'output format (' + outputValues.join(', ') + '), default: ' + outputValues[0], outputValues[0])
+    .option('-o, --output [format]', 'output format (' +
+    outputValues.join(', ') +
+    '), default: ' +
+    outputValues[0], outputValues[0])
     .action(alks_iam_roletypes_1.handleAlksIamRoleTypes);
-iam.command('deleterole')
+iam
+    .command('deleterole')
     .description('remove an IAM role')
     .option('-n, --rolename [rolename]', 'the name of the role to delete')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .action(alks_iam_deleterole_1.handleAlksIamDeleteRole);
-iam.command('deleteltk')
+iam
+    .command('deleteltk')
     .description('deletes an IAM Longterm Key')
     .option('-n, --iamusername [iamUsername]', 'the name of the iam user associated with the LTK')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .action(alks_iam_deleteltk_1.handleAlksIamDeleteLtk);
-iam.command('createtrustrole')
+iam
+    .command('createtrustrole')
     .description('creates a new IAM Trust role')
     .option('-n, --rolename [rolename]', 'the name of the role, ' + nameDesc)
     .option('-t, --roletype [roletype]', 'the role type: Cross Account or Inner Account')
@@ -120,7 +131,8 @@ iam.command('createtrustrole')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .action(alks_iam_createtrustrole_1.handleAlksIamCreateTrustRole);
-iam.command('createrole')
+iam
+    .command('createrole')
     .description('creates a new IAM role')
     .option('-n, --rolename [rolename]', 'the name of the role, ' + nameDesc)
     .option('-t, --roletype [roletype]', 'the role type, to see available roles: alks iam roletypes')
@@ -130,7 +142,8 @@ iam.command('createrole')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .action(alks_iam_createrole_1.handleAlksIamCreateRole);
-iam.command('createltk')
+iam
+    .command('createltk')
     .description('creates a new IAM Longterm Key')
     .option('-n, --iamusername [iamUsername]', 'the name of the iam user associated with the LTK, ' + nameDesc)
     .option('-a, --account [alksAccount]', 'alks account to use')
@@ -138,42 +151,53 @@ iam.command('createltk')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-o, --output [format]', 'output format (text, json)', 'text')
     .action(alks_iam_createltk_1.handleAlksIamCreateLtk);
-var developer = alks.command('developer')
+var developer = alks
+    .command('developer')
     .description('developer & account commands');
-developer.command('configure')
+developer
+    .command('configure')
     .description('configures developer')
     .action(alks_developer_configure_1.handleAlksDeveloperConfigure);
-developer.command('accounts')
+developer
+    .command('accounts')
     .description('shows current developer configuration')
     .option('-e, --export', 'export accounts to environment variables')
     .action(alks_developer_accounts_1.handleAlksDeveloperAccounts);
-developer.command('favorites')
+developer
+    .command('favorites')
     .description('configure which accounts are favorites')
     .action(alks_developer_favorites_1.handleAlksDeveloperFavorites);
-developer.command('info')
+developer
+    .command('info')
     .description('shows current developer configuration')
     .action(alks_developer_info_1.handleAlksDeveloperInfo);
-developer.command('login')
+developer
+    .command('login')
     .description('stores password')
     .action(alks_developer_login_1.handleAlksDeveloperLogin);
-developer.command('login2fa')
+developer
+    .command('login2fa')
     .description('stores your alks refresh token')
     .action(alks_developer_login2fa_1.handleAlksDeveloperLogin2fa);
-developer.command('logout')
+developer
+    .command('logout')
     .description('removes password')
     .action(alks_developer_logout_1.handleAlksDeveloperLogout);
-developer.command('logout2fa')
+developer
+    .command('logout2fa')
     .description('removes alks refresh token')
     .action(alks_developer_logout2fa_1.handleAlksDeveloperLogout2fa);
-var server = alks.command('server')
-    .description('ec23 metadata server');
-server.command('stop')
+var server = alks.command('server').description('ec23 metadata server');
+server
+    .command('stop')
     .description('stops the metadata server')
     .action(alks_server_stop_1.handleAlksServerStop);
-server.command('start')
+server
+    .command('start')
     .description('starts the metadata server')
     .action(alks_server_start_1.handleAlksServerStart);
-server.command('configure')
+server
+    .command('configure')
     .option('-a, --account [alksAccount]', 'alks account to use')
     .option('-r, --role [alksRole]', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
@@ -187,4 +211,7 @@ catch (err) {
     handleCommanderError_1.handleCommanderError(alks, err);
 }
 >>>>>>> 750f252... adds util for getting most recent matching program object
+=======
+alks_1.handleAlks(commander_1.program);
+>>>>>>> ec04039... [in progress] adds central program object
 //# sourceMappingURL=alks.js.map

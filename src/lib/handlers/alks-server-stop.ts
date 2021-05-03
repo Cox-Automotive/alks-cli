@@ -3,7 +3,10 @@ import commander from 'commander';
 import { isOsx } from '../isOsx';
 import forever from 'forever';
 
-export function handleAlksServerStop(_: commander.Command) {
+export function handleAlksServerStop(
+  _options: commander.OptionValues,
+  _program: commander.Command
+) {
   if (!isOsx()) {
     console.error(clc.red('The metadata server is only supported on OSX.'));
     process.exit(0);

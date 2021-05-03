@@ -19,7 +19,10 @@ function runServerDaemon() {
   console.error(clc.white('Metadata server now listening on: 169.254.169.254'));
 }
 
-export async function handleAlksServerStart(program: commander.Command) {
+export async function handleAlksServerStart(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   try {
     const logger = 'server-start';
 

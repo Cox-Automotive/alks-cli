@@ -8,7 +8,10 @@ import { passwordSaveErrorHandler } from '../passwordSaveErrorHandler';
 import { storePassword } from '../storePassword';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksDeveloperLogin(program: commander.Command) {
+export async function handleAlksDeveloperLogin(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-login';
 
   try {

@@ -10,9 +10,10 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksSessionsOpen(program: commander.Command) {
-  const options = program.opts();
-
+export async function handleAlksSessionsOpen(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   let alksAccount = options.account;
   let alksRole = options.role;
   const forceNewSession = options.newSession;

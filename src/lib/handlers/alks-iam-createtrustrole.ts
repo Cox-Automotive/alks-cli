@@ -12,11 +12,13 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamCreateTrustRole(program: commander.Command) {
+export async function handleAlksIamCreateTrustRole(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-createtrustrole';
   const roleNameDesc = 'alphanumeric including @+=._-';
   const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
-  const options = program.opts();
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
   const roleName = options.rolename;

@@ -11,10 +11,14 @@ import { trackActivity } from '../tractActivity';
 import { getKeys } from '../getKeys';
 import { each, groupBy } from 'underscore';
 import { log } from '../log';
+import program from 'commander';
 
 const logger = 'sessions-list';
 
-export async function handleSessionsList(program: commander.Command) {
+export async function handleAlksSessionsList(
+  _options: program.OptionValues,
+  program: commander.Command
+) {
   try {
     await ensureConfigured();
 

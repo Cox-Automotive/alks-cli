@@ -10,8 +10,10 @@ import { saveMetadata } from '../saveMetadata';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksServerConfigure(program: commander.Command) {
-  const options = program.opts();
+export async function handleAlksServerConfigure(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const alksAccount = options.account;
   let alksRole = options.role;
   const forceNewSession = options.newSession;

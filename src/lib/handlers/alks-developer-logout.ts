@@ -6,7 +6,10 @@ import { log } from '../log';
 import { removePassword } from '../removePassword';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksDeveloperLogout(program: commander.Command) {
+export async function handleAlksDeveloperLogout(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-logout';
 
   if (removePassword()) {

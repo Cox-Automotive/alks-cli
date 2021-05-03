@@ -13,7 +13,10 @@ import { log } from '../log';
 import { saveFavorites } from '../saveFavorites';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksDeveloperFavorites(program: commander.Command) {
+export async function handleAlksDeveloperFavorites(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-favorites';
 
   try {

@@ -9,10 +9,12 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamCreateLtk(program: commander.Command) {
+export async function handleAlksIamCreateLtk(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'iam-createltk';
   const nameDesc = 'alphanumeric including @+=._-';
-  const options = program.opts();
   const NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const iamUsername = options.iamusername;
   let alksAccount: string | undefined = options.account;

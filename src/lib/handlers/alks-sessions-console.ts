@@ -13,8 +13,10 @@ import { tryToExtractRole } from '../tryToExtractRole';
 import alksNode from 'alks-node';
 import opn from 'opn';
 
-export async function handleAlksSessionsConsole(program: commander.Command) {
-  const options = program.opts();
+export async function handleAlksSessionsConsole(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   let alksAccount = options.account;
   let alksRole = options.role;
   const forceNewSession = options.newSession;

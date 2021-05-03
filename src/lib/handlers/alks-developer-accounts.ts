@@ -12,9 +12,10 @@ import { log } from '../log';
 import { trackActivity } from '../tractActivity';
 import Table from 'cli-table3';
 
-export async function handleAlksDeveloperAccounts(program: commander.Command) {
-  const options = program.opts();
-
+export async function handleAlksDeveloperAccounts(
+  options: commander.OptionValues,
+  program: commander.Command
+) {
   const table = new Table({
     head: [
       clc.white.bold('Account'),

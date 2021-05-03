@@ -11,7 +11,10 @@ import { storeToken } from '../storeToken';
 import { trackActivity } from '../tractActivity';
 import opn from 'opn';
 
-export async function handleAlksDeveloperLogin2fa(program: commander.Command) {
+export async function handleAlksDeveloperLogin2fa(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-login-2fa';
 
   try {

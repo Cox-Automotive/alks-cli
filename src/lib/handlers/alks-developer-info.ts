@@ -10,7 +10,10 @@ import { trackActivity } from '../tractActivity';
 import Table from 'cli-table3';
 import { contains, each, isEmpty } from 'underscore';
 
-export async function handleAlksDeveloperInfo(program: commander.Command) {
+export async function handleAlksDeveloperInfo(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const table = new Table({
     head: [clc.white.bold('Key'), clc.white.bold('Value')],
     colWidths: [25, 50],

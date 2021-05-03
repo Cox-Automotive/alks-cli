@@ -15,7 +15,7 @@ function handleUnknownCommand(program) {
     var prefixArgs = [];
     var args = tslib_1.__spreadArray(['alks'], program.args);
     var arg;
-    while (arg = args.shift()) {
+    while ((arg = args.shift())) {
         prefixArgs.push(arg);
         if (arg == command.name()) {
             break;

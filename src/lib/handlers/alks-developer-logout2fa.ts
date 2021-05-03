@@ -6,7 +6,10 @@ import { log } from '../log';
 import { removeToken } from '../removeToken';
 import { trackActivity } from '../tractActivity';
 
-export async function handleAlksDeveloperLogout2fa(program: commander.Command) {
+export async function handleAlksDeveloperLogout2fa(
+  _options: commander.OptionValues,
+  program: commander.Command
+) {
   const logger = 'dev-logout2fa';
 
   if (removeToken()) {
