@@ -19,8 +19,8 @@ export async function getIamKey(
   logger: string,
   alksAccount: string | undefined,
   alksRole: string | undefined,
-  forceNewSession: boolean,
-  filterFavorites: boolean
+  forceNewSession: boolean = false,
+  filterFavorites: boolean = false
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -104,7 +104,9 @@ export async function getIamKey(
     throw new Error(getBadAccountMessage());
   }
   const key: Key = {
-    ...alksKey,
+    accessKey: alksKey.accessKey,
+    secretKey: alksKey.secretKey,
+    sessionToken: alksKey.sessionToken,
     expires: moment().add(duration, 'hours').toDate(),
     alksAccount,
     alksRole,
@@ -112,7 +114,7 @@ export async function getIamKey(
   };
 
   log(program, logger, 'storing key: ' + JSON.stringify(key));
-  addKey(
+  await addKey(
     key.accessKey,
     key.secretKey,
     key.sessionToken,

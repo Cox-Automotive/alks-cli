@@ -15,6 +15,8 @@ var getAlksAccount_1 = require("./getAlksAccount");
 var getKeys_1 = require("./getKeys");
 var addKey_1 = require("./addKey");
 function getIamKey(program, logger, alksAccount, alksRole, forceNewSession, filterFavorites) {
+    if (forceNewSession === void 0) { forceNewSession = false; }
+    if (filterFavorites === void 0) { filterFavorites = false; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var developer, auth, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, alksKey, e_1, key;
         var _a;
@@ -89,10 +91,19 @@ function getIamKey(program, logger, alksAccount, alksRole, forceNewSession, filt
                     e_1 = _b.sent();
                     throw new Error(getBadAccountMessage_1.getBadAccountMessage());
                 case 13:
-                    key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: moment_1.default().add(duration, 'hours').toDate(), alksAccount: alksAccount,
-                        alksRole: alksRole, isIAM: true });
+                    key = {
+                        accessKey: alksKey.accessKey,
+                        secretKey: alksKey.secretKey,
+                        sessionToken: alksKey.sessionToken,
+                        expires: moment_1.default().add(duration, 'hours').toDate(),
+                        alksAccount: alksAccount,
+                        alksRole: alksRole,
+                        isIAM: true,
+                    };
                     log_1.log(program, logger, 'storing key: ' + JSON.stringify(key));
-                    addKey_1.addKey(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true);
+                    return [4 /*yield*/, addKey_1.addKey(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
+                case 14:
+                    _b.sent();
                     return [2 /*return*/, key];
             }
         });

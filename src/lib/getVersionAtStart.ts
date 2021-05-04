@@ -1,5 +1,5 @@
-import { vAtSt } from './ensureConfigured';
+import { versionAtStart } from './ensureConfigured';
 
 export function getVersionAtStart() {
-  return vAtSt;
+  return versionAtStart;
 }
