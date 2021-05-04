@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAuth = exports.saveAuth = void 0;
+exports.getAuth = exports.cacheAuth = void 0;
 var tslib_1 = require("tslib");
 var log_1 = require("../lib/log");
 var getPassword_1 = require("./getPassword");
@@ -8,10 +8,10 @@ var getToken_1 = require("./getToken");
 var getUserId_1 = require("./getUserId");
 var logger = 'auth';
 // TODO: find a better way to handle this
-function saveAuth(newAuth) {
+function cacheAuth(newAuth) {
     auth = newAuth;
 }
-exports.saveAuth = saveAuth;
+exports.cacheAuth = cacheAuth;
 var auth;
 function getAuth(program, prompt) {
     if (prompt === void 0) { prompt = true; }
@@ -20,10 +20,6 @@ function getAuth(program, prompt) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (auth) {
-                        log_1.log(program, logger, 'using cached auth object');
-                        return [2 /*return*/, auth];
-                    }
                     log_1.log(program, logger, 'checking for access token');
                     return [4 /*yield*/, getToken_1.getToken()];
                 case 1:
@@ -33,6 +29,10 @@ function getAuth(program, prompt) {
                     return [2 /*return*/, auth];
                 case 2:
                     log_1.log(program, logger, 'no access token found, falling back to password');
+                    if (auth) {
+                        log_1.log(program, logger, 'using cached auth object');
+                        return [2 /*return*/, auth];
+                    }
                     return [4 /*yield*/, getUserId_1.getUserId(program, prompt)];
                 case 3:
                     userid = _a.sent();

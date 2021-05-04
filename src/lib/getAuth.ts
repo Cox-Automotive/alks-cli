@@ -8,7 +8,7 @@ import { getUserId } from './getUserId';
 const logger = 'auth';
 
 // TODO: find a better way to handle this
-export function saveAuth(newAuth: Auth) {
+export function cacheAuth(newAuth: Auth) {
   auth = newAuth;
 }
 
@@ -18,11 +18,6 @@ export async function getAuth(
   program: commander.Command,
   prompt: boolean = true
 ): Promise<Auth> {
-  if (auth) {
-    log(program, logger, 'using cached auth object');
-    return auth;
-  }
-
   log(program, logger, 'checking for access token');
   const token = await getToken();
   if (token) {
@@ -30,6 +25,12 @@ export async function getAuth(
     return auth;
   } else {
     log(program, logger, 'no access token found, falling back to password');
+
+    if (auth) {
+      log(program, logger, 'using cached auth object');
+      return auth;
+    }
+
     const userid = await getUserId(program, prompt);
     const password = await getPassword(program, prompt);
     auth = { userid, password };
