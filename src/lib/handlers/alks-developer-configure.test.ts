@@ -96,7 +96,7 @@ describe('handleAlksDeveloperConfigure', () => {
     outputFormat: string;
     saveDeveloperFails: boolean;
     checkForUpdateFails: boolean;
-    tractActivityFails: boolean;
+    trackActivityFails: boolean;
     shouldSavePassword: boolean;
     shouldSaveDeveloper: boolean;
   }
@@ -121,7 +121,7 @@ describe('handleAlksDeveloperConfigure', () => {
     outputFormat: '',
     saveDeveloperFails: false,
     checkForUpdateFails: false,
-    tractActivityFails: false,
+    trackActivityFails: false,
     shouldSavePassword: false,
     shouldSaveDeveloper: false,
   };
@@ -238,7 +238,7 @@ describe('handleAlksDeveloperConfigure', () => {
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
       outputFormat: 'env',
-      tractActivityFails: true,
+      trackActivityFails: true,
       shouldSavePassword: true,
       shouldSaveDeveloper: true,
     },
@@ -336,7 +336,7 @@ describe('handleAlksDeveloperConfigure', () => {
           }
         });
         (trackActivity as jest.Mock).mockImplementation(async () => {
-          if (t.tractActivityFails) {
+          if (t.trackActivityFails) {
             throw new Error();
           }
         });
@@ -345,10 +345,7 @@ describe('handleAlksDeveloperConfigure', () => {
           errorThrown = true;
         });
 
-        await handleAlksDeveloperConfigure(
-          {} as commander.OptionValues,
-          {} as commander.Command
-        );
+        await handleAlksDeveloperConfigure(t.options, t.program);
       });
 
       if (t.shouldErr) {
