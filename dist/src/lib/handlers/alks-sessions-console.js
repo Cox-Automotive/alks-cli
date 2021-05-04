@@ -10,7 +10,7 @@ var getIamKey_1 = require("../getIamKey");
 var getSessionKey_1 = require("../getSessionKey");
 var getUserAgentString_1 = require("../getUserAgentString");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var opn_1 = tslib_1.__importDefault(require("opn"));
@@ -97,7 +97,7 @@ function handleAlksSessionsConsole(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 18:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 19:
                     _a.sent();
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];

@@ -10,7 +10,7 @@ var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
 var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 function handleAlksIamRoleTypes(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, outputVals, output, developer, auth, alks, roleTypes, err_1, err_2;
@@ -69,7 +69,7 @@ function handleAlksIamRoleTypes(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 9:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 10:
                     _a.sent();
                     return [3 /*break*/, 12];

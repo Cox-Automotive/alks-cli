@@ -10,7 +10,7 @@ var getIamKey_1 = require("../getIamKey");
 var getKeyOutput_1 = require("../getKeyOutput");
 var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksSessionsOpen(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -71,7 +71,7 @@ function handleAlksSessionsOpen(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 13:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 14:
                     _a.sent();
                     return [3 /*break*/, 16];

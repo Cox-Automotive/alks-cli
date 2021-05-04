@@ -7,7 +7,7 @@ import { getIamKey } from '../getIamKey';
 import { getKeyOutput } from '../getKeyOutput';
 import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksSessionsOpen(

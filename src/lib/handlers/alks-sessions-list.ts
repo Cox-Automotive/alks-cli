@@ -7,7 +7,7 @@ import { ensureConfigured } from '../ensureConfigured';
 import { errorAndExit } from '../errorAndExit';
 import { getAuth } from '../getAuth';
 import { obfuscate } from '../obfuscate';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { getKeys } from '../getKeys';
 import { each, groupBy } from 'underscore';
 import { log } from '../log';

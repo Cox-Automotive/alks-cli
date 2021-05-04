@@ -6,7 +6,7 @@ import { getDeveloper } from '../getDeveloper';
 import { getPassword } from '../getPassword';
 import { getToken } from '../getToken';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 import { contains, each, isEmpty } from 'underscore';
 

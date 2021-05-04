@@ -4,7 +4,7 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { log } from '../log';
 import { removePassword } from '../removePassword';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogout(
   _options: commander.OptionValues,

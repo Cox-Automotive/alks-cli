@@ -11,7 +11,7 @@ import { getDeveloper } from '../getDeveloper';
 import { getFavorites } from '../getFavorites';
 import { log } from '../log';
 import { saveFavorites } from '../saveFavorites';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperFavorites(
   _options: commander.OptionValues,

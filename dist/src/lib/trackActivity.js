@@ -32,4 +32,4 @@ function trackActivity(logger) {
     });
 }
 exports.trackActivity = trackActivity;
-//# sourceMappingURL=tractActivity.js.map
+//# sourceMappingURL=trackActivity.js.map

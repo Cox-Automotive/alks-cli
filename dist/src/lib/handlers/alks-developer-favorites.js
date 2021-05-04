@@ -13,7 +13,7 @@ var getDeveloper_1 = require("../getDeveloper");
 var getFavorites_1 = require("../getFavorites");
 var log_1 = require("../log");
 var saveFavorites_1 = require("../saveFavorites");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 function handleAlksDeveloperFavorites(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, developer, auth, alks, alksAccounts, favorites_1, choices_1, deferred_1, faves, err_1;
@@ -86,7 +86,7 @@ function handleAlksDeveloperFavorites(_options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 9:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 10:
                     _a.sent();
                     return [3 /*break*/, 12];

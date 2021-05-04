@@ -10,7 +10,7 @@ var ensureConfigured_1 = require("../ensureConfigured");
 var errorAndExit_1 = require("../errorAndExit");
 var getAuth_1 = require("../getAuth");
 var obfuscate_1 = require("../obfuscate");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var getKeys_1 = require("../getKeys");
 var underscore_1 = require("underscore");
 var log_1 = require("../log");
@@ -78,7 +78,7 @@ function handleAlksSessionsList(_options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 6:
                     _a.sent();
                     return [3 /*break*/, 8];

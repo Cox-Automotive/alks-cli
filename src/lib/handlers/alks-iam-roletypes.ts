@@ -7,7 +7,7 @@ import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 
 export async function handleAlksIamRoleTypes(
   options: commander.OptionValues,

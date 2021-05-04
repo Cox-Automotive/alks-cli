@@ -12,7 +12,7 @@ var getAlksAccount_1 = require("../getAlksAccount");
 var getAuth_1 = require("../getAuth");
 var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamCreateTrustRole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -105,7 +105,7 @@ function handleAlksIamCreateTrustRole(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 12:
                     _b.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 13:
                     _b.sent();
                     return [3 /*break*/, 15];

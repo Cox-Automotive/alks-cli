@@ -9,7 +9,7 @@ var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
 var getIamAccount_1 = require("../getIamAccount");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamCreateLtk(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -100,7 +100,7 @@ function handleAlksIamCreateLtk(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 8:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 9:
                     _a.sent();
                     return [3 /*break*/, 11];

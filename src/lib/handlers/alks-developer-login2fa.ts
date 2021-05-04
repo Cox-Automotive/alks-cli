@@ -8,7 +8,7 @@ import { getPasswordFromPrompt } from '../getPasswordFromPrompt';
 import { log } from '../log';
 import { passwordSaveErrorHandler } from '../passwordSaveErrorHandler';
 import { storeToken } from '../storeToken';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import opn from 'opn';
 
 export async function handleAlksDeveloperLogin2fa(

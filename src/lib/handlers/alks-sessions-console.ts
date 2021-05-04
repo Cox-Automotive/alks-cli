@@ -8,7 +8,7 @@ import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { getUserAgentString } from '../getUserAgentString';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import alksNode from 'alks-node';
 import opn from 'opn';

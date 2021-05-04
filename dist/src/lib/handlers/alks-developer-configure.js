@@ -15,7 +15,7 @@ var promptForServer_1 = require("../promptForServer");
 var promptForUserId_1 = require("../promptForUserId");
 var saveDeveloper_1 = require("../saveDeveloper");
 var savePassword_1 = require("../savePassword");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 function handleAlksDeveloperConfigure(_, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, server, userId, password, savePasswordAnswer, _a, alksAccount, alksRole, outputFormat, e2_1, err_1;
@@ -87,7 +87,7 @@ function handleAlksDeveloperConfigure(_, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 14:
                     _b.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 15:
                     _b.sent();
                     return [3 /*break*/, 17];

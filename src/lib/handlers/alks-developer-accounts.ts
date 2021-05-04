@@ -9,7 +9,7 @@ import { getAuth } from '../getAuth';
 import { getDeveloper } from '../getDeveloper';
 import { isWindows } from '../isWindows';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 
 export async function handleAlksDeveloperAccounts(

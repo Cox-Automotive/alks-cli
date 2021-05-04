@@ -7,7 +7,7 @@ import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
 import { saveMetadata } from '../saveMetadata';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksServerConfigure(

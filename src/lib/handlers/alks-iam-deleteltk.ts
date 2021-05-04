@@ -6,7 +6,7 @@ import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getIAMAccount } from '../getIamAccount';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamDeleteLtk(

@@ -9,7 +9,7 @@ var getDeveloper_1 = require("../getDeveloper");
 var getPassword_1 = require("../getPassword");
 var getToken_1 = require("../getToken");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var underscore_1 = require("underscore");
 function handleAlksDeveloperInfo(_options, program) {
@@ -65,7 +65,7 @@ function handleAlksDeveloperInfo(_options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 6:
                     _a.sent();
                     return [3 /*break*/, 8];

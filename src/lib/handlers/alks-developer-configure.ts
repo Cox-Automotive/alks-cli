@@ -12,7 +12,7 @@ import { promptForServer } from '../promptForServer';
 import { promptForUserId } from '../promptForUserId';
 import { saveDeveloper } from '../saveDeveloper';
 import { savePassword } from '../savePassword';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperConfigure(
   _: commander.OptionValues,

@@ -11,7 +11,7 @@ var getPasswordFromPrompt_1 = require("../getPasswordFromPrompt");
 var log_1 = require("../log");
 var passwordSaveErrorHandler_1 = require("../passwordSaveErrorHandler");
 var storeToken_1 = require("../storeToken");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var opn_1 = tslib_1.__importDefault(require("opn"));
 function handleAlksDeveloperLogin2fa(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -84,7 +84,7 @@ function handleAlksDeveloperLogin2fa(_options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 17:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 18:
                     _a.sent();
                     setTimeout(function () {

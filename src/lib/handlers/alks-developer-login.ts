@@ -6,7 +6,7 @@ import { getPasswordFromPrompt } from '../getPasswordFromPrompt';
 import { log } from '../log';
 import { passwordSaveErrorHandler } from '../passwordSaveErrorHandler';
 import { storePassword } from '../storePassword';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogin(
   _options: commander.OptionValues,

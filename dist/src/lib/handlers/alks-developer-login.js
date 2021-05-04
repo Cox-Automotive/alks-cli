@@ -9,7 +9,7 @@ var getPasswordFromPrompt_1 = require("../getPasswordFromPrompt");
 var log_1 = require("../log");
 var passwordSaveErrorHandler_1 = require("../passwordSaveErrorHandler");
 var storePassword_1 = require("../storePassword");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 function handleAlksDeveloperLogin(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var logger, password, err_1, err_2;
@@ -42,7 +42,7 @@ function handleAlksDeveloperLogin(_options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 7:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 8:
                     _a.sent();
                     return [3 /*break*/, 10];

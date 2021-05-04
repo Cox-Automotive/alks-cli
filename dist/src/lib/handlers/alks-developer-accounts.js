@@ -12,7 +12,7 @@ var getAuth_1 = require("../getAuth");
 var getDeveloper_1 = require("../getDeveloper");
 var isWindows_1 = require("../isWindows");
 var log_1 = require("../log");
-var tractActivity_1 = require("../tractActivity");
+var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 function handleAlksDeveloperAccounts(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -87,7 +87,7 @@ function handleAlksDeveloperAccounts(options, program) {
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 6:
                     _a.sent();
-                    return [4 /*yield*/, tractActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
                 case 7:
                     _a.sent();
                     return [3 /*break*/, 9];

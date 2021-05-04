@@ -8,7 +8,7 @@ import { getAlksAccount } from '../getAlksAccount';
 import { getAuth } from '../getAuth';
 import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
-import { trackActivity } from '../tractActivity';
+import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamCreateRole(
