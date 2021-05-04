@@ -1,5 +1,5 @@
 import { white } from 'cli-color';
-import { isEmpty, last, sortBy, where } from 'underscore';
+import { last, sortBy, where } from 'underscore';
 import { getAlks } from './getAlks';
 import moment from 'moment';
 import commander from 'commander';
@@ -17,8 +17,8 @@ import { addKey } from './addKey';
 export async function getIamKey(
   program: commander.Command,
   logger: string,
-  alksAccount: string,
-  alksRole: string,
+  alksAccount: string | undefined,
+  alksRole: string | undefined,
   forceNewSession: boolean,
   filterFavorites: boolean
 ): Promise<Key> {
@@ -31,7 +31,7 @@ export async function getIamKey(
   const auth = await getAuth(program);
 
   // only lookup alks account if they didnt provide
-  if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+  if (!alksAccount || !alksRole) {
     log(program, logger, 'getting accounts');
     ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly: true,

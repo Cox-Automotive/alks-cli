@@ -1,5 +1,4 @@
 import commander from 'commander';
-import { isUndefined } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getDeveloper } from '../getDeveloper';
@@ -9,66 +8,61 @@ import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
+import { Key } from '../../model/keys';
+import { Developer } from '../../model/developer';
 
 export async function handleAlksSessionsOpen(
   options: commander.OptionValues,
   program: commander.Command
 ) {
-  let alksAccount = options.account;
-  let alksRole = options.role;
-  const forceNewSession = options.newSession;
-  const useDefaultAcct = options.default;
-  const output = options.output;
-  const filterFaves = options.favorites || false;
+  let alksAccount: string | undefined = options.account;
+  let alksRole: string | undefined = options.role;
   const logger = 'sessions-open';
 
-  if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
+  // Try to guess role from account if only account was provided
+  if (alksAccount && !alksRole) {
     log(program, logger, 'trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
   try {
-    let developer;
+    let developer: Developer;
     try {
       developer = await getDeveloper();
     } catch (err) {
       return errorAndExit('Unable to load default account!', err);
     }
 
-    if (useDefaultAcct) {
+    if (options.default) {
       alksAccount = developer.alksAccount;
       alksRole = developer.alksRole;
     }
 
-    let key;
-    try {
-      if (isUndefined(options.iam)) {
-        key = await getSessionKey(
-          program,
-          logger,
-          alksAccount,
-          alksRole,
-          false,
-          forceNewSession,
-          filterFaves
-        );
-      } else {
-        key = await getIamKey(
-          program,
-          logger,
-          alksAccount,
-          alksRole,
-          forceNewSession,
-          filterFaves
-        );
-      }
-    } catch (err) {
-      return errorAndExit(err);
+    let key: Key;
+    if (options.iam) {
+      key = await getIamKey(
+        program,
+        logger,
+        alksAccount,
+        alksRole,
+        options.newSession,
+        options.favorites
+      );
+    } else {
+      key = await getSessionKey(
+        program,
+        logger,
+        alksAccount,
+        alksRole,
+        false,
+        options.newSession,
+        options.favorites
+      );
     }
 
     console.log(
       getKeyOutput(
-        output || developer.outputFormat,
+        options.output || developer.outputFormat,
         key,
         options.namedProfile,
         options.force

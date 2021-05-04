@@ -73,6 +73,9 @@ jest.mock('../getAuth', () => ({
   cacheAuth: jest.fn(),
 }));
 
+// Silence console.error
+jest.spyOn(global.console, 'error').mockImplementation(() => {});
+
 describe('handleAlksDeveloperConfigure', () => {
   interface TestCase {
     description: string;

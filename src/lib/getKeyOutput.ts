@@ -8,8 +8,8 @@ import { updateCreds } from './updateCreds';
 export function getKeyOutput(
   format: string,
   key: Key,
-  profile: string,
-  force: boolean
+  profile: string | undefined,
+  force: boolean | undefined
 ) {
   const keyExpires = moment(key.expires).format();
 

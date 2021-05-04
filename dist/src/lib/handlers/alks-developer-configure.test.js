@@ -62,6 +62,8 @@ jest.mock('../getAuth', function () { return ({
     __esModule: true,
     cacheAuth: jest.fn(),
 }); });
+// Silence console.error
+jest.spyOn(global.console, 'error').mockImplementation(function () { });
 describe('handleAlksDeveloperConfigure', function () {
     var defaultTestCase = {
         options: {},
@@ -84,7 +86,7 @@ describe('handleAlksDeveloperConfigure', function () {
         outputFormat: '',
         saveDeveloperFails: false,
         checkForUpdateFails: false,
-        tractActivityFails: false,
+        trackActivityFails: false,
         shouldSavePassword: false,
         shouldSaveDeveloper: false,
     };
@@ -98,7 +100,7 @@ describe('handleAlksDeveloperConfigure', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the output format fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', promptForOutputFormatFails: true, shouldSavePassword: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving developer fails', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', saveDeveloperFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when checkForUpdate fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', checkForUpdateFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', tractActivityFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', trackActivityFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSavePassword: true, shouldSaveDeveloper: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds but the user declines saving password', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveDeveloper: true }),
     ];
@@ -201,7 +203,7 @@ describe('handleAlksDeveloperConfigure', function () {
                             }); });
                             trackActivity_1.trackActivity.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
-                                    if (t.tractActivityFails) {
+                                    if (t.trackActivityFails) {
                                         throw new Error();
                                     }
                                     return [2 /*return*/];
@@ -210,7 +212,7 @@ describe('handleAlksDeveloperConfigure', function () {
                             errorAndExit_1.errorAndExit.mockImplementation(function () {
                                 errorThrown = true;
                             });
-                            return [4 /*yield*/, alks_developer_configure_1.handleAlksDeveloperConfigure({}, {})];
+                            return [4 /*yield*/, alks_developer_configure_1.handleAlksDeveloperConfigure(t.options, t.program)];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];

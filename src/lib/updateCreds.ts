@@ -5,7 +5,11 @@ import { createInstance } from 'prop-ini';
 import { has } from 'underscore';
 import { addNewLineToEof } from './addNewLineToEof';
 
-export function updateCreds(key: AwsKey, profile: string, force: boolean) {
+export function updateCreds(
+  key: AwsKey,
+  profile: string | undefined,
+  force: boolean | undefined
+) {
   const credPath = getFilePathInHome('.aws');
   const credFile = credPath + '/credentials';
 

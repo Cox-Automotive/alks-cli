@@ -31,7 +31,7 @@ function getSessionKey(program, logger, alksAccount, alksRole, iamOnly, forceNew
                     return [4 /*yield*/, getAuth_1.getAuth(program)];
                 case 3:
                     auth = _b.sent();
-                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 5];
+                    if (!(!alksAccount || !alksRole)) return [3 /*break*/, 5];
                     log_1.log(program, logger, 'getting accounts');
                     return [4 /*yield*/, getAlksAccount_1.getAlksAccount(program, {
                             iamOnly: iamOnly,
