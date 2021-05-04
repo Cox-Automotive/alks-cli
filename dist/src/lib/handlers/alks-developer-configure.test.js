@@ -13,6 +13,7 @@ var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var saveDeveloper_1 = require("../saveDeveloper");
 var checkForUpdate_1 = require("../checkForUpdate");
 var trackActivity_1 = require("../trackActivity");
+var getAuth_1 = require("../getAuth");
 jest.mock('../errorAndExit', function () { return ({
     __esModule: true,
     errorAndExit: jest.fn(),
@@ -57,6 +58,10 @@ jest.mock('../trackActivity', function () { return ({
     __esModule: true,
     trackActivity: jest.fn(),
 }); });
+jest.mock('../getAuth', function () { return ({
+    __esModule: true,
+    cacheAuth: jest.fn(),
+}); });
 describe('handleAlksDeveloperConfigure', function () {
     var defaultTestCase = {
         options: {},
@@ -71,6 +76,7 @@ describe('handleAlksDeveloperConfigure', function () {
         confirmSavePasswordFails: false,
         savePassword: false,
         savePasswordFails: false,
+        shouldCacheAuth: false,
         getAlksAccountFails: false,
         alksAccount: '',
         alksRole: '',
@@ -79,9 +85,22 @@ describe('handleAlksDeveloperConfigure', function () {
         saveDeveloperFails: false,
         checkForUpdateFails: false,
         tractActivityFails: false,
+        shouldSavePassword: false,
+        shouldSaveDeveloper: false,
     };
     var testCases = [
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the server url fails', shouldErr: true, promptForServerFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for a username fails', shouldErr: true, server: 'https://alks.com/rest', promptForUserIdFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', promptForPasswordFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when confirming if the user wants to save password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', confirmSavePasswordFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, savePasswordFails: true, shouldSavePassword: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting the alks account fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, getAlksAccountFails: true, shouldSavePassword: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the output format fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', promptForOutputFormatFails: true, shouldSavePassword: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving developer fails', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', saveDeveloperFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when checkForUpdate fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', checkForUpdateFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', tractActivityFails: true, shouldSavePassword: true, shouldSaveDeveloper: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSavePassword: true, shouldSaveDeveloper: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds but the user declines saving password', shouldErr: false, shouldCacheAuth: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveDeveloper: true }),
     ];
     var _loop_1 = function (t) {
         describe(t.description, function () {
@@ -206,6 +225,30 @@ describe('handleAlksDeveloperConfigure', function () {
             else {
                 it("doesn't call errorAndExit", function () {
                     expect(errorThrown).toBe(false);
+                });
+            }
+            if (t.shouldCacheAuth) {
+                it('calls cacheAuth with the correct parameters', function () {
+                    expect(getAuth_1.cacheAuth).toBeCalledWith({
+                        userid: t.userId,
+                        password: t.password,
+                    });
+                });
+            }
+            if (t.shouldSavePassword) {
+                it('attempts to save password', function () {
+                    expect(savePassword_1.savePassword).toBeCalledWith(t.password);
+                });
+            }
+            if (t.shouldSaveDeveloper) {
+                it('saves developer with the correct fields', function () {
+                    expect(saveDeveloper_1.saveDeveloper).toBeCalledWith({
+                        server: t.server,
+                        userid: t.userId,
+                        alksAccount: t.alksAccount,
+                        alksRole: t.alksRole,
+                        outputFormat: t.outputFormat,
+                    });
                 });
             }
         });

@@ -11,6 +11,7 @@ import { promptForOutputFormat } from '../promptForOutputFormat';
 import { saveDeveloper } from '../saveDeveloper';
 import { checkForUpdate } from '../checkForUpdate';
 import { trackActivity } from '../trackActivity';
+import { cacheAuth } from '../getAuth';
 
 jest.mock('../errorAndExit', () => ({
   __esModule: true,
@@ -67,6 +68,11 @@ jest.mock('../trackActivity', () => ({
   trackActivity: jest.fn(),
 }));
 
+jest.mock('../getAuth', () => ({
+  __esModule: true,
+  cacheAuth: jest.fn(),
+}));
+
 describe('handleAlksDeveloperConfigure', () => {
   interface TestCase {
     description: string;
@@ -82,6 +88,7 @@ describe('handleAlksDeveloperConfigure', () => {
     confirmSavePasswordFails: boolean;
     savePassword: boolean;
     savePasswordFails: boolean;
+    shouldCacheAuth: boolean;
     getAlksAccountFails: boolean;
     alksAccount: string;
     alksRole: string;
@@ -90,6 +97,8 @@ describe('handleAlksDeveloperConfigure', () => {
     saveDeveloperFails: boolean;
     checkForUpdateFails: boolean;
     tractActivityFails: boolean;
+    shouldSavePassword: boolean;
+    shouldSaveDeveloper: boolean;
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
@@ -104,6 +113,7 @@ describe('handleAlksDeveloperConfigure', () => {
     confirmSavePasswordFails: false,
     savePassword: false,
     savePasswordFails: false,
+    shouldCacheAuth: false,
     getAlksAccountFails: false,
     alksAccount: '',
     alksRole: '',
@@ -112,6 +122,8 @@ describe('handleAlksDeveloperConfigure', () => {
     saveDeveloperFails: false,
     checkForUpdateFails: false,
     tractActivityFails: false,
+    shouldSavePassword: false,
+    shouldSaveDeveloper: false,
   };
 
   const testCases: TestCase[] = [
@@ -120,6 +132,144 @@ describe('handleAlksDeveloperConfigure', () => {
       description: 'when prompting for the server url fails',
       shouldErr: true,
       promptForServerFails: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when prompting for a username fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      promptForUserIdFails: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when prompting for the password fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      promptForPasswordFails: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when confirming if the user wants to save password fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      confirmSavePasswordFails: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when saving the password fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      savePasswordFails: true,
+      shouldSavePassword: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when getting the alks account fails',
+      shouldErr: true,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      getAlksAccountFails: true,
+      shouldSavePassword: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when prompting for the output format fails',
+      shouldErr: true,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      promptForOutputFormatFails: true,
+      shouldSavePassword: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when saving developer fails',
+      shouldErr: false,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      outputFormat: 'env',
+      saveDeveloperFails: true,
+      shouldSavePassword: true,
+      shouldSaveDeveloper: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when checkForUpdate fails',
+      shouldErr: true,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      outputFormat: 'env',
+      checkForUpdateFails: true,
+      shouldSavePassword: true,
+      shouldSaveDeveloper: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when tracking activity fails',
+      shouldErr: true,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      outputFormat: 'env',
+      tractActivityFails: true,
+      shouldSavePassword: true,
+      shouldSaveDeveloper: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when everything succeeds',
+      shouldErr: false,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      outputFormat: 'env',
+      shouldSavePassword: true,
+      shouldSaveDeveloper: true,
+    },
+    {
+      ...defaultTestCase,
+      description:
+        'when everything succeeds but the user declines saving password',
+      shouldErr: false,
+      shouldCacheAuth: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      outputFormat: 'env',
+      shouldSaveDeveloper: true,
     },
   ];
 
@@ -208,6 +358,33 @@ describe('handleAlksDeveloperConfigure', () => {
       } else {
         it(`doesn't call errorAndExit`, () => {
           expect(errorThrown).toBe(false);
+        });
+      }
+
+      if (t.shouldCacheAuth) {
+        it('calls cacheAuth with the correct parameters', () => {
+          expect(cacheAuth).toBeCalledWith({
+            userid: t.userId,
+            password: t.password,
+          });
+        });
+      }
+
+      if (t.shouldSavePassword) {
+        it('attempts to save password', () => {
+          expect(savePassword).toBeCalledWith(t.password);
+        });
+      }
+
+      if (t.shouldSaveDeveloper) {
+        it('saves developer with the correct fields', () => {
+          expect(saveDeveloper).toBeCalledWith({
+            server: t.server,
+            userid: t.userId,
+            alksAccount: t.alksAccount,
+            alksRole: t.alksRole,
+            outputFormat: t.outputFormat,
+          });
         });
       }
     });
