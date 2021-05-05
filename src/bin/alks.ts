@@ -11,8 +11,6 @@ if (process.stdout.isTTY) {
   console.error(clc.whiteBright.bold('ALKS v%s'), version);
 }
 
-try {
-  program.parse();
-} catch (err) {
+program.parseAsync().catch((err) => {
   handleCommanderError(program, err);
-}
+});
