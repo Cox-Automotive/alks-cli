@@ -1,11 +1,9 @@
-FROM node:9.4.0
+FROM node:14
 
 RUN apt-get update && \
     apt-get install libgnome-keyring-dev -y
 
 COPY . /
-
-# RUN rm -r node_modules
 
 RUN npm install --no-optional . -g
 
