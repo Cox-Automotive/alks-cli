@@ -5,6 +5,7 @@ export async function getDeveloper(): Promise<Developer> {
   const collection: Collection<Developer> = await getCollection('account');
 
   const developerConfigs = collection.chain().data();
+
   if (developerConfigs.length === 0) {
     throw new Error(
       'Developer not configured. Please run `alks developer configure`'

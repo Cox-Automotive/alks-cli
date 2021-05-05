@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getKeysCollection = void 0;
 var tslib_1 = require("tslib");
-var lokijs_1 = tslib_1.__importDefault(require("lokijs"));
-var getDbFile_1 = require("./getDbFile");
-var db = new lokijs_1.default(getDbFile_1.getDbFile());
+var db_1 = require("./db");
 function getKeysCollection() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var db;
         return tslib_1.__generator(this, function (_a) {
+            db = db_1.getDb();
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     // have the DB load from disk
                     db.loadDatabase({}, function (err) {

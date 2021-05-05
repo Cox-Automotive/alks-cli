@@ -1,10 +1,7 @@
 import { Favorites } from '../model/favorites';
-import loki from 'lokijs';
-import { getDbFile } from './getDbFile';
 import { log } from './log';
 import { getCollection } from './getCollection';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function saveFavorites(data: {
   accounts: Favorites;
@@ -17,7 +14,7 @@ export async function saveFavorites(data: {
   favorites.insert(data.accounts);
 
   return new Promise((resolve, reject) => {
-    db.save((err?: Error) => {
+    getDb().save((err?: Error) => {
       if (err) {
         reject(err);
       } else {

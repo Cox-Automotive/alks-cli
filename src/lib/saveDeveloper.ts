@@ -1,12 +1,9 @@
-import loki from 'lokijs';
 import pkg from '../../package.json';
-import { getDbFile } from './getDbFile';
 import { log } from '../lib/log';
 import { trim } from '../lib/trim';
 import { Developer, NewDeveloper } from '../model/developer';
 import { getCollection } from './getCollection';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function saveDeveloper(developer: NewDeveloper): Promise<void> {
   log('saving developer');
@@ -24,7 +21,7 @@ export async function saveDeveloper(developer: NewDeveloper): Promise<void> {
   });
 
   return new Promise((resolve, reject) => {
-    db.save((err) => {
+    getDb().save((err) => {
       if (err) {
         reject(err);
       } else {

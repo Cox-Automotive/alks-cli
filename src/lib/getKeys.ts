@@ -1,5 +1,3 @@
-import { getDbFile } from './getDbFile';
-import loki from 'lokijs';
 import { Auth } from '../model/auth';
 import { Key } from '../model/keys';
 import moment from 'moment';
@@ -7,8 +5,7 @@ import { isTokenAuth } from './isTokenAuth';
 import { each } from 'underscore';
 import { decrypt } from './decrypt';
 import { getKeysCollection } from './getKeysCollection';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function getKeys(
   auth: Auth,
@@ -23,7 +20,7 @@ export async function getKeys(
 
   return new Promise((resolve, reject) => {
     // save the db to prune expired keys, wait for transaction to complete
-    db.save((err) => {
+    getDb().save((err) => {
       if (err) {
         reject(err);
         return;

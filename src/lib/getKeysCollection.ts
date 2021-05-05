@@ -1,10 +1,8 @@
-import loki from 'lokijs';
-import { getDbFile } from './getDbFile';
 import { Key } from '../model/keys';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function getKeysCollection(): Promise<Collection<Key>> {
+  const db = getDb();
   return new Promise((resolve, reject) => {
     // have the DB load from disk
     db.loadDatabase({}, (err?: Error) => {

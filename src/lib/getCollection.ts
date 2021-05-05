@@ -1,12 +1,11 @@
-import { getDbFile } from './getDbFile';
-import loki from 'lokijs';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function getCollection<T extends object>(
   name: string
 ): Promise<Collection<T>> {
   return new Promise((resolve, reject) => {
+    const db = getDb();
+
     db.loadDatabase({}, (err: Error) => {
       if (err) {
         reject(err);

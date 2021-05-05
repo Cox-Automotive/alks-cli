@@ -2,10 +2,7 @@ import { Auth } from '../model/auth';
 import { encrypt } from './encrypt';
 import { getKeysCollection } from './getKeysCollection';
 import { isTokenAuth } from './isTokenAuth';
-import loki from 'lokijs';
-import { getDbFile } from './getDbFile';
-
-const db = new loki(getDbFile());
+import { getDb } from './db';
 
 export async function addKey(
   accessKey: string,
@@ -32,7 +29,7 @@ export async function addKey(
   });
 
   return new Promise((resolve, reject) => {
-    db.save((err?: Error) => {
+    getDb().save((err?: Error) => {
       if (err) {
         reject(err);
       } else {

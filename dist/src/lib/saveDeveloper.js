@@ -2,13 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveDeveloper = void 0;
 var tslib_1 = require("tslib");
-var lokijs_1 = tslib_1.__importDefault(require("lokijs"));
 var package_json_1 = tslib_1.__importDefault(require("../../package.json"));
-var getDbFile_1 = require("./getDbFile");
 var log_1 = require("../lib/log");
 var trim_1 = require("../lib/trim");
 var getCollection_1 = require("./getCollection");
-var db = new lokijs_1.default(getDbFile_1.getDbFile());
+var db_1 = require("./db");
 function saveDeveloper(developer) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var collection;
@@ -29,7 +27,7 @@ function saveDeveloper(developer) {
                         outputFormat: developer.outputFormat && trim_1.trim(developer.outputFormat),
                     });
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                            db.save(function (err) {
+                            db_1.getDb().save(function (err) {
                                 if (err) {
                                     reject(err);
                                 }

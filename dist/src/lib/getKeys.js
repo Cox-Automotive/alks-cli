@@ -2,14 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getKeys = void 0;
 var tslib_1 = require("tslib");
-var getDbFile_1 = require("./getDbFile");
-var lokijs_1 = tslib_1.__importDefault(require("lokijs"));
 var moment_1 = tslib_1.__importDefault(require("moment"));
 var isTokenAuth_1 = require("./isTokenAuth");
 var underscore_1 = require("underscore");
 var decrypt_1 = require("./decrypt");
 var getKeysCollection_1 = require("./getKeysCollection");
-var db = new lokijs_1.default(getDbFile_1.getDbFile());
+var db_1 = require("./db");
 function getKeys(auth, isIAM) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var keys, now, enc;
@@ -24,7 +22,7 @@ function getKeys(auth, isIAM) {
                     keys.removeWhere({ expires: { $lte: now.toDate() } });
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             // save the db to prune expired keys, wait for transaction to complete
-                            db.save(function (err) {
+                            db_1.getDb().save(function (err) {
                                 if (err) {
                                     reject(err);
                                     return;

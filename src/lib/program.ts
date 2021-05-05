@@ -30,8 +30,6 @@ const program = new Command();
 
 program.exitOverride();
 
-program.passThroughOptions();
-
 program.configureOutput({
   writeErr: (str) => {
     if (!str.startsWith('error: unknown command')) {
