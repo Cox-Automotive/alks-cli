@@ -38,7 +38,7 @@ export async function handleAlksIamDeleteLtk(
         filterFaves
       );
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
     const { developer, auth } = iamAccount;
     ({ account: alksAccount, role: alksRole } = iamAccount);
@@ -57,7 +57,7 @@ export async function handleAlksIamDeleteLtk(
         iamUserName: iamUsername,
       });
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     console.log(

@@ -44,7 +44,8 @@ function handleAlksSessionsConsole(options, program) {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit('Unable to load default account!', err_1)];
+                    errorAndExit_1.errorAndExit('Unable to load default account!', err_1);
+                    return [3 /*break*/, 5];
                 case 5:
                     _a.trys.push([5, 10, , 11]);
                     if (!underscore_1.isUndefined(options.iam)) return [3 /*break*/, 7];
@@ -59,7 +60,8 @@ function handleAlksSessionsConsole(options, program) {
                 case 9: return [3 /*break*/, 11];
                 case 10:
                     err_2 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_2)];
+                    errorAndExit_1.errorAndExit(err_2);
+                    return [3 /*break*/, 11];
                 case 11:
                     log_1.log('calling aws to generate 15min console URL');
                     return [4 /*yield*/, new Promise(function (resolve) {

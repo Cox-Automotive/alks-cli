@@ -42,7 +42,8 @@ function handleAlksIamDeleteLtk(options, program) {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 5];
                 case 5:
                     developer = iamAccount.developer, auth = iamAccount.auth;
                     (alksAccount = iamAccount.account, alksRole = iamAccount.role);
@@ -63,7 +64,8 @@ function handleAlksIamDeleteLtk(options, program) {
                     return [3 /*break*/, 10];
                 case 9:
                     err_2 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_2)];
+                    errorAndExit_1.errorAndExit(err_2);
+                    return [3 /*break*/, 10];
                 case 10:
                     console.log(cli_color_1.default.white(['LTK deleted for IAM User: ', iamUsername].join('')));
                     log_1.log('checking for updates');

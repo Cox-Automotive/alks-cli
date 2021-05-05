@@ -344,7 +344,7 @@ describe('handleAlksDeveloperConfigure', () => {
           }
         });
 
-        (errorAndExit as jest.Mock).mockImplementation(() => {
+        ((errorAndExit as unknown) as jest.Mock).mockImplementation(() => {
           errorThrown = true;
         });
 

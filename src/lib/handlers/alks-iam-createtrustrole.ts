@@ -91,7 +91,7 @@ export async function handleAlksIamCreateTrustRole(
         includeDefaultPolicy: ALKS.PseudoBoolean.False,
       });
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     console.log(

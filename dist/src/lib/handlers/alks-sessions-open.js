@@ -37,7 +37,8 @@ function handleAlksSessionsOpen(options, program) {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit('Unable to load default account!', err_1)];
+                    errorAndExit_1.errorAndExit('Unable to load default account!', err_1);
+                    return [3 /*break*/, 5];
                 case 5:
                     if (options.default) {
                         alksAccount = developer.alksAccount;

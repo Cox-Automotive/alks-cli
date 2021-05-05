@@ -76,7 +76,7 @@ export async function handleAlksIamCreateRole(
         enableAlksAccess,
       });
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     console.log(

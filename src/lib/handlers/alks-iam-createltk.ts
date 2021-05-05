@@ -46,7 +46,7 @@ export async function handleAlksIamCreateLtk(
         filterFaves
       );
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
     const { developer, auth } = iamAccount;
     ({ account: alksAccount, role: alksRole } = iamAccount);

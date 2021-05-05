@@ -29,7 +29,7 @@ export async function handleAlksSessionsOpen(
     try {
       developer = await getDeveloper();
     } catch (err) {
-      return errorAndExit('Unable to load default account!', err);
+      errorAndExit('Unable to load default account!', err);
     }
 
     if (options.default) {

@@ -70,7 +70,8 @@ function handleAlksIamDeleteRole(options, program) {
                     return [3 /*break*/, 11];
                 case 10:
                     err_1 = _b.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 11];
                 case 11:
                     console.log(cli_color_1.default.white(['The role ', roleName, ' was deleted'].join('')));
                     log_1.log('checking for updates');

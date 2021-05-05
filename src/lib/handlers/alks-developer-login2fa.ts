@@ -42,7 +42,7 @@ export async function handleAlksDeveloperLogin2fa(
         refreshToken,
       });
     } catch (err) {
-      return errorAndExit('Error validating refresh token. ' + err.message);
+      errorAndExit('Error validating refresh token. ' + err.message);
     }
 
     console.error(clc.white('Refresh token validated!'));

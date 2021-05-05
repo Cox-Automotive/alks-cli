@@ -59,7 +59,7 @@ export async function handleAlksIamDeleteRole(
         roleName,
       });
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));

@@ -49,7 +49,8 @@ function handleAlksIamCreateLtk(options, program) {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 5];
                 case 5:
                     developer = iamAccount.developer, auth = iamAccount.auth;
                     (alksAccount = iamAccount.account, alksRole = iamAccount.role);

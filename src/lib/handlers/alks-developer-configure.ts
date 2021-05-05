@@ -72,6 +72,6 @@ export async function handleAlksDeveloperConfigure(
     await checkForUpdate();
     await trackActivity();
   } catch (err) {
-    return errorAndExit('Error configuring developer: ' + err.message, err);
+    errorAndExit('Error configuring developer: ' + err.message, err);
   }
 }

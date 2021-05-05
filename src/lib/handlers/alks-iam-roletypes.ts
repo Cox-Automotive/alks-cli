@@ -42,7 +42,7 @@ export async function handleAlksIamRoleTypes(
     try {
       roleTypes = await alks.getAllAWSRoleTypes({});
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     log(

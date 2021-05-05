@@ -36,7 +36,7 @@ export async function handleAlksSessionsConsole(
         alksAccount = dev.alksAccount;
         alksRole = dev.alksRole;
       } catch (err) {
-        return errorAndExit('Unable to load default account!', err);
+        errorAndExit('Unable to load default account!', err);
       }
     }
 
@@ -61,7 +61,7 @@ export async function handleAlksSessionsConsole(
         );
       }
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     log('calling aws to generate 15min console URL');

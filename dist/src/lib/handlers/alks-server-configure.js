@@ -45,7 +45,8 @@ function handleAlksServerConfigure(options, program) {
                 case 6: return [3 /*break*/, 8];
                 case 7:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 8];
                 case 8: return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 1000); })];
                 case 9:
                     _a.sent();
@@ -62,7 +63,8 @@ function handleAlksServerConfigure(options, program) {
                     return [3 /*break*/, 13];
                 case 12:
                     err_2 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit('Unable to save metadata!', err_2)];
+                    errorAndExit_1.errorAndExit('Unable to save metadata!', err_2);
+                    return [3 /*break*/, 13];
                 case 13:
                     console.error(cli_color_1.default.white('Metadata has been saved!'));
                     log_1.log('checking for updates');

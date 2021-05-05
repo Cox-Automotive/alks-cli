@@ -709,7 +709,7 @@ describe('handleAlksSessionsOpen', () => {
             throw new Error();
           }
         });
-        (errorAndExit as jest.Mock).mockImplementation(() => {
+        ((errorAndExit as unknown) as jest.Mock).mockImplementation(() => {
           errorThrown = true;
         });
         (tryToExtractRole as jest.Mock).mockImplementation(() => {

@@ -90,7 +90,8 @@ function handleAlksDeveloperConfigure(_options, program) {
                     return [3 /*break*/, 16];
                 case 15:
                     err_1 = _b.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1)];
+                    errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
+                    return [3 /*break*/, 16];
                 case 16: return [2 /*return*/];
             }
         });

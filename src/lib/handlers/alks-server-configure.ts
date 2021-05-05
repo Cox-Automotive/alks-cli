@@ -46,7 +46,7 @@ export async function handleAlksServerConfigure(
         );
       }
     } catch (err) {
-      return errorAndExit(err);
+      errorAndExit(err);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -58,7 +58,7 @@ export async function handleAlksServerConfigure(
         isIam: key.isIAM,
       });
     } catch (err) {
-      return errorAndExit('Unable to save metadata!', err);
+      errorAndExit('Unable to save metadata!', err);
     }
 
     console.error(clc.white('Metadata has been saved!'));

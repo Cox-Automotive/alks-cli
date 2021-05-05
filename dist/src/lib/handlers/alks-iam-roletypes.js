@@ -50,7 +50,8 @@ function handleAlksIamRoleTypes(options, program) {
                     return [3 /*break*/, 8];
                 case 7:
                     err_1 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 8];
                 case 8:
                     log_1.log('outputting list of ' +
                         (roleTypes ? roleTypes.length : -1) +

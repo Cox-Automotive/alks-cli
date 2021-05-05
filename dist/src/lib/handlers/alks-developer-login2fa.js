@@ -60,7 +60,8 @@ function handleAlksDeveloperLogin2fa(_options, _program) {
                     return [3 /*break*/, 11];
                 case 10:
                     err_2 = _a.sent();
-                    return [2 /*return*/, errorAndExit_1.errorAndExit('Error validating refresh token. ' + err_2.message)];
+                    errorAndExit_1.errorAndExit('Error validating refresh token. ' + err_2.message);
+                    return [3 /*break*/, 11];
                 case 11:
                     console.error(cli_color_1.default.white('Refresh token validated!'));
                     _a.label = 12;
