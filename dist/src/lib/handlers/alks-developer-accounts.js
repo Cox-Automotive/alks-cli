@@ -38,20 +38,7 @@ function handleAlksDeveloperAccounts(options, program) {
         var table, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    table = new cli_table3_1.default({
-                        head: [
-                            cli_color_1.default.white.bold('Account'),
-                            cli_color_1.default.white.bold('Role'),
-                            cli_color_1.default.white.bold('Type'),
-                        ],
-                        colWidths: [50, 50, 25],
-                    });
-                    doExport = options.export;
-                    accountRegex = getAccountRegex_1.getAccountRegex();
-                    exportCmd = isWindows_1.isWindows() ? 'SET' : 'export';
-                    accounts = [];
-                    _a.label = 1;
+                case 0: throw new Error('this is an error');
                 case 1:
                     _a.trys.push([1, 8, , 9]);
                     log_1.log('getting developer');

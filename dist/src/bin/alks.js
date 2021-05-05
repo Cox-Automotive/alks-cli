@@ -10,10 +10,7 @@ var program_1 = tslib_1.__importDefault(require("../lib/program"));
 if (process.stdout.isTTY) {
     console.error(cli_color_1.default.whiteBright.bold('ALKS v%s'), package_json_1.version);
 }
-try {
-    program_1.default.parse();
-}
-catch (err) {
+program_1.default.parseAsync().catch(function (err) {
     handleCommanderError_1.handleCommanderError(program_1.default, err);
-}
+});
 //# sourceMappingURL=alks.js.map
