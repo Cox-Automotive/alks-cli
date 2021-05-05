@@ -3,13 +3,11 @@ import { log } from './log';
 import { isEmpty } from 'underscore';
 import { trim } from './trim';
 
-const logger = 'password';
-
 export async function getPasswordFromPrompt(
   text?: string,
   currentPassword?: string
 ) {
-  log(null, logger, 'getting password from prompt');
+  log('getting password from prompt');
   const answers = await getStdErrPrompt()([
     {
       type: 'password',

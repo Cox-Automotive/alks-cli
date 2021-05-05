@@ -13,11 +13,10 @@ var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamCreateLtk(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData, err_2;
+        var nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logger = 'iam-createltk';
                     nameDesc = 'alphanumeric including @+=._-';
                     NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     iamUsername = options.iamusername;
@@ -25,7 +24,7 @@ function handleAlksIamCreateLtk(options, program) {
                     alksRole = options.role;
                     filterFaves = options.favorites || false;
                     output = options.output || 'text';
-                    log_1.log(program, logger, 'validating iam user name: ' + iamUsername);
+                    log_1.log('validating iam user name: ' + iamUsername);
                     if (underscore_1.isEmpty(iamUsername)) {
                         errorAndExit_1.errorAndExit('Please provide a username (-n)');
                     }
@@ -34,7 +33,7 @@ function handleAlksIamCreateLtk(options, program) {
                             nameDesc);
                     }
                     if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log(program, logger, 'trying to extract role from account');
+                        log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
                     _a.label = 1;
@@ -44,7 +43,7 @@ function handleAlksIamCreateLtk(options, program) {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves)];
+                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, alksAccount, alksRole, filterFaves)];
                 case 3:
                     iamAccount = _a.sent();
                     return [3 /*break*/, 5];
@@ -57,7 +56,7 @@ function handleAlksIamCreateLtk(options, program) {
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 6:
                     alks = _a.sent();
-                    log_1.log(program, logger, 'calling api to create ltk: ' + iamUsername);
+                    log_1.log('calling api to create ltk: ' + iamUsername);
                     if (!alksAccount || !alksRole) {
                         throw new Error('Must specifify ALKS Account and Role');
                     }
@@ -96,11 +95,11 @@ function handleAlksIamCreateLtk(options, program) {
                         console.log(cli_color_1.default.white(['LTK Secret Key: '].join('')) +
                             cli_color_1.default.white.underline(ltkData.secretKey));
                     }
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 8:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 9:
                     _a.sent();
                     return [3 /*break*/, 11];

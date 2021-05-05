@@ -17,11 +17,10 @@ export async function handleAlksSessionsOpen(
 ) {
   let alksAccount: string | undefined = options.account;
   let alksRole: string | undefined = options.role;
-  const logger = 'sessions-open';
 
   // Try to guess role from account if only account was provided
   if (alksAccount && !alksRole) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
@@ -42,7 +41,6 @@ export async function handleAlksSessionsOpen(
     if (options.iam) {
       key = await getIamKey(
         program,
-        logger,
         alksAccount,
         alksRole,
         options.newSession,
@@ -51,7 +49,6 @@ export async function handleAlksSessionsOpen(
     } else {
       key = await getSessionKey(
         program,
-        logger,
         alksAccount,
         alksRole,
         false,
@@ -69,9 +66,9 @@ export async function handleAlksSessionsOpen(
       )
     );
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

@@ -5,8 +5,6 @@ import { getPassword } from './getPassword';
 import { getToken } from './getToken';
 import { getUserId } from './getUserId';
 
-const logger = 'auth';
-
 // TODO: find a better way to handle this
 export function cacheAuth(newAuth: Auth) {
   auth = newAuth;
@@ -18,16 +16,16 @@ export async function getAuth(
   program: commander.Command,
   prompt: boolean = true
 ): Promise<Auth> {
-  log(program, logger, 'checking for access token');
+  log('checking for access token');
   const token = await getToken();
   if (token) {
     auth = { token };
     return auth;
   } else {
-    log(program, logger, 'no access token found, falling back to password');
+    log('no access token found, falling back to password');
 
     if (auth) {
-      log(program, logger, 'using cached auth object');
+      log('using cached auth object');
       return auth;
     }
 

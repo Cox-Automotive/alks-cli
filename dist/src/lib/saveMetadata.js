@@ -7,14 +7,13 @@ var lokijs_1 = tslib_1.__importDefault(require("lokijs"));
 var getCollection_1 = require("./getCollection");
 var log_1 = require("./log");
 var db = new lokijs_1.default(getDbFile_1.getDbFile());
-var logger = 'metadata';
 function saveMetadata(data) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var md;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log(null, logger, 'saving metadata');
+                    log_1.log('saving metadata');
                     return [4 /*yield*/, getCollection_1.getCollection('metadata')];
                 case 1:
                     md = _a.sent();

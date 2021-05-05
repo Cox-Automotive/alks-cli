@@ -16,7 +16,7 @@ var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var opn_1 = tslib_1.__importDefault(require("opn"));
 function handleAlksSessionsConsole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, logger, dev, err_1, key_1, err_2, url, opts, err_3, err_4;
+        var alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, dev, err_1, key_1, err_2, url, opts, err_3, err_4;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -25,9 +25,8 @@ function handleAlksSessionsConsole(options, program) {
                     forceNewSession = options.newSession;
                     useDefaultAcct = options.default;
                     filterFaves = options.favorites || false;
-                    logger = 'sessions-console';
                     if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log(program, logger, 'trying to extract role from account');
+                        log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
                     _a.label = 1;
@@ -49,11 +48,11 @@ function handleAlksSessionsConsole(options, program) {
                 case 5:
                     _a.trys.push([5, 10, , 11]);
                     if (!underscore_1.isUndefined(options.iam)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, getSessionKey_1.getSessionKey(program, logger, alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    return [4 /*yield*/, getSessionKey_1.getSessionKey(program, alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 6:
                     key_1 = _a.sent();
                     return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, getIamKey_1.getIamKey(program, logger, alksAccount, alksRole, forceNewSession, filterFaves)];
+                case 7: return [4 /*yield*/, getIamKey_1.getIamKey(program, alksAccount, alksRole, forceNewSession, filterFaves)];
                 case 8:
                     key_1 = _a.sent();
                     _a.label = 9;
@@ -62,7 +61,7 @@ function handleAlksSessionsConsole(options, program) {
                     err_2 = _a.sent();
                     return [2 /*return*/, errorAndExit_1.errorAndExit(err_2)];
                 case 11:
-                    log_1.log(program, logger, 'calling aws to generate 15min console URL');
+                    log_1.log('calling aws to generate 15min console URL');
                     return [4 /*yield*/, new Promise(function (resolve) {
                             alks_node_1.default.generateConsoleUrl(key_1, { debug: options.verbose, ua: getUserAgentString_1.getUserAgentString() }, function (err, consoleUrl) {
                                 if (err) {
@@ -93,11 +92,11 @@ function handleAlksSessionsConsole(options, program) {
                     console.error('Please open the url in the browser of your choice');
                     return [3 /*break*/, 17];
                 case 17:
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 18:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 19:
                     _a.sent();
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];

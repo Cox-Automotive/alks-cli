@@ -6,10 +6,8 @@ import { log } from './log';
 
 const db = new loki(getDbFile());
 
-const logger = 'metadata';
-
 export async function saveMetadata(data: Metadata): Promise<void> {
-  log(null, logger, 'saving metadata');
+  log('saving metadata');
   const md: Collection<Metadata> = await getCollection('metadata');
   md.removeDataOnly();
 

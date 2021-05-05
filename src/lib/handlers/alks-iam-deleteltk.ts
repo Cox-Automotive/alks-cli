@@ -13,19 +13,18 @@ export async function handleAlksIamDeleteLtk(
   options: commander.OptionValues,
   program: commander.Command
 ) {
-  const logger = 'iam-deleteltk';
   const iamUsername = options.iamusername;
   let alksAccount = options.account;
   let alksRole = options.role;
   const filterFaves = options.favorites || false;
 
-  log(program, logger, 'validating iam user name: ' + iamUsername);
+  log('validating iam user name: ' + iamUsername);
   if (isEmpty(iamUsername)) {
     errorAndExit('The IAM username is required.');
   }
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
@@ -34,7 +33,6 @@ export async function handleAlksIamDeleteLtk(
     try {
       iamAccount = await getIAMAccount(
         program,
-        logger,
         alksAccount,
         alksRole,
         filterFaves
@@ -50,7 +48,7 @@ export async function handleAlksIamDeleteLtk(
       ...auth,
     });
 
-    log(program, logger, 'calling api to delete ltk: ' + iamUsername);
+    log('calling api to delete ltk: ' + iamUsername);
 
     try {
       await alks.deleteIAMUser({
@@ -66,9 +64,9 @@ export async function handleAlksIamDeleteLtk(
       clc.white(['LTK deleted for IAM User: ', iamUsername].join(''))
     );
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

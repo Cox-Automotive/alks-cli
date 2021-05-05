@@ -8,10 +8,8 @@ import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogout2fa(
   _options: commander.OptionValues,
-  program: commander.Command
+  _program: commander.Command
 ) {
-  const logger = 'dev-logout2fa';
-
   if (removeToken()) {
     console.error(clc.white('Token removed!'));
   } else {
@@ -19,9 +17,9 @@ export async function handleAlksDeveloperLogout2fa(
   }
 
   try {
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

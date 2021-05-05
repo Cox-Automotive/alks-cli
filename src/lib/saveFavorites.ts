@@ -6,12 +6,10 @@ import { getCollection } from './getCollection';
 
 const db = new loki(getDbFile());
 
-const logger = 'favorites';
-
 export async function saveFavorites(data: {
   accounts: Favorites;
 }): Promise<void> {
-  log(null, logger, 'saving favorites');
+  log('saving favorites');
   const favorites: Collection<Favorites> = await getCollection('favorites');
 
   favorites.removeDataOnly();

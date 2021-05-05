@@ -7,14 +7,13 @@ var getDbFile_1 = require("./getDbFile");
 var log_1 = require("./log");
 var getCollection_1 = require("./getCollection");
 var db = new lokijs_1.default(getDbFile_1.getDbFile());
-var logger = 'favorites';
 function saveFavorites(data) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var favorites;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log(null, logger, 'saving favorites');
+                    log_1.log('saving favorites');
                     return [4 /*yield*/, getCollection_1.getCollection('favorites')];
                 case 1:
                     favorites = _a.sent();

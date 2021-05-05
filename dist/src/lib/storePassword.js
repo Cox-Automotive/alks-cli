@@ -12,14 +12,13 @@ var getOwnerReadWriteOwnerPermission_1 = require("./getOwnerReadWriteOwnerPermis
 var clortho = clortho_1.default.forService('alkscli');
 var SERVICE = 'alkscli';
 var ALKS_USERID = 'alksuid';
-var logger = 'password';
 function storePassword(password) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var e_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log(null, logger, 'storing password');
+                    log_1.log('storing password');
                     if (!isPasswordSecurelyStorable_1.isPasswordSecurelyStorable()) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:

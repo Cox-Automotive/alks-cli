@@ -30,6 +30,8 @@ const program = new Command();
 
 program.exitOverride();
 
+program.passThroughOptions();
+
 program.configureOutput({
   writeErr: (str) => {
     if (!str.startsWith('error: unknown command')) {
@@ -190,6 +192,7 @@ const developer = program
 developer
   .command('configure')
   .description('configures developer')
+  .option('-v, --verbose', 'be verbose')
   .action(handleAlksDeveloperConfigure);
 
 developer

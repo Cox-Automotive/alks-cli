@@ -11,10 +11,8 @@ const clortho = c.forService('alkscli');
 const SERVICE = 'alkscli';
 const ALKS_USERID = 'alksuid';
 
-const logger = 'password';
-
 export async function storePassword(password: string) {
-  log(null, logger, 'storing password');
+  log('storing password');
   if (isPasswordSecurelyStorable()) {
     try {
       await clortho.saveToKeychain(ALKS_USERID, password);

@@ -13,21 +13,20 @@ var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamDeleteLtk(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, iamUsername, alksAccount, alksRole, filterFaves, iamAccount, err_1, developer, auth, alks, err_2, err_3;
+        var iamUsername, alksAccount, alksRole, filterFaves, iamAccount, err_1, developer, auth, alks, err_2, err_3;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logger = 'iam-deleteltk';
                     iamUsername = options.iamusername;
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFaves = options.favorites || false;
-                    log_1.log(program, logger, 'validating iam user name: ' + iamUsername);
+                    log_1.log('validating iam user name: ' + iamUsername);
                     if (underscore_1.isEmpty(iamUsername)) {
                         errorAndExit_1.errorAndExit('The IAM username is required.');
                     }
                     if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log(program, logger, 'trying to extract role from account');
+                        log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
                     _a.label = 1;
@@ -37,7 +36,7 @@ function handleAlksIamDeleteLtk(options, program) {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, logger, alksAccount, alksRole, filterFaves)];
+                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, alksAccount, alksRole, filterFaves)];
                 case 3:
                     iamAccount = _a.sent();
                     return [3 /*break*/, 5];
@@ -50,7 +49,7 @@ function handleAlksIamDeleteLtk(options, program) {
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 6:
                     alks = _a.sent();
-                    log_1.log(program, logger, 'calling api to delete ltk: ' + iamUsername);
+                    log_1.log('calling api to delete ltk: ' + iamUsername);
                     _a.label = 7;
                 case 7:
                     _a.trys.push([7, 9, , 10]);
@@ -67,11 +66,11 @@ function handleAlksIamDeleteLtk(options, program) {
                     return [2 /*return*/, errorAndExit_1.errorAndExit(err_2)];
                 case 10:
                     console.log(cli_color_1.default.white(['LTK deleted for IAM User: ', iamUsername].join('')));
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 11:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 12:
                     _a.sent();
                     return [3 /*break*/, 14];

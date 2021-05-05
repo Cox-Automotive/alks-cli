@@ -24,13 +24,11 @@ export interface AlksAccountPromptData {
   default?: string;
 }
 
-const logger = 'getAlksAccount';
-
 export async function getAlksAccount(
   program: commander.Command,
   options: Partial<GetAlksAccountProps>
 ): Promise<{ alksAccount: string; alksRole: string }> {
-  log(program, logger, 'retreiving alks account');
+  log('retreiving alks account');
 
   let developer: Developer | undefined;
   try {

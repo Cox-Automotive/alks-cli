@@ -8,8 +8,6 @@ import { getIamKey } from './getIamKey.js';
 
 const app = express();
 
-const logger = 'metadata-server';
-
 function generateResponse(key: Key) {
   return {
     Code: 'Success',
@@ -50,7 +48,6 @@ app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
   if (metadata.isIam) {
     const key = await getIamKey(
       {} as commander.Command,
-      logger,
       metadata.alksAccount,
       metadata.alksRole,
       false,
@@ -60,7 +57,6 @@ app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
   } else {
     const key = await getSessionKey(
       {} as commander.Command,
-      logger,
       metadata.alksAccount,
       metadata.alksRole,
       false,

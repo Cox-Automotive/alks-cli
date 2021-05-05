@@ -13,7 +13,6 @@ export async function handleAlksIamCreateLtk(
   options: commander.OptionValues,
   program: commander.Command
 ) {
-  const logger = 'iam-createltk';
   const nameDesc = 'alphanumeric including @+=._-';
   const NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const iamUsername = options.iamusername;
@@ -22,7 +21,7 @@ export async function handleAlksIamCreateLtk(
   const filterFaves = options.favorites || false;
   const output = options.output || 'text';
 
-  log(program, logger, 'validating iam user name: ' + iamUsername);
+  log('validating iam user name: ' + iamUsername);
   if (isEmpty(iamUsername)) {
     errorAndExit('Please provide a username (-n)');
   } else if (!NAME_REGEX.test(iamUsername)) {
@@ -33,7 +32,7 @@ export async function handleAlksIamCreateLtk(
   }
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
@@ -42,7 +41,6 @@ export async function handleAlksIamCreateLtk(
     try {
       iamAccount = await getIAMAccount(
         program,
-        logger,
         alksAccount,
         alksRole,
         filterFaves
@@ -58,7 +56,7 @@ export async function handleAlksIamCreateLtk(
       ...auth,
     });
 
-    log(program, logger, 'calling api to create ltk: ' + iamUsername);
+    log('calling api to create ltk: ' + iamUsername);
 
     if (!alksAccount || !alksRole) {
       throw new Error('Must specifify ALKS Account and Role');
@@ -105,9 +103,9 @@ export async function handleAlksIamCreateLtk(
       );
     }
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

@@ -13,7 +13,6 @@ var showBorderedMessage_1 = require("./showBorderedMessage");
 var getVersionAtStart_1 = require("./getVersionAtStart");
 var getDeveloper_1 = require("./getDeveloper");
 var saveDeveloper_1 = require("./saveDeveloper");
-var logger = 'utils';
 function noop() { }
 function getChangeLog() {
     var file = path_1.default.join(__dirname, '../', 'changelog.txt');
@@ -42,7 +41,7 @@ function checkForUpdate() {
                     data = _a.sent();
                     latestVer = data.version;
                     needsUpdate = semver_1.gt(latestVer, myVer);
-                    log_1.log(null, logger, 'needs update? ' + (needsUpdate ? 'yes' : 'no'));
+                    log_1.log('needs update? ' + (needsUpdate ? 'yes' : 'no'));
                     if (!needsUpdate) return [3 /*break*/, 2];
                     msg = [
                         cli_color_1.white('Update available '),
@@ -59,13 +58,13 @@ function checkForUpdate() {
                     currentVersion = package_json_1.version;
                     lastRunVerion = getVersionAtStart_1.getVersionAtStart();
                     if (!(lastRunVerion && semver_1.gt(currentVersion, lastRunVerion))) return [3 /*break*/, 5];
-                    log_1.log(null, logger, 'user updated, updating db with version');
+                    log_1.log('user updated, updating db with version');
                     // give them release notes
                     showBorderedMessage_1.showBorderedMessage(110, cli_color_1.white(getChangeLog()));
                     return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 3:
                     developer = _a.sent();
-                    log_1.log(null, logger, 'db');
+                    log_1.log('db');
                     developer.lastVersion = currentVersion;
                     return [4 /*yield*/, saveDeveloper_1.saveDeveloper(developer)];
                 case 4:

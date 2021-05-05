@@ -15,17 +15,15 @@ import { savePassword } from '../savePassword';
 import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperConfigure(
-  _: commander.OptionValues,
+  _options: commander.OptionValues,
   program: commander.Command
 ) {
-  const logger = 'dev-config';
-
   try {
     const server = await promptForServer();
 
     const userId = await promptForUserId();
 
-    log(program, logger, 'getting password');
+    log('getting password');
     const password = await promptForPassword();
 
     const savePasswordAnswer = await confirm('Save password');
@@ -39,17 +37,17 @@ export async function handleAlksDeveloperConfigure(
       password,
     });
 
-    log(program, logger, 'Getting ALKS accounts');
+    log('Getting ALKS accounts');
     const { alksAccount, alksRole } = await getAlksAccount(program, {
       prompt: 'Please select your default ALKS account/role',
       server,
     });
 
-    log(program, logger, 'Getting output formats');
+    log('Getting output formats');
     const outputFormat = await promptForOutputFormat();
 
     // create developer
-    log(program, logger, 'saving developer');
+    log('saving developer');
     try {
       await saveDeveloper({
         server,
@@ -62,7 +60,7 @@ export async function handleAlksDeveloperConfigure(
         clc.white('Your developer configuration has been updated.')
       );
     } catch (e2) {
-      log(program, logger, 'error saving! ' + e2.message);
+      log('error saving! ' + e2.message);
       console.error(
         clc.red.bold(
           'There was an error updating your developer configuration.'
@@ -70,9 +68,9 @@ export async function handleAlksDeveloperConfigure(
       );
     }
 
-    log(program, logger, 'checking for update');
+    log('checking for update');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     return errorAndExit('Error configuring developer: ' + err.message, err);
   }

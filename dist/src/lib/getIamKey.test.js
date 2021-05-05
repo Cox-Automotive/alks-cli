@@ -34,7 +34,6 @@ var selectedRole = 'PowerUser';
 describe('getIamKey', function () {
     var defaultTestCase = {
         program: {},
-        logger: 'getIamKey',
         alksAccount: passedAccount,
         alksRole: passedRole,
         forceNewSession: false,
@@ -311,7 +310,7 @@ describe('getIamKey', function () {
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);
-                            return [4 /*yield*/, getIamKey_1.getIamKey(t.program, t.logger, t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
+                            return [4 /*yield*/, getIamKey_1.getIamKey(t.program, t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
                         case 2:
                             result = _a.sent();
                             return [3 /*break*/, 4];

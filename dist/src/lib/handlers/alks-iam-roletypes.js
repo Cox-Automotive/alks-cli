@@ -13,11 +13,10 @@ var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 function handleAlksIamRoleTypes(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, outputVals, output, developer, auth, alks, roleTypes, err_1, err_2;
+        var outputVals, output, developer, auth, alks, roleTypes, err_1, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logger = 'iam-roletypes';
                     outputVals = ['list', 'json'];
                     output = options.output;
                     if (!underscore_1.contains(outputVals, output)) {
@@ -29,18 +28,18 @@ function handleAlksIamRoleTypes(options, program) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 11, , 12]);
-                    log_1.log(program, logger, 'getting developer');
+                    log_1.log('getting developer');
                     return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 2:
                     developer = _a.sent();
-                    log_1.log(program, logger, 'getting auth');
+                    log_1.log('getting auth');
                     return [4 /*yield*/, getAuth_1.getAuth(program)];
                 case 3:
                     auth = _a.sent();
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 4:
                     alks = _a.sent();
-                    log_1.log(program, logger, 'getting list of role types from REST API');
+                    log_1.log('getting list of role types from REST API');
                     roleTypes = void 0;
                     _a.label = 5;
                 case 5:
@@ -53,7 +52,7 @@ function handleAlksIamRoleTypes(options, program) {
                     err_1 = _a.sent();
                     return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
                 case 8:
-                    log_1.log(program, logger, 'outputting list of ' +
+                    log_1.log('outputting list of ' +
                         (roleTypes ? roleTypes.length : -1) +
                         ' role types');
                     console.error(cli_color_1.default.white.underline.bold('\nAvailable IAM Role Types'));
@@ -65,11 +64,11 @@ function handleAlksIamRoleTypes(options, program) {
                     else {
                         console.log(JSON.stringify(roleTypes.map(function (roleType) { return roleType.roleTypeName; })));
                     }
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 9:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 10:
                     _a.sent();
                     return [3 /*break*/, 12];

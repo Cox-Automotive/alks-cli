@@ -12,23 +12,21 @@ import { contains, each, isEmpty } from 'underscore';
 
 export async function handleAlksDeveloperInfo(
   _options: commander.OptionValues,
-  program: commander.Command
+  _program: commander.Command
 ) {
   const table = new Table({
     head: [clc.white.bold('Key'), clc.white.bold('Value')],
     colWidths: [25, 50],
   });
 
-  const logger = 'dev-info';
-
   try {
-    log(program, logger, 'getting developer');
+    log('getting developer');
     const developer = await getDeveloper();
 
-    log(program, logger, 'getting password');
+    log('getting password');
     const password = await getPassword(null); // null means dont prompt
 
-    log(program, logger, 'getting 2fa token');
+    log('getting 2fa token');
     const token = await getToken();
 
     const ignores = ['lastVersion'];
@@ -59,9 +57,9 @@ export async function handleAlksDeveloperInfo(
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.log(clc.white(table.toString()));
 
-    log(program, logger, 'checking for update');
+    log('checking for update');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

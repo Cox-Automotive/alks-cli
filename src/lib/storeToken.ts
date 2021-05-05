@@ -10,10 +10,8 @@ const clortho = c.forService('alkscli');
 const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
-const logger = 'token';
-
 export async function storeToken(token: string) {
-  log(null, logger, 'storing token');
+  log('storing token');
   if (isPasswordSecurelyStorable()) {
     await clortho.saveToKeychain(ALKS_TOKEN, token);
   } else {

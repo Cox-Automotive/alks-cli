@@ -25,7 +25,6 @@ export async function handleAlksDeveloperAccounts(
     colWidths: [50, 50, 25],
   });
 
-  const logger = 'dev-accounts';
   const doExport = options.export;
   const accountRegex = getAccountRegex();
   const exportCmd = isWindows() ? 'SET' : 'export';
@@ -57,10 +56,10 @@ export async function handleAlksDeveloperAccounts(
   }
 
   try {
-    log(program, logger, 'getting developer');
+    log('getting developer');
     const developer = await getDeveloper();
 
-    log(program, logger, 'getting auth');
+    log('getting auth');
     const auth = await getAuth(program);
 
     const alks = await getAlks({
@@ -68,7 +67,7 @@ export async function handleAlksDeveloperAccounts(
       ...auth,
     });
 
-    log(program, logger, 'getting alks accounts');
+    log('getting alks accounts');
     const alksAccounts = await alks.getAccounts();
 
     alksAccounts.forEach((alksAccount) => {
@@ -86,9 +85,9 @@ export async function handleAlksDeveloperAccounts(
       console.log(clc.white(table.toString()));
     }
 
-    log(program, logger, 'checking for update');
+    log('checking for update');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

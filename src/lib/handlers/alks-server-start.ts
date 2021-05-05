@@ -21,20 +21,14 @@ function runServerDaemon() {
 
 export async function handleAlksServerStart(
   _options: commander.OptionValues,
-  program: commander.Command
+  _program: commander.Command
 ) {
   try {
-    const logger = 'server-start';
-
     if (!isOsx()) {
       errorAndExit('The metadata server is only supported on OSX.');
     }
 
-    log(
-      program,
-      logger,
-      'Checking if forwarding daemon is already installed..'
-    );
+    log('Checking if forwarding daemon is already installed..');
 
     if (!fs.existsSync('/etc/pf.anchors/com.coxautodev.alks')) {
       console.error(
@@ -45,19 +39,19 @@ export async function handleAlksServerStart(
       const servicePath = path.join(__dirname, '../service');
 
       try {
-        log(program, logger, 'Adding pf.anchor');
+        log('Adding pf.anchor');
         execSync(
           'sudo cp ' + servicePath + '/com.coxautodev.alks /etc/pf.anchors/'
         );
 
-        log(program, logger, 'Adding launch daemon');
+        log('Adding launch daemon');
         execSync(
           'sudo cp ' +
             servicePath +
             '/com.coxautodev.alks.Ec2MetaDataFirewall.plist /Library/LaunchDaemons/'
         );
 
-        log(program, logger, 'Loading launch daemon');
+        log('Loading launch daemon');
         execSync(
           'sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist'
         );
@@ -67,7 +61,7 @@ export async function handleAlksServerStart(
       console.log(clc.white('Successfully installed metadata daemon.'));
       runServerDaemon();
     } else {
-      log(program, logger, 'Daemon is already installed..');
+      log('Daemon is already installed..');
       runServerDaemon();
     }
   } catch (err) {

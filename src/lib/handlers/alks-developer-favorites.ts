@@ -17,13 +17,11 @@ export async function handleAlksDeveloperFavorites(
   _options: commander.OptionValues,
   program: commander.Command
 ) {
-  const logger = 'dev-favorites';
-
   try {
-    log(program, logger, 'getting developer');
+    log('getting developer');
     const developer = await getDeveloper();
 
-    log(program, logger, 'getting auth');
+    log('getting auth');
     const auth = await getAuth(program);
 
     const alks = await getAlks({
@@ -31,16 +29,16 @@ export async function handleAlksDeveloperFavorites(
       ...auth,
     });
 
-    log(program, logger, 'getting alks accounts');
+    log('getting alks accounts');
     const alksAccounts = await alks.getAccounts();
 
-    log(program, logger, 'getting favorite accounts');
+    log('getting favorite accounts');
     const favorites = await getFavorites();
 
     const choices = [];
     const deferred: ALKS.Account[] = [];
 
-    log(program, logger, 'rendering favorite accounts');
+    log('rendering favorite accounts');
     choices.push(new inquirer.Separator(' = Standard = '));
     alksAccounts.forEach((alksAccount) => {
       if (!alksAccount.iamKeyActive) {
@@ -78,9 +76,9 @@ export async function handleAlksDeveloperFavorites(
     await saveFavorites({ accounts: faves });
     console.log('Favorites have been saved!');
 
-    log(program, logger, 'checking for update');
+    log('checking for update');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

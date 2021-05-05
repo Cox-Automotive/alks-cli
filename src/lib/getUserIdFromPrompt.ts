@@ -3,13 +3,11 @@ import { getStdErrPrompt } from './getStdErrPrompt';
 import { log } from './log';
 import { trim } from './trim';
 
-const logger = 'getUserIdFromPrompt';
-
 export async function getUserIdFromPrompt(
   text?: string,
   currentUserid?: string
 ) {
-  log(null, logger, 'getting userid from prompt');
+  log('getting userid from prompt');
   const answers = await getStdErrPrompt()([
     {
       type: 'input',

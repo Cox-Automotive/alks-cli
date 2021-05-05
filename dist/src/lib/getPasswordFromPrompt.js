@@ -6,14 +6,13 @@ var getStdErrPrompt_1 = require("./getStdErrPrompt");
 var log_1 = require("./log");
 var underscore_1 = require("underscore");
 var trim_1 = require("./trim");
-var logger = 'password';
 function getPasswordFromPrompt(text, currentPassword) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var answers;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log(null, logger, 'getting password from prompt');
+                    log_1.log('getting password from prompt');
                     return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([
                             {
                                 type: 'password',

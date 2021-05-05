@@ -4,7 +4,7 @@ exports.handleCommanderError = void 0;
 var handleUnknownCommand_1 = require("./handleUnknownCommand");
 var log_1 = require("../log");
 function handleCommanderError(program, err) {
-    log_1.log(program.opts(), 'handleCommanderError', err.code);
+    log_1.log(err.code);
     if (err.code === 'commander.unknownCommand') {
         handleUnknownCommand_1.handleUnknownCommand(program);
     }

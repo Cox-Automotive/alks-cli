@@ -16,7 +16,6 @@ import { addKey } from './addKey';
 
 export async function getSessionKey(
   program: commander.Command,
-  logger: string,
   alksAccount: string | undefined,
   alksRole: string | undefined,
   iamOnly: boolean,
@@ -25,32 +24,28 @@ export async function getSessionKey(
 ): Promise<Key> {
   await ensureConfigured();
 
-  log(program, logger, 'getting developer');
+  log('getting developer');
   const developer = await getDeveloper();
 
-  log(program, logger, 'getting auth');
+  log('getting auth');
   const auth = await getAuth(program);
 
   // only lookup alks account if they didnt provide
   if (!alksAccount || !alksRole) {
-    log(program, logger, 'getting accounts');
+    log('getting accounts');
     ({ alksAccount, alksRole } = await getAlksAccount(program, {
       iamOnly,
       filterFavorites,
     }));
   } else {
-    log(program, logger, 'using provided account/role');
+    log('using provided account/role');
   }
 
-  log(program, logger, 'getting existing keys');
+  log('getting existing keys');
   const existingKeys: Key[] = await getKeys(auth, false);
 
   if (existingKeys.length && !forceNewSession) {
-    log(
-      program,
-      logger,
-      'filtering keys by account/role - ' + alksAccount + ' - ' + alksRole
-    );
+    log('filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
 
     // filter keys for the selected alks account/role
     const keyCriteria = { alksAccount, alksRole };
@@ -60,7 +55,7 @@ export async function getSessionKey(
     );
 
     if (selectedKey) {
-      log(program, logger, 'found existing valid key');
+      log('found existing valid key');
       console.error(
         white.underline(
           ['Resuming existing session in', alksAccount, alksRole].join(' ')
@@ -72,7 +67,7 @@ export async function getSessionKey(
 
   // generate a new key/session
   if (forceNewSession) {
-    log(program, logger, 'forcing a new session');
+    log('forcing a new session');
   }
 
   const alks = await getAlks({
@@ -87,11 +82,7 @@ export async function getSessionKey(
 
   const duration = Math.min(loginRole.maxKeyDuration, 12);
 
-  log(
-    program,
-    logger,
-    'calling api to generate new keys/session for ' + duration + ' hours'
-  );
+  log('calling api to generate new keys/session for ' + duration + ' hours');
   console.error(
     white.underline(
       ['Creating new session in', alksAccount, alksRole].join(' ')
@@ -116,7 +107,7 @@ export async function getSessionKey(
     isIAM: true,
   };
 
-  log(program, logger, 'storing key: ' + JSON.stringify(key));
+  log('storing key: ' + JSON.stringify(key));
   addKey(
     key.accessKey,
     key.secretKey,

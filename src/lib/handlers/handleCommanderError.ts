@@ -7,7 +7,7 @@ export function handleCommanderError(
   program: commander.Command,
   err: CommanderError
 ) {
-  log(program.opts(), 'handleCommanderError', err.code);
+  log(err.code);
 
   if (err.code === 'commander.unknownCommand') {
     handleUnknownCommand(program);

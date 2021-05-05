@@ -18,10 +18,9 @@ export async function handleAlksServerConfigure(
   let alksRole = options.role;
   const forceNewSession = options.newSession;
   const filterFaves = options.favorites || false;
-  const logger = 'server-configure';
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
@@ -31,7 +30,6 @@ export async function handleAlksServerConfigure(
       if (isUndefined(options.iam)) {
         key = await getSessionKey(
           program,
-          logger,
           alksAccount,
           alksRole,
           false,
@@ -41,7 +39,6 @@ export async function handleAlksServerConfigure(
       } else {
         key = await getIamKey(
           program,
-          logger,
           alksAccount,
           alksRole,
           forceNewSession,
@@ -66,9 +63,9 @@ export async function handleAlksServerConfigure(
 
     console.error(clc.white('Metadata has been saved!'));
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

@@ -12,9 +12,9 @@ var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var underscore_1 = require("underscore");
-function handleAlksDeveloperInfo(_options, program) {
+function handleAlksDeveloperInfo(_options, _program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var table, logger, developer, password, token, ignores_1, mapping_1, tablePassword, tableToken, err_1;
+        var table, developer, password, token, ignores_1, mapping_1, tablePassword, tableToken, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -22,19 +22,18 @@ function handleAlksDeveloperInfo(_options, program) {
                         head: [cli_color_1.default.white.bold('Key'), cli_color_1.default.white.bold('Value')],
                         colWidths: [25, 50],
                     });
-                    logger = 'dev-info';
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 7, , 8]);
-                    log_1.log(program, logger, 'getting developer');
+                    log_1.log('getting developer');
                     return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 2:
                     developer = _a.sent();
-                    log_1.log(program, logger, 'getting password');
+                    log_1.log('getting password');
                     return [4 /*yield*/, getPassword_1.getPassword(null)];
                 case 3:
                     password = _a.sent();
-                    log_1.log(program, logger, 'getting 2fa token');
+                    log_1.log('getting 2fa token');
                     return [4 /*yield*/, getToken_1.getToken()];
                 case 4:
                     token = _a.sent();
@@ -61,11 +60,11 @@ function handleAlksDeveloperInfo(_options, program) {
                     table.push(['2FA Token', tableToken]);
                     console.error(cli_color_1.default.white.underline.bold('\nDeveloper Configuration'));
                     console.log(cli_color_1.default.white(table.toString()));
-                    log_1.log(program, logger, 'checking for update');
+                    log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 6:
                     _a.sent();
                     return [3 /*break*/, 8];

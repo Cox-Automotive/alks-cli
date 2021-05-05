@@ -10,25 +10,23 @@ import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogin(
   _options: commander.OptionValues,
-  program: commander.Command
+  _program: commander.Command
 ) {
-  const logger = 'dev-login';
-
   try {
     const password = await getPasswordFromPrompt();
 
-    log(program, logger, 'saving password');
+    log('saving password');
     try {
       await storePassword(password);
       console.error(clc.white('Password saved!'));
     } catch (err) {
-      log(program, logger, 'error saving password! ' + err.message);
+      log('error saving password! ' + err.message);
       passwordSaveErrorHandler(err);
     }
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

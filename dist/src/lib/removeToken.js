@@ -9,11 +9,10 @@ var node_netrc_1 = tslib_1.__importDefault(require("node-netrc"));
 var clortho = clortho_1.default.forService('alkscli');
 var SERVICETKN = 'alksclitoken';
 var ALKS_TOKEN = 'alkstoken';
-var logger = 'token';
 function removeToken() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
-            log_1.log(null, logger, 'removing token');
+            log_1.log('removing token');
             if (isPasswordSecurelyStorable_1.isPasswordSecurelyStorable()) {
                 return [2 /*return*/, clortho.removeFromKeychain(ALKS_TOKEN)];
             }

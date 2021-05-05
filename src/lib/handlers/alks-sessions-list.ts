@@ -13,8 +13,6 @@ import { each, groupBy } from 'underscore';
 import { log } from '../log';
 import program from 'commander';
 
-const logger = 'sessions-list';
-
 export async function handleAlksSessionsList(
   _options: program.OptionValues,
   program: commander.Command
@@ -22,13 +20,13 @@ export async function handleAlksSessionsList(
   try {
     await ensureConfigured();
 
-    log(program, logger, 'getting auth');
+    log('getting auth');
     const auth = await getAuth(program);
 
-    log(program, logger, 'getting existing sesions');
+    log('getting existing sesions');
     const nonIamKeys = await getKeys(auth, false);
 
-    log(program, logger, 'getting existing iam sesions');
+    log('getting existing iam sesions');
     const iamKeys = await getKeys(auth, true);
 
     const foundKeys = [...nonIamKeys, ...iamKeys];
@@ -75,9 +73,9 @@ export async function handleAlksSessionsList(
     console.error(clc.white.underline.bold('Active Sessions'));
     console.log(clc.white(table.toString()));
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

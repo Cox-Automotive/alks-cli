@@ -14,7 +14,6 @@ var trackActivity_1 = require("../trackActivity");
 var getKeys_1 = require("../getKeys");
 var underscore_1 = require("underscore");
 var log_1 = require("../log");
-var logger = 'sessions-list';
 function handleAlksSessionsList(_options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var auth, nonIamKeys, iamKeys, foundKeys, table_1, groupedKeys, err_1;
@@ -25,15 +24,15 @@ function handleAlksSessionsList(_options, program) {
                     return [4 /*yield*/, ensureConfigured_1.ensureConfigured()];
                 case 1:
                     _a.sent();
-                    log_1.log(program, logger, 'getting auth');
+                    log_1.log('getting auth');
                     return [4 /*yield*/, getAuth_1.getAuth(program)];
                 case 2:
                     auth = _a.sent();
-                    log_1.log(program, logger, 'getting existing sesions');
+                    log_1.log('getting existing sesions');
                     return [4 /*yield*/, getKeys_1.getKeys(auth, false)];
                 case 3:
                     nonIamKeys = _a.sent();
-                    log_1.log(program, logger, 'getting existing iam sesions');
+                    log_1.log('getting existing iam sesions');
                     return [4 /*yield*/, getKeys_1.getKeys(auth, true)];
                 case 4:
                     iamKeys = _a.sent();
@@ -74,11 +73,11 @@ function handleAlksSessionsList(_options, program) {
                     }
                     console.error(cli_color_1.default.white.underline.bold('Active Sessions'));
                     console.log(cli_color_1.default.white(table_1.toString()));
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 6:
                     _a.sent();
                     return [3 /*break*/, 8];

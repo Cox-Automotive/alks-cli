@@ -7,10 +7,8 @@ const clortho = c.forService('alkscli');
 const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
-const logger = 'token';
-
 export async function removeToken() {
-  log(null, logger, 'removing token');
+  log('removing token');
   if (isPasswordSecurelyStorable()) {
     return clortho.removeFromKeychain(ALKS_TOKEN);
   } else {

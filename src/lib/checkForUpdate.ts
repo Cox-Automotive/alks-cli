@@ -10,8 +10,6 @@ import { getVersionAtStart } from './getVersionAtStart';
 import { getDeveloper } from './getDeveloper';
 import { saveDeveloper } from './saveDeveloper';
 
-const logger = 'utils';
-
 function noop() {}
 
 function getChangeLog() {
@@ -41,7 +39,7 @@ export async function checkForUpdate() {
   const latestVer = data.version;
   const needsUpdate = gt(latestVer, myVer);
 
-  log(null, logger, 'needs update? ' + (needsUpdate ? 'yes' : 'no'));
+  log('needs update? ' + (needsUpdate ? 'yes' : 'no'));
   if (needsUpdate) {
     const msg = [
       white('Update available '),
@@ -60,13 +58,13 @@ export async function checkForUpdate() {
 
     // check if they just updated
     if (lastRunVerion && gt(currentVersion, lastRunVerion)) {
-      log(null, logger, 'user updated, updating db with version');
+      log('user updated, updating db with version');
       // give them release notes
       showBorderedMessage(110, white(getChangeLog()));
 
       // save the last version
       const developer = await getDeveloper();
-      log(null, logger, 'db');
+      log('db');
       developer.lastVersion = currentVersion;
       await saveDeveloper(developer);
     }

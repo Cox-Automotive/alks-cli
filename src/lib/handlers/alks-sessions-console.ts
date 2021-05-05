@@ -22,10 +22,9 @@ export async function handleAlksSessionsConsole(
   const forceNewSession = options.newSession;
   const useDefaultAcct = options.default;
   const filterFaves = options.favorites || false;
-  const logger = 'sessions-console';
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
@@ -46,7 +45,6 @@ export async function handleAlksSessionsConsole(
       if (isUndefined(options.iam)) {
         key = await getSessionKey(
           program,
-          logger,
           alksAccount,
           alksRole,
           false,
@@ -56,7 +54,6 @@ export async function handleAlksSessionsConsole(
       } else {
         key = await getIamKey(
           program,
-          logger,
           alksAccount,
           alksRole,
           forceNewSession,
@@ -67,7 +64,7 @@ export async function handleAlksSessionsConsole(
       return errorAndExit(err);
     }
 
-    log(program, logger, 'calling aws to generate 15min console URL');
+    log('calling aws to generate 15min console URL');
 
     const url = await new Promise((resolve) => {
       alksNode.generateConsoleUrl(
@@ -94,9 +91,9 @@ export async function handleAlksSessionsConsole(
         console.error('Please open the url in the browser of your choice');
       }
 
-      log(program, logger, 'checking for updates');
+      log('checking for updates');
       await checkForUpdate();
-      await trackActivity(logger);
+      await trackActivity();
       await new Promise((resolve) => setTimeout(resolve, 3000)); // needed for if browser is still open
       process.exit(0);
     }

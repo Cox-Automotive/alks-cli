@@ -16,7 +16,6 @@ export async function handleAlksIamCreateTrustRole(
   options: commander.OptionValues,
   program: commander.Command
 ) {
-  const logger = 'iam-createtrustrole';
   const roleNameDesc = 'alphanumeric including @+=._-';
   const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
@@ -29,7 +28,7 @@ export async function handleAlksIamCreateTrustRole(
   let alksRole = options.role;
   const filterFavorites = options.favorites || false;
 
-  log(program, logger, 'validating role name: ' + roleName);
+  log('validating role name: ' + roleName);
   if (isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
     errorAndExit(
       'The role name provided contains illegal characters. It must be ' +
@@ -37,7 +36,7 @@ export async function handleAlksIamCreateTrustRole(
     );
   }
 
-  log(program, logger, 'validating role type: ' + roleType);
+  log('validating role type: ' + roleType);
   if (
     isEmpty(roleType) ||
     (roleType !== 'Cross Account' && roleType !== 'Inner Account')
@@ -45,7 +44,7 @@ export async function handleAlksIamCreateTrustRole(
     errorAndExit('The role type is required');
   }
 
-  log(program, logger, 'validating trust arn: ' + trustArn);
+  log('validating trust arn: ' + trustArn);
   if (isEmpty(trustArn) || !TRUST_ARN_REGEX.test(trustArn)) {
     errorAndExit(
       'The trust arn provided contains illegal characters. It must be ' +
@@ -54,26 +53,26 @@ export async function handleAlksIamCreateTrustRole(
   }
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log(program, logger, 'trying to extract role from account');
+    log('trying to extract role from account');
     alksRole = tryToExtractRole(alksAccount);
   }
 
   try {
     if (isEmpty(alksAccount) || isEmpty(alksRole)) {
-      log(program, logger, 'getting accounts');
+      log('getting accounts');
       ({ alksAccount, alksRole } = await getAlksAccount(program, {
         iamOnly: true,
         filterFavorites,
       }));
     } else {
-      log(program, logger, 'using provided account/role');
+      log('using provided account/role');
     }
 
     const developer = await getDeveloper();
 
     const auth = await getAuth(program);
 
-    log(program, logger, 'calling api to create trust role: ' + roleName);
+    log('calling api to create trust role: ' + roleName);
 
     const alks = await getAlks({
       baseUrl: developer.server,
@@ -107,9 +106,9 @@ export async function handleAlksIamCreateTrustRole(
         ) + clc.white.underline(role.instanceProfileArn)
       );
     }
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
   } catch (err) {
     errorAndExit(err.message, err);
   }

@@ -15,29 +15,28 @@ var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamDeleteRole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var logger, roleName, alksAccount, alksRole, filterFavorites, developer, auth, alks, err_1, err_2;
+        var roleName, alksAccount, alksRole, filterFavorites, developer, auth, alks, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    logger = 'iam-delete';
                     roleName = options.rolename;
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFavorites = options.favorites || false;
-                    log_1.log(program, logger, 'validating role name: ' + roleName);
+                    log_1.log('validating role name: ' + roleName);
                     if (underscore_1.isEmpty(roleName)) {
                         errorAndExit_1.errorAndExit('The role name must be provided.');
                     }
                     if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log(program, logger, 'trying to extract role from account');
+                        log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 14, , 15]);
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
-                    log_1.log(program, logger, 'getting accounts');
+                    log_1.log('getting accounts');
                     return [4 /*yield*/, getAlksAccount_1.getAlksAccount(program, {
                             iamOnly: true,
                             filterFavorites: filterFavorites,
@@ -46,7 +45,7 @@ function handleAlksIamDeleteRole(options, program) {
                     (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
                     return [3 /*break*/, 4];
                 case 3:
-                    log_1.log(program, logger, 'using provided account/role');
+                    log_1.log('using provided account/role');
                     _b.label = 4;
                 case 4: return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 5:
@@ -54,7 +53,7 @@ function handleAlksIamDeleteRole(options, program) {
                     return [4 /*yield*/, getAuth_1.getAuth(program)];
                 case 6:
                     auth = _b.sent();
-                    log_1.log(program, logger, 'calling api to delete role: ' + roleName);
+                    log_1.log('calling api to delete role: ' + roleName);
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 7:
                     alks = _b.sent();
@@ -74,11 +73,11 @@ function handleAlksIamDeleteRole(options, program) {
                     return [2 /*return*/, errorAndExit_1.errorAndExit(err_1)];
                 case 11:
                     console.log(cli_color_1.default.white(['The role ', roleName, ' was deleted'].join('')));
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 12:
                     _b.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 13:
                     _b.sent();
                     return [3 /*break*/, 15];

@@ -13,16 +13,15 @@ var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksSessionsOpen(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var alksAccount, alksRole, logger, developer, err_1, key, err_2;
+        var alksAccount, alksRole, developer, err_1, key, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     alksAccount = options.account;
                     alksRole = options.role;
-                    logger = 'sessions-open';
                     // Try to guess role from account if only account was provided
                     if (alksAccount && !alksRole) {
-                        log_1.log(program, logger, 'trying to extract role from account');
+                        log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
                     _a.label = 1;
@@ -46,21 +45,21 @@ function handleAlksSessionsOpen(options, program) {
                     }
                     key = void 0;
                     if (!options.iam) return [3 /*break*/, 7];
-                    return [4 /*yield*/, getIamKey_1.getIamKey(program, logger, alksAccount, alksRole, options.newSession, options.favorites)];
+                    return [4 /*yield*/, getIamKey_1.getIamKey(program, alksAccount, alksRole, options.newSession, options.favorites)];
                 case 6:
                     key = _a.sent();
                     return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, getSessionKey_1.getSessionKey(program, logger, alksAccount, alksRole, false, options.newSession, options.favorites)];
+                case 7: return [4 /*yield*/, getSessionKey_1.getSessionKey(program, alksAccount, alksRole, false, options.newSession, options.favorites)];
                 case 8:
                     key = _a.sent();
                     _a.label = 9;
                 case 9:
                     console.log(getKeyOutput_1.getKeyOutput(options.output || developer.outputFormat, key, options.namedProfile, options.force));
-                    log_1.log(program, logger, 'checking for updates');
+                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 10:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 11:
                     _a.sent();
                     return [3 /*break*/, 13];

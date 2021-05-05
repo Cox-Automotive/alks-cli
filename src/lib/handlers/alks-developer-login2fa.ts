@@ -13,12 +13,10 @@ import opn from 'opn';
 
 export async function handleAlksDeveloperLogin2fa(
   _options: commander.OptionValues,
-  program: commander.Command
+  _program: commander.Command
 ) {
-  const logger = 'dev-login-2fa';
-
   try {
-    log(program, logger, 'loading developer');
+    log('loading developer');
     const data = await getDeveloper();
 
     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
@@ -33,7 +31,7 @@ export async function handleAlksDeveloperLogin2fa(
     console.error('Please copy your refresh token from ALKS and paste below..');
 
     const refreshToken = await getPasswordFromPrompt('Refresh Token');
-    log(program, logger, 'exchanging refresh token for access token');
+    log('exchanging refresh token for access token');
 
     const alks = await getAlks({
       baseUrl: data.server,
@@ -52,13 +50,13 @@ export async function handleAlksDeveloperLogin2fa(
       await storeToken(refreshToken);
       console.error(clc.white('Refresh token saved!'));
     } catch (err) {
-      log(program, logger, 'error saving token! ' + err.message);
+      log('error saving token! ' + err.message);
       passwordSaveErrorHandler(err);
     }
 
-    log(program, logger, 'checking for updates');
+    log('checking for updates');
     await checkForUpdate();
-    await trackActivity(logger);
+    await trackActivity();
 
     setTimeout(() => {
       process.exit(0);

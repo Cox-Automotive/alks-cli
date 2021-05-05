@@ -35,7 +35,7 @@ function handleAlksDeveloperAccounts(options, program) {
                 }
             }
         }
-        var table, logger, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
+        var table, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -47,7 +47,6 @@ function handleAlksDeveloperAccounts(options, program) {
                         ],
                         colWidths: [50, 50, 25],
                     });
-                    logger = 'dev-accounts';
                     doExport = options.export;
                     accountRegex = getAccountRegex_1.getAccountRegex();
                     exportCmd = isWindows_1.isWindows() ? 'SET' : 'export';
@@ -55,18 +54,18 @@ function handleAlksDeveloperAccounts(options, program) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 8, , 9]);
-                    log_1.log(program, logger, 'getting developer');
+                    log_1.log('getting developer');
                     return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 2:
                     developer = _a.sent();
-                    log_1.log(program, logger, 'getting auth');
+                    log_1.log('getting auth');
                     return [4 /*yield*/, getAuth_1.getAuth(program)];
                 case 3:
                     auth = _a.sent();
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
                 case 4:
                     alks = _a.sent();
-                    log_1.log(program, logger, 'getting alks accounts');
+                    log_1.log('getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
                 case 5:
                     alksAccounts = _a.sent();
@@ -83,11 +82,11 @@ function handleAlksDeveloperAccounts(options, program) {
                         console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
                         console.log(cli_color_1.default.white(table.toString()));
                     }
-                    log_1.log(program, logger, 'checking for update');
+                    log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 6:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity(logger)];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 7:
                     _a.sent();
                     return [3 /*break*/, 9];

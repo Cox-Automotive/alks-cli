@@ -8,10 +8,8 @@ import { getCollection } from './getCollection';
 
 const db = new loki(getDbFile());
 
-const logger = 'developer';
-
 export async function saveDeveloper(developer: NewDeveloper): Promise<void> {
-  log(null, logger, 'saving developer');
+  log('saving developer');
   const collection: Collection<Developer> = await getCollection('account');
 
   collection.removeDataOnly();

@@ -39,7 +39,6 @@ describe('getIamKey', () => {
   interface TestCase {
     description: string;
     program: commander.Command;
-    logger: string;
     alksAccount: string | undefined;
     alksRole: string | undefined;
     forceNewSession: boolean;
@@ -61,7 +60,6 @@ describe('getIamKey', () => {
 
   const defaultTestCase: Omit<TestCase, 'description'> = {
     program: {} as commander.Command,
-    logger: 'getIamKey',
     alksAccount: passedAccount,
     alksRole: passedRole,
     forceNewSession: false,
@@ -348,7 +346,6 @@ describe('getIamKey', () => {
         try {
           result = await getIamKey(
             t.program,
-            t.logger,
             t.alksAccount,
             t.alksRole,
             t.forceNewSession,

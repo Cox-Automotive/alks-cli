@@ -1,21 +1,23 @@
-import { OptionValues } from 'commander';
 import { yellow } from 'cli-color';
+import { getCallerInfo } from './getCallerInfo';
+import program from './program';
 
-let cliOptionsCache: OptionValues | undefined;
+export interface LogOptions {
+  verbose?: boolean; // whether to print to console (defaults to whether -v flag was passed)
+  prefix?: string; // The string to replace the caller's file name, line number, and character position
+}
 
-export function log(
-  cliOptions: OptionValues | null,
-  section: string,
-  msg: string
-) {
-  if (cliOptions || cliOptionsCache) {
-    cliOptionsCache = {
-      ...cliOptionsCache,
-      ...cliOptions,
-    };
+export function log(msg: string, opts: LogOptions = {}) {
+  let prefix = opts.prefix;
+  if (!prefix) {
+    const caller = getCallerInfo();
+    prefix = `${caller.fileName}:${caller.line}:${caller.char}`;
   }
 
-  if (cliOptionsCache?.verbose) {
-    console.error(yellow(['[', section, ']: ', msg].join('')));
+  const verbose: boolean =
+    opts.verbose === undefined ? program.opts().verbose : opts.verbose;
+
+  if (verbose) {
+    console.error(yellow(`[${prefix}]: ${msg}`));
   }
 }

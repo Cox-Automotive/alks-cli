@@ -28,6 +28,7 @@ var nameDesc = 'alphanumeric including @+=._-';
 var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
 var program = new commander_1.Command();
 program.exitOverride();
+program.passThroughOptions();
 program.configureOutput({
     writeErr: function (str) {
         if (!str.startsWith('error: unknown command')) {
@@ -131,6 +132,7 @@ var developer = program
 developer
     .command('configure')
     .description('configures developer')
+    .option('-v, --verbose', 'be verbose')
     .action(alks_developer_configure_1.handleAlksDeveloperConfigure);
 developer
     .command('accounts')

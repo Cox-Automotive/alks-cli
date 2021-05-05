@@ -9,14 +9,13 @@ var getDeveloper_1 = require("./getDeveloper");
 var getFavorites_1 = require("./getFavorites");
 var getStdErrPrompt_1 = require("./getStdErrPrompt");
 var log_1 = require("./log");
-var logger = 'getAlksAccount';
 function getAlksAccount(program, options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var developer, e_1, opts, auth, alks, alksAccounts, favorites, indexedAlksAccounts, promptData, prompt, answers, acctStr, data, alksAccount, alksRole;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log(program, logger, 'retreiving alks account');
+                    log_1.log('retreiving alks account');
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
