@@ -57,23 +57,25 @@ export async function getAlksAccount(
   });
 
   const alksAccounts = await alks.getAccounts();
+  log(
+    `All accounts: ${alksAccounts.map((alksAccount) => alksAccount.account)}`
+  );
 
   const favorites = await getFavorites();
+  log(`Favorites: ${favorites.toString()}`);
 
   const indexedAlksAccounts = alksAccounts
     .filter((alksAccount) => !opts.iamOnly || alksAccount.iamKeyActive) // Filter out non-iam-active accounts if iamOnly flag is passed
-    .filter(
-      (alksAccount) =>
-        !opts.filterFavorites || favorites.includes(alksAccount.account)
-    ) // Filter out non-favorites if filterFavorites flag is passed
-    .sort(
-      (a, b) =>
-        Number(favorites.includes(b.account)) -
-        Number(favorites.includes(a.account))
-    ) // Move favorites to the front of the list, non-favorites to the back
     .map((alksAccount) =>
       [alksAccount.account, alksAccount.role].join(getAccountDelim())
-    );
+    ) // Convert ALKS account object to ALKS-CLI style account string
+    .filter(
+      (accountString) =>
+        !opts.filterFavorites || favorites.includes(accountString)
+    ) // Filter out non-favorites if filterFavorites flag is passed
+    .sort(
+      (a, b) => Number(favorites.includes(b)) - Number(favorites.includes(a))
+    ); // Move favorites to the front of the list, non-favorites to the back
 
   if (!indexedAlksAccounts.length) {
     throw new Error('No accounts found.');

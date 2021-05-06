@@ -10,8 +10,14 @@ function isCommanderError(err) {
 function handleCommanderError(program, err) {
     if (isCommanderError(err)) {
         log_1.log(err.code);
-        if (err.code === 'commander.unknownCommand') {
-            handleUnknownCommand_1.handleUnknownCommand(program);
+        switch (err.code) {
+            case 'commander.unknownCommand': {
+                return handleUnknownCommand_1.handleUnknownCommand(program);
+            }
+            case 'commander.outputHelp':
+            case 'commander.helpDisplayed': {
+                return; // Do nothing
+            }
         }
     }
     errorAndExit_1.errorAndExit(err.message, err);

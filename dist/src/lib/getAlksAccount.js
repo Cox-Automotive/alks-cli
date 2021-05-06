@@ -45,21 +45,20 @@ function getAlksAccount(program, options) {
                     return [4 /*yield*/, alks.getAccounts()];
                 case 7:
                     alksAccounts = _a.sent();
+                    log_1.log("All accounts: " + alksAccounts.map(function (alksAccount) { return alksAccount.account; }));
                     return [4 /*yield*/, getFavorites_1.getFavorites()];
                 case 8:
                     favorites = _a.sent();
+                    log_1.log("Favorites: " + favorites.toString());
                     indexedAlksAccounts = alksAccounts
                         .filter(function (alksAccount) { return !opts.iamOnly || alksAccount.iamKeyActive; }) // Filter out non-iam-active accounts if iamOnly flag is passed
-                        .filter(function (alksAccount) {
-                        return !opts.filterFavorites || favorites.includes(alksAccount.account);
-                    }) // Filter out non-favorites if filterFavorites flag is passed
-                        .sort(function (a, b) {
-                        return Number(favorites.includes(b.account)) -
-                            Number(favorites.includes(a.account));
-                    }) // Move favorites to the front of the list, non-favorites to the back
                         .map(function (alksAccount) {
                         return [alksAccount.account, alksAccount.role].join(getAccountDelim_1.getAccountDelim());
-                    });
+                    }) // Convert ALKS account object to ALKS-CLI style account string
+                        .filter(function (accountString) {
+                        return !opts.filterFavorites || favorites.includes(accountString);
+                    }) // Filter out non-favorites if filterFavorites flag is passed
+                        .sort(function (a, b) { return Number(favorites.includes(b)) - Number(favorites.includes(a)); });
                     if (!indexedAlksAccounts.length) {
                         throw new Error('No accounts found.');
                     }

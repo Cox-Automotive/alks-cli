@@ -4,17 +4,20 @@ import { execSync } from 'child_process';
 import path from 'path';
 import { errorAndExit } from '../errorAndExit';
 import { isOsx } from '../isOsx';
-import forever from 'forever';
 import { log } from '../log';
 import fs from 'fs';
 
-function runServerDaemon() {
+async function runServerDaemon() {
   console.error(clc.white('Starting metadata server..'));
 
-  forever.startDaemon(path.join(__dirname, '../lib') + '/metadata-server.js', {
-    uid: 'alks-metadata',
-    root: path.join(__dirname, '../'),
-  });
+  // Dynamically import forever since it is an optional dependency
+  (await import('forever')).startDaemon(
+    path.join(__dirname, '../lib') + '/metadata-server.js',
+    {
+      uid: 'alks-metadata',
+      root: path.join(__dirname, '../'),
+    }
+  );
 
   console.error(clc.white('Metadata server now listening on: 169.254.169.254'));
 }
@@ -59,10 +62,10 @@ export async function handleAlksServerStart(
         console.log(clc.red('Error installing metadata daemon.'), err);
       }
       console.log(clc.white('Successfully installed metadata daemon.'));
-      runServerDaemon();
+      await runServerDaemon();
     } else {
       log('Daemon is already installed..');
-      runServerDaemon();
+      await runServerDaemon();
     }
   } catch (err) {
     errorAndExit(err.message, err);

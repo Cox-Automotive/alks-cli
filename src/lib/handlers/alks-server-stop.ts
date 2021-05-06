@@ -1,9 +1,8 @@
 import clc from 'cli-color';
 import commander from 'commander';
 import { isOsx } from '../isOsx';
-import forever from 'forever';
 
-export function handleAlksServerStop(
+export async function handleAlksServerStop(
   _options: commander.OptionValues,
   _program: commander.Command
 ) {
@@ -13,6 +12,8 @@ export function handleAlksServerStop(
   }
 
   console.error(clc.white('Stopping metadata server..'));
+
+  const forever = await import('forever');
 
   forever.list(false, (_err: Error | null, list: unknown | null) => {
     if (list === null) {

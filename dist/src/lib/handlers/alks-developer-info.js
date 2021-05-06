@@ -14,42 +14,41 @@ var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var underscore_1 = require("underscore");
 function handleAlksDeveloperInfo(_options, _program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var table, developer, password, token, ignores_1, mapping_1, tablePassword, tableToken, err_1;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var table, developer, password, token, mapping, _i, _a, _b, key, label, value, tablePassword, tableToken, err_1;
+        return tslib_1.__generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     table = new cli_table3_1.default({
                         head: [cli_color_1.default.white.bold('Key'), cli_color_1.default.white.bold('Value')],
                         colWidths: [25, 50],
                     });
-                    _a.label = 1;
+                    _c.label = 1;
                 case 1:
-                    _a.trys.push([1, 7, , 8]);
+                    _c.trys.push([1, 7, , 8]);
                     log_1.log('getting developer');
                     return [4 /*yield*/, getDeveloper_1.getDeveloper()];
                 case 2:
-                    developer = _a.sent();
+                    developer = _c.sent();
                     log_1.log('getting password');
                     return [4 /*yield*/, getPassword_1.getPassword(null)];
                 case 3:
-                    password = _a.sent();
+                    password = _c.sent();
                     log_1.log('getting 2fa token');
                     return [4 /*yield*/, getToken_1.getToken()];
                 case 4:
-                    token = _a.sent();
-                    ignores_1 = ['lastVersion'];
-                    mapping_1 = {
+                    token = _c.sent();
+                    mapping = {
                         server: 'ALKS Server',
                         userid: 'Network Login',
                         alksAccount: 'Default ALKS Account',
                         alksRole: 'Default ALKS Role',
                         outputFormat: 'Default Output Format',
                     };
-                    underscore_1.each(developer, function (val, key) {
-                        if (!underscore_1.contains(ignores_1, key)) {
-                            table.push([mapping_1[key], underscore_1.isEmpty(val) ? '' : val]);
-                        }
-                    });
+                    for (_i = 0, _a = Object.entries(mapping); _i < _a.length; _i++) {
+                        _b = _a[_i], key = _b[0], label = _b[1];
+                        value = developer[key];
+                        table.push([label, underscore_1.isEmpty(value) ? '' : value]);
+                    }
                     tablePassword = !underscore_1.isEmpty(password)
                         ? '**********'
                         : cli_color_1.default.red('NOT SET');
@@ -63,13 +62,13 @@ function handleAlksDeveloperInfo(_options, _program) {
                     log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
-                    _a.sent();
+                    _c.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 6:
-                    _a.sent();
+                    _c.sent();
                     return [3 /*break*/, 8];
                 case 7:
-                    err_1 = _a.sent();
+                    err_1 = _c.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
                     return [3 /*break*/, 8];
                 case 8: return [2 /*return*/];

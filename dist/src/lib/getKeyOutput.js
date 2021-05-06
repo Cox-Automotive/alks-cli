@@ -6,7 +6,7 @@ var cli_color_1 = require("cli-color");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 var isWindows_1 = require("./isWindows");
 var updateCreds_1 = require("./updateCreds");
-// if adding new output types be sure to update utils.js:getOutputValues
+// if adding new output types be sure to update getOutputValues.ts
 function getKeyOutput(format, key, profile, force) {
     var keyExpires = moment_1.default(key.expires).format();
     switch (format) {
@@ -50,11 +50,6 @@ function getKeyOutput(format, key, profile, force) {
         case 'fishshell': {
             return "set -xg AWS_ACCESS_KEY_ID '" + key.accessKey + "'; and set -xg AWS_SECRET_ACCESS_KEY '" + key.secretKey + "'; and set -xg AWS_SESSION_TOKEN '" + key.sessionToken + "'; and set -xg AWS_SESSION_EXPIRES '" + keyExpires + "';";
         }
-        case 'export': // fall through to case 'set'
-        case 'set': {
-            var cmd = format === 'export' ? 'export' : 'SET';
-            return cmd + " AWS_ACCESS_KEY_ID=" + key.accessKey + " && " + cmd + " AWS_SECRET_ACCESS_KEY=" + key.secretKey + " && " + cmd + " AWS_SESSION_TOKEN=" + key.sessionToken + " && " + cmd + " AWS_SESSION_EXPIRES=" + keyExpires;
-        }
         case 'aws': {
             return JSON.stringify({
                 Version: 1,
@@ -64,8 +59,10 @@ function getKeyOutput(format, key, profile, force) {
                 Expiration: moment_1.default(key.expires).toISOString(),
             });
         }
+        case 'export': // fall through to default case
+        case 'set':
         default: {
-            var cmd = isWindows_1.isWindows() ? 'SET' : 'export';
+            var cmd = isWindows_1.isWindows() || format === 'set' ? 'SET' : 'export';
             return cmd + " AWS_ACCESS_KEY_ID=" + key.accessKey + " && " + cmd + " AWS_SECRET_ACCESS_KEY=" + key.secretKey + " && " + cmd + " AWS_SESSION_TOKEN=" + key.sessionToken + " && " + cmd + " AWS_SESSION_EXPIRES=" + keyExpires;
         }
     }

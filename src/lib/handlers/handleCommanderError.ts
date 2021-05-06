@@ -11,11 +11,17 @@ function isCommanderError(err: any): err is CommanderError {
 export function handleCommanderError(
   program: commander.Command,
   err: CommanderError | Error
-) {
+): void {
   if (isCommanderError(err)) {
     log(err.code);
-    if (err.code === 'commander.unknownCommand') {
-      handleUnknownCommand(program);
+    switch (err.code) {
+      case 'commander.unknownCommand': {
+        return handleUnknownCommand(program);
+      }
+      case 'commander.outputHelp':
+      case 'commander.helpDisplayed': {
+        return; // Do nothing
+      }
     }
   }
   errorAndExit(err.message, err);

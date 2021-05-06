@@ -8,7 +8,8 @@ import { getToken } from '../getToken';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
-import { contains, each, isEmpty } from 'underscore';
+import { isEmpty } from 'underscore';
+import { Developer } from '../../model/developer';
 
 export async function handleAlksDeveloperInfo(
   _options: commander.OptionValues,
@@ -29,8 +30,7 @@ export async function handleAlksDeveloperInfo(
     log('getting 2fa token');
     const token = await getToken();
 
-    const ignores = ['lastVersion'];
-    const mapping: Record<string, string> = {
+    const mapping: Partial<Record<keyof Developer, string>> = {
       server: 'ALKS Server',
       userid: 'Network Login',
       alksAccount: 'Default ALKS Account',
@@ -38,11 +38,10 @@ export async function handleAlksDeveloperInfo(
       outputFormat: 'Default Output Format',
     };
 
-    each(developer, (val, key) => {
-      if (!contains(ignores, key)) {
-        table.push([mapping[key], isEmpty(val) ? '' : val]);
-      }
-    });
+    for (const [key, label] of Object.entries(mapping)) {
+      const value = developer[key as keyof Developer];
+      table.push([label, isEmpty(value) ? '' : value]);
+    }
 
     const tablePassword = !isEmpty(password)
       ? '**********'
