@@ -18,7 +18,8 @@ export function handleCommanderError(
       case 'commander.unknownCommand': {
         return handleUnknownCommand(program);
       }
-      case 'commander.outputHelp':
+      case 'commander.help':
+      case 'commander.version':
       case 'commander.helpDisplayed': {
         return; // Do nothing
       }

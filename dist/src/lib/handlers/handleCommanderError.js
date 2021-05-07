@@ -14,7 +14,8 @@ function handleCommanderError(program, err) {
             case 'commander.unknownCommand': {
                 return handleUnknownCommand_1.handleUnknownCommand(program);
             }
-            case 'commander.outputHelp':
+            case 'commander.help':
+            case 'commander.version':
             case 'commander.helpDisplayed': {
                 return; // Do nothing
             }
