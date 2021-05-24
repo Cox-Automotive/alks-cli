@@ -2050,9 +2050,9 @@
       }
     },
     "alks.js": {
-      "version": "1.12.6",
-      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.12.6.tgz",
-      "integrity": "sha512-g58AaC0Sa7yabS4BuMPBL+a0I30/eSzeb0WhO9p4Pq/E3eGWflSQ86y+PKaRqPRu9SjEVeIWcgW+r1x2pWQR7g==",
+      "version": "1.12.7",
+      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.12.7.tgz",
+      "integrity": "sha512-4M8JNR+4hEGQd1gQUAieVrD9UK6qoN5nBcP65c+nsVv9J0Cf2eKsJPVcE5m30sxtmAA9fP3j2oopYnsFQ714qw==",
       "requires": {
         "node-fetch": "^2.6.1"
       }
