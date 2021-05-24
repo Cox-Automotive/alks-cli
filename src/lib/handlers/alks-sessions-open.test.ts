@@ -694,6 +694,8 @@ describe('handleAlksSessionsOpen', () => {
     },
   ];
 
+  const fakeErrorSymbol = Symbol();
+
   for (const t of testCases) {
     describe(t.description, () => {
       let errorThrown = false;
@@ -711,6 +713,9 @@ describe('handleAlksSessionsOpen', () => {
         });
         ((errorAndExit as unknown) as jest.Mock).mockImplementation(() => {
           errorThrown = true;
+
+          // We have to throw an error to get execution to stop
+          throw fakeErrorSymbol;
         });
         (tryToExtractRole as jest.Mock).mockImplementation(() => {
           if (t.tryToExtractRoleFails) {
@@ -748,7 +753,13 @@ describe('handleAlksSessionsOpen', () => {
           }
         });
 
-        await handleAlksSessionsOpen(t.options, t.program);
+        try {
+          await handleAlksSessionsOpen(t.options, t.program);
+        } catch (e) {
+          if (!(e === fakeErrorSymbol)) {
+            throw e;
+          }
+        }
       });
 
       if (t.shouldErr) {
@@ -775,7 +786,6 @@ describe('handleAlksSessionsOpen', () => {
         it('attempts to fetch an IAM key', () => {
           expect(getIamKey).toHaveBeenCalledWith(
             t.program,
-            expect.any(String),
             t.getIamKeyParams.alksAccount,
             t.getIamKeyParams.alksRole,
             t.getIamKeyParams.newSession,
@@ -792,7 +802,6 @@ describe('handleAlksSessionsOpen', () => {
         it('attempts to fetch a session key', () => {
           expect(getSessionKey).toHaveBeenCalledWith(
             t.program,
-            expect.any(String),
             t.getSessionKeyParams.alksAccount,
             t.getSessionKeyParams.alksRole,
             t.getSessionKeyParams.iamOnly,

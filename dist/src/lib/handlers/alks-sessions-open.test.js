@@ -474,10 +474,12 @@ describe('handleAlksSessionsOpen', function () {
                 force: undefined,
             } }),
     ];
+    var fakeErrorSymbol = Symbol();
     var _loop_1 = function (t) {
         describe(t.description, function () {
             var errorThrown = false;
             beforeEach(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                var e_1;
                 return tslib_1.__generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -499,6 +501,8 @@ describe('handleAlksSessionsOpen', function () {
                             }); });
                             errorAndExit_1.errorAndExit.mockImplementation(function () {
                                 errorThrown = true;
+                                // We have to throw an error to get execution to stop
+                                throw fakeErrorSymbol;
                             });
                             tryToExtractRole_1.tryToExtractRole.mockImplementation(function () {
                                 if (t.tryToExtractRoleFails) {
@@ -549,10 +553,20 @@ describe('handleAlksSessionsOpen', function () {
                                     return t.keyOutput;
                                 }
                             });
-                            return [4 /*yield*/, alks_sessions_open_1.handleAlksSessionsOpen(t.options, t.program)];
+                            _a.label = 1;
                         case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, alks_sessions_open_1.handleAlksSessionsOpen(t.options, t.program)];
+                        case 2:
                             _a.sent();
-                            return [2 /*return*/];
+                            return [3 /*break*/, 4];
+                        case 3:
+                            e_1 = _a.sent();
+                            if (!(e_1 === fakeErrorSymbol)) {
+                                throw e_1;
+                            }
+                            return [3 /*break*/, 4];
+                        case 4: return [2 /*return*/];
                     }
                 });
             }); });
@@ -578,7 +592,7 @@ describe('handleAlksSessionsOpen', function () {
             }
             if (t.shouldGetIamKey) {
                 it('attempts to fetch an IAM key', function () {
-                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.program, expect.any(String), t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites);
+                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.program, t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites);
                 });
             }
             else {
@@ -588,7 +602,7 @@ describe('handleAlksSessionsOpen', function () {
             }
             if (t.shouldGetSessionKey) {
                 it('attempts to fetch a session key', function () {
-                    expect(getSessionKey_1.getSessionKey).toHaveBeenCalledWith(t.program, expect.any(String), t.getSessionKeyParams.alksAccount, t.getSessionKeyParams.alksRole, t.getSessionKeyParams.iamOnly, t.getSessionKeyParams.newSession, t.getSessionKeyParams.favorites);
+                    expect(getSessionKey_1.getSessionKey).toHaveBeenCalledWith(t.program, t.getSessionKeyParams.alksAccount, t.getSessionKeyParams.alksRole, t.getSessionKeyParams.iamOnly, t.getSessionKeyParams.newSession, t.getSessionKeyParams.favorites);
                 });
             }
             else {
