@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "alks-node": "^0.12.1",
-    "alks.js": "^1.12.0",
+    "alks.js": "^1.12.6",
     "chmod": "^0.2.1",
     "cli-color": "^1.1.0",
     "cli-table3": "^0.5.0",
@@ -59,7 +59,7 @@
     "prop-ini": "0.0.2",
     "request": "^2.72.0",
     "semver": "^5.3.0",
-    "underscore": "^1.8.3",
+    "underscore": "^1.13.1",
     "universal-analytics": "^0.4.8"
   },
   "devDependencies": {
