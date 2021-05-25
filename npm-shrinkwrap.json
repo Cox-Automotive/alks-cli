@@ -2050,10 +2050,11 @@
       }
     },
     "alks.js": {
-      "version": "1.12.7",
-      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.12.7.tgz",
-      "integrity": "sha512-4M8JNR+4hEGQd1gQUAieVrD9UK6qoN5nBcP65c+nsVv9J0Cf2eKsJPVcE5m30sxtmAA9fP3j2oopYnsFQ714qw==",
+      "version": "1.12.8",
+      "resolved": "https://registry.npmjs.org/alks.js/-/alks.js-1.12.8.tgz",
+      "integrity": "sha512-tKkQddAnBAm1mZn5/DWGs2AEX8G28M6KeAC12TENFJvdESDBlYZxGe7oU+6256zDuHN6f0gbqql8Vl9CYJ2gMg==",
       "requires": {
+        "encoding": "^0.1.13",
         "node-fetch": "^2.6.1"
       }
     },
@@ -3554,6 +3555,24 @@
       "resolved": "https://registry.npmjs.org/encodeurl/-/encodeurl-1.0.2.tgz",
       "integrity": "sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=",
       "optional": true
+    },
+    "encoding": {
+      "version": "0.1.13",
+      "resolved": "https://registry.npmjs.org/encoding/-/encoding-0.1.13.tgz",
+      "integrity": "sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==",
+      "requires": {
+        "iconv-lite": "^0.6.2"
+      },
+      "dependencies": {
+        "iconv-lite": {
+          "version": "0.6.3",
+          "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
+          "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
+          "requires": {
+            "safer-buffer": ">= 2.1.2 < 3.0.0"
+          }
+        }
+      }
     },
     "end-of-stream": {
       "version": "1.4.4",
