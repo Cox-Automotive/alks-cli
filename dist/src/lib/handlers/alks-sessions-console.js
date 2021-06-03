@@ -13,7 +13,7 @@ var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
-var opn_1 = tslib_1.__importDefault(require("opn"));
+var open_1 = tslib_1.__importDefault(require("open"));
 function handleAlksSessionsConsole(options, program) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, dev, err_1, key_1, err_2, url, opts, err_3, err_4;
@@ -84,7 +84,10 @@ function handleAlksSessionsConsole(options, program) {
                     _a.label = 14;
                 case 14:
                     _a.trys.push([14, 16, , 17]);
-                    return [4 /*yield*/, opn_1.default(url, opts)];
+                    return [4 /*yield*/, Promise.race([
+                            open_1.default(url, tslib_1.__assign(tslib_1.__assign({}, opts), { newInstance: true })),
+                            new Promise(function (_, rej) { setTimeout(function () { return rej(); }, 5000); }) // timeout after 5 seconds
+                        ])];
                 case 15:
                     _a.sent();
                     return [3 /*break*/, 17];
