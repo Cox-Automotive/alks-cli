@@ -33,7 +33,9 @@ function handleAlksDeveloperLogin2fa(_options, _program) {
                             open_1.default(url, {
                                 newInstance: true,
                             }),
-                            new Promise(function (_, rej) { setTimeout(function () { return rej(); }, 5000); }) // timeout after 5 seconds
+                            new Promise(function (_, rej) {
+                                setTimeout(function () { return rej(); }, 5000);
+                            }), // timeout after 5 seconds
                         ])];
                 case 3:
                     _a.sent();

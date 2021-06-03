@@ -86,7 +86,9 @@ function handleAlksSessionsConsole(options, program) {
                     _a.trys.push([14, 16, , 17]);
                     return [4 /*yield*/, Promise.race([
                             open_1.default(url, tslib_1.__assign(tslib_1.__assign({}, opts), { newInstance: true })),
-                            new Promise(function (_, rej) { setTimeout(function () { return rej(); }, 5000); }) // timeout after 5 seconds
+                            new Promise(function (_, rej) {
+                                setTimeout(function () { return rej(); }, 5000);
+                            }), // timeout after 5 seconds
                         ])];
                 case 15:
                     _a.sent();
