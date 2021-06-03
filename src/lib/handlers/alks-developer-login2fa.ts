@@ -9,7 +9,7 @@ import { log } from '../log';
 import { passwordSaveErrorHandler } from '../passwordSaveErrorHandler';
 import { storeToken } from '../storeToken';
 import { trackActivity } from '../trackActivity';
-import opn from 'opn';
+import open from 'open';
 
 export async function handleAlksDeveloperLogin2fa(
   _options: commander.OptionValues,
@@ -22,7 +22,14 @@ export async function handleAlksDeveloperLogin2fa(
     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
     const url = data.server.replace(/rest/, 'token-management');
     try {
-      await opn(url);
+      await Promise.race([
+        open(url, {
+          newInstance: true,
+        }),
+        new Promise((_, rej) => {
+          setTimeout(() => rej(), 5000);
+        }), // timeout after 5 seconds
+      ]);
     } catch (err) {
       console.error(`Failed to open ${url}`);
       console.error('Please open the url in the browser of your choice');

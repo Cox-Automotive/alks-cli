@@ -11,7 +11,7 @@ import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import alksNode from 'alks-node';
-import opn from 'opn';
+import open from 'open';
 
 export async function handleAlksSessionsConsole(
   options: commander.OptionValues,
@@ -85,7 +85,15 @@ export async function handleAlksSessionsConsole(
     } else {
       const opts = !isEmpty(options.openWith) ? { app: options.openWith } : {};
       try {
-        await opn(url, opts);
+        await Promise.race([
+          open(url, {
+            ...opts,
+            newInstance: true,
+          }),
+          new Promise((_, rej) => {
+            setTimeout(() => rej(), 5000);
+          }), // timeout after 5 seconds
+        ]);
       } catch (err) {
         console.error(`Failed to open ${url}`);
         console.error('Please open the url in the browser of your choice');
