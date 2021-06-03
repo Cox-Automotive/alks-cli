@@ -1,0 +1,1 @@
+{"version":3,"file":"getFilePathInHome.js","sourceRoot":"","sources":["../../../src/lib/getFilePathInHome.ts"],"names":[],"mappings":";;;AAAA,6BAA4B;AAE5B,SAAgB,iBAAiB,CAAC,QAAgB;IAChD,OAAO,WAAI,CACT,OAAO,CAAC,GAAG,CAAC,IAAI,IAAI,OAAO,CAAC,GAAG,CAAC,WAAW,IAAI,OAAO,CAAC,GAAG,CAAC,QAAQ,IAAI,EAAE,EACzE,QAAQ,CACT,CAAC;AACJ,CAAC;AALD,8CAKC"}

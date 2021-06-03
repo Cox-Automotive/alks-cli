@@ -1,0 +1,1 @@
+{"version":3,"file":"addNewLineToEof.js","sourceRoot":"","sources":["../../../src/lib/addNewLineToEof.ts"],"names":[],"mappings":";;;AAAA,yBAAoC;AACpC,yBAAyB;AACzB,+CAA8C;AAE9C;;GAEG;AACH,SAAgB,eAAe,CAAC,IAAY;IAC1C,IAAI;QACF,mBAAc,CAAC,IAAI,EAAE,QAAG,CAAC,CAAC;KAC3B;IAAC,OAAO,GAAG,EAAE;QACZ,2BAAY,CAAC,wBAAwB,EAAE,GAAG,CAAC,CAAC;KAC7C;AACH,CAAC;AAND,0CAMC"}
