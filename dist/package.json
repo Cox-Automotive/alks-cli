@@ -1,6 +1,6 @@
 {
     "name": "alks",
-    "version": "3.2.1",
+    "version": "3.2.2",
     "description": "CLI for working with ALKS",
     "main": "dist/src/bin/alks.js",
     "scripts": {
@@ -48,7 +48,6 @@
         "clortho": "https://github.com/Cox-Automotive/clortho/archive/1.2.4.tar.gz",
         "commander": "^7.2.0",
         "crypto": "0.0.3",
-        "express-list-endpoints": "^3.0.1",
         "fuzzy": "^0.1.1",
         "inquirer": "^6.5.2",
         "lokijs": "^1.5.1",
@@ -95,9 +94,6 @@
         "express-list-endpoints": "^3.0.1",
         "forever": "^3.0.4"
     },
-    "bundledDependencies": [
-        "clortho"
-    ],
     "lint-staged": {
         "src/**/*.{js,ts,json,md}": [
             "tslint --fix --force",
@@ -110,5 +106,8 @@
         "arrowParens": "always",
         "endOfLine": "lf",
         "trailingComma": "es5"
-    }
+    },
+    "bundleDependencies": [
+        "clortho"
+    ]
 }
