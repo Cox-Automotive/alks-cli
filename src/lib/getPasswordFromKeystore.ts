@@ -1,4 +1,4 @@
-import c from 'clortho';
+import c from '@cox-automotive/clortho';
 import { isEmpty } from 'underscore';
 import { isPasswordSecurelyStorable } from './isPasswordSecurelyStorable';
 import netrc from 'node-netrc';
