@@ -3,10 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Updates Clortho depdency and bundles it with the CLI
-→ Corrects a character escaping bug with Windows Powershell
-→ Updates depdencies with npm audit findings
+→ Fixes a bug where the CLI would fail to find changelog.txt when checking for updates
 
-→ Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
+Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
