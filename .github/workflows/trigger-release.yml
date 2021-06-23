@@ -1,0 +1,88 @@
+name: Trigger Release
+on: 
+  push:
+    branches:
+      - master
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Get the PR that this merge came from
+        uses: actions-ecosystem/action-get-merged-pull-request@v1
+        id: get-merged-pull-request
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org/
+
+      - name: Set github user
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Get the release level (major/minor/patch) from the labels
+        uses: actions-ecosystem/action-release-label@v1
+        id: release-label
+        if: ${{ steps.get-merged-pull-request.outputs.title != null }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ steps.get-merged-pull-request.outputs.labels }}
+
+      - name: skip non-merge pushes
+        if: ${{ steps.get-merged-pull-request.outputs.title == null }}
+        run: echo "skipping build since this is not a merge of a pull request" && exit 1
+
+      - name: skip merges without a release label
+        if: ${{ steps.release-label.outputs.level == null }}
+        run: echo "skipping build since there is no release label on the merged PR" && exit 1
+
+      - name: update changelog.txt
+        run: |
+          cat << EOF > changelog.txt
+          ★ Release Notes: $(date +%Y-%m-%d) ★
+          ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+          
+          Thanks for upgrading to the latest version of the ALKS CLI!
+          
+          ${{ steps.get-merged-pull-request.outputs.body }}
+
+          Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
+
+          ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
+          EOF
+          git add changelog.txt
+          git commit -m 'updates changelog.txt'
+
+      - name: Bump both git-tag and package.json version
+        run: npm version "${{ steps.release-label.outputs.level }}" -m "${{ steps.get-merged-pull-request.outputs.title }}"
+
+      - name: Commit & Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          tags: true
+
+      - name: Get the latest tag
+        id: previoustag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        with:
+          fallback: 0.0.1 # Optional fallback tag to use when no tag can be found
+
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.previoustag.outputs.tag }}
+          release_name: ${{ steps.previoustag.outputs.tag }}
+          body: ${{ steps.get-merged-pull-request.outputs.body }}
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
