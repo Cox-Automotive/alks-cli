@@ -67,6 +67,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
+          force: true # have to do this since there's a branch protection on master
           tags: true
 
       - name: Get the latest tag
