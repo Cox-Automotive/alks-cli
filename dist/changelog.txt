@@ -1,0 +1,12 @@
+★ Release Notes: 2021-01-25 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+Thanks for upgrading to the latest version of the ALKS CLI!
+
+→ Updates Clortho depdency and bundles it with the CLI
+→ Corrects a character escaping bug with Windows Powershell
+→ Updates depdencies with npm audit findings
+
+→ Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
+
+☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁

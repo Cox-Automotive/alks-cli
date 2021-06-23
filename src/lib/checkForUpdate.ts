@@ -13,7 +13,7 @@ import { saveDeveloper } from './saveDeveloper';
 function noop() {}
 
 function getChangeLog() {
-  const file = path.join(__dirname, '../', 'changelog.txt');
+  const file = path.join(__dirname, '../../', 'changelog.txt');
   return fs.readFileSync(file, 'utf8');
 }
 
