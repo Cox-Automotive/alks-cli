@@ -1,9 +1,10 @@
-★ Release Notes: 2021-01-25 ★
+★ Release Notes: 2021-06-25 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-→ Fixes a bug where the CLI would fail to find changelog.txt when checking for updates
+* Fixes the automatic build-and-deploy process for the ALKS CLI repo
+* Fixes bugs with changelog.txt not being found
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
