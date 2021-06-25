@@ -6,7 +6,6 @@ on:
 jobs:
   bump_version:
     runs-on: ubuntu-latest
-    environment: NPM_Publish
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
