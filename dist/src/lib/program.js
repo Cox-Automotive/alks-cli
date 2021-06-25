@@ -132,6 +132,14 @@ developer
     .command('configure')
     .description('configures developer')
     .option('-v, --verbose', 'be verbose')
+    .option('-s, --server', 'the ALKS server to use')
+    .option('-u, --username', 'your network username')
+    .option('-p, --password', 'your network password')
+    // .option('-t, --token', 'your ALKS refresh token')
+    // .option('-n, --no-auth', 'removes auth and uses instance profile credentials to authenticate')
+    .option('-a, --account', 'your default ALKS account')
+    .option('-r, --role', 'your default ALKS role')
+    .option('-o, --output', 'your default output format')
     .action(alks_developer_configure_1.handleAlksDeveloperConfigure);
 developer
     .command('accounts')

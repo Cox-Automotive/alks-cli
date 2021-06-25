@@ -105,6 +105,9 @@ jobs:
           release_name: ${{ steps.previoustag.outputs.tag }}
           body: ${{ steps.get-merged-pull-request.outputs.body }}
 
+      - name: install script dependencies
+        run: npm install
+
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
