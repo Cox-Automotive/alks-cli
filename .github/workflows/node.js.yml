@@ -31,5 +31,5 @@ jobs:
     - name: Run tests
       run: npm test -- --no-watch
     - name: Verify that a release label exists on the PR
-      if: ${{ ! ( contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') ) }}
+      if: ${{ ! ( contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') || contains(github.event.pull_request.labels.*.name, 'release/skip') ) }}
       run: echo "Please label your PR with a release label" && exit 1
