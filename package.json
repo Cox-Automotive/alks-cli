@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "3.2.2",
+  "version": "3.2.4",
   "description": "CLI for working with ALKS",
   "main": "dist/src/bin/alks.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "prettier": "prettier --write",
     "tslint": "tslint --fix --force",
     "prepare": "husky install",
-    "build": "[ -d dist/ ] && rm -r dist/ ; tsc"
+    "build": "[ -d dist/ ] && rm -r dist/ ; tsc ; cp changelog.txt dist/"
   },
   "engines": {
     "node": ">=10.0.0"

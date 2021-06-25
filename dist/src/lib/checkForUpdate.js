@@ -15,7 +15,7 @@ var getDeveloper_1 = require("./getDeveloper");
 var saveDeveloper_1 = require("./saveDeveloper");
 function noop() { }
 function getChangeLog() {
-    var file = path_1.default.join(__dirname, '../', 'changelog.txt');
+    var file = path_1.default.join(__dirname, '../../', 'changelog.txt');
     return fs_1.default.readFileSync(file, 'utf8');
 }
 function checkForUpdate() {
