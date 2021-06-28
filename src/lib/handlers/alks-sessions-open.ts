@@ -1,7 +1,6 @@
 import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { getDeveloper } from '../getDeveloper';
 import { getIamKey } from '../getIamKey';
 import { getKeyOutput } from '../getKeyOutput';
 import { getSessionKey } from '../getSessionKey';
@@ -9,12 +8,11 @@ import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { Key } from '../../model/keys';
-import { Developer } from '../../model/developer';
+import { getAlksAccount } from '../state/alksAccount';
+import { getAlksRole } from '../state/alksRole';
+import { getOutputFormat } from '../state/outputFormat';
 
-export async function handleAlksSessionsOpen(
-  options: commander.OptionValues,
-  program: commander.Command
-) {
+export async function handleAlksSessionsOpen(options: commander.OptionValues) {
   let alksAccount: string | undefined = options.account;
   let alksRole: string | undefined = options.role;
 
@@ -25,22 +23,18 @@ export async function handleAlksSessionsOpen(
   }
 
   try {
-    let developer: Developer;
-    try {
-      developer = await getDeveloper();
-    } catch (err) {
-      errorAndExit('Unable to load default account!', err);
-    }
-
     if (options.default) {
-      alksAccount = developer.alksAccount;
-      alksRole = developer.alksRole;
+      try {
+        alksAccount = await getAlksAccount();
+        alksRole = await getAlksRole();
+      } catch (err) {
+        errorAndExit('Unable to load default account!', err);
+      }
     }
 
     let key: Key;
     if (options.iam) {
       key = await getIamKey(
-        program,
         alksAccount,
         alksRole,
         options.newSession,
@@ -48,7 +42,6 @@ export async function handleAlksSessionsOpen(
       );
     } else {
       key = await getSessionKey(
-        program,
         alksAccount,
         alksRole,
         false,
@@ -59,7 +52,7 @@ export async function handleAlksSessionsOpen(
 
     console.log(
       getKeyOutput(
-        options.output || developer.outputFormat,
+        options.output || (await getOutputFormat()),
         key,
         options.namedProfile,
         options.force

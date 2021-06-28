@@ -1,10 +1,9 @@
-import { getPasswordFromKeystore } from './getPasswordFromKeystore';
 import { getPasswordFromPrompt } from './getPasswordFromPrompt';
-import { log } from './log';
+import { getPassword } from './state/password';
 
 export async function promptForPassword(): Promise<string> {
-  log('getting existing password');
-  const password = await getPasswordFromKeystore();
+  // Ignore failure since we're about to prompt for it
+  const password = await getPassword().catch(() => undefined);
 
   return getPasswordFromPrompt('Network Password', password);
 }

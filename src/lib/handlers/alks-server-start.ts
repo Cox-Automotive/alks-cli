@@ -22,10 +22,7 @@ async function runServerDaemon() {
   console.error(clc.white('Metadata server now listening on: 169.254.169.254'));
 }
 
-export async function handleAlksServerStart(
-  _options: commander.OptionValues,
-  _program: commander.Command
-) {
+export async function handleAlksServerStart(_options: commander.OptionValues) {
   try {
     if (!isOsx()) {
       errorAndExit('The metadata server is only supported on OSX.');

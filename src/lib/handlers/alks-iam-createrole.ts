@@ -4,17 +4,13 @@ import { isEmpty, isUndefined } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
-import { getAlksAccount } from '../getAlksAccount';
+import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
-import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamCreateRole(
-  options: commander.OptionValues,
-  program: commander.Command
-) {
+export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   const roleNameDesc = 'alphanumeric including @+=._-';
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const roleName = options.rolename;
@@ -46,7 +42,7 @@ export async function handleAlksIamCreateRole(
   try {
     if (isEmpty(alksAccount) || isEmpty(alksRole)) {
       log('getting accounts');
-      ({ alksAccount, alksRole } = await getAlksAccount(program, {
+      ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
         filterFavorites,
       }));
@@ -54,14 +50,11 @@ export async function handleAlksIamCreateRole(
       log('using provided account/role');
     }
 
-    const developer = await getDeveloper();
-
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     log('calling api to create role: ' + roleName);
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 

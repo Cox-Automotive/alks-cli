@@ -2,20 +2,17 @@ import { white } from 'cli-color';
 import { last, sortBy, where } from 'underscore';
 import { getAlks } from './getAlks';
 import moment from 'moment';
-import commander from 'commander';
 import ALKS from 'alks.js';
 import { log } from './log';
 import { getBadAccountMessage } from './getBadAccountMessage';
 import { Key } from '../model/keys';
 import { ensureConfigured } from './ensureConfigured';
-import { getDeveloper } from './getDeveloper';
 import { getAuth } from './getAuth';
-import { getAlksAccount } from './getAlksAccount';
+import { promptForAlksAccountAndRole } from './promptForAlksAccountAndRole';
 import { getKeys } from './getKeys';
 import { addKey } from './addKey';
 
 export async function getSessionKey(
-  program: commander.Command,
   alksAccount: string | undefined,
   alksRole: string | undefined,
   iamOnly: boolean,
@@ -24,16 +21,13 @@ export async function getSessionKey(
 ): Promise<Key> {
   await ensureConfigured();
 
-  log('getting developer');
-  const developer = await getDeveloper();
-
   log('getting auth');
-  const auth = await getAuth(program);
+  const auth = await getAuth();
 
   // only lookup alks account if they didnt provide
   if (!alksAccount || !alksRole) {
     log('getting accounts');
-    ({ alksAccount, alksRole } = await getAlksAccount(program, {
+    ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
       iamOnly,
       filterFavorites,
     }));
@@ -71,7 +65,6 @@ export async function getSessionKey(
   }
 
   const alks = await getAlks({
-    baseUrl: developer.server,
     ...auth,
   });
 

@@ -5,16 +5,14 @@ import { isEmpty, isUndefined } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
-import { getAlksAccount } from '../getAlksAccount';
+import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
-import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamCreateTrustRole(
-  options: commander.OptionValues,
-  program: commander.Command
+  options: commander.OptionValues
 ) {
   const roleNameDesc = 'alphanumeric including @+=._-';
   const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -60,7 +58,7 @@ export async function handleAlksIamCreateTrustRole(
   try {
     if (isEmpty(alksAccount) || isEmpty(alksRole)) {
       log('getting accounts');
-      ({ alksAccount, alksRole } = await getAlksAccount(program, {
+      ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
         filterFavorites,
       }));
@@ -68,14 +66,11 @@ export async function handleAlksIamCreateTrustRole(
       log('using provided account/role');
     }
 
-    const developer = await getDeveloper();
-
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     log('calling api to create trust role: ' + roleName);
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 

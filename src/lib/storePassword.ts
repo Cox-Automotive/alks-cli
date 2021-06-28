@@ -7,19 +7,13 @@ import { getFilePathInHome } from './getFilePathInHome';
 import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
 
 const clortho = c.forService('alkscli');
-
 const SERVICE = 'alkscli';
 const ALKS_USERID = 'alksuid';
 
 export async function storePassword(password: string) {
   log('storing password');
   if (isPasswordSecurelyStorable()) {
-    try {
-      await clortho.saveToKeychain(ALKS_USERID, password);
-    } catch (e) {
-      return false;
-    }
-    return true;
+    await clortho.saveToKeychain(ALKS_USERID, password);
   } else {
     netrc.update(SERVICE, {
       login: ALKS_USERID,
@@ -27,7 +21,5 @@ export async function storePassword(password: string) {
     });
 
     chmod(getFilePathInHome('.netrc'), getOwnerReadWriteOnlyPermission());
-
-    return true;
   }
 }

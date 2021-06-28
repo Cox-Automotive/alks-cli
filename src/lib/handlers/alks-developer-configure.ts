@@ -3,70 +3,46 @@ import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
 import { confirm } from '../confirm';
 import { errorAndExit } from '../errorAndExit';
-import { getAlksAccount } from '../getAlksAccount';
-import { cacheAuth } from '../getAuth';
+import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { log } from '../log';
 import { promptForOutputFormat } from '../promptForOutputFormat';
 import { promptForPassword } from '../promptForPassword';
 import { promptForServer } from '../promptForServer';
 import { promptForUserId } from '../promptForUserId';
-import { saveDeveloper } from '../saveDeveloper';
 import { savePassword } from '../savePassword';
 import { trackActivity } from '../trackActivity';
+import { setServer } from '../state/server';
+import { setUserId } from '../state/userId';
+import { setAlksAccount } from '../state/alksAccount';
+import { setAlksRole } from '../state/alksRole';
+import { setOutputFormat } from '../state/outputFormat';
 
 export async function handleAlksDeveloperConfigure(
-  _options: commander.OptionValues,
-  program: commander.Command
+  _options: commander.OptionValues
 ) {
   try {
-    const server = await promptForServer();
+    await setServer(await promptForServer());
 
-    const userId = await promptForUserId();
+    await setUserId(await promptForUserId());
 
-    log('getting password');
     const password = await promptForPassword();
-
     const savePasswordAnswer = await confirm('Save password');
     if (savePasswordAnswer) {
       await savePassword(password);
     }
 
-    // Cache password in program object for faster lookup
-    cacheAuth({
-      userid: userId,
-      password,
-    });
-
     log('Getting ALKS accounts');
-    const { alksAccount, alksRole } = await getAlksAccount(program, {
+    const { alksAccount, alksRole } = await promptForAlksAccountAndRole({
       prompt: 'Please select your default ALKS account/role',
-      server,
     });
+    await setAlksAccount(alksAccount);
+    await setAlksRole(alksRole);
 
     log('Getting output formats');
-    const outputFormat = await promptForOutputFormat();
+    setOutputFormat(await promptForOutputFormat());
 
     // create developer
-    log('saving developer');
-    try {
-      await saveDeveloper({
-        server,
-        userid: userId,
-        alksAccount,
-        alksRole,
-        outputFormat,
-      });
-      console.error(
-        clc.white('Your developer configuration has been updated.')
-      );
-    } catch (e2) {
-      log('error saving! ' + e2.message);
-      console.error(
-        clc.red.bold(
-          'There was an error updating your developer configuration.'
-        )
-      );
-    }
+    console.error(clc.white('Your developer configuration has been updated.'));
 
     log('checking for update');
     await checkForUpdate();

@@ -11,8 +11,7 @@ import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksServerConfigure(
-  options: commander.OptionValues,
-  program: commander.Command
+  options: commander.OptionValues
 ) {
   const alksAccount = options.account;
   let alksRole = options.role;
@@ -29,7 +28,6 @@ export async function handleAlksServerConfigure(
     try {
       if (isUndefined(options.iam)) {
         key = await getSessionKey(
-          program,
           alksAccount,
           alksRole,
           false,
@@ -38,7 +36,6 @@ export async function handleAlksServerConfigure(
         );
       } else {
         key = await getIamKey(
-          program,
           alksAccount,
           alksRole,
           forceNewSession,

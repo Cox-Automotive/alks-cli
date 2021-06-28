@@ -1,13 +1,9 @@
-import { getDeveloper } from './getDeveloper';
 import { getPrompt } from './getPrompt';
+import { getUserId } from './state/userId';
 
 export async function promptForUserId(): Promise<string> {
-  let developer;
-  try {
-    developer = await getDeveloper();
-  } catch (e) {
-    // ignore
-  }
+  // Ignore failure since we're about to prompt for it
+  const userId = await getUserId().catch(() => undefined);
 
-  return getPrompt('userid', developer?.userid, 'Network Username', null);
+  return getPrompt('userid', userId, 'Network Username', null);
 }

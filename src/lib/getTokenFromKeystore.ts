@@ -7,7 +7,7 @@ const clortho = c.forService('alkscli');
 const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
-export async function getToken() {
+export async function getTokenFromKeystore() {
   if (isPasswordSecurelyStorable()) {
     try {
       const data = await clortho.getFromKeychain(ALKS_TOKEN);

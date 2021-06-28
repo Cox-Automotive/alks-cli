@@ -1,17 +1,15 @@
-import commander from 'commander';
-import { Developer } from '../model/developer';
 import { getAccountDelim } from './getAccountDelim';
 import { getAlks } from './getAlks';
 import { getAuth } from './getAuth';
-import { getDeveloper } from './getDeveloper';
 import { getFavorites } from './getFavorites';
 import { getStdErrPrompt } from './getStdErrPrompt';
 import { log } from './log';
+import { getAlksAccount } from './state/alksAccount';
+import { getAlksRole } from './state/alksRole';
 
 export interface GetAlksAccountProps {
   iamOnly: boolean;
   prompt: string;
-  server?: string;
   filterFavorites: boolean;
 }
 
@@ -24,35 +22,21 @@ export interface AlksAccountPromptData {
   default?: string;
 }
 
-export async function getAlksAccount(
-  program: commander.Command,
+export async function promptForAlksAccountAndRole(
   options: Partial<GetAlksAccountProps>
 ): Promise<{ alksAccount: string; alksRole: string }> {
   log('retreiving alks account');
-
-  let developer: Developer | undefined;
-  try {
-    developer = await getDeveloper();
-  } catch (e) {
-    // It's ok if developer isn't set yet since this may be called during the initial setup
-  }
 
   const opts: GetAlksAccountProps = {
     iamOnly: options.iamOnly || false,
     prompt: options.prompt || 'Please select an ALKS account/role',
     filterFavorites: options.filterFavorites || false,
-    server: options.server || developer?.server,
   };
 
-  if (!opts.server) {
-    throw new Error('No server URL configured');
-  }
-
-  const auth = await getAuth(program);
+  const auth = await getAuth();
 
   // load available account/roles
   const alks = await getAlks({
-    baseUrl: opts.server,
     ...auth,
   });
 
@@ -89,8 +73,12 @@ export async function getAlksAccount(
     pageSize: 15,
   };
 
-  if (developer) {
-    promptData.default = [developer.alksAccount, developer.alksRole].join(
+  // Ignore failure since we're about to prompt for it
+  const defaultAlksAccount = await getAlksAccount().catch(() => undefined);
+  const defaultAlksRole = await getAlksRole().catch(() => undefined);
+
+  if (defaultAlksAccount && defaultAlksRole) {
+    promptData.default = [defaultAlksAccount, defaultAlksRole].join(
       getAccountDelim()
     );
   }

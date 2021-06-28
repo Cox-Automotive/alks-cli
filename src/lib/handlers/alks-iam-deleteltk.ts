@@ -4,15 +4,13 @@ import { isEmpty, isUndefined } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
-import { getIAMAccount } from '../getIamAccount';
+import { getAuth } from '../getAuth';
 import { log } from '../log';
+import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
-export async function handleAlksIamDeleteLtk(
-  options: commander.OptionValues,
-  program: commander.Command
-) {
+export async function handleAlksIamDeleteLtk(options: commander.OptionValues) {
   const iamUsername = options.iamusername;
   let alksAccount = options.account;
   let alksRole = options.role;
@@ -29,22 +27,16 @@ export async function handleAlksIamDeleteLtk(
   }
 
   try {
-    let iamAccount;
-    try {
-      iamAccount = await getIAMAccount(
-        program,
-        alksAccount,
-        alksRole,
-        filterFaves
-      );
-    } catch (err) {
-      errorAndExit(err);
+    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+      ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
+        iamOnly: true,
+        filterFavorites: filterFaves,
+      }));
     }
-    const { developer, auth } = iamAccount;
-    ({ account: alksAccount, role: alksRole } = iamAccount);
+
+    const auth = await getAuth();
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 
