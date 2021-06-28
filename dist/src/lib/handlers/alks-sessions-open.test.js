@@ -6,10 +6,12 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var getKeyOutput_1 = require("../getKeyOutput");
-var getDeveloper_1 = require("../getDeveloper");
 var getIamKey_1 = require("../getIamKey");
 var getSessionKey_1 = require("../getSessionKey");
 var alks_sessions_open_1 = require("./alks-sessions-open");
+var alksAccount_1 = require("../state/alksAccount");
+var alksRole_1 = require("../state/alksRole");
+var outputFormat_1 = require("../state/outputFormat");
 jest.mock('../errorAndExit', function () { return ({
     __esModule: true,
     errorAndExit: jest.fn(),
@@ -26,9 +28,17 @@ jest.mock('../tryToExtractRole', function () { return ({
     __esModule: true,
     tryToExtractRole: jest.fn(),
 }); });
-jest.mock('../getDeveloper', function () { return ({
+jest.mock('../state/alksAccount', function () { return ({
     __esModule: true,
-    getDeveloper: jest.fn(),
+    getAlksAccount: jest.fn(),
+}); });
+jest.mock('../state/alksRole', function () { return ({
+    __esModule: true,
+    getAlksRole: jest.fn(),
+}); });
+jest.mock('../state/getOutputFormat', function () { return ({
+    __esModule: true,
+    getOutputFormat: jest.fn(),
 }); });
 jest.mock('../getIamKey', function () { return ({
     __esModule: true,
@@ -60,8 +70,12 @@ describe('handleAlksSessionsOpen', function () {
         tryToExtractRoleFails: false,
         shouldTryToExtractRole: false,
         extractedRole: '',
-        getDeveloperFails: false,
-        developer: {},
+        getAlksAccountFails: false,
+        alksAccount: '000000000000/ALKSAdmin - awszero',
+        getAlksRoleFails: false,
+        alksRole: 'Admin',
+        getOutputFormatFails: false,
+        outputFormat: 'env',
         shouldGetIamKey: false,
         getIamKeyFails: false,
         getIamKeyParams: {
@@ -90,22 +104,17 @@ describe('handleAlksSessionsOpen', function () {
         keyOutput: '',
     };
     var testCases = [
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getDeveloper fails', shouldErr: true, options: {
-                account: '012345678910/ALKSAdmin - awstest',
-                role: 'Admin',
-            }, getDeveloperFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when requesting default account and getAlksAccount fails', shouldErr: true, options: {
+                default: true,
+            }, getAlksAccountFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when requesting default account and getAlksRole fails', shouldErr: true, options: {
+                default: true,
+            }, getAlksRoleFails: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting an IAM key fails', shouldErr: true, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -114,32 +123,36 @@ describe('handleAlksSessionsOpen', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting a session key fails', shouldErr: true, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetSessionKey: true, getSessionKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', shouldGetSessionKey: true, getSessionKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 iamOnly: false,
                 newSession: undefined,
                 favorites: undefined,
             }, getSessionKeyFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getOutputFormat fails', shouldErr: true, options: {
+                account: '012345678910/ALKSAdmin - awstest',
+                role: 'Admin',
+                iam: true,
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', getOutputFormatFails: true, shouldGetIamKey: true, getIamKeyParams: {
+                alksAccount: '012345678910/ALKSAdmin - awstest',
+                alksRole: 'Admin',
+                newSession: undefined,
+                favorites: undefined,
+            }, key: {
+                alksAccount: '012345678910/ALKSAdmin - awstest',
+                alksRole: 'Admin',
+                isIAM: true,
+                expires: new Date(),
+                accessKey: 'abcd',
+                secretKey: 'efgh',
+                sessionToken: 'ijkl',
+            } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getKeyOutput fails', shouldErr: true, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -161,14 +174,7 @@ describe('handleAlksSessionsOpen', function () {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -190,14 +196,7 @@ describe('handleAlksSessionsOpen', function () {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -219,14 +218,7 @@ describe('handleAlksSessionsOpen', function () {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -247,14 +239,7 @@ describe('handleAlksSessionsOpen', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getSessionKey succeeds', shouldErr: false, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetSessionKey: true, getSessionKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetSessionKey: true, getSessionKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 iamOnly: false,
@@ -278,14 +263,7 @@ describe('handleAlksSessionsOpen', function () {
                 role: 'Admin',
                 iam: true,
                 namedProfile: 'bobbybob',
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -308,14 +286,7 @@ describe('handleAlksSessionsOpen', function () {
                 role: 'Admin',
                 iam: true,
                 force: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -336,14 +307,7 @@ describe('handleAlksSessionsOpen', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no role is passed and tryToExtractRole succeeds', shouldErr: false, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 iam: true,
-            }, shouldTryToExtractRole: true, extractedRole: 'Admin', developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, shouldTryToExtractRole: true, extractedRole: 'Admin', alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
                 newSession: undefined,
@@ -364,14 +328,7 @@ describe('handleAlksSessionsOpen', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no role is passed and tryToExtractRole fails', shouldErr: false, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 iam: true,
-            }, shouldTryToExtractRole: true, tryToExtractRoleFails: true, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, shouldTryToExtractRole: true, tryToExtractRoleFails: true, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: undefined,
                 newSession: undefined,
@@ -393,14 +350,7 @@ describe('handleAlksSessionsOpen', function () {
                 account: '012345678910/ALKSAdmin - awstest',
                 default: true,
                 iam: true,
-            }, shouldTryToExtractRole: true, tryToExtractRoleFails: true, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, shouldTryToExtractRole: true, tryToExtractRoleFails: true, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '444455556666/ALKSPowerUser - awsthing',
                 alksRole: 'PowerUser',
                 newSession: undefined,
@@ -420,14 +370,7 @@ describe('handleAlksSessionsOpen', function () {
             } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed', shouldErr: false, options: {
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: undefined,
                 alksRole: undefined,
                 newSession: undefined,
@@ -448,14 +391,7 @@ describe('handleAlksSessionsOpen', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed but default flag is passed', shouldErr: false, options: {
                 default: true,
                 iam: true,
-            }, developer: {
-                server: 'https://alks.com',
-                userid: 'bobby',
-                alksAccount: '444455556666/ALKSPowerUser - awsthing',
-                alksRole: 'PowerUser',
-                outputFormat: 'env',
-                lastVersion: '0.0.1',
-            }, shouldGetIamKey: true, getIamKeyParams: {
+            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
                 alksAccount: '444455556666/ALKSPowerUser - awsthing',
                 alksRole: 'PowerUser',
                 newSession: undefined,
@@ -512,13 +448,35 @@ describe('handleAlksSessionsOpen', function () {
                                     return t.extractedRole;
                                 }
                             });
-                            getDeveloper_1.getDeveloper.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                            alksAccount_1.getAlksAccount.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
-                                    if (t.getDeveloperFails) {
+                                    if (t.getAlksAccountFails) {
                                         throw new Error();
                                     }
                                     else {
-                                        return [2 /*return*/, t.developer];
+                                        return [2 /*return*/, t.alksAccount];
+                                    }
+                                    return [2 /*return*/];
+                                });
+                            }); });
+                            alksRole_1.getAlksRole.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                                return tslib_1.__generator(this, function (_a) {
+                                    if (t.getAlksRoleFails) {
+                                        throw new Error();
+                                    }
+                                    else {
+                                        return [2 /*return*/, t.alksRole];
+                                    }
+                                    return [2 /*return*/];
+                                });
+                            }); });
+                            outputFormat_1.getOutputFormat.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                                return tslib_1.__generator(this, function (_a) {
+                                    if (t.getOutputFormatFails) {
+                                        throw new Error();
+                                    }
+                                    else {
+                                        return [2 /*return*/, t.outputFormat];
                                     }
                                     return [2 /*return*/];
                                 });
@@ -556,7 +514,7 @@ describe('handleAlksSessionsOpen', function () {
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);
-                            return [4 /*yield*/, alks_sessions_open_1.handleAlksSessionsOpen(t.options, t.program)];
+                            return [4 /*yield*/, alks_sessions_open_1.handleAlksSessionsOpen(t.options)];
                         case 2:
                             _a.sent();
                             return [3 /*break*/, 4];

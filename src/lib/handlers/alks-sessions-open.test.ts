@@ -4,12 +4,13 @@ import { checkForUpdate } from '../checkForUpdate';
 import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { getKeyOutput } from '../getKeyOutput';
-import { getDeveloper } from '../getDeveloper';
 import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { handleAlksSessionsOpen } from './alks-sessions-open';
-import { Developer } from '../../model/developer';
 import { Key } from '../../model/keys';
+import { getAlksAccount } from '../state/alksAccount';
+import { getAlksRole } from '../state/alksRole';
+import { getOutputFormat } from '../state/outputFormat';
 
 jest.mock('../errorAndExit', () => ({
   __esModule: true,
@@ -31,9 +32,19 @@ jest.mock('../tryToExtractRole', () => ({
   tryToExtractRole: jest.fn(),
 }));
 
-jest.mock('../getDeveloper', () => ({
+jest.mock('../state/alksAccount', () => ({
   __esModule: true,
-  getDeveloper: jest.fn(),
+  getAlksAccount: jest.fn(),
+}));
+
+jest.mock('../state/alksRole', () => ({
+  __esModule: true,
+  getAlksRole: jest.fn(),
+}));
+
+jest.mock('../state/getOutputFormat', () => ({
+  __esModule: true,
+  getOutputFormat: jest.fn(),
 }));
 
 jest.mock('../getIamKey', () => ({
@@ -73,8 +84,12 @@ describe('handleAlksSessionsOpen', () => {
     tryToExtractRoleFails: boolean;
     shouldTryToExtractRole: boolean;
     extractedRole: string;
-    getDeveloperFails: boolean;
-    developer: Developer;
+    getAlksAccountFails: boolean;
+    alksAccount: string;
+    getAlksRoleFails: boolean;
+    alksRole: string;
+    getOutputFormatFails: boolean;
+    outputFormat: string;
     shouldGetIamKey: boolean;
     getIamKeyFails: boolean;
     getIamKeyParams: {
@@ -111,8 +126,12 @@ describe('handleAlksSessionsOpen', () => {
     tryToExtractRoleFails: false,
     shouldTryToExtractRole: false,
     extractedRole: '',
-    getDeveloperFails: false,
-    developer: {} as Developer,
+    getAlksAccountFails: false,
+    alksAccount: '000000000000/ALKSAdmin - awszero',
+    getAlksRoleFails: false,
+    alksRole: 'Admin',
+    getOutputFormatFails: false,
+    outputFormat: 'env',
     shouldGetIamKey: false,
     getIamKeyFails: false,
     getIamKeyParams: {
@@ -144,13 +163,21 @@ describe('handleAlksSessionsOpen', () => {
   const testCases: TestCase[] = [
     {
       ...defaultTestCase,
-      description: 'when getDeveloper fails',
+      description: 'when requesting default account and getAlksAccount fails',
       shouldErr: true,
       options: {
-        account: '012345678910/ALKSAdmin - awstest',
-        role: 'Admin',
+        default: true,
       },
-      getDeveloperFails: true,
+      getAlksAccountFails: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when requesting default account and getAlksRole fails',
+      shouldErr: true,
+      options: {
+        default: true,
+      },
+      getAlksRoleFails: true,
     },
     {
       ...defaultTestCase,
@@ -161,14 +188,8 @@ describe('handleAlksSessionsOpen', () => {
         role: 'Admin',
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -186,14 +207,8 @@ describe('handleAlksSessionsOpen', () => {
         account: '012345678910/ALKSAdmin - awstest',
         role: 'Admin',
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
       shouldGetSessionKey: true,
       getSessionKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -206,6 +221,35 @@ describe('handleAlksSessionsOpen', () => {
     },
     {
       ...defaultTestCase,
+      description: 'when getOutputFormat fails',
+      shouldErr: true,
+      options: {
+        account: '012345678910/ALKSAdmin - awstest',
+        role: 'Admin',
+        iam: true,
+      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      getOutputFormatFails: true,
+      shouldGetIamKey: true,
+      getIamKeyParams: {
+        alksAccount: '012345678910/ALKSAdmin - awstest',
+        alksRole: 'Admin',
+        newSession: undefined,
+        favorites: undefined,
+      },
+      key: {
+        alksAccount: '012345678910/ALKSAdmin - awstest',
+        alksRole: 'Admin',
+        isIAM: true,
+        expires: new Date(),
+        accessKey: 'abcd',
+        secretKey: 'efgh',
+        sessionToken: 'ijkl',
+      },
+    },
+    {
+      ...defaultTestCase,
       description: 'when getKeyOutput fails',
       shouldErr: true,
       options: {
@@ -213,14 +257,9 @@ describe('handleAlksSessionsOpen', () => {
         role: 'Admin',
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -254,14 +293,9 @@ describe('handleAlksSessionsOpen', () => {
         role: 'Admin',
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -295,14 +329,9 @@ describe('handleAlksSessionsOpen', () => {
         role: 'Admin',
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -336,14 +365,9 @@ describe('handleAlksSessionsOpen', () => {
         role: 'Admin',
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -375,14 +399,9 @@ describe('handleAlksSessionsOpen', () => {
         account: '012345678910/ALKSAdmin - awstest',
         role: 'Admin',
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetSessionKey: true,
       getSessionKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -417,14 +436,9 @@ describe('handleAlksSessionsOpen', () => {
         iam: true,
         namedProfile: 'bobbybob',
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -458,14 +472,9 @@ describe('handleAlksSessionsOpen', () => {
         iam: true,
         force: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -499,14 +508,9 @@ describe('handleAlksSessionsOpen', () => {
       },
       shouldTryToExtractRole: true,
       extractedRole: 'Admin',
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -540,14 +544,9 @@ describe('handleAlksSessionsOpen', () => {
       },
       shouldTryToExtractRole: true,
       tryToExtractRoleFails: true,
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -583,14 +582,9 @@ describe('handleAlksSessionsOpen', () => {
       },
       shouldTryToExtractRole: true,
       tryToExtractRoleFails: true,
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '444455556666/ALKSPowerUser - awsthing',
@@ -621,14 +615,9 @@ describe('handleAlksSessionsOpen', () => {
       options: {
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: undefined,
@@ -661,14 +650,9 @@ describe('handleAlksSessionsOpen', () => {
         default: true,
         iam: true,
       },
-      developer: {
-        server: 'https://alks.com',
-        userid: 'bobby',
-        alksAccount: '444455556666/ALKSPowerUser - awsthing',
-        alksRole: 'PowerUser',
-        outputFormat: 'env',
-        lastVersion: '0.0.1',
-      },
+      alksAccount: '444455556666/ALKSPowerUser - awsthing',
+      alksRole: 'PowerUser',
+      outputFormat: 'env',
       shouldGetIamKey: true,
       getIamKeyParams: {
         alksAccount: '444455556666/ALKSPowerUser - awsthing',
@@ -724,11 +708,25 @@ describe('handleAlksSessionsOpen', () => {
             return t.extractedRole;
           }
         });
-        (getDeveloper as jest.Mock).mockImplementation(async () => {
-          if (t.getDeveloperFails) {
+        (getAlksAccount as jest.Mock).mockImplementation(async () => {
+          if (t.getAlksAccountFails) {
             throw new Error();
           } else {
-            return t.developer;
+            return t.alksAccount;
+          }
+        });
+        (getAlksRole as jest.Mock).mockImplementation(async () => {
+          if (t.getAlksRoleFails) {
+            throw new Error();
+          } else {
+            return t.alksRole;
+          }
+        });
+        (getOutputFormat as jest.Mock).mockImplementation(async () => {
+          if (t.getOutputFormatFails) {
+            throw new Error();
+          } else {
+            return t.outputFormat;
           }
         });
         (getIamKey as jest.Mock).mockImplementation(async () => {
@@ -754,7 +752,7 @@ describe('handleAlksSessionsOpen', () => {
         });
 
         try {
-          await handleAlksSessionsOpen(t.options, t.program);
+          await handleAlksSessionsOpen(t.options);
         } catch (e) {
           if (!(e === fakeErrorSymbol)) {
             throw e;
