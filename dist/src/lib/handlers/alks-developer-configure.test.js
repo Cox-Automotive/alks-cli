@@ -8,7 +8,7 @@ var promptForUserId_1 = require("../promptForUserId");
 var promptForPassword_1 = require("../promptForPassword");
 var confirm_1 = require("../confirm");
 var savePassword_1 = require("../savePassword");
-var getAlksAccount_1 = require("../getAlksAccount");
+var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var saveDeveloper_1 = require("../saveDeveloper");
 var checkForUpdate_1 = require("../checkForUpdate");
@@ -163,7 +163,7 @@ describe('handleAlksDeveloperConfigure', function () {
                                     return [2 /*return*/];
                                 });
                             }); });
-                            getAlksAccount_1.getAlksAccount.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                            promptForAlksAccountAndRole_1.promptForAlksAccountAndRole.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
                                     if (t.getAlksAccountFails) {
                                         throw new Error();

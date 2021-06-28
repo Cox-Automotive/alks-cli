@@ -7,15 +7,14 @@ var underscore_1 = require("underscore");
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
-var getAlksAccount_1 = require("../getAlksAccount");
+var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var getAuth_1 = require("../getAuth");
-var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamCreateRole(options, program) {
+function handleAlksIamCreateRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, developer, auth, alks, role, err_1, err_2;
+        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -44,10 +43,10 @@ function handleAlksIamCreateRole(options, program) {
                     }
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 14, , 15]);
+                    _b.trys.push([1, 13, , 14]);
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
                     log_1.log('getting accounts');
-                    return [4 /*yield*/, getAlksAccount_1.getAlksAccount(program, {
+                    return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
@@ -57,20 +56,17 @@ function handleAlksIamCreateRole(options, program) {
                 case 3:
                     log_1.log('using provided account/role');
                     _b.label = 4;
-                case 4: return [4 /*yield*/, getDeveloper_1.getDeveloper()];
+                case 4: return [4 /*yield*/, getAuth_1.getAuth()];
                 case 5:
-                    developer = _b.sent();
-                    return [4 /*yield*/, getAuth_1.getAuth(program)];
-                case 6:
                     auth = _b.sent();
                     log_1.log('calling api to create role: ' + roleName);
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 7:
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                case 6:
                     alks = _b.sent();
                     role = void 0;
-                    _b.label = 8;
-                case 8:
-                    _b.trys.push([8, 10, , 11]);
+                    _b.label = 7;
+                case 7:
+                    _b.trys.push([7, 9, , 10]);
                     return [4 /*yield*/, alks.createRole({
                             account: alksAccount,
                             role: alksRole,
@@ -79,31 +75,31 @@ function handleAlksIamCreateRole(options, program) {
                             includeDefaultPolicy: incDefPolicies,
                             enableAlksAccess: enableAlksAccess,
                         })];
-                case 9:
+                case 8:
                     role = _b.sent();
-                    return [3 /*break*/, 11];
-                case 10:
+                    return [3 /*break*/, 10];
+                case 9:
                     err_1 = _b.sent();
                     errorAndExit_1.errorAndExit(err_1);
-                    return [3 /*break*/, 11];
-                case 11:
+                    return [3 /*break*/, 10];
+                case 10:
                     console.log(cli_color_1.default.white(['The role: ', roleName, ' was created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.roleArn));
                     if (role.instanceProfileArn) {
                         console.log(cli_color_1.default.white(['An instance profile was also created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.instanceProfileArn));
                     }
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 12:
+                case 11:
                     _b.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 13:
+                case 12:
                     _b.sent();
-                    return [3 /*break*/, 15];
-                case 14:
+                    return [3 /*break*/, 14];
+                case 13:
                     err_2 = _b.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 15];
-                case 15: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });

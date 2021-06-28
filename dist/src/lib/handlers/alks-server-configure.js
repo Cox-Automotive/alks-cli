@@ -12,7 +12,7 @@ var log_1 = require("../log");
 var saveMetadata_1 = require("../saveMetadata");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksServerConfigure(options, program) {
+function handleAlksServerConfigure(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var alksAccount, alksRole, forceNewSession, filterFaves, key, err_1, err_2, err_3;
         return tslib_1.__generator(this, function (_a) {
@@ -34,11 +34,11 @@ function handleAlksServerConfigure(options, program) {
                 case 2:
                     _a.trys.push([2, 7, , 8]);
                     if (!underscore_1.isUndefined(options.iam)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, getSessionKey_1.getSessionKey(program, alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 3:
                     key = _a.sent();
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, getIamKey_1.getIamKey(program, alksAccount, alksRole, forceNewSession, filterFaves)];
+                case 4: return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, forceNewSession, filterFaves)];
                 case 5:
                     key = _a.sent();
                     _a.label = 6;

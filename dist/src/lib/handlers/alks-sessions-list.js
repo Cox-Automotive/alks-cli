@@ -14,7 +14,7 @@ var trackActivity_1 = require("../trackActivity");
 var getKeys_1 = require("../getKeys");
 var underscore_1 = require("underscore");
 var log_1 = require("../log");
-function handleAlksSessionsList(_options, program) {
+function handleAlksSessionsList(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var auth, nonIamKeys, iamKeys, foundKeys, table_1, groupedKeys, err_1;
         return tslib_1.__generator(this, function (_a) {
@@ -25,7 +25,7 @@ function handleAlksSessionsList(_options, program) {
                 case 1:
                     _a.sent();
                     log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth(program)];
+                    return [4 /*yield*/, getAuth_1.getAuth()];
                 case 2:
                     auth = _a.sent();
                     log_1.log('getting existing sesions');

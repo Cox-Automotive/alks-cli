@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var ensureConfigured_1 = require("./ensureConfigured");
 var getAlks_1 = require("./getAlks");
-var getAlksAccount_1 = require("./getAlksAccount");
+var promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 var getAuth_1 = require("./getAuth");
-var getDeveloper_1 = require("./getDeveloper");
+var developer_1 = require("./state/developer");
 var getIamKey_1 = require("./getIamKey");
 var getKeys_1 = require("./getKeys");
 var log_1 = require("./log");
@@ -13,7 +13,7 @@ var getBadAccountMessage_1 = require("./getBadAccountMessage");
 var addKey_1 = require("./addKey");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 jest.mock('./ensureConfigured');
-jest.mock('./getDeveloper');
+jest.mock('./dao/developer');
 jest.mock('./getAuth');
 jest.mock('./getAlksAccount');
 jest.mock('./log');
@@ -293,9 +293,9 @@ describe('getIamKey', function () {
                     switch (_a.label) {
                         case 0:
                             ensureConfigured_1.ensureConfigured.mockImplementation(t.ensureConfigured);
-                            getDeveloper_1.getDeveloper.mockImplementation(t.getDeveloper);
+                            developer_1.getDeveloper.mockImplementation(t.getDeveloper);
                             getAuth_1.getAuth.mockImplementation(t.getAuth);
-                            getAlksAccount_1.getAlksAccount.mockImplementation(t.getAlksAccount);
+                            promptForAlksAccountAndRole_1.promptForAlksAccountAndRole.mockImplementation(t.getAlksAccount);
                             log_1.log.mockImplementation(t.log);
                             getKeys_1.getKeys.mockImplementation(t.getKeys);
                             getAlks_1.getAlks.mockImplementation(t.getAlks);
@@ -335,7 +335,7 @@ describe('getIamKey', function () {
             }
             if (t.shouldGetAlksAccount) {
                 it('calls getAlksAccount to ask for an ALKS account', function () {
-                    expect(getAlksAccount_1.getAlksAccount).toHaveBeenCalledWith(t.program, {
+                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).toHaveBeenCalledWith(t.program, {
                         iamOnly: true,
                         filterFavorites: t.filterFavorites,
                     });
@@ -343,7 +343,7 @@ describe('getIamKey', function () {
             }
             else {
                 it('does not call getAlksAccount', function () {
-                    expect(getAlksAccount_1.getAlksAccount).not.toHaveBeenCalled();
+                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).not.toHaveBeenCalled();
                 });
             }
             if (t.shouldSaveKey) {

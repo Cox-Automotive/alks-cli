@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getToken = void 0;
+exports.getTokenFromKeystore = void 0;
 var tslib_1 = require("tslib");
 var clortho_1 = tslib_1.__importDefault(require("clortho"));
 var isPasswordSecurelyStorable_1 = require("./isPasswordSecurelyStorable");
@@ -9,7 +9,7 @@ var underscore_1 = require("underscore");
 var clortho = clortho_1.default.forService('alkscli');
 var SERVICETKN = 'alksclitoken';
 var ALKS_TOKEN = 'alkstoken';
-function getToken() {
+function getTokenFromKeystore() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var data, e_1, auth;
         return tslib_1.__generator(this, function (_a) {
@@ -47,5 +47,5 @@ function getToken() {
         });
     });
 }
-exports.getToken = getToken;
-//# sourceMappingURL=getToken.js.map
+exports.getTokenFromKeystore = getTokenFromKeystore;
+//# sourceMappingURL=getTokenFromKeystore.js.map
