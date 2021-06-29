@@ -47,6 +47,17 @@ export async function updateDeveloper(newDeveloper: Developer): Promise<void> {
     developer.outputFormat = trim(newDeveloper.outputFormat);
   }
 
+  // We have to remove the LokiJS metadata fields so LokiJS won't complain that we're trying to insert an object that exists already
+  // @ts-ignore
+  delete developer.meta;
+  // @ts-ignore
+  delete developer.$loki;
+
+  log(`saving ${JSON.stringify(developer)}`);
+
+  // LokiJS complains if we try to simply update or simply insert, and the project has been abandoned so upsert isn't coming soon
+  // TODO ^on that note, let's remove LokiJS - BW
+  collection.clear();
   collection.insert(developer);
 
   return new Promise((resolve, reject) => {
