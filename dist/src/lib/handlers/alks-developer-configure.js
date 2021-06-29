@@ -19,13 +19,14 @@ var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
+var tabtab_1 = tslib_1.__importDefault(require("tabtab"));
 function handleAlksDeveloperConfigure(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _a, _b, password, savePasswordAnswer, _c, alksAccount, alksRole, _d, err_1;
         return tslib_1.__generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    _e.trys.push([0, 15, , 16]);
+                    _e.trys.push([0, 16, , 17]);
                     _a = server_1.setServer;
                     return [4 /*yield*/, promptForServer_1.promptForServer()];
                 case 1: return [4 /*yield*/, _a.apply(void 0, [_e.sent()])];
@@ -67,19 +68,25 @@ function handleAlksDeveloperConfigure(_options) {
                     _d.apply(void 0, [_e.sent()]);
                     // create developer
                     console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
-                    log_1.log('checking for update');
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, tabtab_1.default.install({
+                            name: 'alks',
+                            completer: 'alks',
+                        })];
                 case 13:
                     _e.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    log_1.log('checking for update');
+                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 14:
                     _e.sent();
-                    return [3 /*break*/, 16];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 15:
+                    _e.sent();
+                    return [3 /*break*/, 17];
+                case 16:
                     err_1 = _e.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 16];
-                case 16: return [2 /*return*/];
+                    return [3 /*break*/, 17];
+                case 17: return [2 /*return*/];
             }
         });
     });
