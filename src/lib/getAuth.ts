@@ -6,7 +6,7 @@ import { getUserId } from './state/userId';
 
 export async function getAuth(): Promise<Auth> {
   log('checking for refresh token');
-  const token = await getToken();
+  const token = await getToken().catch(() => undefined);
   if (token) {
     const auth = { token };
     return auth;

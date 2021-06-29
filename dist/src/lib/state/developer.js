@@ -54,6 +54,15 @@ function updateDeveloper(newDeveloper) {
                     if (newDeveloper.outputFormat) {
                         developer.outputFormat = trim_1.trim(newDeveloper.outputFormat);
                     }
+                    // We have to remove the LokiJS metadata fields so LokiJS won't complain that we're trying to insert an object that exists already
+                    // @ts-ignore
+                    delete developer.meta;
+                    // @ts-ignore
+                    delete developer.$loki;
+                    log_1.log("saving " + JSON.stringify(developer));
+                    // LokiJS complains if we try to simply update or simply insert, and the project has been abandoned so upsert isn't coming soon
+                    // TODO ^on that note, let's remove LokiJS - BW
+                    collection.clear();
                     collection.insert(developer);
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             db_1.getDb().save(function (err) {

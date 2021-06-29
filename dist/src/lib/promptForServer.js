@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.promptForServer = void 0;
+exports.promptForServer = exports.defaultServer = void 0;
 var tslib_1 = require("tslib");
 var getPrompt_1 = require("./getPrompt");
 var isUrl_1 = require("./isUrl");
 var server_1 = require("./state/server");
+exports.defaultServer = 'https://alks.coxautoinc.com/rest';
 function promptForServer() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var server;
@@ -13,7 +14,7 @@ function promptForServer() {
                 case 0: return [4 /*yield*/, server_1.getServer().catch(function () { return undefined; })];
                 case 1:
                     server = _a.sent();
-                    return [2 /*return*/, getPrompt_1.getPrompt('server', server || undefined, 'ALKS server', isUrl_1.isURL)];
+                    return [2 /*return*/, getPrompt_1.getPrompt('server', server || exports.defaultServer, 'ALKS server', isUrl_1.isURL)];
             }
         });
     });

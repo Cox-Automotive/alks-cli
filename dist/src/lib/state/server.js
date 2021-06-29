@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setServer = exports.getServer = exports.defaultServer = void 0;
+exports.setServer = exports.getServer = void 0;
 var tslib_1 = require("tslib");
 var log_1 = require("../log");
 var developer_1 = require("./developer");
-exports.defaultServer = 'https://alks.coxautoinc.com/rest';
 function getServer() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var developer;

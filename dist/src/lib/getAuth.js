@@ -13,7 +13,7 @@ function getAuth() {
             switch (_a.label) {
                 case 0:
                     log_1.log('checking for refresh token');
-                    return [4 /*yield*/, token_1.getToken()];
+                    return [4 /*yield*/, token_1.getToken().catch(function () { return undefined; })];
                 case 1:
                     token = _a.sent();
                     if (!token) return [3 /*break*/, 2];
