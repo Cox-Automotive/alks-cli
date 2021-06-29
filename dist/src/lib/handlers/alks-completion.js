@@ -30,7 +30,9 @@ function handleCompletion(_options) {
                             subcommandRegex = new RegExp("\\s" + subcommand.name() + "\\s");
                             if (subcommandRegex.test(env.line)) {
                                 rawOptions = subcommand.options;
-                                options = Object.values(rawOptions.flatMap(function (o) { return [o.short, o.long]; }).filter(function (o) { return !!o; }));
+                                options = Object.values(rawOptions
+                                    .flatMap(function (o) { return [o.short, o.long]; })
+                                    .filter(function (o) { return !!o; }));
                                 // complete the flags/options for subcommands
                                 suggestions.push.apply(suggestions, options);
                             }

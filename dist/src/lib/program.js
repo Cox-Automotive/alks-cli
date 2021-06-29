@@ -37,8 +37,7 @@ program.configureOutput({
     },
 });
 program.version(package_json_1.version).option('-v, --verbose', 'be verbose');
-program.command('completion')
-    .action(alks_completion_1.handleCompletion);
+program.command('completion').action(alks_completion_1.handleCompletion);
 var sessions = program.command('sessions').description('manage aws sessions');
 sessions
     .command('open')
@@ -165,7 +164,10 @@ developer
     .command('logout2fa')
     .description('removes alks refresh token')
     .action(alks_developer_logout2fa_1.handleAlksDeveloperLogout2fa);
-var server = program.command('server').name('server').description('ec23 metadata server');
+var server = program
+    .command('server')
+    .name('server')
+    .description('ec23 metadata server');
 server
     .command('stop')
     .description('stops the metadata server')
