@@ -1,8 +1,6 @@
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export const defaultServer = 'https://alks.coxautoinc.com/rest';
-
 export async function getServer() {
   const developer = await getDeveloper();
   if (developer.server) {
