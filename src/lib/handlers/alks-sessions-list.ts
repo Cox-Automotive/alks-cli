@@ -49,7 +49,6 @@ export async function handleAlksSessionsList(_options: commander.OptionValues) {
       ]);
 
       each(keys, (keydata) => {
-        console.log(JSON.stringify(keydata, null, 2));
         table.push([
           obfuscate(keydata.accessKey),
           obfuscate(keydata.secretKey),

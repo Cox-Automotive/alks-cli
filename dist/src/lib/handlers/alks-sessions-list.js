@@ -56,7 +56,6 @@ function handleAlksSessionsList(_options) {
                             },
                         ]);
                         underscore_1.each(keys, function (keydata) {
-                            console.log(JSON.stringify(keydata, null, 2));
                             table_1.push([
                                 obfuscate_1.obfuscate(keydata.accessKey),
                                 obfuscate_1.obfuscate(keydata.secretKey),
