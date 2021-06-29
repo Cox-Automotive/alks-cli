@@ -6,12 +6,40 @@ import { promptForUserId } from '../promptForUserId';
 import { promptForPassword } from '../promptForPassword';
 import { confirm } from '../confirm';
 import { savePassword } from '../savePassword';
-import { getAlksAccount } from '../getAlksAccount';
+import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { promptForOutputFormat } from '../promptForOutputFormat';
-import { saveDeveloper } from '../saveDeveloper';
 import { checkForUpdate } from '../checkForUpdate';
 import { trackActivity } from '../trackActivity';
-import { cacheAuth } from '../getAuth';
+import { setServer } from '../state/server';
+import { setUserId } from '../state/userId';
+import { setAlksAccount } from '../state/alksAccount';
+import { setAlksRole } from '../state/alksRole';
+import { setOutputFormat } from '../state/outputFormat';
+
+jest.mock('../state/server', () => ({
+  __esModule: true,
+  setServer: jest.fn(),
+}));
+
+jest.mock('../state/userId', () => ({
+  __esModule: true,
+  setUserId: jest.fn(),
+}));
+
+jest.mock('../state/alksAccount', () => ({
+  __esModule: true,
+  setAlksAccount: jest.fn(),
+}));
+
+jest.mock('../state/alksRole', () => ({
+  __esModule: true,
+  setAlksRole: jest.fn(),
+}));
+
+jest.mock('../state/outputFormat', () => ({
+  __esModule: true,
+  setOutputFormat: jest.fn(),
+}));
 
 jest.mock('../errorAndExit', () => ({
   __esModule: true,
@@ -43,19 +71,14 @@ jest.mock('../savePassword', () => ({
   savePassword: jest.fn(),
 }));
 
-jest.mock('../getAlksAccount', () => ({
+jest.mock('../promptForAlksAccountAndRole', () => ({
   __esModule: true,
-  getAlksAccount: jest.fn(),
+  promptForAlksAccountAndRole: jest.fn(),
 }));
 
 jest.mock('../promptForOutputFormat', () => ({
   __esModule: true,
   promptForOutputFormat: jest.fn(),
-}));
-
-jest.mock('../saveDeveloper', () => ({
-  __esModule: true,
-  saveDeveloper: jest.fn(),
 }));
 
 jest.mock('../checkForUpdate', () => ({
@@ -66,11 +89,6 @@ jest.mock('../checkForUpdate', () => ({
 jest.mock('../trackActivity', () => ({
   __esModule: true,
   trackActivity: jest.fn(),
-}));
-
-jest.mock('../getAuth', () => ({
-  __esModule: true,
-  cacheAuth: jest.fn(),
 }));
 
 // Silence console.error
@@ -84,24 +102,26 @@ describe('handleAlksDeveloperConfigure', () => {
     shouldErr: boolean;
     promptForServerFails: boolean;
     server: string;
+    shouldSaveServer: boolean;
     promptForUserIdFails: boolean;
     userId: string;
+    shouldSaveUserId: boolean;
     promptForPasswordFails: boolean;
     password: string;
     confirmSavePasswordFails: boolean;
     savePassword: boolean;
+    shouldSavePassword: boolean;
     savePasswordFails: boolean;
-    shouldCacheAuth: boolean;
-    getAlksAccountFails: boolean;
+    promptForAlksAccountAndRoleFails: boolean;
     alksAccount: string;
     alksRole: string;
+    shouldSaveAlksAccount: boolean;
+    shouldSaveAlksRole: boolean;
     promptForOutputFormatFails: boolean;
     outputFormat: string;
-    saveDeveloperFails: boolean;
+    shouldSaveOutputFormat: boolean;
     checkForUpdateFails: boolean;
     trackActivityFails: boolean;
-    shouldSavePassword: boolean;
-    shouldSaveDeveloper: boolean;
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
@@ -109,24 +129,26 @@ describe('handleAlksDeveloperConfigure', () => {
     shouldErr: false,
     promptForServerFails: false,
     server: '',
+    shouldSaveServer: false,
     promptForUserIdFails: false,
     userId: '',
+    shouldSaveUserId: false,
     promptForPasswordFails: false,
     password: '',
     confirmSavePasswordFails: false,
     savePassword: false,
     savePasswordFails: false,
-    shouldCacheAuth: false,
-    getAlksAccountFails: false,
+    shouldSavePassword: false,
+    promptForAlksAccountAndRoleFails: false,
     alksAccount: '',
     alksRole: '',
+    shouldSaveAlksAccount: false,
+    shouldSaveAlksRole: false,
     promptForOutputFormatFails: false,
     outputFormat: '',
-    saveDeveloperFails: false,
+    shouldSaveOutputFormat: false,
     checkForUpdateFails: false,
     trackActivityFails: false,
-    shouldSavePassword: false,
-    shouldSaveDeveloper: false,
   };
 
   const testCases: TestCase[] = [
@@ -142,6 +164,7 @@ describe('handleAlksDeveloperConfigure', () => {
       shouldErr: true,
       server: 'https://alks.com/rest',
       promptForUserIdFails: true,
+      shouldSaveServer: true,
     },
     {
       ...defaultTestCase,
@@ -150,6 +173,8 @@ describe('handleAlksDeveloperConfigure', () => {
       server: 'https://alks.com/rest',
       userId: 'bobby',
       promptForPasswordFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
     },
     {
       ...defaultTestCase,
@@ -159,6 +184,8 @@ describe('handleAlksDeveloperConfigure', () => {
       userId: 'bobby',
       password: 'letmein',
       confirmSavePasswordFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
     },
     {
       ...defaultTestCase,
@@ -169,25 +196,27 @@ describe('handleAlksDeveloperConfigure', () => {
       password: 'letmein',
       savePassword: true,
       savePasswordFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
     },
     {
       ...defaultTestCase,
       description: 'when getting the alks account fails',
       shouldErr: true,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
       savePassword: true,
-      getAlksAccountFails: true,
+      promptForAlksAccountAndRoleFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
     },
     {
       ...defaultTestCase,
       description: 'when prompting for the output format fails',
       shouldErr: true,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
@@ -195,29 +224,16 @@ describe('handleAlksDeveloperConfigure', () => {
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
       promptForOutputFormatFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
-    },
-    {
-      ...defaultTestCase,
-      description: 'when saving developer fails',
-      shouldErr: false,
-      shouldCacheAuth: true,
-      server: 'https://alks.com/rest',
-      userId: 'bobby',
-      password: 'letmein',
-      savePassword: true,
-      alksAccount: '012345678910/ALKSAdmin - awstest',
-      alksRole: 'Admin',
-      outputFormat: 'env',
-      saveDeveloperFails: true,
-      shouldSavePassword: true,
-      shouldSaveDeveloper: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
     },
     {
       ...defaultTestCase,
       description: 'when checkForUpdate fails',
       shouldErr: true,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
@@ -226,14 +242,17 @@ describe('handleAlksDeveloperConfigure', () => {
       alksRole: 'Admin',
       outputFormat: 'env',
       checkForUpdateFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
-      shouldSaveDeveloper: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
+      shouldSaveOutputFormat: true,
     },
     {
       ...defaultTestCase,
       description: 'when tracking activity fails',
       shouldErr: true,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
@@ -242,14 +261,17 @@ describe('handleAlksDeveloperConfigure', () => {
       alksRole: 'Admin',
       outputFormat: 'env',
       trackActivityFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
-      shouldSaveDeveloper: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
+      shouldSaveOutputFormat: true,
     },
     {
       ...defaultTestCase,
       description: 'when everything succeeds',
       shouldErr: false,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
@@ -257,22 +279,29 @@ describe('handleAlksDeveloperConfigure', () => {
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
       outputFormat: 'env',
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
       shouldSavePassword: true,
-      shouldSaveDeveloper: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
+      shouldSaveOutputFormat: true,
     },
     {
       ...defaultTestCase,
       description:
         'when everything succeeds but the user declines saving password',
       shouldErr: false,
-      shouldCacheAuth: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
       outputFormat: 'env',
-      shouldSaveDeveloper: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
+      shouldSaveOutputFormat: true,
     },
   ];
 
@@ -314,23 +343,20 @@ describe('handleAlksDeveloperConfigure', () => {
             throw new Error();
           }
         });
-        (getAlksAccount as jest.Mock).mockImplementation(async () => {
-          if (t.getAlksAccountFails) {
-            throw new Error();
-          } else {
-            return { alksAccount: t.alksAccount, alksRole: t.alksRole };
+        (promptForAlksAccountAndRole as jest.Mock).mockImplementation(
+          async () => {
+            if (t.promptForAlksAccountAndRoleFails) {
+              throw new Error();
+            } else {
+              return { alksAccount: t.alksAccount, alksRole: t.alksRole };
+            }
           }
-        });
+        );
         (promptForOutputFormat as jest.Mock).mockImplementation(async () => {
           if (t.promptForOutputFormatFails) {
             throw new Error();
           } else {
             return t.outputFormat;
-          }
-        });
-        (saveDeveloper as jest.Mock).mockImplementation(async () => {
-          if (t.saveDeveloperFails) {
-            throw new Error();
           }
         });
         (checkForUpdate as jest.Mock).mockImplementation(async () => {
@@ -348,7 +374,7 @@ describe('handleAlksDeveloperConfigure', () => {
           errorThrown = true;
         });
 
-        await handleAlksDeveloperConfigure(t.options, t.program);
+        await handleAlksDeveloperConfigure(t.options);
       });
 
       if (t.shouldErr) {
@@ -361,12 +387,15 @@ describe('handleAlksDeveloperConfigure', () => {
         });
       }
 
-      if (t.shouldCacheAuth) {
-        it('calls cacheAuth with the correct parameters', () => {
-          expect(cacheAuth).toBeCalledWith({
-            userid: t.userId,
-            password: t.password,
-          });
+      if (t.shouldSaveServer) {
+        it('attempts to save the server url', () => {
+          expect(setServer).toBeCalledWith(t.server);
+        });
+      }
+
+      if (t.shouldSaveUserId) {
+        it('attempts to save the userid', () => {
+          expect(setUserId).toBeCalledWith(t.userId);
         });
       }
 
@@ -376,15 +405,21 @@ describe('handleAlksDeveloperConfigure', () => {
         });
       }
 
-      if (t.shouldSaveDeveloper) {
-        it('saves developer with the correct fields', () => {
-          expect(saveDeveloper).toBeCalledWith({
-            server: t.server,
-            userid: t.userId,
-            alksAccount: t.alksAccount,
-            alksRole: t.alksRole,
-            outputFormat: t.outputFormat,
-          });
+      if (t.shouldSaveAlksAccount) {
+        it('attempts to save the alks account', () => {
+          expect(setAlksAccount).toBeCalledWith(t.alksAccount);
+        });
+      }
+
+      if (t.shouldSaveAlksRole) {
+        it('attempts to save the alks role', () => {
+          expect(setAlksRole).toBeCalledWith(t.alksRole);
+        });
+      }
+
+      if (t.shouldSaveOutputFormat) {
+        it('attempts to save the output format', () => {
+          expect(setOutputFormat).toBeCalledWith(t.outputFormat);
         });
       }
     });

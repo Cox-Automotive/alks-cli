@@ -13,7 +13,7 @@ var addKey_1 = require("./addKey");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 jest.mock('./ensureConfigured');
 jest.mock('./getAuth');
-jest.mock('./getAlksAccount');
+jest.mock('./promptForAlksAccountAndRole');
 jest.mock('./log');
 jest.mock('./getKeys');
 jest.mock('./getAlks');
@@ -319,8 +319,8 @@ describe('getIamKey', function () {
                 });
             }
             if (t.shouldGetAlksAccount) {
-                it('calls getAlksAccount to ask for an ALKS account', function () {
-                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).toHaveBeenCalledWith(t.program, {
+                it('calls promptForAlksAccountAndRole to ask for an ALKS account and role', function () {
+                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).toHaveBeenCalledWith({
                         iamOnly: true,
                         filterFavorites: t.filterFavorites,
                     });

@@ -36,7 +36,7 @@ jest.mock('../state/alksRole', function () { return ({
     __esModule: true,
     getAlksRole: jest.fn(),
 }); });
-jest.mock('../state/getOutputFormat', function () { return ({
+jest.mock('../state/outputFormat', function () { return ({
     __esModule: true,
     getOutputFormat: jest.fn(),
 }); });
@@ -63,7 +63,6 @@ jest.spyOn(global.console, 'log').mockImplementation(function () { });
 describe('handleAlksSessionsOpen', function () {
     var defaultTestCase = {
         options: {},
-        program: {},
         shouldErr: false,
         checkForUpdateFails: false,
         trackActivityFails: false,
@@ -550,7 +549,7 @@ describe('handleAlksSessionsOpen', function () {
             }
             if (t.shouldGetIamKey) {
                 it('attempts to fetch an IAM key', function () {
-                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.program, t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites);
+                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites);
                 });
             }
             else {
@@ -560,7 +559,7 @@ describe('handleAlksSessionsOpen', function () {
             }
             if (t.shouldGetSessionKey) {
                 it('attempts to fetch a session key', function () {
-                    expect(getSessionKey_1.getSessionKey).toHaveBeenCalledWith(t.program, t.getSessionKeyParams.alksAccount, t.getSessionKeyParams.alksRole, t.getSessionKeyParams.iamOnly, t.getSessionKeyParams.newSession, t.getSessionKeyParams.favorites);
+                    expect(getSessionKey_1.getSessionKey).toHaveBeenCalledWith(t.getSessionKeyParams.alksAccount, t.getSessionKeyParams.alksRole, t.getSessionKeyParams.iamOnly, t.getSessionKeyParams.newSession, t.getSessionKeyParams.favorites);
                 });
             }
             else {

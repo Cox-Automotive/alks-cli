@@ -42,7 +42,7 @@ jest.mock('../state/alksRole', () => ({
   getAlksRole: jest.fn(),
 }));
 
-jest.mock('../state/getOutputFormat', () => ({
+jest.mock('../state/outputFormat', () => ({
   __esModule: true,
   getOutputFormat: jest.fn(),
 }));
@@ -77,7 +77,6 @@ describe('handleAlksSessionsOpen', () => {
   interface TestCase {
     description: string;
     options: commander.OptionValues;
-    program: commander.Command;
     shouldErr: boolean;
     checkForUpdateFails: boolean;
     trackActivityFails: boolean;
@@ -119,7 +118,6 @@ describe('handleAlksSessionsOpen', () => {
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
-    program: {} as commander.Command,
     shouldErr: false,
     checkForUpdateFails: false,
     trackActivityFails: false,
@@ -783,7 +781,6 @@ describe('handleAlksSessionsOpen', () => {
       if (t.shouldGetIamKey) {
         it('attempts to fetch an IAM key', () => {
           expect(getIamKey).toHaveBeenCalledWith(
-            t.program,
             t.getIamKeyParams.alksAccount,
             t.getIamKeyParams.alksRole,
             t.getIamKeyParams.newSession,
@@ -799,7 +796,6 @@ describe('handleAlksSessionsOpen', () => {
       if (t.shouldGetSessionKey) {
         it('attempts to fetch a session key', () => {
           expect(getSessionKey).toHaveBeenCalledWith(
-            t.program,
             t.getSessionKeyParams.alksAccount,
             t.getSessionKeyParams.alksRole,
             t.getSessionKeyParams.iamOnly,
