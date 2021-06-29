@@ -16,80 +16,21 @@ import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
 
-jest.mock('../state/server', () => ({
-  __esModule: true,
-  setServer: jest.fn(),
-}));
-
-jest.mock('../state/userId', () => ({
-  __esModule: true,
-  setUserId: jest.fn(),
-}));
-
-jest.mock('../state/alksAccount', () => ({
-  __esModule: true,
-  setAlksAccount: jest.fn(),
-}));
-
-jest.mock('../state/alksRole', () => ({
-  __esModule: true,
-  setAlksRole: jest.fn(),
-}));
-
-jest.mock('../state/outputFormat', () => ({
-  __esModule: true,
-  setOutputFormat: jest.fn(),
-}));
-
-jest.mock('../errorAndExit', () => ({
-  __esModule: true,
-  errorAndExit: jest.fn(),
-}));
-
-jest.mock('../promptForServer', () => ({
-  __esModule: true,
-  promptForServer: jest.fn(),
-}));
-
-jest.mock('../promptForUserId', () => ({
-  __esModule: true,
-  promptForUserId: jest.fn(),
-}));
-
-jest.mock('../promptForPassword', () => ({
-  __esModule: true,
-  promptForPassword: jest.fn(),
-}));
-
-jest.mock('../confirm', () => ({
-  __esModule: true,
-  confirm: jest.fn(),
-}));
-
-jest.mock('../savePassword', () => ({
-  __esModule: true,
-  savePassword: jest.fn(),
-}));
-
-jest.mock('../promptForAlksAccountAndRole', () => ({
-  __esModule: true,
-  promptForAlksAccountAndRole: jest.fn(),
-}));
-
-jest.mock('../promptForOutputFormat', () => ({
-  __esModule: true,
-  promptForOutputFormat: jest.fn(),
-}));
-
-jest.mock('../checkForUpdate', () => ({
-  __esModule: true,
-  checkForUpdate: jest.fn(),
-}));
-
-jest.mock('../trackActivity', () => ({
-  __esModule: true,
-  trackActivity: jest.fn(),
-}));
+jest.mock('../state/server');
+jest.mock('../state/userId');
+jest.mock('../state/alksAccount');
+jest.mock('../state/alksRole');
+jest.mock('../state/outputFormat');
+jest.mock('../errorAndExit');
+jest.mock('../promptForServer');
+jest.mock('../promptForUserId');
+jest.mock('../promptForPassword');
+jest.mock('../confirm');
+jest.mock('../savePassword');
+jest.mock('../promptForAlksAccountAndRole');
+jest.mock('../promptForOutputFormat');
+jest.mock('../checkForUpdate');
+jest.mock('../trackActivity');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});

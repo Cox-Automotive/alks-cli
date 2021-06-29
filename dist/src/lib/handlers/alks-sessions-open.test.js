@@ -12,50 +12,17 @@ var alks_sessions_open_1 = require("./alks-sessions-open");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
-jest.mock('../errorAndExit', function () { return ({
-    __esModule: true,
-    errorAndExit: jest.fn(),
-}); });
-jest.mock('../checkForUpdate', function () { return ({
-    __esModule: true,
-    checkForUpdate: jest.fn(),
-}); });
-jest.mock('../trackActivity', function () { return ({
-    __esModule: true,
-    trackActivity: jest.fn(),
-}); });
-jest.mock('../tryToExtractRole', function () { return ({
-    __esModule: true,
-    tryToExtractRole: jest.fn(),
-}); });
-jest.mock('../state/alksAccount', function () { return ({
-    __esModule: true,
-    getAlksAccount: jest.fn(),
-}); });
-jest.mock('../state/alksRole', function () { return ({
-    __esModule: true,
-    getAlksRole: jest.fn(),
-}); });
-jest.mock('../state/outputFormat', function () { return ({
-    __esModule: true,
-    getOutputFormat: jest.fn(),
-}); });
-jest.mock('../getIamKey', function () { return ({
-    __esModule: true,
-    getIamKey: jest.fn(),
-}); });
-jest.mock('../getKeyOutput', function () { return ({
-    __esModule: true,
-    getKeyOutput: jest.fn(),
-}); });
-jest.mock('../getSessionKey', function () { return ({
-    __esModule: true,
-    getSessionKey: jest.fn(),
-}); });
-jest.mock('../log', function () { return ({
-    __esModule: true,
-    log: jest.fn(),
-}); });
+jest.mock('../errorAndExit');
+jest.mock('../checkForUpdate');
+jest.mock('../trackActivity');
+jest.mock('../tryToExtractRole');
+jest.mock('../state/alksAccount');
+jest.mock('../state/alksRole');
+jest.mock('../state/outputFormat');
+jest.mock('../getIamKey');
+jest.mock('../getKeyOutput');
+jest.mock('../getSessionKey');
+jest.mock('../log');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 // Silence console.log

@@ -12,60 +12,17 @@ import { getAlksAccount } from '../state/alksAccount';
 import { getAlksRole } from '../state/alksRole';
 import { getOutputFormat } from '../state/outputFormat';
 
-jest.mock('../errorAndExit', () => ({
-  __esModule: true,
-  errorAndExit: jest.fn(),
-}));
-
-jest.mock('../checkForUpdate', () => ({
-  __esModule: true,
-  checkForUpdate: jest.fn(),
-}));
-
-jest.mock('../trackActivity', () => ({
-  __esModule: true,
-  trackActivity: jest.fn(),
-}));
-
-jest.mock('../tryToExtractRole', () => ({
-  __esModule: true,
-  tryToExtractRole: jest.fn(),
-}));
-
-jest.mock('../state/alksAccount', () => ({
-  __esModule: true,
-  getAlksAccount: jest.fn(),
-}));
-
-jest.mock('../state/alksRole', () => ({
-  __esModule: true,
-  getAlksRole: jest.fn(),
-}));
-
-jest.mock('../state/outputFormat', () => ({
-  __esModule: true,
-  getOutputFormat: jest.fn(),
-}));
-
-jest.mock('../getIamKey', () => ({
-  __esModule: true,
-  getIamKey: jest.fn(),
-}));
-
-jest.mock('../getKeyOutput', () => ({
-  __esModule: true,
-  getKeyOutput: jest.fn(),
-}));
-
-jest.mock('../getSessionKey', () => ({
-  __esModule: true,
-  getSessionKey: jest.fn(),
-}));
-
-jest.mock('../log', () => ({
-  __esModule: true,
-  log: jest.fn(),
-}));
+jest.mock('../errorAndExit');
+jest.mock('../checkForUpdate');
+jest.mock('../trackActivity');
+jest.mock('../tryToExtractRole');
+jest.mock('../state/alksAccount');
+jest.mock('../state/alksRole');
+jest.mock('../state/outputFormat');
+jest.mock('../getIamKey');
+jest.mock('../getKeyOutput');
+jest.mock('../getSessionKey');
+jest.mock('../log');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});

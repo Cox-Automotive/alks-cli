@@ -17,66 +17,21 @@ var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
-jest.mock('../state/server', function () { return ({
-    __esModule: true,
-    setServer: jest.fn(),
-}); });
-jest.mock('../state/userId', function () { return ({
-    __esModule: true,
-    setUserId: jest.fn(),
-}); });
-jest.mock('../state/alksAccount', function () { return ({
-    __esModule: true,
-    setAlksAccount: jest.fn(),
-}); });
-jest.mock('../state/alksRole', function () { return ({
-    __esModule: true,
-    setAlksRole: jest.fn(),
-}); });
-jest.mock('../state/outputFormat', function () { return ({
-    __esModule: true,
-    setOutputFormat: jest.fn(),
-}); });
-jest.mock('../errorAndExit', function () { return ({
-    __esModule: true,
-    errorAndExit: jest.fn(),
-}); });
-jest.mock('../promptForServer', function () { return ({
-    __esModule: true,
-    promptForServer: jest.fn(),
-}); });
-jest.mock('../promptForUserId', function () { return ({
-    __esModule: true,
-    promptForUserId: jest.fn(),
-}); });
-jest.mock('../promptForPassword', function () { return ({
-    __esModule: true,
-    promptForPassword: jest.fn(),
-}); });
-jest.mock('../confirm', function () { return ({
-    __esModule: true,
-    confirm: jest.fn(),
-}); });
-jest.mock('../savePassword', function () { return ({
-    __esModule: true,
-    savePassword: jest.fn(),
-}); });
-jest.mock('../promptForAlksAccountAndRole', function () { return ({
-    __esModule: true,
-    promptForAlksAccountAndRole: jest.fn(),
-}); });
-jest.mock('../promptForOutputFormat', function () { return ({
-    __esModule: true,
-    promptForOutputFormat: jest.fn(),
-}); });
-jest.mock('../checkForUpdate', function () { return ({
-    __esModule: true,
-    checkForUpdate: jest.fn(),
-}); });
-jest.mock('../trackActivity', function () { return ({
-    __esModule: true,
-    trackActivity: jest.fn(),
-}); });
+jest.mock('../state/server');
+jest.mock('../state/userId');
+jest.mock('../state/alksAccount');
+jest.mock('../state/alksRole');
+jest.mock('../state/outputFormat');
+jest.mock('../errorAndExit');
+jest.mock('../promptForServer');
+jest.mock('../promptForUserId');
+jest.mock('../promptForPassword');
+jest.mock('../confirm');
+jest.mock('../savePassword');
+jest.mock('../promptForAlksAccountAndRole');
+jest.mock('../promptForOutputFormat');
+jest.mock('../checkForUpdate');
+jest.mock('../trackActivity');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 describe('handleAlksDeveloperConfigure', function () {
