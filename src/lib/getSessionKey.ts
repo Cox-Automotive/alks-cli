@@ -101,7 +101,7 @@ export async function getSessionKey(
   };
 
   log('storing key: ' + JSON.stringify(key));
-  addKey(
+  await addKey(
     key.accessKey,
     key.secretKey,
     key.sessionToken,
