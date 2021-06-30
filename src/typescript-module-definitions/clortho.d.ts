@@ -1,1 +1,1 @@
-declare module 'clortho';
+declare module '@cox-automotive/clortho';
