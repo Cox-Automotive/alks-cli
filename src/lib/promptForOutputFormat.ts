@@ -1,19 +1,14 @@
-import { getDeveloper } from './getDeveloper';
 import { getOutputValues } from './getOutputValues';
 import { getStdErrPrompt } from './getStdErrPrompt';
+import { getOutputFormat } from './state/outputFormat';
 
 export async function promptForOutputFormat(): Promise<string> {
-  let developer;
-  try {
-    developer = await getDeveloper();
-  } catch (err) {
-    // ignore
-  }
+  const outputFormat = await getOutputFormat().catch(() => undefined);
 
   const promptData = {
     type: 'list',
     name: 'outputFormat',
-    default: developer?.outputFormat,
+    default: outputFormat,
     message: 'Please select your default output format',
     choices: getOutputValues(),
     pageSize: 10,

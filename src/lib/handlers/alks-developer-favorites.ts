@@ -7,25 +7,19 @@ import { errorAndExit } from '../errorAndExit';
 import { getAccountDelim } from '../getAccountDelim';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
-import { getDeveloper } from '../getDeveloper';
 import { getFavorites } from '../getFavorites';
 import { log } from '../log';
 import { saveFavorites } from '../saveFavorites';
 import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperFavorites(
-  _options: commander.OptionValues,
-  program: commander.Command
+  _options: commander.OptionValues
 ) {
   try {
-    log('getting developer');
-    const developer = await getDeveloper();
-
     log('getting auth');
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 

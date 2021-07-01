@@ -3,9 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var ensureConfigured_1 = require("./ensureConfigured");
 var getAlks_1 = require("./getAlks");
-var getAlksAccount_1 = require("./getAlksAccount");
+var promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 var getAuth_1 = require("./getAuth");
-var getDeveloper_1 = require("./getDeveloper");
 var getIamKey_1 = require("./getIamKey");
 var getKeys_1 = require("./getKeys");
 var log_1 = require("./log");
@@ -13,9 +12,8 @@ var getBadAccountMessage_1 = require("./getBadAccountMessage");
 var addKey_1 = require("./addKey");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 jest.mock('./ensureConfigured');
-jest.mock('./getDeveloper');
 jest.mock('./getAuth');
-jest.mock('./getAlksAccount');
+jest.mock('./promptForAlksAccountAndRole');
 jest.mock('./log');
 jest.mock('./getKeys');
 jest.mock('./getAlks');
@@ -53,18 +51,6 @@ describe('getIamKey', function () {
         ensureConfigured: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
             return [2 /*return*/];
         }); }); },
-        getDeveloper: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-            return tslib_1.__generator(this, function (_a) {
-                return [2 /*return*/, ({
-                        server: 'https://alks.coxautoinc.com/rest',
-                        userid: 'bobby',
-                        alksAccount: defaultAccount,
-                        alksRole: defaultRole,
-                        outputFormat: 'env',
-                        lastVersion: '0.0.1',
-                    })];
-            });
-        }); },
         getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, ({
@@ -293,9 +279,8 @@ describe('getIamKey', function () {
                     switch (_a.label) {
                         case 0:
                             ensureConfigured_1.ensureConfigured.mockImplementation(t.ensureConfigured);
-                            getDeveloper_1.getDeveloper.mockImplementation(t.getDeveloper);
                             getAuth_1.getAuth.mockImplementation(t.getAuth);
-                            getAlksAccount_1.getAlksAccount.mockImplementation(t.getAlksAccount);
+                            promptForAlksAccountAndRole_1.promptForAlksAccountAndRole.mockImplementation(t.getAlksAccount);
                             log_1.log.mockImplementation(t.log);
                             getKeys_1.getKeys.mockImplementation(t.getKeys);
                             getAlks_1.getAlks.mockImplementation(t.getAlks);
@@ -310,7 +295,7 @@ describe('getIamKey', function () {
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);
-                            return [4 /*yield*/, getIamKey_1.getIamKey(t.program, t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
+                            return [4 /*yield*/, getIamKey_1.getIamKey(t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
                         case 2:
                             result = _a.sent();
                             return [3 /*break*/, 4];
@@ -334,8 +319,8 @@ describe('getIamKey', function () {
                 });
             }
             if (t.shouldGetAlksAccount) {
-                it('calls getAlksAccount to ask for an ALKS account', function () {
-                    expect(getAlksAccount_1.getAlksAccount).toHaveBeenCalledWith(t.program, {
+                it('calls promptForAlksAccountAndRole to ask for an ALKS account and role', function () {
+                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).toHaveBeenCalledWith({
                         iamOnly: true,
                         filterFavorites: t.filterFavorites,
                     });
@@ -343,7 +328,7 @@ describe('getIamKey', function () {
             }
             else {
                 it('does not call getAlksAccount', function () {
-                    expect(getAlksAccount_1.getAlksAccount).not.toHaveBeenCalled();
+                    expect(promptForAlksAccountAndRole_1.promptForAlksAccountAndRole).not.toHaveBeenCalled();
                 });
             }
             if (t.shouldSaveKey) {

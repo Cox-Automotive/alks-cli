@@ -1,7 +1,6 @@
 import express from 'express';
 import { getSessionKey } from './getSessionKey.js';
 import listEnds from 'express-list-endpoints';
-import commander from 'commander';
 import { Key } from '../model/keys';
 import { getMetadata } from './getMetadata.js';
 import { getIamKey } from './getIamKey.js';
@@ -47,7 +46,6 @@ app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
   const metadata = await getMetadata();
   if (metadata.isIam) {
     const key = await getIamKey(
-      {} as commander.Command,
       metadata.alksAccount,
       metadata.alksRole,
       false,
@@ -56,7 +54,6 @@ app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
     resp.json(generateResponse(key));
   } else {
     const key = await getSessionKey(
-      {} as commander.Command,
       metadata.alksAccount,
       metadata.alksRole,
       false,

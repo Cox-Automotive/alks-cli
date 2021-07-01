@@ -6,26 +6,24 @@ var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
-var getDeveloper_1 = require("../getDeveloper");
 var getPasswordFromPrompt_1 = require("../getPasswordFromPrompt");
 var log_1 = require("../log");
-var passwordSaveErrorHandler_1 = require("../passwordSaveErrorHandler");
-var storeToken_1 = require("../storeToken");
 var trackActivity_1 = require("../trackActivity");
 var open_1 = tslib_1.__importDefault(require("open"));
-function handleAlksDeveloperLogin2fa(_options, _program) {
+var server_1 = require("../state/server");
+var saveToken_1 = require("../saveToken");
+function handleAlksDeveloperLogin2fa(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var data, url, err_1, refreshToken, alks, err_2, err_3, err_4;
+        var server, url, err_1, refreshToken, alks, err_2, err_3;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 18, , 19]);
-                    log_1.log('loading developer');
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
+                    _a.trys.push([0, 15, , 16]);
+                    return [4 /*yield*/, server_1.getServer()];
                 case 1:
-                    data = _a.sent();
+                    server = _a.sent();
                     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
-                    url = data.server.replace(/rest/, 'token-management');
+                    url = server.replace(/rest/, 'token-management');
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
@@ -51,9 +49,7 @@ function handleAlksDeveloperLogin2fa(_options, _program) {
                 case 6:
                     refreshToken = _a.sent();
                     log_1.log('exchanging refresh token for access token');
-                    return [4 /*yield*/, getAlks_1.getAlks({
-                            baseUrl: data.server,
-                        })];
+                    return [4 /*yield*/, getAlks_1.getAlks({})];
                 case 7:
                     alks = _a.sent();
                     _a.label = 8;
@@ -71,36 +67,25 @@ function handleAlksDeveloperLogin2fa(_options, _program) {
                     return [3 /*break*/, 11];
                 case 11:
                     console.error(cli_color_1.default.white('Refresh token validated!'));
-                    _a.label = 12;
+                    return [4 /*yield*/, saveToken_1.saveToken(refreshToken)];
                 case 12:
-                    _a.trys.push([12, 14, , 15]);
-                    return [4 /*yield*/, storeToken_1.storeToken(refreshToken)];
-                case 13:
                     _a.sent();
-                    console.error(cli_color_1.default.white('Refresh token saved!'));
-                    return [3 /*break*/, 15];
-                case 14:
-                    err_3 = _a.sent();
-                    log_1.log('error saving token! ' + err_3.message);
-                    passwordSaveErrorHandler_1.passwordSaveErrorHandler(err_3);
-                    return [3 /*break*/, 15];
-                case 15:
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 16:
+                case 13:
                     _a.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 17:
+                case 14:
                     _a.sent();
                     setTimeout(function () {
                         process.exit(0);
                     }, 1000); // needed for if browser is still open
-                    return [3 /*break*/, 19];
-                case 18:
-                    err_4 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_4.message, err_4);
-                    return [3 /*break*/, 19];
-                case 19: return [2 /*return*/];
+                    return [3 /*break*/, 16];
+                case 15:
+                    err_3 = _a.sent();
+                    errorAndExit_1.errorAndExit(err_3.message, err_3);
+                    return [3 /*break*/, 16];
+                case 16: return [2 /*return*/];
             }
         });
     });

@@ -9,36 +9,31 @@ var errorAndExit_1 = require("../errorAndExit");
 var getAccountDelim_1 = require("../getAccountDelim");
 var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
-var getDeveloper_1 = require("../getDeveloper");
 var getFavorites_1 = require("../getFavorites");
 var log_1 = require("../log");
 var saveFavorites_1 = require("../saveFavorites");
 var trackActivity_1 = require("../trackActivity");
-function handleAlksDeveloperFavorites(_options, program) {
+function handleAlksDeveloperFavorites(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var developer, auth, alks, alksAccounts, favorites_1, choices_1, deferred_1, faves, err_1;
+        var auth, alks, alksAccounts, favorites_1, choices_1, deferred_1, faves, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 10, , 11]);
-                    log_1.log('getting developer');
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
-                case 1:
-                    developer = _a.sent();
+                    _a.trys.push([0, 9, , 10]);
                     log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth(program)];
-                case 2:
+                    return [4 /*yield*/, getAuth_1.getAuth()];
+                case 1:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 3:
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                case 2:
                     alks = _a.sent();
                     log_1.log('getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
-                case 4:
+                case 3:
                     alksAccounts = _a.sent();
                     log_1.log('getting favorite accounts');
                     return [4 /*yield*/, getFavorites_1.getFavorites()];
-                case 5:
+                case 4:
                     favorites_1 = _a.sent();
                     choices_1 = [];
                     deferred_1 = [];
@@ -73,25 +68,25 @@ function handleAlksDeveloperFavorites(_options, program) {
                                 pageSize: 25,
                             },
                         ])];
-                case 6:
+                case 5:
                     faves = _a.sent();
                     return [4 /*yield*/, saveFavorites_1.saveFavorites({ accounts: faves })];
-                case 7:
+                case 6:
                     _a.sent();
                     console.log('Favorites have been saved!');
                     log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 8:
+                case 7:
                     _a.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 9:
+                case 8:
                     _a.sent();
-                    return [3 /*break*/, 11];
-                case 10:
+                    return [3 /*break*/, 10];
+                case 9:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 11];
-                case 11: return [2 /*return*/];
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     });

@@ -4,18 +4,20 @@ exports.handleAlksSessionsOpen = void 0;
 var tslib_1 = require("tslib");
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
-var getDeveloper_1 = require("../getDeveloper");
 var getIamKey_1 = require("../getIamKey");
 var getKeyOutput_1 = require("../getKeyOutput");
 var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksSessionsOpen(options, program) {
+var alksAccount_1 = require("../state/alksAccount");
+var alksRole_1 = require("../state/alksRole");
+var outputFormat_1 = require("../state/outputFormat");
+function handleAlksSessionsOpen(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var alksAccount, alksRole, developer, err_1, key, err_2;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var alksAccount, alksRole, err_1, key, _a, _b, _c, _d, err_2;
+        return tslib_1.__generator(this, function (_e) {
+            switch (_e.label) {
                 case 0:
                     alksAccount = options.account;
                     alksRole = options.role;
@@ -24,51 +26,61 @@ function handleAlksSessionsOpen(options, program) {
                         log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
-                    _a.label = 1;
+                    _e.label = 1;
                 case 1:
-                    _a.trys.push([1, 12, , 13]);
-                    developer = void 0;
-                    _a.label = 2;
+                    _e.trys.push([1, 15, , 16]);
+                    if (!options.default) return [3 /*break*/, 6];
+                    _e.label = 2;
                 case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
+                    _e.trys.push([2, 5, , 6]);
+                    return [4 /*yield*/, alksAccount_1.getAlksAccount()];
                 case 3:
-                    developer = _a.sent();
-                    return [3 /*break*/, 5];
+                    alksAccount = _e.sent();
+                    return [4 /*yield*/, alksRole_1.getAlksRole()];
                 case 4:
-                    err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit('Unable to load default account!', err_1);
-                    return [3 /*break*/, 5];
+                    alksRole = _e.sent();
+                    return [3 /*break*/, 6];
                 case 5:
-                    if (options.default) {
-                        alksAccount = developer.alksAccount;
-                        alksRole = developer.alksRole;
-                    }
-                    key = void 0;
-                    if (!options.iam) return [3 /*break*/, 7];
-                    return [4 /*yield*/, getIamKey_1.getIamKey(program, alksAccount, alksRole, options.newSession, options.favorites)];
+                    err_1 = _e.sent();
+                    errorAndExit_1.errorAndExit('Unable to load default account!', err_1);
+                    return [3 /*break*/, 6];
                 case 6:
-                    key = _a.sent();
-                    return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, getSessionKey_1.getSessionKey(program, alksAccount, alksRole, false, options.newSession, options.favorites)];
-                case 8:
-                    key = _a.sent();
-                    _a.label = 9;
+                    key = void 0;
+                    if (!options.iam) return [3 /*break*/, 8];
+                    return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, options.newSession, options.favorites)];
+                case 7:
+                    key = _e.sent();
+                    return [3 /*break*/, 10];
+                case 8: return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, options.newSession, options.favorites)];
                 case 9:
-                    console.log(getKeyOutput_1.getKeyOutput(options.output || developer.outputFormat, key, options.namedProfile, options.force));
+                    key = _e.sent();
+                    _e.label = 10;
+                case 10:
+                    _b = (_a = console).log;
+                    _c = getKeyOutput_1.getKeyOutput;
+                    _d = options.output;
+                    if (_d) return [3 /*break*/, 12];
+                    return [4 /*yield*/, outputFormat_1.getOutputFormat()];
+                case 11:
+                    _d = (_e.sent());
+                    _e.label = 12;
+                case 12:
+                    _b.apply(_a, [_c.apply(void 0, [_d, key,
+                            options.namedProfile,
+                            options.force])]);
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 10:
-                    _a.sent();
+                case 13:
+                    _e.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 11:
-                    _a.sent();
-                    return [3 /*break*/, 13];
-                case 12:
-                    err_2 = _a.sent();
+                case 14:
+                    _e.sent();
+                    return [3 /*break*/, 16];
+                case 15:
+                    err_2 = _e.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 16];
+                case 16: return [2 /*return*/];
             }
         });
     });

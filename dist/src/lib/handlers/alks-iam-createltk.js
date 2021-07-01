@@ -7,15 +7,17 @@ var underscore_1 = require("underscore");
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
-var getIamAccount_1 = require("../getIamAccount");
+var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
+var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamCreateLtk(options, program) {
+function handleAlksIamCreateLtk(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, iamAccount, err_1, developer, auth, alks, ltk, ltkData, ltkData, err_2;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, auth, alks, ltk, ltkData, ltkData, err_1;
+        var _a;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     nameDesc = 'alphanumeric including @+=._-';
                     NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
@@ -36,27 +38,23 @@ function handleAlksIamCreateLtk(options, program) {
                         log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 10, , 11]);
-                    iamAccount = void 0;
-                    _a.label = 2;
+                    _b.trys.push([1, 9, , 10]);
+                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
+                    return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
+                            iamOnly: true,
+                            filterFavorites: filterFaves,
+                        })];
                 case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, alksAccount, alksRole, filterFaves)];
-                case 3:
-                    iamAccount = _a.sent();
-                    return [3 /*break*/, 5];
+                    (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
+                    _b.label = 3;
+                case 3: return [4 /*yield*/, getAuth_1.getAuth()];
                 case 4:
-                    err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1);
-                    return [3 /*break*/, 5];
+                    auth = _b.sent();
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
                 case 5:
-                    developer = iamAccount.developer, auth = iamAccount.auth;
-                    (alksAccount = iamAccount.account, alksRole = iamAccount.role);
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 6:
-                    alks = _a.sent();
+                    alks = _b.sent();
                     log_1.log('calling api to create ltk: ' + iamUsername);
                     if (!alksAccount || !alksRole) {
                         throw new Error('Must specifify ALKS Account and Role');
@@ -66,8 +64,8 @@ function handleAlksIamCreateLtk(options, program) {
                             role: alksRole,
                             iamUserName: iamUsername,
                         })];
-                case 7:
-                    ltk = _a.sent();
+                case 6:
+                    ltk = _b.sent();
                     if (output === 'json') {
                         ltkData = {
                             accessKey: ltk.accessKey,
@@ -98,17 +96,17 @@ function handleAlksIamCreateLtk(options, program) {
                     }
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 8:
-                    _a.sent();
+                case 7:
+                    _b.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
+                case 8:
+                    _b.sent();
+                    return [3 /*break*/, 10];
                 case 9:
-                    _a.sent();
-                    return [3 /*break*/, 11];
-                case 10:
-                    err_2 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 11];
-                case 11: return [2 /*return*/];
+                    err_1 = _b.sent();
+                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     });

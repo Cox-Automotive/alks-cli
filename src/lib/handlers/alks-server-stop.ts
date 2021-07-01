@@ -2,10 +2,7 @@ import clc from 'cli-color';
 import commander from 'commander';
 import { isOsx } from '../isOsx';
 
-export async function handleAlksServerStop(
-  _options: commander.OptionValues,
-  _program: commander.Command
-) {
+export async function handleAlksServerStop(_options: commander.OptionValues) {
   if (!isOsx()) {
     console.error(clc.red('The metadata server is only supported on OSX.'));
     process.exit(0);

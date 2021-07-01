@@ -3,7 +3,6 @@ import { isEmpty, isUndefined } from 'underscore';
 import { Key } from '../../model/keys';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { getDeveloper } from '../getDeveloper';
 import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { getUserAgentString } from '../getUserAgentString';
@@ -12,10 +11,11 @@ import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import alksNode from 'alks-node';
 import open from 'open';
+import { getAlksAccount } from '../state/alksAccount';
+import { getAlksRole } from '../state/alksRole';
 
 export async function handleAlksSessionsConsole(
-  options: commander.OptionValues,
-  program: commander.Command
+  options: commander.OptionValues
 ) {
   let alksAccount = options.account;
   let alksRole = options.role;
@@ -31,10 +31,8 @@ export async function handleAlksSessionsConsole(
   try {
     if (useDefaultAcct) {
       try {
-        const dev = await getDeveloper();
-
-        alksAccount = dev.alksAccount;
-        alksRole = dev.alksRole;
+        alksAccount = await getAlksAccount();
+        alksRole = await getAlksRole();
       } catch (err) {
         errorAndExit('Unable to load default account!', err);
       }
@@ -44,7 +42,6 @@ export async function handleAlksSessionsConsole(
     try {
       if (isUndefined(options.iam)) {
         key = await getSessionKey(
-          program,
           alksAccount,
           alksRole,
           false,
@@ -53,7 +50,6 @@ export async function handleAlksSessionsConsole(
         );
       } else {
         key = await getIamKey(
-          program,
           alksAccount,
           alksRole,
           forceNewSession,

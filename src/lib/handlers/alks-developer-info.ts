@@ -2,18 +2,17 @@ import clc from 'cli-color';
 import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { getDeveloper } from '../getDeveloper';
-import { getPassword } from '../getPassword';
-import { getToken } from '../getToken';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 import { isEmpty } from 'underscore';
 import { Developer } from '../../model/developer';
+import { getPassword } from '../state/password';
+import { getToken } from '../state/token';
+import { getDeveloper } from '../state/developer';
 
 export async function handleAlksDeveloperInfo(
-  _options: commander.OptionValues,
-  _program: commander.Command
+  _options: commander.OptionValues
 ) {
   const table = new Table({
     head: [clc.white.bold('Key'), clc.white.bold('Value')],
@@ -25,10 +24,10 @@ export async function handleAlksDeveloperInfo(
     const developer = await getDeveloper();
 
     log('getting password');
-    const password = await getPassword(null); // null means dont prompt
+    const password = await getPassword().catch(() => undefined);
 
     log('getting 2fa token');
-    const token = await getToken();
+    const token = await getToken().catch(() => undefined);
 
     const mapping: Partial<Record<keyof Developer, string>> = {
       server: 'ALKS Server',

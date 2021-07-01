@@ -8,12 +8,11 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
-var getDeveloper_1 = require("../getDeveloper");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
-function handleAlksIamRoleTypes(options, program) {
+function handleAlksIamRoleTypes(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var outputVals, output, developer, auth, alks, roleTypes, err_1, err_2;
+        var outputVals, output, auth, alks, roleTypes, err_1, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -27,32 +26,28 @@ function handleAlksIamRoleTypes(options, program) {
                     }
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 11, , 12]);
-                    log_1.log('getting developer');
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
-                case 2:
-                    developer = _a.sent();
+                    _a.trys.push([1, 10, , 11]);
                     log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth(program)];
-                case 3:
+                    return [4 /*yield*/, getAuth_1.getAuth()];
+                case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 4:
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                case 3:
                     alks = _a.sent();
                     log_1.log('getting list of role types from REST API');
                     roleTypes = void 0;
-                    _a.label = 5;
-                case 5:
-                    _a.trys.push([5, 7, , 8]);
+                    _a.label = 4;
+                case 4:
+                    _a.trys.push([4, 6, , 7]);
                     return [4 /*yield*/, alks.getAllAWSRoleTypes({})];
-                case 6:
+                case 5:
                     roleTypes = _a.sent();
-                    return [3 /*break*/, 8];
-                case 7:
+                    return [3 /*break*/, 7];
+                case 6:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1);
-                    return [3 /*break*/, 8];
-                case 8:
+                    return [3 /*break*/, 7];
+                case 7:
                     log_1.log('outputting list of ' +
                         (roleTypes ? roleTypes.length : -1) +
                         ' role types');
@@ -67,17 +62,17 @@ function handleAlksIamRoleTypes(options, program) {
                     }
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 9:
+                case 8:
                     _a.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 10:
+                case 9:
                     _a.sent();
-                    return [3 /*break*/, 12];
-                case 11:
+                    return [3 /*break*/, 11];
+                case 10:
                     err_2 = _a.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 12];
-                case 12: return [2 /*return*/];
+                    return [3 /*break*/, 11];
+                case 11: return [2 /*return*/];
             }
         });
     });

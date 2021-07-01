@@ -4,7 +4,7 @@ exports.handleAlksServerStop = void 0;
 var tslib_1 = require("tslib");
 var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var isOsx_1 = require("../isOsx");
-function handleAlksServerStop(_options, _program) {
+function handleAlksServerStop(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var forever;
         return tslib_1.__generator(this, function (_a) {
