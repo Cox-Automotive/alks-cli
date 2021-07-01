@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  check_for_release_tag:
 
     runs-on: ubuntu-latest
 
