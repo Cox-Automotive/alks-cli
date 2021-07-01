@@ -44,8 +44,8 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       # need to run npm install before npm version so that husky's precommit hooks rebuild the dist/ folder
-      - name: install script dependencies
-        run: npm install
+      - name: install dependencies
+        run: npm ci
 
       - name: Get the release level (major/minor/patch) from the labels
         uses: actions-ecosystem/action-release-label@v1
