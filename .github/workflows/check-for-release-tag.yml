@@ -1,0 +1,16 @@
+name: Check For Release Tag
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Verify that a release label exists on the PR
+      if: ${{ ! ( contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') || contains(github.event.pull_request.labels.*.name, 'release/skip') ) }}
+      run: echo "Please label your PR with a release label" && exit 1
