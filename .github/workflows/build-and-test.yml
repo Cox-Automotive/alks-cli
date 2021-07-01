@@ -1,16 +1,16 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: ALKS-CLI CI
+name: Build and Test
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ master ]
 
 jobs:
-  build:
+  build_and_test:
 
     runs-on: ubuntu-latest
 
@@ -30,6 +30,3 @@ jobs:
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
-    - name: Verify that a release label exists on the PR
-      if: ${{ ! ( contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') || contains(github.event.pull_request.labels.*.name, 'release/skip') ) }}
-      run: echo "Please label your PR with a release label" && exit 1
