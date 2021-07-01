@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPasswordFromKeystore = void 0;
 var tslib_1 = require("tslib");
-var clortho_1 = tslib_1.__importDefault(require("clortho"));
+var clortho_1 = tslib_1.__importDefault(require("@cox-automotive/clortho"));
 var underscore_1 = require("underscore");
 var isPasswordSecurelyStorable_1 = require("./isPasswordSecurelyStorable");
 var node_netrc_1 = tslib_1.__importDefault(require("node-netrc"));
