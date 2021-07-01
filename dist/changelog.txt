@@ -1,10 +1,9 @@
-★ Release Notes: 2021-06-25 ★
+★ Release Notes: 2021-06-30 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes the automatic build-and-deploy process for the ALKS CLI repo
-* Fixes bugs with changelog.txt not being found
+This PR removes the clortho dependency coming from the gh release and replaces it with the new clortho package published under the cox-automotive org scope https://www.npmjs.com/package/@cox-automotive/clortho 
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
