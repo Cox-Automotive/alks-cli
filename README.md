@@ -66,9 +66,9 @@ We will attempt to lookup your password in the following order:
 
 ### Two Factor Authentication
 
-The preferred authentication mechanism is two-factor authentication. Simply log into the ALKS GUI and get your refresh token which we will securely store just like your password. 
+The preferred authentication mechanism is two-factor authentication. Simply log into the ALKS GUI and get your refresh token which we will securely store just like your password.
 
-*Note:* Credential authentication will be removed in a future release of the ALKS CLI. 
+*Note:* Credential authentication will be removed in a future release of the ALKS CLI.
 
 ## Docker
 
@@ -270,7 +270,6 @@ Arguments:
 ### `server stop`
 
 `alks server stop` - Stop the metadata server.
-
 
 # Output Formats
 
