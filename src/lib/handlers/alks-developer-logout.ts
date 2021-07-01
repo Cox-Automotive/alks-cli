@@ -7,8 +7,7 @@ import { removePassword } from '../removePassword';
 import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogout(
-  _options: commander.OptionValues,
-  _program: commander.Command
+  _options: commander.OptionValues
 ) {
   if (removePassword()) {
     console.error(clc.white('Password removed!'));

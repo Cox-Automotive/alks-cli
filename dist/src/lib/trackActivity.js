@@ -4,24 +4,24 @@ exports.trackActivity = void 0;
 var tslib_1 = require("tslib");
 var log_1 = require("./log");
 var universal_analytics_1 = tslib_1.__importDefault(require("universal-analytics"));
-var getDeveloper_1 = require("./getDeveloper");
 var getCallerInfo_1 = require("./getCallerInfo");
+var userId_1 = require("./state/userId");
 var visitor = null;
 var GA_ID = 'UA-88747959-1';
 function trackActivity() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var caller, logger, dev;
+        var caller, logger, userId;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     caller = getCallerInfo_1.getCallerInfo();
                     logger = caller.fileName + ":" + caller.line + ":" + caller.char;
                     if (!!visitor) return [3 /*break*/, 2];
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
+                    return [4 /*yield*/, userId_1.getUserId()];
                 case 1:
-                    dev = _a.sent();
-                    log_1.log('creating tracker for: ' + dev.userid);
-                    visitor = universal_analytics_1.default(GA_ID, String(dev.userid), {
+                    userId = _a.sent();
+                    log_1.log('creating tracker for: ' + userId);
+                    visitor = universal_analytics_1.default(GA_ID, String(userId), {
                         https: true,
                         strictCidFormat: false,
                     });

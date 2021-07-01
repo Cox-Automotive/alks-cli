@@ -7,15 +7,17 @@ var underscore_1 = require("underscore");
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
-var getIamAccount_1 = require("../getIamAccount");
+var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
+var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
-function handleAlksIamDeleteLtk(options, program) {
+function handleAlksIamDeleteLtk(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var iamUsername, alksAccount, alksRole, filterFaves, iamAccount, err_1, developer, auth, alks, err_2, err_3;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var iamUsername, alksAccount, alksRole, filterFaves, auth, alks, err_1, err_2;
+        var _a;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     iamUsername = options.iamusername;
                     alksAccount = options.account;
@@ -29,58 +31,54 @@ function handleAlksIamDeleteLtk(options, program) {
                         log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 13, , 14]);
-                    iamAccount = void 0;
-                    _a.label = 2;
+                    _b.trys.push([1, 12, , 13]);
+                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
+                    return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
+                            iamOnly: true,
+                            filterFavorites: filterFaves,
+                        })];
                 case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, getIamAccount_1.getIAMAccount(program, alksAccount, alksRole, filterFaves)];
-                case 3:
-                    iamAccount = _a.sent();
-                    return [3 /*break*/, 5];
+                    (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
+                    _b.label = 3;
+                case 3: return [4 /*yield*/, getAuth_1.getAuth()];
                 case 4:
-                    err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1);
-                    return [3 /*break*/, 5];
+                    auth = _b.sent();
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
                 case 5:
-                    developer = iamAccount.developer, auth = iamAccount.auth;
-                    (alksAccount = iamAccount.account, alksRole = iamAccount.role);
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 6:
-                    alks = _a.sent();
+                    alks = _b.sent();
                     log_1.log('calling api to delete ltk: ' + iamUsername);
-                    _a.label = 7;
-                case 7:
-                    _a.trys.push([7, 9, , 10]);
+                    _b.label = 6;
+                case 6:
+                    _b.trys.push([6, 8, , 9]);
                     return [4 /*yield*/, alks.deleteIAMUser({
                             account: alksAccount,
                             role: alksRole,
                             iamUserName: iamUsername,
                         })];
+                case 7:
+                    _b.sent();
+                    return [3 /*break*/, 9];
                 case 8:
-                    _a.sent();
-                    return [3 /*break*/, 10];
+                    err_1 = _b.sent();
+                    errorAndExit_1.errorAndExit(err_1);
+                    return [3 /*break*/, 9];
                 case 9:
-                    err_2 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_2);
-                    return [3 /*break*/, 10];
-                case 10:
                     console.log(cli_color_1.default.white(['LTK deleted for IAM User: ', iamUsername].join('')));
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 11:
-                    _a.sent();
+                case 10:
+                    _b.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
+                case 11:
+                    _b.sent();
+                    return [3 /*break*/, 13];
                 case 12:
-                    _a.sent();
-                    return [3 /*break*/, 14];
-                case 13:
-                    err_3 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_3.message, err_3);
-                    return [3 /*break*/, 14];
-                case 14: return [2 /*return*/];
+                    err_2 = _b.sent();
+                    errorAndExit_1.errorAndExit(err_2.message, err_2);
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });

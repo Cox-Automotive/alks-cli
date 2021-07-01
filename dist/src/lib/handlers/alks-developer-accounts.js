@@ -9,12 +9,11 @@ var errorAndExit_1 = require("../errorAndExit");
 var getAccountRegex_1 = require("../getAccountRegex");
 var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
-var getDeveloper_1 = require("../getDeveloper");
 var isWindows_1 = require("../isWindows");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
-function handleAlksDeveloperAccounts(options, program) {
+function handleAlksDeveloperAccounts(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         function getUniqueAccountName(accountName) {
             var i = 1;
@@ -35,7 +34,7 @@ function handleAlksDeveloperAccounts(options, program) {
                 }
             }
         }
-        var table, doExport, accountRegex, exportCmd, accounts, developer, auth, alks, alksAccounts, err_1;
+        var table, doExport, accountRegex, exportCmd, accounts, auth, alks, alksAccounts, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -53,21 +52,17 @@ function handleAlksDeveloperAccounts(options, program) {
                     accounts = [];
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 8, , 9]);
-                    log_1.log('getting developer');
-                    return [4 /*yield*/, getDeveloper_1.getDeveloper()];
-                case 2:
-                    developer = _a.sent();
+                    _a.trys.push([1, 7, , 8]);
                     log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth(program)];
-                case 3:
+                    return [4 /*yield*/, getAuth_1.getAuth()];
+                case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({ baseUrl: developer.server }, auth))];
-                case 4:
+                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                case 3:
                     alks = _a.sent();
                     log_1.log('getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
-                case 5:
+                case 4:
                     alksAccounts = _a.sent();
                     alksAccounts.forEach(function (alksAccount) {
                         var data = [alksAccount.account, alksAccount.role];
@@ -84,17 +79,17 @@ function handleAlksDeveloperAccounts(options, program) {
                     }
                     log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 6:
+                case 5:
                     _a.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 7:
+                case 6:
                     _a.sent();
-                    return [3 /*break*/, 9];
-                case 8:
+                    return [3 /*break*/, 8];
+                case 7:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });

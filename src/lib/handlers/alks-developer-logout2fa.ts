@@ -7,8 +7,7 @@ import { removeToken } from '../removeToken';
 import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogout2fa(
-  _options: commander.OptionValues,
-  _program: commander.Command
+  _options: commander.OptionValues
 ) {
   if (removeToken()) {
     console.error(clc.white('Token removed!'));

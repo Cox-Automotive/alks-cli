@@ -6,15 +6,13 @@ import { errorAndExit } from '../errorAndExit';
 import { getAccountRegex } from '../getAccountRegex';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
-import { getDeveloper } from '../getDeveloper';
 import { isWindows } from '../isWindows';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 
 export async function handleAlksDeveloperAccounts(
-  options: commander.OptionValues,
-  program: commander.Command
+  options: commander.OptionValues
 ) {
   const table = new Table({
     head: [
@@ -56,14 +54,10 @@ export async function handleAlksDeveloperAccounts(
   }
 
   try {
-    log('getting developer');
-    const developer = await getDeveloper();
-
     log('getting auth');
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 

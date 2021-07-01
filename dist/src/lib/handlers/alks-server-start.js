@@ -28,7 +28,7 @@ function runServerDaemon() {
         });
     });
 }
-function handleAlksServerStart(_options, _program) {
+function handleAlksServerStart(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var servicePath, err_1;
         return tslib_1.__generator(this, function (_a) {

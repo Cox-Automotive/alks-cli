@@ -5,14 +5,10 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
-import { getDeveloper } from '../getDeveloper';
 import { log } from '../log';
 import { trackActivity } from '../trackActivity';
 
-export async function handleAlksIamRoleTypes(
-  options: commander.OptionValues,
-  program: commander.Command
-) {
+export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
   const outputVals = ['list', 'json'];
   const output = options.output;
 
@@ -26,14 +22,10 @@ export async function handleAlksIamRoleTypes(
   }
 
   try {
-    log('getting developer');
-    const developer = await getDeveloper();
-
     log('getting auth');
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     const alks = await getAlks({
-      baseUrl: developer.server,
       ...auth,
     });
 

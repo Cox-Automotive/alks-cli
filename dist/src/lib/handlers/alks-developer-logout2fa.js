@@ -8,7 +8,7 @@ var errorAndExit_1 = require("../errorAndExit");
 var log_1 = require("../log");
 var removeToken_1 = require("../removeToken");
 var trackActivity_1 = require("../trackActivity");
-function handleAlksDeveloperLogout2fa(_options, _program) {
+function handleAlksDeveloperLogout2fa(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var err_1;
         return tslib_1.__generator(this, function (_a) {

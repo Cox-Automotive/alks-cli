@@ -1,37 +1,21 @@
-import commander from 'commander';
 import { log } from '../lib/log';
 import { Auth } from '../model/auth';
-import { getPassword } from './getPassword';
-import { getToken } from './getToken';
-import { getUserId } from './getUserId';
+import { getPassword } from './state/password';
+import { getToken } from './state/token';
+import { getUserId } from './state/userId';
 
-// TODO: find a better way to handle this
-export function cacheAuth(newAuth: Auth) {
-  auth = newAuth;
-}
-
-let auth: Auth;
-
-export async function getAuth(
-  program: commander.Command,
-  prompt: boolean = true
-): Promise<Auth> {
-  log('checking for access token');
-  const token = await getToken();
+export async function getAuth(): Promise<Auth> {
+  log('checking for refresh token');
+  const token = await getToken().catch(() => undefined);
   if (token) {
-    auth = { token };
+    const auth = { token };
     return auth;
   } else {
-    log('no access token found, falling back to password');
+    log('no refresh token found, falling back to password');
 
-    if (auth) {
-      log('using cached auth object');
-      return auth;
-    }
-
-    const userid = await getUserId(program, prompt);
-    const password = await getPassword(program, prompt);
-    auth = { userid, password };
+    const userid = await getUserId();
+    const password = await getPassword();
+    const auth = { userid, password };
     return auth;
   }
 }

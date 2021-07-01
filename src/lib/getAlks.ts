@@ -1,11 +1,8 @@
 import ALKS, { AlksProps, create } from 'alks.js';
 import { getUserAgentString } from './getUserAgentString';
+import { getServer } from './state/server';
 
-interface BaseProps {
-  baseUrl: string;
-}
-
-interface TokenProps extends BaseProps {
+interface TokenProps {
   token: string;
 }
 
@@ -13,7 +10,7 @@ function isTokenProps(props: Props): props is TokenProps {
   return !!(props as TokenProps).token;
 }
 
-interface PasswordProps extends BaseProps {
+interface PasswordProps {
   userid: string;
   password: string;
 }
@@ -24,10 +21,10 @@ export type Props = TokenProps | PasswordProps;
  * Gets a preconfigured alks.js object
  */
 export async function getAlks(props: Props): Promise<ALKS.Alks> {
-  const { baseUrl } = props;
+  const server = await getServer();
 
   const params = {
-    baseUrl,
+    baseUrl: server,
     userAgent: getUserAgentString(),
   };
 
@@ -39,7 +36,7 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
       refreshToken: props.token,
     });
     alks = alks.create({
-      ...props,
+      ...params,
       accessToken: result.accessToken,
     });
   } else {

@@ -7299,7 +7299,7 @@
     },
     "object-assign": {
       "version": "4.1.0",
-      "resolved": false,
+      "resolved": "",
       "integrity": "sha1-ejs9DpgGPUP0wD8uiubNUahog6A="
     },
     "object-copy": {

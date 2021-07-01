@@ -11,17 +11,13 @@ import { trackActivity } from '../trackActivity';
 import { getKeys } from '../getKeys';
 import { each, groupBy } from 'underscore';
 import { log } from '../log';
-import program from 'commander';
 
-export async function handleAlksSessionsList(
-  _options: program.OptionValues,
-  program: commander.Command
-) {
+export async function handleAlksSessionsList(_options: commander.OptionValues) {
   try {
     await ensureConfigured();
 
     log('getting auth');
-    const auth = await getAuth(program);
+    const auth = await getAuth();
 
     log('getting existing sesions');
     const nonIamKeys = await getKeys(auth, false);
@@ -53,7 +49,6 @@ export async function handleAlksSessionsList(
       ]);
 
       each(keys, (keydata) => {
-        console.log(JSON.stringify(keydata, null, 2));
         table.push([
           obfuscate(keydata.accessKey),
           obfuscate(keydata.secretKey),

@@ -2,9 +2,8 @@ import commander from 'commander';
 import { Key } from '../model/keys';
 import { ensureConfigured } from './ensureConfigured';
 import { getAlks } from './getAlks';
-import { getAlksAccount } from './getAlksAccount';
+import { promptForAlksAccountAndRole } from './promptForAlksAccountAndRole';
 import { getAuth } from './getAuth';
-import { getDeveloper } from './getDeveloper';
 import { getIamKey } from './getIamKey';
 import { getKeys } from './getKeys';
 import { log } from './log';
@@ -14,9 +13,8 @@ import ALKS from 'alks.js';
 import moment from 'moment';
 
 jest.mock('./ensureConfigured');
-jest.mock('./getDeveloper');
 jest.mock('./getAuth');
-jest.mock('./getAlksAccount');
+jest.mock('./promptForAlksAccountAndRole');
 jest.mock('./log');
 jest.mock('./getKeys');
 jest.mock('./getAlks');
@@ -48,9 +46,8 @@ describe('getIamKey', () => {
     shouldGetAlksAccount: boolean;
     shouldSaveKey: boolean;
     ensureConfigured: typeof ensureConfigured;
-    getDeveloper: typeof getDeveloper;
     getAuth: typeof getAuth;
-    getAlksAccount: typeof getAlksAccount;
+    getAlksAccount: typeof promptForAlksAccountAndRole;
     log: typeof log;
     getKeys: typeof getKeys;
     getAlks: typeof getAlks;
@@ -77,14 +74,6 @@ describe('getIamKey', () => {
     shouldGetAlksAccount: false,
     shouldSaveKey: false,
     ensureConfigured: async () => {},
-    getDeveloper: async () => ({
-      server: 'https://alks.coxautoinc.com/rest',
-      userid: 'bobby',
-      alksAccount: defaultAccount,
-      alksRole: defaultRole,
-      outputFormat: 'env',
-      lastVersion: '0.0.1',
-    }),
     getAuth: async () => ({
       token: 'thisisatoken',
     }),
@@ -326,9 +315,10 @@ describe('getIamKey', () => {
 
       beforeEach(async () => {
         (ensureConfigured as jest.Mock).mockImplementation(t.ensureConfigured);
-        (getDeveloper as jest.Mock).mockImplementation(t.getDeveloper);
         (getAuth as jest.Mock).mockImplementation(t.getAuth);
-        (getAlksAccount as jest.Mock).mockImplementation(t.getAlksAccount);
+        (promptForAlksAccountAndRole as jest.Mock).mockImplementation(
+          t.getAlksAccount
+        );
         (log as jest.Mock).mockImplementation(t.log);
         (getKeys as jest.Mock).mockImplementation(t.getKeys);
         (getAlks as jest.Mock).mockImplementation(t.getAlks);
@@ -345,7 +335,6 @@ describe('getIamKey', () => {
 
         try {
           result = await getIamKey(
-            t.program,
             t.alksAccount,
             t.alksRole,
             t.forceNewSession,
@@ -368,15 +357,15 @@ describe('getIamKey', () => {
       }
 
       if (t.shouldGetAlksAccount) {
-        it('calls getAlksAccount to ask for an ALKS account', () => {
-          expect(getAlksAccount).toHaveBeenCalledWith(t.program, {
+        it('calls promptForAlksAccountAndRole to ask for an ALKS account and role', () => {
+          expect(promptForAlksAccountAndRole).toHaveBeenCalledWith({
             iamOnly: true,
             filterFavorites: t.filterFavorites,
           });
         });
       } else {
         it('does not call getAlksAccount', () => {
-          expect(getAlksAccount).not.toHaveBeenCalled();
+          expect(promptForAlksAccountAndRole).not.toHaveBeenCalled();
         });
       }
 

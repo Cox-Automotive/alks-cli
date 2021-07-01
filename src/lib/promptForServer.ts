@@ -1,14 +1,12 @@
-import { getDeveloper } from './getDeveloper';
 import { getPrompt } from './getPrompt';
 import { isURL } from './isUrl';
+import { getServer } from './state/server';
+
+export const defaultServer = 'https://alks.coxautoinc.com/rest';
 
 export async function promptForServer(): Promise<string> {
-  let developer;
-  try {
-    developer = await getDeveloper();
-  } catch (e) {
-    // ignore
-  }
+  // Ignore failure since we're about to prompt for it
+  const server = await getServer().catch(() => undefined);
 
-  return getPrompt('server', developer?.server, 'ALKS server', isURL);
+  return getPrompt('server', server || defaultServer, 'ALKS server', isURL);
 }
