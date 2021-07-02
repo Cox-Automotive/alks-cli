@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-Internally refactors state management to simplify logic and enable future features
+* honors the NO_COLOR environment variable for colorless output
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
