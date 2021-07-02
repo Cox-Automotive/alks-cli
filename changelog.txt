@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* honors the NO_COLOR environment variable for colorless output
+* adds support for configuration using environment variables without needing to run `alks developer configure`
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
