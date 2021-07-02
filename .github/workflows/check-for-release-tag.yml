@@ -11,6 +11,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    # checkout the master branch to compare changelog.txt
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+        path: ./masterbranch
+
     - name: Verify that a release label exists on the PR
       if: ${{ ! ( contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') || contains(github.event.pull_request.labels.*.name, 'release/skip') ) }}
       run: echo "Please label your PR with a release label" && exit 1
+
+    # ensure changelog.txt has been updated in this PR by comparing it to the one in the master branch
+    - name: Verify that changelog.txt has been updated
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') }}
+      run: cmp --silent <(tail -n+2 changelog.txt) <(tail -n+2 ./masterbranch/changelog.txt) && { echo "Changelog.txt must be updated for release PRs. Please update changelog.txt" && exit 1 ; }
