@@ -1,8 +1,19 @@
 import { log } from '../log';
 import { saveToken } from '../saveToken';
 import { getTokenFromKeystore } from '../getTokenFromKeystore';
+import { isEmpty } from 'underscore';
+import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+
+const TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 
 export async function getToken() {
+  const tokenFromEnv = process.env[TOKEN_ENV_VAR_NAME];
+  if (!isEmpty(tokenFromEnv)) {
+    console.error(getEnvironmentVariableSecretWarning(TOKEN_ENV_VAR_NAME));
+    log('using refresh token from environment variable');
+    return tokenFromEnv;
+  }
+
   const tokenFromKeystore = await getTokenFromKeystore();
   if (tokenFromKeystore) {
     log('using stored token');

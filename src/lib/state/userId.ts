@@ -3,6 +3,8 @@ import program from '../program';
 import { log } from '../log';
 import { isEmpty } from 'underscore';
 
+const USER_ID_ENV_VAR_NAME = 'ALKS_USERID';
+
 export async function getUserId() {
   const userIdOption = program.opts().userid;
   if (userIdOption) {
@@ -10,7 +12,7 @@ export async function getUserId() {
     return userIdOption;
   }
 
-  const userIdFromEnv = process.env.ALKS_USERID;
+  const userIdFromEnv = process.env[USER_ID_ENV_VAR_NAME];
   if (!isEmpty(userIdFromEnv)) {
     log('using userid from environment variable');
     return userIdFromEnv;

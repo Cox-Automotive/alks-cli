@@ -3,6 +3,9 @@ import { log } from '../log';
 import { isEmpty } from 'underscore';
 import { savePassword } from '../savePassword';
 import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
+import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+
+const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 
 export async function getPassword() {
   const passwordOption = program.opts().password;
@@ -11,8 +14,9 @@ export async function getPassword() {
     return passwordOption;
   }
 
-  const passwordFromEnv = process.env.ALKS_PASSWORD;
+  const passwordFromEnv = process.env[PASSWORD_ENV_VAR_NAME];
   if (!isEmpty(passwordFromEnv)) {
+    console.error(getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
     log('using password from environment variable');
     return passwordFromEnv;
   }
