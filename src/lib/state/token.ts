@@ -6,12 +6,12 @@ import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSe
 
 const TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 
-export async function getToken() {
+export async function getToken(): Promise<string> {
   const tokenFromEnv = process.env[TOKEN_ENV_VAR_NAME];
   if (!isEmpty(tokenFromEnv)) {
     console.error(getEnvironmentVariableSecretWarning(TOKEN_ENV_VAR_NAME));
     log('using refresh token from environment variable');
-    return tokenFromEnv;
+    return tokenFromEnv as string;
   }
 
   const tokenFromKeystore = await getTokenFromKeystore();

@@ -1,7 +1,7 @@
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export async function getAlksRole() {
+export async function getAlksRole(): Promise<string> {
   const developer = await getDeveloper();
   if (developer.alksRole) {
     log('using stored alks role');

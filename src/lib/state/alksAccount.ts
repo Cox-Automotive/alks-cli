@@ -1,7 +1,7 @@
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export async function getAlksAccount() {
+export async function getAlksAccount(): Promise<string> {
   const developer = await getDeveloper();
   if (developer.alksAccount) {
     log('using stored alks account');

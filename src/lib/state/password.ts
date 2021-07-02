@@ -7,7 +7,7 @@ import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSe
 
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 
-export async function getPassword() {
+export async function getPassword(): Promise<string> {
   const passwordOption = program.opts().password;
   if (passwordOption) {
     log('using password from CLI arg');
@@ -18,7 +18,7 @@ export async function getPassword() {
   if (!isEmpty(passwordFromEnv)) {
     console.error(getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
     log('using password from environment variable');
-    return passwordFromEnv;
+    return passwordFromEnv as string;
   }
 
   const passwordFromKeystore = await getPasswordFromKeystore();

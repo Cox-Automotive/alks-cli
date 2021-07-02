@@ -5,7 +5,7 @@ import { isEmpty } from 'underscore';
 
 const USER_ID_ENV_VAR_NAME = 'ALKS_USERID';
 
-export async function getUserId() {
+export async function getUserId(): Promise<string> {
   const userIdOption = program.opts().userid;
   if (userIdOption) {
     log('using userid from CLI arg');
@@ -15,7 +15,7 @@ export async function getUserId() {
   const userIdFromEnv = process.env[USER_ID_ENV_VAR_NAME];
   if (!isEmpty(userIdFromEnv)) {
     log('using userid from environment variable');
-    return userIdFromEnv;
+    return userIdFromEnv as string;
   }
 
   const developer = await getDeveloper();
