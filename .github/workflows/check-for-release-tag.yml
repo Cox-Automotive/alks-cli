@@ -25,4 +25,5 @@ jobs:
     # ensure changelog.txt has been updated in this PR by comparing it to the one in the master branch
     - name: Verify that changelog.txt has been updated
       if: ${{ contains(github.event.pull_request.labels.*.name, 'release/patch') || contains(github.event.pull_request.labels.*.name, 'release/minor') || contains(github.event.pull_request.labels.*.name, 'release/major') }}
-      run: ! cmp --silent <(tail -n+2 changelog.txt) <(tail -n+2 ./masterbranch/changelog.txt) || { echo "Changelog.txt must be updated for release PRs. Please update changelog.txt" && exit 1 ; }
+      run: |
+        ! cmp --silent <(tail -n+2 changelog.txt) <(tail -n+2 ./masterbranch/changelog.txt) || { echo 'Changelog.txt must be updated for release PRs. Please update changelog.txt' && exit 1 ; }
