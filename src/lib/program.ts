@@ -45,16 +45,16 @@ const sessions = program.command('sessions').description('manage aws sessions');
 sessions
   .command('open')
   .description('creates or resumes a session')
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-i, --iam', 'create an IAM session')
-  .option('-p, --password [password]', 'my password')
+  .option('-p, --password <password>', 'my password')
   .option(
-    '-o, --output [format]',
+    '-o, --output <format>',
     'output format (' + outputValues.join(', ') + ')'
   )
   .option(
-    '-n, --namedProfile [profile]',
+    '-n, --namedProfile <profile>',
     'if output is set to creds, use this profile, default: default'
   )
   .option(
@@ -72,19 +72,19 @@ sessions
 sessions
   .command('list')
   .description('list active sessions')
-  .option('-p, --password [password]', 'my password')
+  .option('-p, --password <password>', 'my password')
   .action(handleAlksSessionsList);
 
 sessions
   .command('console')
   .description('open an AWS console in your browser')
   .option('-u, --url', 'just print the url')
-  .option('-o, --openWith [appName]', 'open in a different app (optional)')
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-o, --openWith <appName>', 'open in a different app (optional)')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-i, --iam', 'create an IAM session')
   .option('-F, --favorites', 'filters favorite accounts')
-  .option('-p, --password [password]', 'my password')
+  .option('-p, --password <password>', 'my password')
   .option('-N, --newSession', 'forces a new session to be generated')
   .option(
     '-d, --default',
@@ -98,7 +98,7 @@ iam
   .command('roletypes')
   .description('list the available iam role types')
   .option(
-    '-o, --output [format]',
+    '-o, --output <format>',
     'output format (' +
       outputValues.join(', ') +
       '), default: ' +
@@ -110,9 +110,9 @@ iam
 iam
   .command('deleterole')
   .description('remove an IAM role')
-  .option('-n, --rolename [rolename]', 'the name of the role to delete')
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-n, --rolename <rolename>', 'the name of the role to delete')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamDeleteRole);
 
@@ -120,39 +120,39 @@ iam
   .command('deleteltk')
   .description('deletes an IAM Longterm Key')
   .option(
-    '-n, --iamusername [iamUsername]',
+    '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK'
   )
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamDeleteLtk);
 
 iam
   .command('createtrustrole')
   .description('creates a new IAM Trust role')
-  .option('-n, --rolename [rolename]', 'the name of the role, ' + nameDesc)
+  .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
-    '-t, --roletype [roletype]',
+    '-t, --roletype <roletype>',
     'the role type: Cross Account or Inner Account'
   )
-  .option('-T, --trustarn [trustarn]', 'trust arn, ' + trustArnDesc)
+  .option('-T, --trustarn <trustarn>', 'trust arn, ' + trustArnDesc)
   .option(
     '-e, --enableAlksAccess',
     'enable alks access (MI), default: false',
     false
   )
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamCreateTrustRole);
 
 iam
   .command('createrole')
   .description('creates a new IAM role')
-  .option('-n, --rolename [rolename]', 'the name of the role, ' + nameDesc)
+  .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
-    '-t, --roletype [roletype]',
+    '-t, --roletype <roletype>',
     'the role type, to see available roles: alks iam roletypes'
   )
   .option(
@@ -165,8 +165,8 @@ iam
     'enable alks access (MI), default: false',
     false
   )
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamCreateRole);
 
@@ -174,13 +174,13 @@ iam
   .command('createltk')
   .description('creates a new IAM Longterm Key')
   .option(
-    '-n, --iamusername [iamUsername]',
+    '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK, ' + nameDesc
   )
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
-  .option('-o, --output [format]', 'output format (text, json)', 'text')
+  .option('-o, --output <format>', 'output format (text, json)', 'text')
   .action(handleAlksIamCreateLtk);
 
 const developer = program
@@ -243,10 +243,10 @@ server
 
 server
   .command('configure')
-  .option('-a, --account [alksAccount]', 'alks account to use')
-  .option('-r, --role [alksRole]', 'alks role to use')
+  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option('-r, --role <alksRole>', 'alks role to use')
   .option('-i, --iam', 'create an IAM session')
-  .option('-p, --password [password]', 'my password')
+  .option('-p, --password <password>', 'my password')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksServerConfigure);
 
