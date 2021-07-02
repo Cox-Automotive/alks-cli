@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-Internally refactors state management to simplify logic and enable future features
+* Prints URLs to the console when attempting to open them in case opening in browser fails
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
