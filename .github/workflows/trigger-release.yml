@@ -65,18 +65,9 @@ jobs:
 
       - name: update changelog.txt
         run: |
-          cat << EOF > changelog.txt
-          ★ Release Notes: $(date +%Y-%m-%d) ★
-          ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-          
-          Thanks for upgrading to the latest version of the ALKS CLI!
-          
-          ${{ needs.get_pull_request.outputs.pull_request_body }}
-
-          Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
-
-          ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
-          EOF
+          echo "★ Release Notes: $(date +%Y-%m-%d) ★" > changelog.temp.txt
+          tail -n +2 changelog.txt >> changelog.temp.txt
+          mv changelog.temp.txt changelog.txt
           git add changelog.txt
           git commit -m 'updates changelog.txt'
 
