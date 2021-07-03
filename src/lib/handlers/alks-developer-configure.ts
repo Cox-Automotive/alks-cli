@@ -16,30 +16,57 @@ import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
+import { saveToken } from '../saveToken';
+import { promptForToken } from '../promptForToken';
+import { promptForAuthType } from '../promptForAuthType';
+import { validateAlksAccount } from '../validateAlksAccount';
 
 export async function handleAlksDeveloperConfigure(
-  _options: commander.OptionValues
+  options: commander.OptionValues
 ) {
   try {
-    await setServer(await promptForServer());
+    await setServer(options.server || (await promptForServer()));
 
-    await setUserId(await promptForUserId());
+    await setUserId(options.username || (await promptForUserId()));
 
-    const password = await promptForPassword();
-    const savePasswordAnswer = await confirm('Save password');
-    if (savePasswordAnswer) {
-      await savePassword(password);
+    if (options.password && options.token) {
+      throw new Error(
+        'Invalid options: Cannot pass both -p/--password and -t/--token. Choose one or pass neither'
+      );
     }
 
-    log('Getting ALKS accounts');
-    const { alksAccount, alksRole } = await promptForAlksAccountAndRole({
-      prompt: 'Please select your default ALKS account/role',
-    });
-    await setAlksAccount(alksAccount);
-    await setAlksRole(alksRole);
+    // Prompt for auth type if none was chosen
+    if (!(options.password || options.token)) {
+      const authTypeAnswer = await promptForAuthType();
+      options.token = authTypeAnswer === 'OAuth2 Refresh Token';
+      options.password = !options.token;
+    }
+
+    if (options.token) {
+      await saveToken(await promptForToken());
+    } else {
+      const password = await promptForPassword();
+      const savePasswordAnswer = await confirm('Save password');
+      if (savePasswordAnswer) {
+        await savePassword(password);
+      }
+    }
+
+    if (!options.account || !options.role) {
+      log('Getting ALKS accounts');
+      const { alksAccount, alksRole } = await promptForAlksAccountAndRole({
+        prompt: 'Please select your default ALKS account/role',
+      });
+      await setAlksAccount(alksAccount);
+      await setAlksRole(alksRole);
+    } else {
+      await validateAlksAccount(options.account, options.role);
+      await setAlksAccount(options.account);
+      await setAlksRole(options.role);
+    }
 
     log('Getting output formats');
-    setOutputFormat(await promptForOutputFormat());
+    setOutputFormat(options.format || (await promptForOutputFormat()));
 
     // create developer
     console.error(clc.white('Your developer configuration has been updated.'));

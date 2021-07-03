@@ -14,10 +14,7 @@ function promptForAuthType() {
                         name: 'authType',
                         default: 'OAuth2 Refresh Token',
                         message: 'Please choose an authentication type',
-                        choices: [
-                            'OAuth2 Refresh Token',
-                            'Username/Password (not recommended)',
-                        ],
+                        choices: ['OAuth2 Refresh Token', 'Username/Password (not recommended)'],
                         pageSize: 10,
                     };
                     return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([promptData])];
