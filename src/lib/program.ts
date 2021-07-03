@@ -190,7 +190,21 @@ const developer = program
 developer
   .command('configure')
   .description('configures developer')
-  .option('-v, --verbose', 'be verbose')
+  .option(
+    '-a, --account <alksAccount>',
+    'alks account to use as the default account'
+  )
+  .option('-r, --role <alksRole>', 'alks role to use as the default role')
+  .option('-o, --output <format>', 'output format (text, json)', 'text')
+  .option('-u, --username <username>', 'your username')
+  .option(
+    '-p, --password',
+    'causes the cli to automatically prompt for your password (cannot be used with -t/--token)'
+  )
+  .option(
+    '-t, --token',
+    'causes the cli to automatically prompt for your refresh token (cannot be used with -p/--password)'
+  )
   .action(handleAlksDeveloperConfigure);
 
 developer
