@@ -43,13 +43,13 @@ sessions
     .option('-a, --account <alksAccount>', 'alks account to use')
     .option('-r, --role <alksRole>', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
+    .option('-d, --default', 'uses your default account from "alks developer configure"')
+    .option('-N, --newSession', 'forces a new session to be generated')
     .option('-p, --password <password>', 'my password')
     .option('-o, --output <format>', 'output format (' + outputValues.join(', ') + ')')
     .option('-n, --namedProfile <profile>', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .option('-F, --favorites', 'filters favorite accounts')
-    .option('-N, --newSession', 'forces a new session to be generated')
-    .option('-d, --default', 'uses your default account from "alks developer configure"')
     .action(alks_sessions_open_1.handleAlksSessionsOpen);
 sessions
     .command('list')
@@ -59,15 +59,15 @@ sessions
 sessions
     .command('console')
     .description('open an AWS console in your browser')
-    .option('-u, --url', 'just print the url')
-    .option('-o, --openWith <appName>', 'open in a different app (optional)')
     .option('-a, --account <alksAccount>', 'alks account to use')
     .option('-r, --role <alksRole>', 'alks role to use')
     .option('-i, --iam', 'create an IAM session')
+    .option('-d, --default', 'uses your default account from "alks developer configure"')
+    .option('-N, --newSession', 'forces a new session to be generated')
+    .option('-u, --url', 'just print the url')
+    .option('-o, --openWith <openWith>', 'open in a different app (optional)')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-p, --password <password>', 'my password')
-    .option('-N, --newSession', 'forces a new session to be generated')
-    .option('-d, --default', 'uses your default account from "alks developer configure"')
     .action(alks_sessions_console_1.handleAlksSessionsConsole);
 var iam = program.command('iam').description('manage iam resources');
 iam

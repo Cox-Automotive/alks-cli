@@ -48,6 +48,11 @@ sessions
   .option('-a, --account <alksAccount>', 'alks account to use')
   .option('-r, --role <alksRole>', 'alks role to use')
   .option('-i, --iam', 'create an IAM session')
+  .option(
+    '-d, --default',
+    'uses your default account from "alks developer configure"'
+  )
+  .option('-N, --newSession', 'forces a new session to be generated')
   .option('-p, --password <password>', 'my password')
   .option(
     '-o, --output <format>',
@@ -62,11 +67,6 @@ sessions
     'if output is set to creds, force overwriting of AWS credentials'
   )
   .option('-F, --favorites', 'filters favorite accounts')
-  .option('-N, --newSession', 'forces a new session to be generated')
-  .option(
-    '-d, --default',
-    'uses your default account from "alks developer configure"'
-  )
   .action(handleAlksSessionsOpen);
 
 sessions
@@ -78,18 +78,18 @@ sessions
 sessions
   .command('console')
   .description('open an AWS console in your browser')
-  .option('-u, --url', 'just print the url')
-  .option('-o, --openWith <appName>', 'open in a different app (optional)')
   .option('-a, --account <alksAccount>', 'alks account to use')
   .option('-r, --role <alksRole>', 'alks role to use')
   .option('-i, --iam', 'create an IAM session')
-  .option('-F, --favorites', 'filters favorite accounts')
-  .option('-p, --password <password>', 'my password')
-  .option('-N, --newSession', 'forces a new session to be generated')
   .option(
     '-d, --default',
     'uses your default account from "alks developer configure"'
   )
+  .option('-N, --newSession', 'forces a new session to be generated')
+  .option('-u, --url', 'just print the url')
+  .option('-o, --openWith <openWith>', 'open in a different app (optional)')
+  .option('-F, --favorites', 'filters favorite accounts')
+  .option('-p, --password <password>', 'my password')
   .action(handleAlksSessionsConsole);
 
 const iam = program.command('iam').description('manage iam resources');
