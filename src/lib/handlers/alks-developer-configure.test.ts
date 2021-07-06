@@ -15,6 +15,7 @@ import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
+import { promptForAuthType } from '../promptForAuthType';
 
 jest.mock('../state/server');
 jest.mock('../state/userId');
@@ -31,6 +32,7 @@ jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
 jest.mock('../trackActivity');
+jest.mock('../promptForAuthType');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
@@ -47,6 +49,7 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForUserIdFails: boolean;
     userId: string;
     shouldSaveUserId: boolean;
+    authType: 'OAuth2 Refresh Token' | 'Username/Password (not recommended)';
     promptForPasswordFails: boolean;
     password: string;
     confirmSavePasswordFails: boolean;
@@ -74,6 +77,7 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForUserIdFails: false,
     userId: '',
     shouldSaveUserId: false,
+    authType: 'Username/Password (not recommended)',
     promptForPasswordFails: false,
     password: '',
     confirmSavePasswordFails: false,
@@ -113,6 +117,17 @@ describe('handleAlksDeveloperConfigure', () => {
       shouldErr: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
+      promptForPasswordFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when prompting for the token fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      authType: 'OAuth2 Refresh Token',
       promptForPasswordFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
@@ -265,6 +280,9 @@ describe('handleAlksDeveloperConfigure', () => {
             return t.userId;
           }
         });
+        (promptForAuthType as jest.Mock).mockImplementation(
+          async () => t.authType
+        );
         (promptForPassword as jest.Mock).mockImplementation(async () => {
           if (t.promptForPasswordFails) {
             throw new Error();

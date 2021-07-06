@@ -17,6 +17,7 @@ var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
+var promptForAuthType_1 = require("../promptForAuthType");
 jest.mock('../state/server');
 jest.mock('../state/userId');
 jest.mock('../state/alksAccount');
@@ -32,6 +33,7 @@ jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
 jest.mock('../trackActivity');
+jest.mock('../promptForAuthType');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 describe('handleAlksDeveloperConfigure', function () {
@@ -45,6 +47,7 @@ describe('handleAlksDeveloperConfigure', function () {
         promptForUserIdFails: false,
         userId: '',
         shouldSaveUserId: false,
+        authType: 'Username/Password (not recommended)',
         promptForPasswordFails: false,
         password: '',
         confirmSavePasswordFails: false,
@@ -66,6 +69,7 @@ describe('handleAlksDeveloperConfigure', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the server url fails', shouldErr: true, promptForServerFails: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for a username fails', shouldErr: true, server: 'https://alks.com/rest', promptForUserIdFails: true, shouldSaveServer: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the token fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', authType: 'OAuth2 Refresh Token', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when confirming if the user wants to save password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', confirmSavePasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, savePasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting the alks account fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, promptForAlksAccountAndRoleFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true }),
@@ -104,6 +108,9 @@ describe('handleAlksDeveloperConfigure', function () {
                                     return [2 /*return*/];
                                 });
                             }); });
+                            promptForAuthType_1.promptForAuthType.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                                return [2 /*return*/, t.authType];
+                            }); }); });
                             promptForPassword_1.promptForPassword.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
                                     if (t.promptForPasswordFails) {
