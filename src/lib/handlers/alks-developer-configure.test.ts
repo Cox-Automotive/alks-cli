@@ -16,6 +16,7 @@ import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
 import { promptForAuthType } from '../promptForAuthType';
+import { install } from 'tabtab';
 
 jest.mock('../state/server');
 jest.mock('../state/userId');
@@ -33,6 +34,7 @@ jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
 jest.mock('../trackActivity');
 jest.mock('../promptForAuthType');
+jest.mock('tabtab');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
@@ -64,6 +66,7 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForOutputFormatFails: boolean;
     outputFormat: string;
     shouldSaveOutputFormat: boolean;
+    tabtabInstallFails: boolean;
     checkForUpdateFails: boolean;
     trackActivityFails: boolean;
   }
@@ -92,6 +95,7 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForOutputFormatFails: false,
     outputFormat: '',
     shouldSaveOutputFormat: false,
+    tabtabInstallFails: false,
     checkForUpdateFails: false,
     trackActivityFails: false,
   };
@@ -185,6 +189,24 @@ describe('handleAlksDeveloperConfigure', () => {
       shouldSavePassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when installing tab completion fails',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      password: 'letmein',
+      savePassword: true,
+      alksAccount: '012345678910/ALKSAdmin - awstest',
+      alksRole: 'Admin',
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
+      shouldSavePassword: true,
+      shouldSaveAlksAccount: true,
+      shouldSaveAlksRole: true,
+      shouldSaveOutputFormat: true,
+      tabtabInstallFails: true,
     },
     {
       ...defaultTestCase,
@@ -316,6 +338,11 @@ describe('handleAlksDeveloperConfigure', () => {
             throw new Error();
           } else {
             return t.outputFormat;
+          }
+        });
+        (install as jest.Mock).mockImplementation(async () => {
+          if (t.tabtabInstallFails) {
+            throw new Error();
           }
         });
         (checkForUpdate as jest.Mock).mockImplementation(async () => {

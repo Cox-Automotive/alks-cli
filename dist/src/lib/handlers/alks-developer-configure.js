@@ -23,13 +23,14 @@ var saveToken_1 = require("../saveToken");
 var promptForToken_1 = require("../promptForToken");
 var promptForAuthType_1 = require("../promptForAuthType");
 var validateAlksAccount_1 = require("../validateAlksAccount");
+var tabtab_1 = tslib_1.__importDefault(require("tabtab"));
 function handleAlksDeveloperConfigure(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _a, _b, _c, _d, authTypeAnswer, _e, password, savePasswordAnswer, _f, alksAccount, alksRole, _g, _h, err_1;
         return tslib_1.__generator(this, function (_j) {
             switch (_j.label) {
                 case 0:
-                    _j.trys.push([0, 28, , 29]);
+                    _j.trys.push([0, 29, , 30]);
                     _a = server_1.setServer;
                     _b = options.server;
                     if (_b) return [3 /*break*/, 2];
@@ -117,19 +118,25 @@ function handleAlksDeveloperConfigure(options) {
                     _g.apply(void 0, [_h]);
                     // create developer
                     console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
-                    log_1.log('checking for update');
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, tabtab_1.default.install({
+                            name: 'alks',
+                            completer: 'alks',
+                        })];
                 case 26:
                     _j.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    log_1.log('checking for update');
+                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 27:
                     _j.sent();
-                    return [3 /*break*/, 29];
+                    return [4 /*yield*/, trackActivity_1.trackActivity()];
                 case 28:
+                    _j.sent();
+                    return [3 /*break*/, 30];
+                case 29:
                     err_1 = _j.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 29];
-                case 29: return [2 /*return*/];
+                    return [3 /*break*/, 30];
+                case 30: return [2 /*return*/];
             }
         });
     });

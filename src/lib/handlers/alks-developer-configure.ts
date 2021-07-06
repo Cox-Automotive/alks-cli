@@ -20,6 +20,7 @@ import { saveToken } from '../saveToken';
 import { promptForToken } from '../promptForToken';
 import { promptForAuthType } from '../promptForAuthType';
 import { validateAlksAccount } from '../validateAlksAccount';
+import tabtab from 'tabtab';
 
 export async function handleAlksDeveloperConfigure(
   options: commander.OptionValues
@@ -70,6 +71,11 @@ export async function handleAlksDeveloperConfigure(
 
     // create developer
     console.error(clc.white('Your developer configuration has been updated.'));
+
+    await tabtab.install({
+      name: 'alks',
+      completer: 'alks',
+    });
 
     log('checking for update');
     await checkForUpdate();

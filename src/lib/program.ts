@@ -21,6 +21,7 @@ import { handleAlksDeveloperLogin } from '../lib/handlers/alks-developer-login';
 import { handleAlksDeveloperLogin2fa } from '../lib/handlers/alks-developer-login2fa';
 import { handleAlksDeveloperLogout } from '../lib/handlers/alks-developer-logout';
 import { handleAlksDeveloperLogout2fa } from '../lib/handlers/alks-developer-logout2fa';
+import { handleCompletion } from './handlers/alks-completion';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -39,6 +40,8 @@ program.configureOutput({
 });
 
 program.version(version).option('-v, --verbose', 'be verbose');
+
+program.command('completion').action(handleCompletion);
 
 const sessions = program.command('sessions').description('manage aws sessions');
 
@@ -243,7 +246,10 @@ developer
   .description('removes alks refresh token')
   .action(handleAlksDeveloperLogout2fa);
 
-const server = program.command('server').description('ec23 metadata server');
+const server = program
+  .command('server')
+  .name('server')
+  .description('ec23 metadata server');
 
 server
   .command('stop')
