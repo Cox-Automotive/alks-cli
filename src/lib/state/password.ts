@@ -4,6 +4,8 @@ import { isEmpty } from 'underscore';
 import { savePassword } from '../savePassword';
 import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
 
+let cachedPassword: string;
+
 export async function getPassword() {
   const passwordOption = program.opts().password;
   if (passwordOption) {
@@ -23,9 +25,19 @@ export async function getPassword() {
     return passwordFromKeystore;
   }
 
+  if (cachedPassword) {
+    log('using cached password');
+    return cachedPassword;
+  }
+
   throw new Error('No password was configured');
 }
 
 export async function setPassword(password: string) {
   await savePassword(password);
+}
+
+// Allows temporarily setting a password so that actions like configuring developer can work without having to save your password
+export function cachePassword(password: string): void {
+  cachedPassword = password;
 }
