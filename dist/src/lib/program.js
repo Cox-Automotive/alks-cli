@@ -23,6 +23,7 @@ var alks_developer_login_1 = require("../lib/handlers/alks-developer-login");
 var alks_developer_login2fa_1 = require("../lib/handlers/alks-developer-login2fa");
 var alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
 var alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
+var alks_completion_1 = require("./handlers/alks-completion");
 var outputValues = getOutputValues_1.getOutputValues();
 var nameDesc = 'alphanumeric including @+=._-';
 var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -36,6 +37,7 @@ program.configureOutput({
     },
 });
 program.version(package_json_1.version).option('-v, --verbose', 'be verbose');
+program.command('completion').action(alks_completion_1.handleCompletion);
 var sessions = program.command('sessions').description('manage aws sessions');
 sessions
     .command('open')
@@ -162,7 +164,10 @@ developer
     .command('logout2fa')
     .description('removes alks refresh token')
     .action(alks_developer_logout2fa_1.handleAlksDeveloperLogout2fa);
-var server = program.command('server').description('ec23 metadata server');
+var server = program
+    .command('server')
+    .name('server')
+    .description('ec23 metadata server');
 server
     .command('stop')
     .description('stops the metadata server')
