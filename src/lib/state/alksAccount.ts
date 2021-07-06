@@ -9,7 +9,7 @@ export async function getAlksAccount(): Promise<string> {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Default ALKS Account is not configured. Please run: alks developer configure'
   );
 }
 

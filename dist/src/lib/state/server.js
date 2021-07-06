@@ -24,7 +24,7 @@ function getServer() {
                         log_1.log('using stored server url');
                         return [2 /*return*/, developer.server];
                     }
-                    throw new Error('ALKS CLI is not configured. Please run: alks developer configure');
+                    throw new Error('Server URL is not configured. Please run: alks developer configure');
             }
         });
     });

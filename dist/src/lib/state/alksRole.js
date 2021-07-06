@@ -16,7 +16,7 @@ function getAlksRole() {
                         log_1.log('using stored alks role');
                         return [2 /*return*/, developer.alksRole];
                     }
-                    throw new Error('ALKS CLI is not configured. Please run: alks developer configure');
+                    throw new Error('Default ALKS Role is not configured. Please run: alks developer configure');
             }
         });
     });

@@ -9,7 +9,7 @@ export async function getOutputFormat(): Promise<string> {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Output format is not specified. Please run: alks developer configure'
   );
 }
 

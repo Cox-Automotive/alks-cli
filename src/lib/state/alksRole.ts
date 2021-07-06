@@ -9,7 +9,7 @@ export async function getAlksRole(): Promise<string> {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Default ALKS Role is not configured. Please run: alks developer configure'
   );
 }
 

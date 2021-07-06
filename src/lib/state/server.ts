@@ -18,7 +18,7 @@ export async function getServer(): Promise<string> {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Server URL is not configured. Please run: alks developer configure'
   );
 }
 
