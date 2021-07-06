@@ -16,6 +16,7 @@ import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
+import tabtab from 'tabtab';
 
 export async function handleAlksDeveloperConfigure(
   _options: commander.OptionValues
@@ -43,6 +44,11 @@ export async function handleAlksDeveloperConfigure(
 
     // create developer
     console.error(clc.white('Your developer configuration has been updated.'));
+
+    await tabtab.install({
+      name: 'alks',
+      completer: 'alks',
+    });
 
     log('checking for update');
     await checkForUpdate();
