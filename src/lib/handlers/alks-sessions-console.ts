@@ -13,6 +13,7 @@ import alksNode from 'alks-node';
 import open from 'open';
 import { getAlksAccount } from '../state/alksAccount';
 import { getAlksRole } from '../state/alksRole';
+import clc from 'cli-color';
 
 export async function handleAlksSessionsConsole(
   options: commander.OptionValues
@@ -80,6 +81,7 @@ export async function handleAlksSessionsConsole(
       console.log(url);
     } else {
       const opts = !isEmpty(options.openWith) ? { app: options.openWith } : {};
+      console.error(`Opening ${clc.underline(url)} in the browser...`);
       try {
         await Promise.race([
           open(url, {
@@ -99,7 +101,6 @@ export async function handleAlksSessionsConsole(
       await checkForUpdate();
       await trackActivity();
       await new Promise((resolve) => setTimeout(resolve, 3000)); // needed for if browser is still open
-      process.exit(0);
     }
   } catch (err) {
     errorAndExit(err.message, err);

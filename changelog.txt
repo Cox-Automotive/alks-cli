@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds tab completion for CLI commands, subcommands, and flags/options
-  * To install tab completion, run `alks developer configure`
+* Prints URLs to the console when attempting to open them in case opening in browser fails
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
