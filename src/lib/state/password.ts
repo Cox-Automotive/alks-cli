@@ -12,6 +12,9 @@ export async function getPassword(): Promise<string> {
   const passwordOption = program.opts().password;
   if (passwordOption) {
     log('using password from CLI arg');
+    console.error(
+      'Warning: Passing secrets via cli options is unsafe. Please instead run `alks developer configure`, `alks-developer-login`, or set the ALKS_PASSWORD environment variable'
+    );
     return passwordOption;
   }
 

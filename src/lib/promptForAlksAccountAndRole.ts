@@ -1,13 +1,12 @@
 import { getAccountDelim } from './getAccountDelim';
-import { getAlks } from './getAlks';
-import { getAuth } from './getAuth';
+import { getAlksAccounts } from './getAlksAccounts';
 import { getFavorites } from './getFavorites';
 import { getStdErrPrompt } from './getStdErrPrompt';
 import { log } from './log';
 import { getAlksAccount } from './state/alksAccount';
 import { getAlksRole } from './state/alksRole';
 
-export interface GetAlksAccountProps {
+export interface GetAlksAccountOptions {
   iamOnly: boolean;
   prompt: string;
   filterFavorites: boolean;
@@ -23,33 +22,20 @@ export interface AlksAccountPromptData {
 }
 
 export async function promptForAlksAccountAndRole(
-  options: Partial<GetAlksAccountProps>
+  options: Partial<GetAlksAccountOptions>
 ): Promise<{ alksAccount: string; alksRole: string }> {
-  log('retreiving alks account');
-
-  const opts: GetAlksAccountProps = {
+  const opts: GetAlksAccountOptions = {
     iamOnly: options.iamOnly || false,
     prompt: options.prompt || 'Please select an ALKS account/role',
     filterFavorites: options.filterFavorites || false,
   };
 
-  const auth = await getAuth();
-
-  // load available account/roles
-  const alks = await getAlks({
-    ...auth,
-  });
-
-  const alksAccounts = await alks.getAccounts();
-  log(
-    `All accounts: ${alksAccounts.map((alksAccount) => alksAccount.account)}`
-  );
+  const alksAccounts = await getAlksAccounts({ iamOnly: opts.iamOnly });
 
   const favorites = await getFavorites();
   log(`Favorites: ${favorites.toString()}`);
 
   const indexedAlksAccounts = alksAccounts
-    .filter((alksAccount) => !opts.iamOnly || alksAccount.iamKeyActive) // Filter out non-iam-active accounts if iamOnly flag is passed
     .map((alksAccount) =>
       [alksAccount.account, alksAccount.role].join(getAccountDelim())
     ) // Convert ALKS account object to ALKS-CLI style account string
