@@ -30,8 +30,9 @@ The ALKS CLI requires some basic environment information to get started. Simply 
 * Network Password: Your network password (needed for loading list of accounts/roles)
 * Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
 * Default Account/Role: Select the default ALKS account/role to use
+* Default Output Format: Select the default format to use when printing information such as ALKS Keys
 
-Some commands will also work without configuration if the `ALKS_SERVER` and `ALKS_USERID` environment variables are set.
+Some commands will also work without configuration if the `ALKS_SERVER`, `ALKS_USERID`, and either `ALKS_PASSWORD` or `ALKS_REFRESH_TOKEN` environment variables are set, although you may be required to specify the output format, account, or role to use explicitly via CLI flags since no default configuration is set in this case.
 
 ## Running
 

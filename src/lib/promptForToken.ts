@@ -10,6 +10,9 @@ export async function promptForToken() {
 
   console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
   const url = server.replace(/rest/, 'token-management');
+  console.error(
+    `If the 2FA page does not open, please visit ${clc.underline(url)}`
+  );
   try {
     await Promise.race([
       open(url, {

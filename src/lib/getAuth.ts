@@ -1,5 +1,6 @@
 import { log } from '../lib/log';
 import { Auth } from '../model/auth';
+import { promptForPassword } from './promptForPassword';
 import { getPassword } from './state/password';
 import { getToken } from './state/token';
 import { getUserId } from './state/userId';
@@ -14,7 +15,8 @@ export async function getAuth(): Promise<Auth> {
     log('no refresh token found, falling back to password');
 
     const userid = await getUserId();
-    const password = await getPassword();
+    // If password is not set, ask for a password
+    const password = await getPassword().catch(() => promptForPassword());
     const auth = { userid, password };
     return auth;
   }

@@ -6,6 +6,7 @@ var developer_1 = require("./developer");
 var program_1 = tslib_1.__importDefault(require("../program"));
 var log_1 = require("../log");
 var underscore_1 = require("underscore");
+var USER_ID_ENV_VAR_NAME = 'ALKS_USERID';
 function getUserId() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var userIdOption, userIdFromEnv, developer;
@@ -17,7 +18,7 @@ function getUserId() {
                         log_1.log('using userid from CLI arg');
                         return [2 /*return*/, userIdOption];
                     }
-                    userIdFromEnv = process.env.ALKS_USERID;
+                    userIdFromEnv = process.env[USER_ID_ENV_VAR_NAME];
                     if (!underscore_1.isEmpty(userIdFromEnv)) {
                         log_1.log('using userid from environment variable');
                         return [2 /*return*/, userIdFromEnv];

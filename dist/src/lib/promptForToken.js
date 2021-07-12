@@ -18,6 +18,7 @@ function promptForToken() {
                     server = _a.sent();
                     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
                     url = server.replace(/rest/, 'token-management');
+                    console.error("If the 2FA page does not open, please visit " + cli_color_1.default.underline(url));
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);

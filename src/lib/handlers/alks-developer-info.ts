@@ -48,7 +48,7 @@ export async function handleAlksDeveloperInfo(
     table.push(['Password', tablePassword]);
 
     const tableToken = !isEmpty(token)
-      ? token.substring(0, 4) + '**********'
+      ? (token as string).substring(0, 4) + '**********'
       : clc.red('NOT SET');
     table.push(['2FA Token', tableToken]);
 
