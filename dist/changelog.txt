@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Prints URLs to the console when attempting to open them in case opening in browser fails
+* fixes support for not saving passwords, giving you the option to enter your password every time
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

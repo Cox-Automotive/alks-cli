@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAuth = void 0;
 var tslib_1 = require("tslib");
 var log_1 = require("../lib/log");
+var promptForPassword_1 = require("./promptForPassword");
 var password_1 = require("./state/password");
 var token_1 = require("./state/token");
 var userId_1 = require("./state/userId");
@@ -24,7 +25,7 @@ function getAuth() {
                     return [4 /*yield*/, userId_1.getUserId()];
                 case 3:
                     userid = _a.sent();
-                    return [4 /*yield*/, password_1.getPassword()];
+                    return [4 /*yield*/, password_1.getPassword().catch(function () { return promptForPassword_1.promptForPassword(); })];
                 case 4:
                     password = _a.sent();
                     auth = { userid: userid, password: password };
