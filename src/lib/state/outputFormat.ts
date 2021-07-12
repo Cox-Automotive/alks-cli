@@ -1,7 +1,7 @@
 import { getDeveloper, updateDeveloper } from './developer';
 import { log } from '../log';
 
-export async function getOutputFormat() {
+export async function getOutputFormat(): Promise<string> {
   const developer = await getDeveloper();
   if (developer.outputFormat) {
     log('using stored output format');
@@ -9,7 +9,7 @@ export async function getOutputFormat() {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Output format is not specified. Please run: alks developer configure'
   );
 }
 

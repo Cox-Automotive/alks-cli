@@ -1,7 +1,16 @@
+import { isEmpty } from 'underscore';
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export async function getServer() {
+const SERVER_ENV_VAR_NAME = 'ALKS_SERVER';
+
+export async function getServer(): Promise<string> {
+  const serverFromEnv = process.env[SERVER_ENV_VAR_NAME];
+  if (!isEmpty(serverFromEnv)) {
+    log('using server url from environment variable');
+    return serverFromEnv as string;
+  }
+
   const developer = await getDeveloper();
   if (developer.server) {
     log('using stored server url');
@@ -9,7 +18,7 @@ export async function getServer() {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Server URL is not configured. Please run: alks developer configure'
   );
 }
 

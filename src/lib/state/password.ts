@@ -3,20 +3,23 @@ import { log } from '../log';
 import { isEmpty } from 'underscore';
 import { savePassword } from '../savePassword';
 import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
+import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
 
+const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 let cachedPassword: string;
 
-export async function getPassword() {
+export async function getPassword(): Promise<string> {
   const passwordOption = program.opts().password;
   if (passwordOption) {
     log('using password from CLI arg');
     return passwordOption;
   }
 
-  const passwordFromEnv = process.env.ALKS_PASSWORD;
+  const passwordFromEnv = process.env[PASSWORD_ENV_VAR_NAME];
   if (!isEmpty(passwordFromEnv)) {
+    console.error(getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
     log('using password from environment variable');
-    return passwordFromEnv;
+    return passwordFromEnv as string;
   }
 
   const passwordFromKeystore = await getPasswordFromKeystore();

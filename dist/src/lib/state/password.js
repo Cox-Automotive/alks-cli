@@ -7,6 +7,8 @@ var log_1 = require("../log");
 var underscore_1 = require("underscore");
 var savePassword_1 = require("../savePassword");
 var getPasswordFromKeystore_1 = require("../getPasswordFromKeystore");
+var getEnvironmentVariableSecretWarning_1 = require("../getEnvironmentVariableSecretWarning");
+var PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 var cachedPassword;
 function getPassword() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -19,8 +21,9 @@ function getPassword() {
                         log_1.log('using password from CLI arg');
                         return [2 /*return*/, passwordOption];
                     }
-                    passwordFromEnv = process.env.ALKS_PASSWORD;
+                    passwordFromEnv = process.env[PASSWORD_ENV_VAR_NAME];
                     if (!underscore_1.isEmpty(passwordFromEnv)) {
+                        console.error(getEnvironmentVariableSecretWarning_1.getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
                         log_1.log('using password from environment variable');
                         return [2 /*return*/, passwordFromEnv];
                     }

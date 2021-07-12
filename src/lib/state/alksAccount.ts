@@ -1,7 +1,7 @@
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export async function getAlksAccount() {
+export async function getAlksAccount(): Promise<string> {
   const developer = await getDeveloper();
   if (developer.alksAccount) {
     log('using stored alks account');
@@ -9,7 +9,7 @@ export async function getAlksAccount() {
   }
 
   throw new Error(
-    'ALKS CLI is not configured. Please run: alks developer configure'
+    'Default ALKS Account is not configured. Please run: alks developer configure'
   );
 }
 
