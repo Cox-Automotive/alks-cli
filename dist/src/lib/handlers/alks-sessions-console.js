@@ -15,6 +15,7 @@ var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var open_1 = tslib_1.__importDefault(require("open"));
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
+var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 function handleAlksSessionsConsole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var alksAccount, alksRole, forceNewSession, useDefaultAcct, filterFaves, err_1, key_1, err_2, url, opts, err_3, err_4;
@@ -83,6 +84,7 @@ function handleAlksSessionsConsole(options) {
                     return [3 /*break*/, 22];
                 case 14:
                     opts = !underscore_1.isEmpty(options.openWith) ? { app: options.openWith } : {};
+                    console.error("Opening " + cli_color_1.default.underline(url) + " in the browser...");
                     _a.label = 15;
                 case 15:
                     _a.trys.push([15, 17, , 18]);
@@ -111,7 +113,6 @@ function handleAlksSessionsConsole(options) {
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
                 case 21:
                     _a.sent(); // needed for if browser is still open
-                    process.exit(0);
                     _a.label = 22;
                 case 22: return [3 /*break*/, 24];
                 case 23:

@@ -6,6 +6,7 @@ import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
 import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
 
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
+let cachedPassword: string;
 
 export async function getPassword(): Promise<string> {
   const passwordOption = program.opts().password;
@@ -27,9 +28,19 @@ export async function getPassword(): Promise<string> {
     return passwordFromKeystore;
   }
 
+  if (cachedPassword) {
+    log('using cached password');
+    return cachedPassword;
+  }
+
   throw new Error('No password was configured');
 }
 
 export async function setPassword(password: string) {
   await savePassword(password);
+}
+
+// Allows temporarily setting a password so that actions like configuring developer can work without having to save your password
+export function cachePassword(password: string): void {
+  cachedPassword = password;
 }
