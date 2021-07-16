@@ -4,6 +4,8 @@
 Thanks for upgrading to the latest version of the ALKS CLI!
 
 * adds more CLI options so that some actions can be performed non-interactively in a single line
+* fixes support for not saving passwords, giving you the option to enter your password every time
+* adds support for configuration using environment variables without needing to run `alks developer configure`
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
