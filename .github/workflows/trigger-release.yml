@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: 
       - get_pull_request
-    if: ${{ ! contains(needs.get_pull_request.outputs.pull_request_labels, 'release/skip') }}
+    if: ${{ contains(needs.get_pull_request.outputs.pull_request_labels, 'release/patch') || contains(needs.get_pull_request.outputs.pull_request_labels, 'release/minor') || contains(needs.get_pull_request.outputs.pull_request_labels, 'release/major') }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -63,13 +63,15 @@ jobs:
         if: ${{ steps.release-label.outputs.level == null }}
         run: echo "skipping build since there is no release label on the merged PR" && exit 1
 
-      - name: update changelog.txt
+      - name: update the date in changelog.txt (if needed)
         run: |
           echo "★ Release Notes: $(date +%Y-%m-%d) ★" > changelog.temp.txt
           tail -n +2 changelog.txt >> changelog.temp.txt
-          mv changelog.temp.txt changelog.txt
-          git add changelog.txt
-          git commit -m 'updates changelog.txt'
+          if [[ ! $(cmp --silent changelog.txt changelog.temp.txt ]]; then
+            mv changelog.temp.txt changelog.txt
+            git add changelog.txt
+            git commit -m 'updates changelog.txt'
+          fi
 
       - name: Bump both git-tag and package.json version
         run: npm version "${{ steps.release-label.outputs.level }}" -m "${{ needs.get_pull_request.outputs.pull_request_title }}"
@@ -82,7 +84,7 @@ jobs:
           access-token: ${{ secrets._GITHUB_TOKEN }}
           owner: Cox-Automotive
           repo: alks-cli
-          enforce-admins: false
+          enforce_admins: false
 
       - name: Commit & Push changes
         uses: ad-m/github-push-action@master
@@ -99,7 +101,7 @@ jobs:
           access-token: ${{ secrets._GITHUB_TOKEN }}
           owner: Cox-Automotive
           repo: alks-cli
-          enforce-admins: true
+          enforce_admins: true
 
       - name: Get the latest tag
         id: previoustag
