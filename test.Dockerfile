@@ -1,9 +1,13 @@
-FROM node:14
+FROM ubuntu:latest
 
-RUN apt-get update && \
-    apt-get install libgnome-keyring-dev -y
+RUN apt update && \
+    apt install -y libgnome-keyring-dev curl
+RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
+RUN bash n lts
 
-COPY . /
+COPY . /root/alks-cli
+
+WORKDIR /root/alks-cli
 
 RUN npm install --no-optional . -g
 
