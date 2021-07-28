@@ -6,5 +6,5 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 * adds support for passing key-value pairs for role types with template fields
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
-
+ 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
