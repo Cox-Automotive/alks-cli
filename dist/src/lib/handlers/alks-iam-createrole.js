@@ -76,7 +76,7 @@ function handleAlksIamCreateRole(options) {
                             role: alksRole,
                             roleName: roleName,
                             roleType: roleType,
-                            includeDefaultPolicy: incDefPolicies,
+                            includeDefaultPolicy: incDefPolicies ? 1 : 0,
                             enableAlksAccess: enableAlksAccess,
                             templateFields: templateFields,
                         })];
