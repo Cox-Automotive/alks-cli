@@ -15,10 +15,10 @@ var tryToExtractRole_1 = require("../tryToExtractRole");
 var parseKeyValuePairs_1 = require("../parseKeyValuePairs");
 function handleAlksIamCreateRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, templateFields, _a, auth, alks, role, err_1, err_2;
-        var _b;
-        return tslib_1.__generator(this, function (_c) {
-            switch (_c.label) {
+        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, templateFields, auth, alks, role, err_1, err_2;
+        var _a;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     roleNameDesc = 'alphanumeric including @+=._-';
                     ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
@@ -29,16 +29,9 @@ function handleAlksIamCreateRole(options) {
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFavorites = options.favorites || false;
-                    if (!options.templateFields) return [3 /*break*/, 2];
-                    return [4 /*yield*/, parseKeyValuePairs_1.parseKeyValuePairs(options.templateFields)];
-                case 1:
-                    _a = _c.sent();
-                    return [3 /*break*/, 3];
-                case 2:
-                    _a = undefined;
-                    _c.label = 3;
-                case 3:
-                    templateFields = _a;
+                    templateFields = options.templateFields
+                        ? parseKeyValuePairs_1.parseKeyValuePairs(options.templateFields)
+                        : undefined;
                     log_1.log('validating role name: ' + roleName);
                     if (underscore_1.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
                         errorAndExit_1.errorAndExit('The role name provided contains illegal characters. It must be ' +
@@ -52,32 +45,32 @@ function handleAlksIamCreateRole(options) {
                         log_1.log('trying to extract role from account');
                         alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
                     }
-                    _c.label = 4;
-                case 4:
-                    _c.trys.push([4, 16, , 17]);
-                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 6];
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 13, , 14]);
+                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
                     log_1.log('getting accounts');
                     return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
-                case 5:
-                    (_b = _c.sent(), alksAccount = _b.alksAccount, alksRole = _b.alksRole);
-                    return [3 /*break*/, 7];
-                case 6:
+                case 2:
+                    (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
+                    return [3 /*break*/, 4];
+                case 3:
                     log_1.log('using provided account/role');
-                    _c.label = 7;
-                case 7: return [4 /*yield*/, getAuth_1.getAuth()];
-                case 8:
-                    auth = _c.sent();
+                    _b.label = 4;
+                case 4: return [4 /*yield*/, getAuth_1.getAuth()];
+                case 5:
+                    auth = _b.sent();
                     log_1.log('calling api to create role: ' + roleName);
                     return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
-                case 9:
-                    alks = _c.sent();
+                case 6:
+                    alks = _b.sent();
                     role = void 0;
-                    _c.label = 10;
-                case 10:
-                    _c.trys.push([10, 12, , 13]);
+                    _b.label = 7;
+                case 7:
+                    _b.trys.push([7, 9, , 10]);
                     return [4 /*yield*/, alks.createRole({
                             account: alksAccount,
                             role: alksRole,
@@ -87,31 +80,31 @@ function handleAlksIamCreateRole(options) {
                             enableAlksAccess: enableAlksAccess,
                             templateFields: templateFields,
                         })];
-                case 11:
-                    role = _c.sent();
-                    return [3 /*break*/, 13];
-                case 12:
-                    err_1 = _c.sent();
+                case 8:
+                    role = _b.sent();
+                    return [3 /*break*/, 10];
+                case 9:
+                    err_1 = _b.sent();
                     errorAndExit_1.errorAndExit(err_1);
-                    return [3 /*break*/, 13];
-                case 13:
+                    return [3 /*break*/, 10];
+                case 10:
                     console.log(cli_color_1.default.white(['The role: ', roleName, ' was created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.roleArn));
                     if (role.instanceProfileArn) {
                         console.log(cli_color_1.default.white(['An instance profile was also created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.instanceProfileArn));
                     }
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 14:
-                    _c.sent();
+                case 11:
+                    _b.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 15:
-                    _c.sent();
-                    return [3 /*break*/, 17];
-                case 16:
-                    err_2 = _c.sent();
+                case 12:
+                    _b.sent();
+                    return [3 /*break*/, 14];
+                case 13:
+                    err_2 = _b.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 17];
-                case 17: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });

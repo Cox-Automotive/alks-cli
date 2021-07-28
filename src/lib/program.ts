@@ -171,6 +171,10 @@ iam
   .option('-a, --account <alksAccount>', 'alks account to use')
   .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
+  .option(
+    '-T, --template-fields <templateFields>',
+    'key-value pairs used to populate template fields in the trust policy document of the role'
+  )
   .action(handleAlksIamCreateRole);
 
 iam
