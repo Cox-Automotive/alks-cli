@@ -7,6 +7,7 @@ var prop_ini_1 = require("prop-ini");
 var underscore_1 = require("underscore");
 var addNewLineToEof_1 = require("./addNewLineToEof");
 function updateCreds(key, profile, force) {
+    var _a;
     var credPath = getFilePathInHome_1.getFilePathInHome('.aws');
     var credFile = credPath + '/credentials';
     // in case the user never ran `aws configure`..
@@ -35,11 +36,11 @@ function updateCreds(key, profile, force) {
     }
     else {
         // add brand new section
-        var data = {
-            accessKey: key.accessKey,
-            secretKey: key.secretKey,
-            sessToken: key.sessionToken,
-        };
+        var data = (_a = {},
+            _a[accessKey] = key.accessKey,
+            _a[secretKey] = key.secretKey,
+            _a[sessToken] = key.sessionToken,
+            _a);
         propIni.addData(data, section);
     }
     propIni.encode({ file: credFile });
