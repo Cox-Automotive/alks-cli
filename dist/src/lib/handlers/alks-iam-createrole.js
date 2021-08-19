@@ -12,9 +12,10 @@ var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
+var parseKeyValuePairs_1 = require("../parseKeyValuePairs");
 function handleAlksIamCreateRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, auth, alks, role, err_1, err_2;
+        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, templateFields, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -28,6 +29,9 @@ function handleAlksIamCreateRole(options) {
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFavorites = options.favorites || false;
+                    templateFields = options.templateFields
+                        ? parseKeyValuePairs_1.parseKeyValuePairs(options.templateFields)
+                        : undefined;
                     log_1.log('validating role name: ' + roleName);
                     if (underscore_1.isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
                         errorAndExit_1.errorAndExit('The role name provided contains illegal characters. It must be ' +
@@ -72,8 +76,9 @@ function handleAlksIamCreateRole(options) {
                             role: alksRole,
                             roleName: roleName,
                             roleType: roleType,
-                            includeDefaultPolicy: incDefPolicies,
+                            includeDefaultPolicy: incDefPolicies ? 1 : 0,
                             enableAlksAccess: enableAlksAccess,
+                            templateFields: templateFields,
                         })];
                 case 8:
                     role = _b.sent();

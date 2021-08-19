@@ -3,8 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a bug where passing `--output creds` for a profile not yet in your credentials file causes the profile to be incorrectly set up
+* adds support for passing key-value pairs for role types with template fields
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
-
+ 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
