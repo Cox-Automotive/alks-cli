@@ -22,15 +22,15 @@ function shouldNotThrow(t) {
 var testCases = [
     {
         description: 'when the input is a single key=value item',
-        input: 'alpha=beta',
+        input: ['alpha=beta'],
         result: {
             alpha: 'beta',
         },
         tests: [checkResult, shouldNotThrow],
     },
     {
-        description: 'when the input is multiple key=value items',
-        input: 'alpha=beta,gamma=delta',
+        description: 'when the input is multiple key=value items in the same string',
+        input: ['alpha=beta,gamma=delta'],
         result: {
             alpha: 'beta',
             gamma: 'delta',
@@ -39,15 +39,33 @@ var testCases = [
     },
     {
         description: 'when the input is a single JSON style item',
-        input: '{"alpha":"beta"}',
+        input: ['{"alpha":"beta"}'],
         result: {
             alpha: 'beta',
         },
         tests: [checkResult, shouldNotThrow],
     },
     {
-        description: 'when the input is multiple JSON style items',
-        input: '{"alpha":"beta","gamma":"delta"}',
+        description: 'when the input is a JSON object with multiple items',
+        input: ['{"alpha":"beta","gamma":"delta"}'],
+        result: {
+            alpha: 'beta',
+            gamma: 'delta',
+        },
+        tests: [checkResult, shouldNotThrow],
+    },
+    {
+        description: 'when the input is multiple JSON items',
+        input: ['{"alpha":"beta"}', '{"gamma":"delta"}'],
+        result: {
+            alpha: 'beta',
+            gamma: 'delta',
+        },
+        tests: [checkResult, shouldNotThrow],
+    },
+    {
+        description: 'when the input is a mix of JSON items and key-value pairs',
+        input: ['{"alpha":"beta"}', 'gamma=delta'],
         result: {
             alpha: 'beta',
             gamma: 'delta',
@@ -56,19 +74,19 @@ var testCases = [
     },
     {
         description: 'when the input is an empty string',
-        input: '',
+        input: [''],
         result: {},
         tests: [checkResult, shouldNotThrow],
     },
     {
         description: 'when the input is invalid JSON',
-        input: '{"alpha":"beta',
+        input: ['{"alpha":"beta'],
         result: {},
         tests: [checkResult, shouldNotThrow],
     },
     {
         description: 'when the input is invalid comma-separated key=value pairs',
-        input: 'alpha,beta,=gamma,delta=',
+        input: ['alpha,beta,=gamma,delta='],
         result: {},
         tests: [checkResult, shouldNotThrow],
     },
