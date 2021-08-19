@@ -40,9 +40,9 @@ export function updateCreds(
   } else {
     // add brand new section
     const data = {
-      accessKey: key.accessKey,
-      secretKey: key.secretKey,
-      sessToken: key.sessionToken,
+      [accessKey]: key.accessKey,
+      [secretKey]: key.secretKey,
+      [sessToken]: key.sessionToken,
     };
 
     propIni.addData(data, section);
