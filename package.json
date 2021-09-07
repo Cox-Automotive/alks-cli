@@ -40,7 +40,6 @@
     "alks"
   ],
   "dependencies": {
-    "@cox-automotive/clortho": "^1.2.2",
     "alks-node": "^0.12.1",
     "alks.js": "^1.12.8",
     "chmod": "^0.2.1",
