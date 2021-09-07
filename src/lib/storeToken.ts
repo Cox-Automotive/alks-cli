@@ -1,24 +1,11 @@
-import c from '@cox-automotive/clortho';
-import { isPasswordSecurelyStorable } from './isPasswordSecurelyStorable';
 import { log } from './log';
-import netrc from 'node-netrc';
-import chmod from 'chmod';
-import { getFilePathInHome } from './getFilePathInHome';
-import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
+import { getKeytar } from './getKeytar';
 
-const clortho = c.forService('alkscli');
-const SERVICETKN = 'alksclitoken';
+const SERVICE = 'alkscli';
 const ALKS_TOKEN = 'alkstoken';
 
-export async function storeToken(token: string) {
+export async function storeToken(token: string): Promise<void> {
   log('storing token');
-  if (isPasswordSecurelyStorable()) {
-    await clortho.saveToKeychain(ALKS_TOKEN, token);
-  } else {
-    netrc.update(SERVICETKN, {
-      password: token,
-    });
-
-    chmod(getFilePathInHome('.netrc'), getOwnerReadWriteOnlyPermission());
-  }
+  const keytar = await getKeytar();
+  await keytar.setPassword(SERVICE, ALKS_TOKEN, token);
 }
