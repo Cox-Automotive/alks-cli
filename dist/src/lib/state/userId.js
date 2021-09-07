@@ -30,7 +30,7 @@ function getUserId() {
                         log_1.log('using stored userid');
                         return [2 /*return*/, developer.userid];
                     }
-                    throw new Error('No userid was configured');
+                    return [2 /*return*/, undefined];
             }
         });
     });

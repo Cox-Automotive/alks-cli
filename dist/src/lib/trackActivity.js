@@ -20,6 +20,9 @@ function trackActivity() {
                     return [4 /*yield*/, userId_1.getUserId()];
                 case 1:
                     userId = _a.sent();
+                    if (!userId) {
+                        throw new Error('No userid was configured');
+                    }
                     log_1.log('creating tracker for: ' + userId);
                     visitor = universal_analytics_1.default(GA_ID, String(userId), {
                         https: true,

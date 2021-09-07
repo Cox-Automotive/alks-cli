@@ -27,7 +27,7 @@ function getToken() {
                         log_1.log('using stored token');
                         return [2 /*return*/, tokenFromKeystore];
                     }
-                    throw new Error('No token was configured');
+                    return [2 /*return*/, undefined];
             }
         });
     });

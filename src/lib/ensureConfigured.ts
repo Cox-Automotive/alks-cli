@@ -13,20 +13,11 @@ export async function ensureConfigured(): Promise<void> {
   }
 
   // If developer is not configured, ensure we at least have required variables configured
-  try {
-    await getUserId();
-    await getServer();
-
-    // Ensure either password or token is set
-    try {
-      // check for token if password is not set or if fetching password throws
-      if (!(await getPassword())) {
-        throw new Error();
-      }
-    } catch (e2) {
-      await getToken();
-    }
-  } catch (e) {
+  if (
+    !(await getUserId()) ||
+    !(await getServer()) ||
+    !((await getPassword()) && (await getToken()))
+  ) {
     throw new Error(
       'ALKS CLI is not configured. Please run: alks developer configure'
     );

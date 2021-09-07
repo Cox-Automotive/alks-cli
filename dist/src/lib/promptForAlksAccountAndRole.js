@@ -45,10 +45,10 @@ function promptForAlksAccountAndRole(options) {
                         choices: indexedAlksAccounts,
                         pageSize: 15,
                     };
-                    return [4 /*yield*/, alksAccount_1.getAlksAccount().catch(function () { return undefined; })];
+                    return [4 /*yield*/, alksAccount_1.getAlksAccount()];
                 case 3:
                     defaultAlksAccount = _a.sent();
-                    return [4 /*yield*/, alksRole_1.getAlksRole().catch(function () { return undefined; })];
+                    return [4 /*yield*/, alksRole_1.getAlksRole()];
                 case 4:
                     defaultAlksRole = _a.sent();
                     if (defaultAlksAccount && defaultAlksRole) {

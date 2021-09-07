@@ -10,9 +10,6 @@ var getPasswordFromKeystore_1 = require("../getPasswordFromKeystore");
 var getEnvironmentVariableSecretWarning_1 = require("../getEnvironmentVariableSecretWarning");
 var PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 var cachedPassword;
-/**
- * Gets the currently stored password, or undefined if none is set
- */
 function getPassword() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var passwordOption, passwordFromEnv, passwordFromKeystore;

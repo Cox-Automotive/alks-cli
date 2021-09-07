@@ -8,9 +8,6 @@ import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSe
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 let cachedPassword: string;
 
-/**
- * Gets the currently stored password, or undefined if none is set
- */
 export async function getPassword(): Promise<string | undefined> {
   const passwordOption = program.opts().password;
   if (passwordOption) {

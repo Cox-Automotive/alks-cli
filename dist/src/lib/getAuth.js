@@ -14,7 +14,7 @@ function getAuth() {
             switch (_b.label) {
                 case 0:
                     log_1.log('checking for refresh token');
-                    return [4 /*yield*/, token_1.getToken().catch(function () { return undefined; })];
+                    return [4 /*yield*/, token_1.getToken()];
                 case 1:
                     token = _b.sent();
                     if (!token) return [3 /*break*/, 2];
@@ -25,7 +25,10 @@ function getAuth() {
                     return [4 /*yield*/, userId_1.getUserId()];
                 case 3:
                     userid = _b.sent();
-                    return [4 /*yield*/, password_1.getPassword().catch(function () { return undefined; })];
+                    if (!userid) {
+                        throw new Error('No userid was configured');
+                    }
+                    return [4 /*yield*/, password_1.getPassword()];
                 case 4:
                     _a = (_b.sent());
                     if (_a) return [3 /*break*/, 6];

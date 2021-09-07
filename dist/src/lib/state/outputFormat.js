@@ -16,7 +16,7 @@ function getOutputFormat() {
                         log_1.log('using stored output format');
                         return [2 /*return*/, developer.outputFormat];
                     }
-                    throw new Error('Output format is not specified. Please run: alks developer configure');
+                    return [2 /*return*/, 'env'];
             }
         });
     });

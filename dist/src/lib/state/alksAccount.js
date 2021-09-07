@@ -16,7 +16,7 @@ function getAlksAccount() {
                         log_1.log('using stored alks account');
                         return [2 /*return*/, developer.alksAccount];
                     }
-                    throw new Error('Default ALKS Account is not configured. Please run: alks developer configure');
+                    return [2 /*return*/, undefined];
             }
         });
     });

@@ -7,6 +7,11 @@ import { getServer } from './state/server';
 
 export async function promptForToken() {
   const server = await getServer();
+  if (!server) {
+    throw new Error(
+      'Server URL is not configured. Please run: alks developer configure'
+    );
+  }
 
   console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
   const url = server.replace(/rest/, 'token-management');

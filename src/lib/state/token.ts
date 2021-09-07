@@ -6,7 +6,7 @@ import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSe
 
 const TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 
-export async function getToken(): Promise<string> {
+export async function getToken(): Promise<string | undefined> {
   const tokenFromEnv = process.env[TOKEN_ENV_VAR_NAME];
   if (!isEmpty(tokenFromEnv)) {
     console.error(getEnvironmentVariableSecretWarning(TOKEN_ENV_VAR_NAME));
@@ -20,7 +20,7 @@ export async function getToken(): Promise<string> {
     return tokenFromKeystore;
   }
 
-  throw new Error('No token was configured');
+  return undefined;
 }
 
 export async function setToken(token: string) {

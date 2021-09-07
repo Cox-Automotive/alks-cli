@@ -11,7 +11,7 @@ function promptForServer() {
         var server;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, server_1.getServer().catch(function () { return undefined; })];
+                case 0: return [4 /*yield*/, server_1.getServer()];
                 case 1:
                     server = _a.sent();
                     return [2 /*return*/, getPrompt_1.getPrompt('server', server || exports.defaultServer, 'ALKS server', isUrl_1.isURL)];
