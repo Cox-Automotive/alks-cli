@@ -11,9 +11,12 @@ function getTokenFromKeystore() {
         var keytar;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, getKeytar_1.getKeytar()];
+                case 0: return [4 /*yield*/, getKeytar_1.getKeytar().catch(function () { return undefined; })];
                 case 1:
                     keytar = _b.sent();
+                    if (!keytar) {
+                        return [2 /*return*/, undefined];
+                    }
                     return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_TOKEN).catch(function () { return undefined; })];
                 case 2: return [2 /*return*/, ((_a = (_b.sent())) !== null && _a !== void 0 ? _a : undefined)];
             }

@@ -1,7 +1,5 @@
 import { getDeveloper } from './state/developer';
-import { getPassword } from './state/password';
 import { getServer } from './state/server';
-import { getToken } from './state/token';
 import { getUserId } from './state/userId';
 
 export async function ensureConfigured(): Promise<void> {
@@ -13,11 +11,7 @@ export async function ensureConfigured(): Promise<void> {
   }
 
   // If developer is not configured, ensure we at least have required variables configured
-  if (
-    !(await getUserId()) ||
-    !(await getServer()) ||
-    !((await getPassword()) && (await getToken()))
-  ) {
+  if (!(await getUserId()) || !(await getServer())) {
     throw new Error(
       'ALKS CLI is not configured. Please run: alks developer configure'
     );
