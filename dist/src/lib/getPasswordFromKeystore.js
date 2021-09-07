@@ -6,15 +6,16 @@ var getKeytar_1 = require("./getKeytar");
 var SERVICE = 'alkscli';
 var ALKS_USERID = 'alksuid';
 function getPasswordFromKeystore() {
+    var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var keytar;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0: return [4 /*yield*/, getKeytar_1.getKeytar()];
                 case 1:
-                    keytar = _a.sent();
-                    return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_USERID).catch(function () { return null; })];
-                case 2: return [2 /*return*/, _a.sent()];
+                    keytar = _b.sent();
+                    return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_USERID).catch(function () { return undefined; })];
+                case 2: return [2 /*return*/, ((_a = (_b.sent())) !== null && _a !== void 0 ? _a : undefined)];
             }
         });
     });

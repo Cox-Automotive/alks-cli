@@ -8,7 +8,10 @@ import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSe
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 let cachedPassword: string;
 
-export async function getPassword(): Promise<string> {
+/**
+ * Gets the currently stored password, or undefined if none is set
+ */
+export async function getPassword(): Promise<string | undefined> {
   const passwordOption = program.opts().password;
   if (passwordOption) {
     log('using password from CLI arg');
@@ -36,7 +39,7 @@ export async function getPassword(): Promise<string> {
     return cachedPassword;
   }
 
-  throw new Error('No password was configured');
+  return undefined;
 }
 
 export async function setPassword(password: string) {

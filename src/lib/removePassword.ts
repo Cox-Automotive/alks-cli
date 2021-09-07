@@ -1,18 +1,11 @@
-import c from '@cox-automotive/clortho';
-import { isPasswordSecurelyStorable } from './isPasswordSecurelyStorable';
 import { log } from './log';
-import netrc from 'node-netrc';
-
-const clortho = c.forService('alkscli');
+import { getKeytar } from './getKeytar';
 
 const SERVICE = 'alkscli';
 const ALKS_USERID = 'alksuid';
 
-export async function removePassword() {
+export async function removePassword(): Promise<void> {
   log('removing password');
-  if (isPasswordSecurelyStorable()) {
-    return clortho.removeFromKeychain(ALKS_USERID);
-  } else {
-    netrc.update(SERVICE, {});
-  }
+  const keytar = await getKeytar();
+  keytar.deletePassword(SERVICE, ALKS_USERID);
 }

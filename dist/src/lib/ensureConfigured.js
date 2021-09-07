@@ -32,7 +32,10 @@ function ensureConfigured() {
                     _a.trys.push([5, 7, , 9]);
                     return [4 /*yield*/, password_1.getPassword()];
                 case 6:
-                    _a.sent();
+                    // check for token if password is not set or if fetching password throws
+                    if (!(_a.sent())) {
+                        throw new Error();
+                    }
                     return [3 /*break*/, 9];
                 case 7:
                     e2_1 = _a.sent();

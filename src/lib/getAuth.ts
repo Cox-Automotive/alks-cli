@@ -16,7 +16,9 @@ export async function getAuth(): Promise<Auth> {
 
     const userid = await getUserId();
     // If password is not set, ask for a password
-    const password = await getPassword().catch(() => promptForPassword());
+    const password =
+      (await getPassword().catch(() => undefined)) ||
+      (await promptForPassword());
     const auth = { userid, password };
     return auth;
   }

@@ -9,7 +9,7 @@ function promptForPassword() {
         var password, answer;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, password_1.getPassword().catch(function () { return undefined; })];
+                case 0: return [4 /*yield*/, password_1.getPassword()];
                 case 1:
                     password = _a.sent();
                     return [4 /*yield*/, getPasswordFromPrompt_1.getPasswordFromPrompt('Network Password', password)];

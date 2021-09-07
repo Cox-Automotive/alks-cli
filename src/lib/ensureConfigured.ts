@@ -19,7 +19,10 @@ export async function ensureConfigured(): Promise<void> {
 
     // Ensure either password or token is set
     try {
-      await getPassword();
+      // check for token if password is not set or if fetching password throws
+      if (!(await getPassword())) {
+        throw new Error();
+      }
     } catch (e2) {
       await getToken();
     }
