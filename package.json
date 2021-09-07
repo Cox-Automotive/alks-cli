@@ -52,7 +52,6 @@
     "keytar": "^7.7.0",
     "lokijs": "^1.5.1",
     "moment": "^2.13.0",
-    "node-netrc": "^0.1.0",
     "npm-registry-client": "^7.1.2",
     "open": "^8.2.0",
     "prop-ini": "0.0.2",
