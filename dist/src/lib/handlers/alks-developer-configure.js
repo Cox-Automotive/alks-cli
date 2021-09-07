@@ -12,18 +12,18 @@ var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var promptForPassword_1 = require("../promptForPassword");
 var promptForServer_1 = require("../promptForServer");
 var promptForUserId_1 = require("../promptForUserId");
-var savePassword_1 = require("../savePassword");
 var trackActivity_1 = require("../trackActivity");
 var server_1 = require("../state/server");
 var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
-var saveToken_1 = require("../saveToken");
 var promptForToken_1 = require("../promptForToken");
 var promptForAuthType_1 = require("../promptForAuthType");
 var validateAlksAccount_1 = require("../validateAlksAccount");
 var tabtab_1 = tslib_1.__importDefault(require("tabtab"));
+var token_1 = require("../state/token");
+var password_1 = require("../state/password");
 function handleAlksDeveloperConfigure(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _a, _b, _c, _d, authTypeAnswer, _e, password, savePasswordAnswer, _f, alksAccount, alksRole, _g, _h, err_1;
@@ -63,7 +63,7 @@ function handleAlksDeveloperConfigure(options) {
                     _j.label = 8;
                 case 8:
                     if (!options.token) return [3 /*break*/, 11];
-                    _e = saveToken_1.saveToken;
+                    _e = token_1.setToken;
                     return [4 /*yield*/, promptForToken_1.promptForToken()];
                 case 9: return [4 /*yield*/, _e.apply(void 0, [_j.sent()])];
                 case 10:
@@ -76,7 +76,7 @@ function handleAlksDeveloperConfigure(options) {
                 case 13:
                     savePasswordAnswer = _j.sent();
                     if (!savePasswordAnswer) return [3 /*break*/, 15];
-                    return [4 /*yield*/, savePassword_1.savePassword(password)];
+                    return [4 /*yield*/, password_1.setPassword(password)];
                 case 14:
                     _j.sent();
                     _j.label = 15;

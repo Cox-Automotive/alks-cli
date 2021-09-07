@@ -6,8 +6,8 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var log_1 = require("../log");
 var trackActivity_1 = require("../trackActivity");
-var saveToken_1 = require("../saveToken");
 var promptForToken_1 = require("../promptForToken");
+var token_1 = require("../state/token");
 function handleAlksDeveloperLogin2fa(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var _a, err_1;
@@ -15,7 +15,7 @@ function handleAlksDeveloperLogin2fa(_options) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 5, , 6]);
-                    _a = saveToken_1.saveToken;
+                    _a = token_1.setToken;
                     return [4 /*yield*/, promptForToken_1.promptForToken()];
                 case 1: return [4 /*yield*/, _a.apply(void 0, [_b.sent()])];
                 case 2:

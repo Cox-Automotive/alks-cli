@@ -1,8 +1,9 @@
 import { log } from '../log';
-import { saveToken } from '../saveToken';
 import { getTokenFromKeystore } from '../getTokenFromKeystore';
 import { isEmpty } from 'underscore';
 import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+import { storeToken } from '../storeToken';
+import { white } from 'cli-color';
 
 const TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 
@@ -24,5 +25,6 @@ export async function getToken(): Promise<string | undefined> {
 }
 
 export async function setToken(token: string) {
-  await saveToken(token);
+  await storeToken(token);
+  console.error(white('Refresh token saved!'));
 }

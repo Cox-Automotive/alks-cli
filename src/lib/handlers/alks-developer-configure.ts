@@ -9,18 +9,18 @@ import { promptForOutputFormat } from '../promptForOutputFormat';
 import { promptForPassword } from '../promptForPassword';
 import { promptForServer } from '../promptForServer';
 import { promptForUserId } from '../promptForUserId';
-import { savePassword } from '../savePassword';
 import { trackActivity } from '../trackActivity';
 import { setServer } from '../state/server';
 import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
-import { saveToken } from '../saveToken';
 import { promptForToken } from '../promptForToken';
 import { promptForAuthType } from '../promptForAuthType';
 import { validateAlksAccount } from '../validateAlksAccount';
 import tabtab from 'tabtab';
+import { setToken } from '../state/token';
+import { setPassword } from '../state/password';
 
 export async function handleAlksDeveloperConfigure(
   options: commander.OptionValues
@@ -44,12 +44,12 @@ export async function handleAlksDeveloperConfigure(
     }
 
     if (options.token) {
-      await saveToken(await promptForToken());
+      await setToken(await promptForToken());
     } else {
       const password = await promptForPassword();
       const savePasswordAnswer = await confirm('Save password');
       if (savePasswordAnswer) {
-        await savePassword(password);
+        await setPassword(password);
       }
     }
 

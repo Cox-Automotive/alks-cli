@@ -6,7 +6,7 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getPasswordFromPrompt_1 = require("../getPasswordFromPrompt");
 var log_1 = require("../log");
-var savePassword_1 = require("../savePassword");
+var password_1 = require("../state/password");
 var trackActivity_1 = require("../trackActivity");
 function handleAlksDeveloperLogin(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -19,7 +19,7 @@ function handleAlksDeveloperLogin(_options) {
                 case 1:
                     password = _a.sent();
                     log_1.log('saving password');
-                    return [4 /*yield*/, savePassword_1.savePassword(password)];
+                    return [4 /*yield*/, password_1.setPassword(password)];
                 case 2:
                     _a.sent();
                     log_1.log('checking for updates');

@@ -5,7 +5,6 @@ import { promptForServer } from '../promptForServer';
 import { promptForUserId } from '../promptForUserId';
 import { promptForPassword } from '../promptForPassword';
 import { confirm } from '../confirm';
-import { savePassword } from '../savePassword';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { promptForOutputFormat } from '../promptForOutputFormat';
 import { checkForUpdate } from '../checkForUpdate';
@@ -17,18 +16,19 @@ import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
 import { promptForAuthType } from '../promptForAuthType';
 import { install } from 'tabtab';
+import { setPassword } from '../state/password';
 
 jest.mock('../state/server');
 jest.mock('../state/userId');
 jest.mock('../state/alksAccount');
 jest.mock('../state/alksRole');
 jest.mock('../state/outputFormat');
+jest.mock('../state/password');
 jest.mock('../errorAndExit');
 jest.mock('../promptForServer');
 jest.mock('../promptForUserId');
 jest.mock('../promptForPassword');
 jest.mock('../confirm');
-jest.mock('../savePassword');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
@@ -56,8 +56,8 @@ describe('handleAlksDeveloperConfigure', () => {
     password: string;
     confirmSavePasswordFails: boolean;
     savePassword: boolean;
-    shouldSavePassword: boolean;
-    savePasswordFails: boolean;
+    shouldSetPassword: boolean;
+    setPasswordFails: boolean;
     promptForAlksAccountAndRoleFails: boolean;
     alksAccount: string;
     alksRole: string;
@@ -85,8 +85,8 @@ describe('handleAlksDeveloperConfigure', () => {
     password: '',
     confirmSavePasswordFails: false,
     savePassword: false,
-    savePasswordFails: false,
-    shouldSavePassword: false,
+    setPasswordFails: false,
+    shouldSetPassword: false,
     promptForAlksAccountAndRoleFails: false,
     alksAccount: '',
     alksRole: '',
@@ -155,10 +155,10 @@ describe('handleAlksDeveloperConfigure', () => {
       userId: 'bobby',
       password: 'letmein',
       savePassword: true,
-      savePasswordFails: true,
+      setPasswordFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
     },
     {
       ...defaultTestCase,
@@ -171,7 +171,7 @@ describe('handleAlksDeveloperConfigure', () => {
       promptForAlksAccountAndRoleFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
     },
     {
       ...defaultTestCase,
@@ -186,7 +186,7 @@ describe('handleAlksDeveloperConfigure', () => {
       promptForOutputFormatFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
     },
@@ -202,7 +202,7 @@ describe('handleAlksDeveloperConfigure', () => {
       alksRole: 'Admin',
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
       shouldSaveOutputFormat: true,
@@ -222,7 +222,7 @@ describe('handleAlksDeveloperConfigure', () => {
       checkForUpdateFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
       shouldSaveOutputFormat: true,
@@ -241,7 +241,7 @@ describe('handleAlksDeveloperConfigure', () => {
       trackActivityFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
       shouldSaveOutputFormat: true,
@@ -259,7 +259,7 @@ describe('handleAlksDeveloperConfigure', () => {
       outputFormat: 'env',
       shouldSaveServer: true,
       shouldSaveUserId: true,
-      shouldSavePassword: true,
+      shouldSetPassword: true,
       shouldSaveAlksAccount: true,
       shouldSaveAlksRole: true,
       shouldSaveOutputFormat: true,
@@ -319,8 +319,8 @@ describe('handleAlksDeveloperConfigure', () => {
             return t.savePassword;
           }
         });
-        (savePassword as jest.Mock).mockImplementation(async () => {
-          if (t.savePasswordFails) {
+        (setPassword as jest.Mock).mockImplementation(async () => {
+          if (t.setPasswordFails) {
             throw new Error();
           }
         });
@@ -385,9 +385,9 @@ describe('handleAlksDeveloperConfigure', () => {
         });
       }
 
-      if (t.shouldSavePassword) {
+      if (t.shouldSetPassword) {
         it('attempts to save password', () => {
-          expect(savePassword).toBeCalledWith(t.password);
+          expect(setPassword).toBeCalledWith(t.password);
         });
       }
 

@@ -3,7 +3,7 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getPasswordFromPrompt } from '../getPasswordFromPrompt';
 import { log } from '../log';
-import { savePassword } from '../savePassword';
+import { setPassword } from '../state/password';
 import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogin(
@@ -13,7 +13,7 @@ export async function handleAlksDeveloperLogin(
     const password = await getPasswordFromPrompt();
 
     log('saving password');
-    await savePassword(password);
+    await setPassword(password);
 
     log('checking for updates');
     await checkForUpdate();

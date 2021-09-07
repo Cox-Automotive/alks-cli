@@ -7,7 +7,6 @@ var promptForServer_1 = require("../promptForServer");
 var promptForUserId_1 = require("../promptForUserId");
 var promptForPassword_1 = require("../promptForPassword");
 var confirm_1 = require("../confirm");
-var savePassword_1 = require("../savePassword");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var checkForUpdate_1 = require("../checkForUpdate");
@@ -19,17 +18,18 @@ var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
 var promptForAuthType_1 = require("../promptForAuthType");
 var tabtab_1 = require("tabtab");
+var password_1 = require("../state/password");
 jest.mock('../state/server');
 jest.mock('../state/userId');
 jest.mock('../state/alksAccount');
 jest.mock('../state/alksRole');
 jest.mock('../state/outputFormat');
+jest.mock('../state/password');
 jest.mock('../errorAndExit');
 jest.mock('../promptForServer');
 jest.mock('../promptForUserId');
 jest.mock('../promptForPassword');
 jest.mock('../confirm');
-jest.mock('../savePassword');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
@@ -54,8 +54,8 @@ describe('handleAlksDeveloperConfigure', function () {
         password: '',
         confirmSavePasswordFails: false,
         savePassword: false,
-        savePasswordFails: false,
-        shouldSavePassword: false,
+        setPasswordFails: false,
+        shouldSetPassword: false,
         promptForAlksAccountAndRoleFails: false,
         alksAccount: '',
         alksRole: '',
@@ -74,13 +74,13 @@ describe('handleAlksDeveloperConfigure', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the token fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', authType: 'OAuth2 Refresh Token', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when confirming if the user wants to save password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', confirmSavePasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, savePasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting the alks account fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, promptForAlksAccountAndRoleFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the output format fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', promptForOutputFormatFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when installing tab completion fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true, tabtabInstallFails: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when checkForUpdate fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', checkForUpdateFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', trackActivityFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds', shouldErr: false, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveServer: true, shouldSaveUserId: true, shouldSavePassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, setPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting the alks account fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, promptForAlksAccountAndRoleFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the output format fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', promptForOutputFormatFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when installing tab completion fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true, tabtabInstallFails: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when checkForUpdate fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', checkForUpdateFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', trackActivityFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds', shouldErr: false, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds but the user declines saving password', shouldErr: false, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveServer: true, shouldSaveUserId: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
     ];
     var _loop_1 = function (t) {
@@ -137,9 +137,9 @@ describe('handleAlksDeveloperConfigure', function () {
                                     return [2 /*return*/];
                                 });
                             }); });
-                            savePassword_1.savePassword.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                            password_1.setPassword.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
-                                    if (t.savePasswordFails) {
+                                    if (t.setPasswordFails) {
                                         throw new Error();
                                     }
                                     return [2 /*return*/];
@@ -221,9 +221,9 @@ describe('handleAlksDeveloperConfigure', function () {
                     expect(userId_1.setUserId).toBeCalledWith(t.userId);
                 });
             }
-            if (t.shouldSavePassword) {
+            if (t.shouldSetPassword) {
                 it('attempts to save password', function () {
-                    expect(savePassword_1.savePassword).toBeCalledWith(t.password);
+                    expect(password_1.setPassword).toBeCalledWith(t.password);
                 });
             }
             if (t.shouldSaveAlksAccount) {
