@@ -4,6 +4,10 @@ RUN apt update && \
     apt install -y libgnome-keyring-dev libsecret-1-dev curl
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o n
 RUN bash n lts
+RUN apt install -y gnome-keyring dbus-x11
+
+# Start the gnome keyring daemon when a bash session is initialized (requires passing --privileged when calling `docker run`)
+RUN echo '[ -z "$GNOME_KEYRING_CONTROL" ] && eval $(echo letmein | gnome-keyring-daemon --unlock | sed -e "s/^/export /g")' > /root/.bashrc
 
 COPY . /root/alks-cli
 
@@ -20,4 +24,5 @@ WORKDIR /root/alks-cli
 # `npm run build` inside the `node_modules/keytar` folder - Ben W.
 RUN npm install --no-optional --unsafe-perm=true . -g
 
-ENTRYPOINT ["/bin/bash"]
+# Start a dbus session and then run /bash/bash as the callback
+ENTRYPOINT [ "dbus-run-session", "--", "/bin/bash" ]
