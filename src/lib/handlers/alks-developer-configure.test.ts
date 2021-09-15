@@ -14,9 +14,14 @@ import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
 import { setAlksRole } from '../state/alksRole';
 import { setOutputFormat } from '../state/outputFormat';
-import { promptForAuthType } from '../promptForAuthType';
+import {
+  promptForAuthType,
+  REFRESH_TOKEN_AUTH_CHOICE,
+  PASSWORD_AUTH_CHOICE,
+} from '../promptForAuthType';
 import { install } from 'tabtab';
 import { setPassword } from '../state/password';
+import { promptForToken } from '../promptForToken';
 
 jest.mock('../state/server');
 jest.mock('../state/userId');
@@ -28,12 +33,19 @@ jest.mock('../errorAndExit');
 jest.mock('../promptForServer');
 jest.mock('../promptForUserId');
 jest.mock('../promptForPassword');
+jest.mock('../promptForToken');
 jest.mock('../confirm');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
 jest.mock('../trackActivity');
-jest.mock('../promptForAuthType');
+jest.mock('../promptForAuthType', () => ({
+  __esModule: true,
+  REFRESH_TOKEN_AUTH_CHOICE: 'refresh-token',
+  PASSWORD_AUTH_CHOICE: 'password',
+  ALWAYS_ASK_AUTH_CHOICE: 'always-ask',
+  promptForAuthType: jest.fn(),
+}));
 jest.mock('tabtab');
 
 // Silence console.error
@@ -51,13 +63,15 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForUserIdFails: boolean;
     userId: string;
     shouldSaveUserId: boolean;
-    authType: 'OAuth2 Refresh Token' | 'Username/Password (not recommended)';
+    authType: string;
     promptForPasswordFails: boolean;
     password: string;
     confirmSavePasswordFails: boolean;
     savePassword: boolean;
     shouldSetPassword: boolean;
     setPasswordFails: boolean;
+    promptForTokenFails: boolean;
+    token: string;
     promptForAlksAccountAndRoleFails: boolean;
     alksAccount: string;
     alksRole: string;
@@ -80,13 +94,15 @@ describe('handleAlksDeveloperConfigure', () => {
     promptForUserIdFails: false,
     userId: '',
     shouldSaveUserId: false,
-    authType: 'Username/Password (not recommended)',
+    authType: PASSWORD_AUTH_CHOICE,
     promptForPasswordFails: false,
     password: '',
     confirmSavePasswordFails: false,
     savePassword: false,
     setPasswordFails: false,
     shouldSetPassword: false,
+    promptForTokenFails: false,
+    token: '',
     promptForAlksAccountAndRoleFails: false,
     alksAccount: '',
     alksRole: '',
@@ -131,8 +147,18 @@ describe('handleAlksDeveloperConfigure', () => {
       shouldErr: true,
       server: 'https://alks.com/rest',
       userId: 'bobby',
-      authType: 'OAuth2 Refresh Token',
-      promptForPasswordFails: true,
+      authType: REFRESH_TOKEN_AUTH_CHOICE,
+      promptForTokenFails: true,
+      shouldSaveServer: true,
+      shouldSaveUserId: true,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when the auth type is invalid',
+      shouldErr: true,
+      server: 'https://alks.com/rest',
+      userId: 'bobby',
+      authType: 'just let me in',
       shouldSaveServer: true,
       shouldSaveUserId: true,
     },
@@ -312,6 +338,13 @@ describe('handleAlksDeveloperConfigure', () => {
             return t.password;
           }
         });
+        (promptForToken as jest.Mock).mockImplementation(async () => {
+          if (t.promptForTokenFails) {
+            throw new Error();
+          } else {
+            return t.token;
+          }
+        });
         (confirm as jest.Mock).mockImplementation(async () => {
           if (t.confirmSavePasswordFails) {
             throw new Error();
@@ -361,6 +394,10 @@ describe('handleAlksDeveloperConfigure', () => {
         });
 
         await handleAlksDeveloperConfigure(t.options);
+      });
+
+      afterEach(() => {
+        jest.resetAllMocks();
       });
 
       if (t.shouldErr) {

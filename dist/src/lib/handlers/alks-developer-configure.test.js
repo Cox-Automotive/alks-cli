@@ -19,6 +19,7 @@ var outputFormat_1 = require("../state/outputFormat");
 var promptForAuthType_1 = require("../promptForAuthType");
 var tabtab_1 = require("tabtab");
 var password_1 = require("../state/password");
+var promptForToken_1 = require("../promptForToken");
 jest.mock('../state/server');
 jest.mock('../state/userId');
 jest.mock('../state/alksAccount');
@@ -29,12 +30,19 @@ jest.mock('../errorAndExit');
 jest.mock('../promptForServer');
 jest.mock('../promptForUserId');
 jest.mock('../promptForPassword');
+jest.mock('../promptForToken');
 jest.mock('../confirm');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
 jest.mock('../trackActivity');
-jest.mock('../promptForAuthType');
+jest.mock('../promptForAuthType', function () { return ({
+    __esModule: true,
+    REFRESH_TOKEN_AUTH_CHOICE: 'refresh-token',
+    PASSWORD_AUTH_CHOICE: 'password',
+    ALWAYS_ASK_AUTH_CHOICE: 'always-ask',
+    promptForAuthType: jest.fn(),
+}); });
 jest.mock('tabtab');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
@@ -49,13 +57,15 @@ describe('handleAlksDeveloperConfigure', function () {
         promptForUserIdFails: false,
         userId: '',
         shouldSaveUserId: false,
-        authType: 'Username/Password (not recommended)',
+        authType: promptForAuthType_1.PASSWORD_AUTH_CHOICE,
         promptForPasswordFails: false,
         password: '',
         confirmSavePasswordFails: false,
         savePassword: false,
         setPasswordFails: false,
         shouldSetPassword: false,
+        promptForTokenFails: false,
+        token: '',
         promptForAlksAccountAndRoleFails: false,
         alksAccount: '',
         alksRole: '',
@@ -72,7 +82,8 @@ describe('handleAlksDeveloperConfigure', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the server url fails', shouldErr: true, promptForServerFails: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for a username fails', shouldErr: true, server: 'https://alks.com/rest', promptForUserIdFails: true, shouldSaveServer: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the token fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', authType: 'OAuth2 Refresh Token', promptForPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the token fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', authType: promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE, promptForTokenFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when the auth type is invalid', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', authType: 'just let me in', shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when confirming if the user wants to save password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', confirmSavePasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when saving the password fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, setPasswordFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting the alks account fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, promptForAlksAccountAndRoleFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true }),
@@ -122,6 +133,17 @@ describe('handleAlksDeveloperConfigure', function () {
                                     }
                                     else {
                                         return [2 /*return*/, t.password];
+                                    }
+                                    return [2 /*return*/];
+                                });
+                            }); });
+                            promptForToken_1.promptForToken.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                                return tslib_1.__generator(this, function (_a) {
+                                    if (t.promptForTokenFails) {
+                                        throw new Error();
+                                    }
+                                    else {
+                                        return [2 /*return*/, t.token];
                                     }
                                     return [2 /*return*/];
                                 });
@@ -201,6 +223,9 @@ describe('handleAlksDeveloperConfigure', function () {
                     }
                 });
             }); });
+            afterEach(function () {
+                jest.resetAllMocks();
+            });
             if (t.shouldErr) {
                 it('calls errorAndExit', function () {
                     expect(errorThrown).toBe(true);
