@@ -3,7 +3,10 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* adds support for passing key-value pairs for role types with template fields
+* adds support for keychains in linux via the "keytar" node dependency
+* adds warning regarding plaintext file storage of secrets when a keychain isn't found
+* adds the --auth-type option to alks-developer-configure for specifying the desired auth mechanism in one line
+* adds an auth type option that will have the CLI ask you for your password each time
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
