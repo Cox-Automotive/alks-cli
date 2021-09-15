@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.confirm = void 0;
 var tslib_1 = require("tslib");
 var inquirer_1 = require("inquirer");
-function confirm(message) {
+function confirm(message, defaultAnswer) {
+    if (defaultAnswer === void 0) { defaultAnswer = true; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var answers;
         return tslib_1.__generator(this, function (_a) {
@@ -13,6 +14,7 @@ function confirm(message) {
                             type: 'confirm',
                             name: 'confirmation',
                             message: message,
+                            default: defaultAnswer,
                         },
                     ])];
                 case 1:

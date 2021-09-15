@@ -27,7 +27,7 @@ function ensureConfigured() {
                 case 4:
                     // If developer is not configured, ensure we at least have required variables configured
                     if (_a) {
-                        throw new Error('ALKS CLI is not configured. Please run: alks developer configure');
+                        throw new Error('ALKS CLI is not configured. Please run: `alks developer configure` or set the environment variables ALKS_USERID and ALKS_SERVER');
                     }
                     return [2 /*return*/];
             }
