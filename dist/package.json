@@ -48,6 +48,7 @@
         "commander": "^7.2.0",
         "crypto": "0.0.3",
         "fuzzy": "^0.1.1",
+        "ini": "^2.0.0",
         "inquirer": "^6.5.2",
         "keytar": "^7.7.0",
         "lokijs": "^1.5.1",

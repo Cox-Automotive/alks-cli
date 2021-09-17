@@ -10,7 +10,7 @@ var getKeysCollection_1 = require("./getKeysCollection");
 var db_1 = require("./db");
 function getKeys(auth, isIAM) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var keys, now, enc;
+        var keys, now, enc, db;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getKeysCollection_1.getKeysCollection()];
@@ -20,9 +20,12 @@ function getKeys(auth, isIAM) {
                     enc = isTokenAuth_1.isTokenAuth(auth) ? auth.token : auth.password;
                     // first delete any expired keys
                     keys.removeWhere({ expires: { $lte: now.toDate() } });
+                    return [4 /*yield*/, db_1.getDb()];
+                case 2:
+                    db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {
                             // save the db to prune expired keys, wait for transaction to complete
-                            db_1.getDb().save(function (err) {
+                            db.save(function (err) {
                                 if (err) {
                                     reject(err);
                                     return;

@@ -24,7 +24,7 @@ function getDeveloper() {
 exports.getDeveloper = getDeveloper;
 function updateDeveloper(newDeveloper) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var collection, developer;
+        var collection, developer, db;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -64,8 +64,11 @@ function updateDeveloper(newDeveloper) {
                     // TODO ^on that note, let's remove LokiJS - BW
                     collection.clear();
                     collection.insert(developer);
+                    return [4 /*yield*/, db_1.getDb()];
+                case 3:
+                    db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                            db_1.getDb().save(function (err) {
+                            db.save(function (err) {
                                 if (err) {
                                     reject(err);
                                 }

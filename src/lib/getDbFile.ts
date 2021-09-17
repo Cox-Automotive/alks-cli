@@ -1,29 +1,25 @@
-import { accessSync, renameSync } from 'fs';
+import { access, rename } from 'fs/promises';
 import { getFilePathInHome } from './getFilePathInHome';
 import chmod from 'chmod';
 import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
 
-export function getDbFile() {
+export async function getDbFile(): Promise<string> {
   // Handle migrating from the old path to the new path
   const path = getFilePathInHome('.alks-cli/alks.db');
   const oldPath = getFilePathInHome('alks.db');
 
   let dbFileExists: boolean = true;
-  try {
-    accessSync(path);
-  } catch {
+  await access(path).catch(() => {
     dbFileExists = false;
-  }
+  });
 
   let oldDbFileExists: boolean = true;
-  try {
-    accessSync(oldPath);
-  } catch {
+  await access(oldPath).catch(() => {
     oldDbFileExists = false;
-  }
+  });
 
   if (oldDbFileExists && !dbFileExists) {
-    renameSync(oldPath, path);
+    await rename(oldPath, path);
     dbFileExists = true;
     oldDbFileExists = false;
   }

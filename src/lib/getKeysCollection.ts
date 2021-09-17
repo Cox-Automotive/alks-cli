@@ -2,7 +2,7 @@ import { Key } from '../model/keys';
 import { getDb } from './db';
 
 export async function getKeysCollection(): Promise<Collection<Key>> {
-  const db = getDb();
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     // have the DB load from disk
     db.loadDatabase({}, (err?: Error) => {

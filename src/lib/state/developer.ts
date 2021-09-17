@@ -60,8 +60,9 @@ export async function updateDeveloper(newDeveloper: Developer): Promise<void> {
   collection.clear();
   collection.insert(developer);
 
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    getDb().save((err) => {
+    db.save((err) => {
       if (err) {
         reject(err);
       } else {
