@@ -43,7 +43,7 @@ function ensureConfigured() {
                 case 9: return [3 /*break*/, 11];
                 case 10:
                     e_1 = _a.sent();
-                    throw new Error('ALKS CLI is not configured. Please run: alks developer configure');
+                    throw new Error('ALKS CLI is not configured. Please run: `alks developer configure` or set the environment variables ALKS_USERID and ALKS_SERVER');
                 case 11: return [2 /*return*/];
             }
         });
