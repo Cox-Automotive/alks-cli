@@ -1,7 +1,5 @@
-import { access, rename } from 'fs/promises';
+import { access, chmod, rename } from 'fs/promises';
 import { getFilePathInHome } from './getFilePathInHome';
-import chmod from 'chmod';
-import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
 
 export async function getDbFile(): Promise<string> {
   // Handle migrating from the old path to the new path
@@ -26,7 +24,7 @@ export async function getDbFile(): Promise<string> {
 
   // if we have a db, chmod it
   if (dbFileExists) {
-    chmod(path, getOwnerReadWriteOnlyPermission());
+    await chmod(path, 0o600);
   }
 
   return path;

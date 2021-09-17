@@ -4,8 +4,6 @@ exports.getDbFile = void 0;
 var tslib_1 = require("tslib");
 var promises_1 = require("fs/promises");
 var getFilePathInHome_1 = require("./getFilePathInHome");
-var chmod_1 = tslib_1.__importDefault(require("chmod"));
-var getOwnerReadWriteOwnerPermission_1 = require("./getOwnerReadWriteOwnerPermission");
 function getDbFile() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var path, oldPath, dbFileExists, oldDbFileExists;
@@ -34,11 +32,12 @@ function getDbFile() {
                     oldDbFileExists = false;
                     _a.label = 4;
                 case 4:
-                    // if we have a db, chmod it
-                    if (dbFileExists) {
-                        chmod_1.default(path, getOwnerReadWriteOwnerPermission_1.getOwnerReadWriteOnlyPermission());
-                    }
-                    return [2 /*return*/, path];
+                    if (!dbFileExists) return [3 /*break*/, 6];
+                    return [4 /*yield*/, promises_1.chmod(path, 384)];
+                case 5:
+                    _a.sent();
+                    _a.label = 6;
+                case 6: return [2 /*return*/, path];
             }
         });
     });

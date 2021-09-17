@@ -15,10 +15,14 @@ function convertNetrcToIni() {
         var netrcFileExists, credentialsFileExists, credentials, passwordAuth, tokenAuth;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, promises_1.access(NETRC_FILE_PATH).then(function () { return true; }).catch(function () { return false; })];
+                case 0: return [4 /*yield*/, promises_1.access(NETRC_FILE_PATH)
+                        .then(function () { return true; })
+                        .catch(function () { return false; })];
                 case 1:
                     netrcFileExists = _a.sent();
-                    return [4 /*yield*/, promises_1.access(credentials_1.CREDENTIALS_FILE_PATH).then(function () { return true; }).catch(function () { return false; })];
+                    return [4 /*yield*/, promises_1.access(credentials_1.CREDENTIALS_FILE_PATH)
+                            .then(function () { return true; })
+                            .catch(function () { return false; })];
                 case 2:
                     credentialsFileExists = _a.sent();
                     if (!(netrcFileExists && !credentialsFileExists)) return [3 /*break*/, 5];
