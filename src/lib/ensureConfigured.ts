@@ -25,7 +25,7 @@ export async function ensureConfigured(): Promise<void> {
     }
   } catch (e) {
     throw new Error(
-      'ALKS CLI is not configured. Please run: alks developer configure'
+      'ALKS CLI is not configured. Please run: `alks developer configure` or set the environment variables ALKS_USERID and ALKS_SERVER'
     );
   }
 }
