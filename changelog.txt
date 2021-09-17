@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* alks-developer-login now asks for userId as well as password
+* alks-developer-login now asks for userId as well as password 
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
