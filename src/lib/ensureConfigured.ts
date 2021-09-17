@@ -13,7 +13,7 @@ export async function ensureConfigured(): Promise<void> {
   // If developer is not configured, ensure we at least have required variables configured
   if (!(await getUserId()) || !(await getServer())) {
     throw new Error(
-      'ALKS CLI is not configured. Please run: alks developer configure'
+      'ALKS CLI is not configured. Please run: `alks developer configure` or set the environment variables ALKS_USERID and ALKS_SERVER'
     );
   }
 }
