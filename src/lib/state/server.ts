@@ -4,7 +4,7 @@ import { getDeveloper, updateDeveloper } from './developer';
 
 const SERVER_ENV_VAR_NAME = 'ALKS_SERVER';
 
-export async function getServer(): Promise<string> {
+export async function getServer(): Promise<string | undefined> {
   const serverFromEnv = process.env[SERVER_ENV_VAR_NAME];
   if (!isEmpty(serverFromEnv)) {
     log('using server url from environment variable');
@@ -17,9 +17,7 @@ export async function getServer(): Promise<string> {
     return developer.server;
   }
 
-  throw new Error(
-    'Server URL is not configured. Please run: alks developer configure'
-  );
+  return undefined;
 }
 
 export async function setServer(server: string) {

@@ -205,12 +205,8 @@ developer
   .option('-o, --output <format>', 'output format (text, json)', 'text')
   .option('-u, --username <username>', 'your username')
   .option(
-    '-p, --password',
-    'causes the cli to automatically prompt for your password (cannot be used with -t/--token)'
-  )
-  .option(
-    '-t, --token',
-    'causes the cli to automatically prompt for your refresh token (cannot be used with -p/--password)'
+    '-A, --auth-type <authType>',
+    'automatically selects the auth type provided'
   )
   .action(handleAlksDeveloperConfigure);
 

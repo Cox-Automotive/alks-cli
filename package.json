@@ -40,7 +40,6 @@
     "alks"
   ],
   "dependencies": {
-    "@cox-automotive/clortho": "^1.2.2",
     "alks-node": "^0.12.1",
     "alks.js": "^1.12.8",
     "chmod": "^0.2.1",
@@ -50,6 +49,7 @@
     "crypto": "0.0.3",
     "fuzzy": "^0.1.1",
     "inquirer": "^6.5.2",
+    "keytar": "^7.7.0",
     "lokijs": "^1.5.1",
     "moment": "^2.13.0",
     "node-netrc": "^0.1.0",

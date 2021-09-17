@@ -30,11 +30,11 @@ function handleAlksDeveloperInfo(_options) {
                 case 2:
                     developer = _c.sent();
                     log_1.log('getting password');
-                    return [4 /*yield*/, password_1.getPassword().catch(function () { return undefined; })];
+                    return [4 /*yield*/, password_1.getPassword()];
                 case 3:
                     password = _c.sent();
                     log_1.log('getting 2fa token');
-                    return [4 /*yield*/, token_1.getToken().catch(function () { return undefined; })];
+                    return [4 /*yield*/, token_1.getToken()];
                 case 4:
                     token = _c.sent();
                     mapping = {

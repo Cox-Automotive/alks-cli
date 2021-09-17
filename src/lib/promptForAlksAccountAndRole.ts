@@ -60,8 +60,8 @@ export async function promptForAlksAccountAndRole(
   };
 
   // Ignore failure since we're about to prompt for it
-  const defaultAlksAccount = await getAlksAccount().catch(() => undefined);
-  const defaultAlksRole = await getAlksRole().catch(() => undefined);
+  const defaultAlksAccount = await getAlksAccount();
+  const defaultAlksRole = await getAlksRole();
 
   if (defaultAlksAccount && defaultAlksRole) {
     promptData.default = [defaultAlksAccount, defaultAlksRole].join(

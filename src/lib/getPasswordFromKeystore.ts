@@ -1,30 +1,19 @@
-import c from '@cox-automotive/clortho';
-import { isEmpty } from 'underscore';
-import { isPasswordSecurelyStorable } from './isPasswordSecurelyStorable';
+import { getKeytar } from './getKeytar';
+import { log } from './log';
 import netrc from 'node-netrc';
 
-const clortho = c.forService('alkscli');
 const SERVICE = 'alkscli';
 const ALKS_USERID = 'alksuid';
 
-export async function getPasswordFromKeystore() {
-  if (isPasswordSecurelyStorable()) {
-    try {
-      const data = await clortho.getFromKeychain(ALKS_USERID);
-      if (data) {
-        return data.password;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  } else {
+export async function getPasswordFromKeystore(): Promise<string | undefined> {
+  try {
+    const keytar = await getKeytar();
+    return (await keytar.getPassword(SERVICE, ALKS_USERID)) ?? undefined;
+  } catch (e) {
+    log((e as Error).message);
+    log('Failed to use keychain. Falling back to plaintext file');
+
     const auth = netrc(SERVICE);
-    if (!isEmpty(auth.password)) {
-      return auth.password;
-    } else {
-      return null;
-    }
+    return auth.password ?? undefined;
   }
 }

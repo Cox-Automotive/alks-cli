@@ -8,9 +8,7 @@ export async function getOutputFormat(): Promise<string> {
     return developer.outputFormat;
   }
 
-  throw new Error(
-    'Output format is not specified. Please run: alks developer configure'
-  );
+  return 'env';
 }
 
 export async function setOutputFormat(outputFormat: string) {

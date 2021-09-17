@@ -5,7 +5,7 @@ import { isEmpty } from 'underscore';
 
 const USER_ID_ENV_VAR_NAME = 'ALKS_USERID';
 
-export async function getUserId(): Promise<string> {
+export async function getUserId(): Promise<string | undefined> {
   const userIdOption = program.opts().userid;
   if (userIdOption) {
     log('using userid from CLI arg');
@@ -24,7 +24,7 @@ export async function getUserId(): Promise<string> {
     return developer.userid;
   }
 
-  throw new Error('No userid was configured');
+  return undefined;
 }
 
 export async function setUserId(userId: string) {

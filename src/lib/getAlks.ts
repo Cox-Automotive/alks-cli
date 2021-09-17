@@ -22,6 +22,11 @@ export type Props = TokenProps | PasswordProps;
  */
 export async function getAlks(props: Props): Promise<ALKS.Alks> {
   const server = await getServer();
+  if (!server) {
+    throw new Error(
+      'Server URL is not configured. Please run: alks developer configure'
+    );
+  }
 
   const params = {
     baseUrl: server,

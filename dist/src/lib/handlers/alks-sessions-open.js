@@ -15,7 +15,7 @@ var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
 function handleAlksSessionsOpen(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var alksAccount, alksRole, err_1, key, _a, _b, _c, _d, err_2;
+        var alksAccount, alksRole, key, _a, _b, _c, _d, err_1;
         return tslib_1.__generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -28,59 +28,55 @@ function handleAlksSessionsOpen(options) {
                     }
                     _e.label = 1;
                 case 1:
-                    _e.trys.push([1, 15, , 16]);
-                    if (!options.default) return [3 /*break*/, 6];
-                    _e.label = 2;
-                case 2:
-                    _e.trys.push([2, 5, , 6]);
+                    _e.trys.push([1, 13, , 14]);
+                    if (!options.default) return [3 /*break*/, 4];
                     return [4 /*yield*/, alksAccount_1.getAlksAccount()];
-                case 3:
+                case 2:
                     alksAccount = _e.sent();
                     return [4 /*yield*/, alksRole_1.getAlksRole()];
-                case 4:
+                case 3:
                     alksRole = _e.sent();
-                    return [3 /*break*/, 6];
-                case 5:
-                    err_1 = _e.sent();
-                    errorAndExit_1.errorAndExit('Unable to load default account!', err_1);
-                    return [3 /*break*/, 6];
-                case 6:
+                    if (!alksAccount || !alksRole) {
+                        errorAndExit_1.errorAndExit('Unable to load default account!');
+                    }
+                    _e.label = 4;
+                case 4:
                     key = void 0;
-                    if (!options.iam) return [3 /*break*/, 8];
+                    if (!options.iam) return [3 /*break*/, 6];
                     return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, options.newSession, options.favorites)];
+                case 5:
+                    key = _e.sent();
+                    return [3 /*break*/, 8];
+                case 6: return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, options.newSession, options.favorites)];
                 case 7:
                     key = _e.sent();
-                    return [3 /*break*/, 10];
-                case 8: return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, options.newSession, options.favorites)];
-                case 9:
-                    key = _e.sent();
-                    _e.label = 10;
-                case 10:
+                    _e.label = 8;
+                case 8:
                     _b = (_a = console).log;
                     _c = getKeyOutput_1.getKeyOutput;
                     _d = options.output;
-                    if (_d) return [3 /*break*/, 12];
+                    if (_d) return [3 /*break*/, 10];
                     return [4 /*yield*/, outputFormat_1.getOutputFormat()];
-                case 11:
+                case 9:
                     _d = (_e.sent());
-                    _e.label = 12;
-                case 12:
+                    _e.label = 10;
+                case 10:
                     _b.apply(_a, [_c.apply(void 0, [_d, key,
                             options.namedProfile,
                             options.force])]);
                     log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 13:
+                case 11:
                     _e.sent();
                     return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 14:
+                case 12:
                     _e.sent();
-                    return [3 /*break*/, 16];
-                case 15:
-                    err_2 = _e.sent();
-                    errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 16];
-                case 16: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 13:
+                    err_1 = _e.sent();
+                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });

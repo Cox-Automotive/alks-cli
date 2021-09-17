@@ -11,6 +11,9 @@ export async function trackActivity() {
   const logger = `${caller.fileName}:${caller.line}:${caller.char}`;
   if (!visitor) {
     const userId = await getUserId();
+    if (!userId) {
+      throw new Error('No userid was configured');
+    }
     log('creating tracker for: ' + userId);
     visitor = ua(GA_ID, String(userId), {
       https: true,

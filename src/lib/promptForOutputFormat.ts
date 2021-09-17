@@ -3,7 +3,7 @@ import { getStdErrPrompt } from './getStdErrPrompt';
 import { getOutputFormat } from './state/outputFormat';
 
 export async function promptForOutputFormat(): Promise<string> {
-  const outputFormat = await getOutputFormat().catch(() => undefined);
+  const outputFormat = await getOutputFormat();
 
   const promptData = {
     type: 'list',

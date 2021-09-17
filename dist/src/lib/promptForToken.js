@@ -16,6 +16,9 @@ function promptForToken() {
                 case 0: return [4 /*yield*/, server_1.getServer()];
                 case 1:
                     server = _a.sent();
+                    if (!server) {
+                        throw new Error('Server URL is not configured. Please run: alks developer configure');
+                    }
                     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
                     url = server.replace(/rest/, 'token-management');
                     console.error("If the 2FA page does not open, please visit " + cli_color_1.default.underline(url));

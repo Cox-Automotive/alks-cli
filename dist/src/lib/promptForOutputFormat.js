@@ -10,7 +10,7 @@ function promptForOutputFormat() {
         var outputFormat, promptData, answers;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, outputFormat_1.getOutputFormat().catch(function () { return undefined; })];
+                case 0: return [4 /*yield*/, outputFormat_1.getOutputFormat()];
                 case 1:
                     outputFormat = _a.sent();
                     promptData = {

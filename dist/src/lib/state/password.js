@@ -5,9 +5,10 @@ var tslib_1 = require("tslib");
 var program_1 = tslib_1.__importDefault(require("../program"));
 var log_1 = require("../log");
 var underscore_1 = require("underscore");
-var savePassword_1 = require("../savePassword");
 var getPasswordFromKeystore_1 = require("../getPasswordFromKeystore");
 var getEnvironmentVariableSecretWarning_1 = require("../getEnvironmentVariableSecretWarning");
+var storePassword_1 = require("../storePassword");
+var cli_color_1 = require("cli-color");
 var PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 var cachedPassword;
 function getPassword() {
@@ -39,7 +40,7 @@ function getPassword() {
                         log_1.log('using cached password');
                         return [2 /*return*/, cachedPassword];
                     }
-                    throw new Error('No password was configured');
+                    return [2 /*return*/, undefined];
             }
         });
     });
@@ -49,9 +50,10 @@ function setPassword(password) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, savePassword_1.savePassword(password)];
+                case 0: return [4 /*yield*/, storePassword_1.storePassword(password)];
                 case 1:
                     _a.sent();
+                    console.error(cli_color_1.white('Password saved!'));
                     return [2 /*return*/];
             }
         });

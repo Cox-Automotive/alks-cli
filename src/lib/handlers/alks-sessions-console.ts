@@ -31,11 +31,10 @@ export async function handleAlksSessionsConsole(
 
   try {
     if (useDefaultAcct) {
-      try {
-        alksAccount = await getAlksAccount();
-        alksRole = await getAlksRole();
-      } catch (err) {
-        errorAndExit('Unable to load default account!', err);
+      alksAccount = await getAlksAccount();
+      alksRole = await getAlksRole();
+      if (!alksAccount || !alksRole) {
+        errorAndExit('Unable to load default account!');
       }
     }
 

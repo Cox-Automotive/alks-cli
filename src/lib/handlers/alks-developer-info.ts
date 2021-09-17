@@ -24,10 +24,10 @@ export async function handleAlksDeveloperInfo(
     const developer = await getDeveloper();
 
     log('getting password');
-    const password = await getPassword().catch(() => undefined);
+    const password = await getPassword();
 
     log('getting 2fa token');
-    const token = await getToken().catch(() => undefined);
+    const token = await getToken();
 
     const mapping: Partial<Record<keyof Developer, string>> = {
       server: 'ALKS Server',

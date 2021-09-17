@@ -1,12 +1,13 @@
 import { log } from '../log';
-import { saveToken } from '../saveToken';
 import { getTokenFromKeystore } from '../getTokenFromKeystore';
 import { isEmpty } from 'underscore';
 import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+import { storeToken } from '../storeToken';
+import { white } from 'cli-color';
 
 const TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 
-export async function getToken(): Promise<string> {
+export async function getToken(): Promise<string | undefined> {
   const tokenFromEnv = process.env[TOKEN_ENV_VAR_NAME];
   if (!isEmpty(tokenFromEnv)) {
     console.error(getEnvironmentVariableSecretWarning(TOKEN_ENV_VAR_NAME));
@@ -20,9 +21,10 @@ export async function getToken(): Promise<string> {
     return tokenFromKeystore;
   }
 
-  throw new Error('No token was configured');
+  return undefined;
 }
 
 export async function setToken(token: string) {
-  await saveToken(token);
+  await storeToken(token);
+  console.error(white('Refresh token saved!'));
 }

@@ -24,11 +24,10 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
 
   try {
     if (options.default) {
-      try {
-        alksAccount = await getAlksAccount();
-        alksRole = await getAlksRole();
-      } catch (err) {
-        errorAndExit('Unable to load default account!', err);
+      alksAccount = await getAlksAccount();
+      alksRole = await getAlksRole();
+      if (!alksAccount || !alksRole) {
+        errorAndExit('Unable to load default account!');
       }
     }
 

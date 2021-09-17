@@ -7,7 +7,7 @@ import { getUserId } from './state/userId';
 
 export async function getAuth(): Promise<Auth> {
   log('checking for refresh token');
-  const token = await getToken().catch(() => undefined);
+  const token = await getToken();
   if (token) {
     const auth = { token };
     return auth;
@@ -15,8 +15,11 @@ export async function getAuth(): Promise<Auth> {
     log('no refresh token found, falling back to password');
 
     const userid = await getUserId();
+    if (!userid) {
+      throw new Error('No userid was configured');
+    }
     // If password is not set, ask for a password
-    const password = await getPassword().catch(() => promptForPassword());
+    const password = (await getPassword()) || (await promptForPassword());
     const auth = { userid, password };
     return auth;
   }

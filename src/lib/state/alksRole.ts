@@ -1,16 +1,14 @@
 import { log } from '../log';
 import { getDeveloper, updateDeveloper } from './developer';
 
-export async function getAlksRole(): Promise<string> {
+export async function getAlksRole(): Promise<string | undefined> {
   const developer = await getDeveloper();
   if (developer.alksRole) {
     log('using stored alks role');
     return developer.alksRole;
   }
 
-  throw new Error(
-    'Default ALKS Role is not configured. Please run: alks developer configure'
-  );
+  return undefined;
 }
 
 export async function setAlksRole(alksRole: string) {
