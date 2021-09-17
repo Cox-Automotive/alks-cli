@@ -27,7 +27,7 @@ export async function storePassword(password: string): Promise<void> {
       throw new Error('Failed to save password');
     }
 
-    netrc.update(ALKS_PASSWORD, {
+    netrc.update(SERVICE, {
       password,
     });
 

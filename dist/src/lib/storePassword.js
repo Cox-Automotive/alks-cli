@@ -39,7 +39,7 @@ function storePassword(password) {
                     if (!confirmation) {
                         throw new Error('Failed to save password');
                     }
-                    node_netrc_1.default.update(ALKS_PASSWORD, {
+                    node_netrc_1.default.update(SERVICE, {
                         password: password,
                     });
                     chmod_1.default(getFilePathInHome_1.getFilePathInHome('.netrc'), getOwnerReadWriteOwnerPermission_1.getOwnerReadWriteOnlyPermission());

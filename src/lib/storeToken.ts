@@ -8,6 +8,7 @@ import { red } from 'cli-color';
 import { confirm } from './confirm';
 
 const SERVICE = 'alkscli';
+const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
 export async function storeToken(token: string): Promise<void> {
@@ -28,7 +29,7 @@ export async function storeToken(token: string): Promise<void> {
       throw new Error('Failed to save token');
     }
 
-    netrc.update(ALKS_TOKEN, {
+    netrc.update(SERVICETKN, {
       password: token,
     });
 

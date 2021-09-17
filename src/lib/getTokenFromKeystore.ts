@@ -3,6 +3,7 @@ import { log } from './log';
 import netrc from 'node-netrc';
 
 const SERVICE = 'alkscli';
+const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
 export async function getTokenFromKeystore(): Promise<string | undefined> {
@@ -13,7 +14,7 @@ export async function getTokenFromKeystore(): Promise<string | undefined> {
     log((e as Error).message);
     log('Failed to use keychain. Falling back to plaintext file');
 
-    const auth = netrc(ALKS_TOKEN);
+    const auth = netrc(SERVICETKN);
     return auth.password ?? undefined;
   }
 }

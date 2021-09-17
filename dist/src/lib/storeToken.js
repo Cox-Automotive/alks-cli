@@ -11,6 +11,7 @@ var getOwnerReadWriteOwnerPermission_1 = require("./getOwnerReadWriteOwnerPermis
 var cli_color_1 = require("cli-color");
 var confirm_1 = require("./confirm");
 var SERVICE = 'alkscli';
+var SERVICETKN = 'alksclitoken';
 var ALKS_TOKEN = 'alkstoken';
 function storeToken(token) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -40,7 +41,7 @@ function storeToken(token) {
                     if (!confirmation) {
                         throw new Error('Failed to save token');
                     }
-                    node_netrc_1.default.update(ALKS_TOKEN, {
+                    node_netrc_1.default.update(SERVICETKN, {
                         password: token,
                     });
                     chmod_1.default(getFilePathInHome_1.getFilePathInHome('.netrc'), getOwnerReadWriteOwnerPermission_1.getOwnerReadWriteOnlyPermission());

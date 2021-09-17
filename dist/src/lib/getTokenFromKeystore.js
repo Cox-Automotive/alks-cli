@@ -6,6 +6,7 @@ var getKeytar_1 = require("./getKeytar");
 var log_1 = require("./log");
 var node_netrc_1 = tslib_1.__importDefault(require("node-netrc"));
 var SERVICE = 'alkscli';
+var SERVICETKN = 'alksclitoken';
 var ALKS_TOKEN = 'alkstoken';
 function getTokenFromKeystore() {
     var _a, _b;
@@ -24,7 +25,7 @@ function getTokenFromKeystore() {
                     e_1 = _c.sent();
                     log_1.log(e_1.message);
                     log_1.log('Failed to use keychain. Falling back to plaintext file');
-                    auth = node_netrc_1.default(ALKS_TOKEN);
+                    auth = node_netrc_1.default(SERVICETKN);
                     return [2 /*return*/, (_b = auth.password) !== null && _b !== void 0 ? _b : undefined];
                 case 4: return [2 /*return*/];
             }

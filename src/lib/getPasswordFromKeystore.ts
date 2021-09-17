@@ -13,7 +13,7 @@ export async function getPasswordFromKeystore(): Promise<string | undefined> {
     log((e as Error).message);
     log('Failed to use keychain. Falling back to plaintext file');
 
-    const auth = netrc(ALKS_USERID);
+    const auth = netrc(SERVICE);
     return auth.password ?? undefined;
   }
 }

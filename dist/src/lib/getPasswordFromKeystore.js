@@ -24,7 +24,7 @@ function getPasswordFromKeystore() {
                     e_1 = _c.sent();
                     log_1.log(e_1.message);
                     log_1.log('Failed to use keychain. Falling back to plaintext file');
-                    auth = node_netrc_1.default(ALKS_USERID);
+                    auth = node_netrc_1.default(SERVICE);
                     return [2 /*return*/, (_b = auth.password) !== null && _b !== void 0 ? _b : undefined];
                 case 4: return [2 /*return*/];
             }
