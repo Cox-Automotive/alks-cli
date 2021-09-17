@@ -7,9 +7,30 @@ var getFilePathInHome_1 = require("./getFilePathInHome");
 var chmod_1 = tslib_1.__importDefault(require("chmod"));
 var getOwnerReadWriteOwnerPermission_1 = require("./getOwnerReadWriteOwnerPermission");
 function getDbFile() {
-    var path = process.env.ALKS_DB || getFilePathInHome_1.getFilePathInHome('alks.db');
+    // Handle migrating from the old path to the new path
+    var path = getFilePathInHome_1.getFilePathInHome('.alks-cli/alks.db');
+    var oldPath = getFilePathInHome_1.getFilePathInHome('alks.db');
+    var dbFileExists = true;
+    try {
+        fs_1.accessSync(path);
+    }
+    catch (_a) {
+        dbFileExists = false;
+    }
+    var oldDbFileExists = true;
+    try {
+        fs_1.accessSync(oldPath);
+    }
+    catch (_b) {
+        oldDbFileExists = false;
+    }
+    if (oldDbFileExists && !dbFileExists) {
+        fs_1.renameSync(oldPath, path);
+        dbFileExists = true;
+        oldDbFileExists = false;
+    }
     // if we have a db, chmod it
-    if (fs_1.existsSync(path)) {
+    if (dbFileExists) {
         chmod_1.default(path, getOwnerReadWriteOwnerPermission_1.getOwnerReadWriteOnlyPermission());
     }
     return path;
