@@ -11,7 +11,7 @@ export async function getTokenFromKeystore(): Promise<string | undefined> {
     return (await keytar.getPassword(SERVICE, ALKS_TOKEN)) ?? undefined;
   } catch (e) {
     log((e as Error).message);
-    log('Failed to use keychain. Falling back to plaintext file');
+    log('Failed to use keychain. Checking for plaintext file');
 
     const credentials = await getCredentials();
     return credentials.token ?? undefined;

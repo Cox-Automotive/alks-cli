@@ -23,7 +23,7 @@ function getPasswordFromKeystore() {
                 case 3:
                     e_1 = _c.sent();
                     log_1.log(e_1.message);
-                    log_1.log('Failed to use keychain. Falling back to plaintext file');
+                    log_1.log('Failed to use keychain. Checking for plaintext file');
                     return [4 /*yield*/, credentials_1.getCredentials()];
                 case 4:
                     credentials = _c.sent();

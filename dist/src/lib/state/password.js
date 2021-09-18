@@ -9,11 +9,13 @@ var getPasswordFromKeystore_1 = require("../getPasswordFromKeystore");
 var getEnvironmentVariableSecretWarning_1 = require("../getEnvironmentVariableSecretWarning");
 var storePassword_1 = require("../storePassword");
 var cli_color_1 = require("cli-color");
+var credentials_1 = require("./credentials");
+var child_process_1 = require("child_process");
 var PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 var cachedPassword;
 function getPassword() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var passwordOption, passwordFromEnv, passwordFromKeystore;
+        var passwordOption, passwordFromEnv, credentials, output, password, passwordFromKeystore;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -29,8 +31,25 @@ function getPassword() {
                         log_1.log('using password from environment variable');
                         return [2 /*return*/, passwordFromEnv];
                     }
-                    return [4 /*yield*/, getPasswordFromKeystore_1.getPasswordFromKeystore()];
+                    return [4 /*yield*/, credentials_1.getCredentials()];
                 case 1:
+                    credentials = _a.sent();
+                    if (credentials.credential_process) {
+                        output = child_process_1.spawnSync(credentials.credential_process, ['password']);
+                        if (output.error) {
+                            log_1.log('error encountered when executing credential process: ' + output.error);
+                            throw output.error;
+                        }
+                        if (String(output.stderr).trim().length > 0) {
+                            log_1.log('credential_process stderr: ' + output.stderr);
+                        }
+                        password = String(output.stdout).split('\n')[0].trim();
+                        if (password.length > 0) {
+                            return [2 /*return*/, password];
+                        }
+                    }
+                    return [4 /*yield*/, getPasswordFromKeystore_1.getPasswordFromKeystore()];
+                case 2:
                     passwordFromKeystore = _a.sent();
                     if (passwordFromKeystore) {
                         log_1.log('using stored password');

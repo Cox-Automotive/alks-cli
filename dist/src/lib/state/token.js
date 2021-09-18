@@ -8,10 +8,12 @@ var underscore_1 = require("underscore");
 var getEnvironmentVariableSecretWarning_1 = require("../getEnvironmentVariableSecretWarning");
 var storeToken_1 = require("../storeToken");
 var cli_color_1 = require("cli-color");
+var credentials_1 = require("./credentials");
+var child_process_1 = require("child_process");
 var TOKEN_ENV_VAR_NAME = 'ALKS_REFRESH_TOKEN';
 function getToken() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var tokenFromEnv, tokenFromKeystore;
+        var tokenFromEnv, credentials, output, token, tokenFromKeystore;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -21,8 +23,25 @@ function getToken() {
                         log_1.log('using refresh token from environment variable');
                         return [2 /*return*/, tokenFromEnv];
                     }
-                    return [4 /*yield*/, getTokenFromKeystore_1.getTokenFromKeystore()];
+                    return [4 /*yield*/, credentials_1.getCredentials()];
                 case 1:
+                    credentials = _a.sent();
+                    if (credentials.credential_process) {
+                        output = child_process_1.spawnSync(credentials.credential_process, ['token']);
+                        if (output.error) {
+                            log_1.log('error encountered when executing credential process: ' + output.error);
+                            throw output.error;
+                        }
+                        if (String(output.stderr).trim().length > 0) {
+                            log_1.log('credential_process stderr: ' + output.stderr);
+                        }
+                        token = String(output.stdout).split('\n')[0].trim();
+                        if (token.length > 0) {
+                            return [2 /*return*/, token];
+                        }
+                    }
+                    return [4 /*yield*/, getTokenFromKeystore_1.getTokenFromKeystore()];
+                case 2:
                     tokenFromKeystore = _a.sent();
                     if (tokenFromKeystore) {
                         log_1.log('using stored token');
