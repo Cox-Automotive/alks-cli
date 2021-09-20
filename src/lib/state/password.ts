@@ -1,12 +1,11 @@
-import program from '../program';
-import { log } from '../log';
-import { isEmpty } from 'underscore';
-import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
-import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
-import { storePassword } from '../storePassword';
 import { white } from 'cli-color';
-import { getCredentials } from './credentials';
-import { spawnSync } from 'child_process';
+import { isEmpty } from 'underscore';
+import { getCredentialsFromProcess } from '../getCredentialsFromProcess';
+import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
+import { log } from '../log';
+import program from '../program';
+import { storePassword } from '../storePassword';
 
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
 let cachedPassword: string | undefined;
@@ -28,23 +27,10 @@ export async function getPassword(): Promise<string | undefined> {
     return passwordFromEnv as string;
   }
 
-  const credentials = await getCredentials();
-  if (credentials.credential_process) {
-    const output = spawnSync(credentials.credential_process, ['password']);
-    if (output.error) {
-      log(
-        'error encountered when executing credential process: ' + output.error
-      );
-      throw output.error;
-    }
-    if (String(output.stderr).trim().length > 0) {
-      log('credential_process stderr: ' + output.stderr);
-    }
-    // read the first line of stdout as the password
-    const password = String(output.stdout).split('\n')[0].trim();
-    if (password.length > 0) {
-      return password;
-    }
+  const credentialProcessResult = await getCredentialsFromProcess();
+  if (credentialProcessResult.password) {
+    log('using password from credential_process');
+    return credentialProcessResult.password;
   }
 
   const passwordFromKeystore = await getPasswordFromKeystore();
