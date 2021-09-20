@@ -1,6 +1,6 @@
 import { spawnSync } from 'child_process';
 import { log } from './log';
-import { getCredentials } from './state/credentials';
+import { getCredentialProcess } from './state/credentialProcess';
 
 export interface CredentialProcessResult {
   password?: string;
@@ -15,9 +15,9 @@ export async function getCredentialsFromProcess(): Promise<CredentialProcessResu
     return cachedResult;
   }
 
-  const credentials = await getCredentials();
-  if (credentials.credential_process) {
-    const output = spawnSync(credentials.credential_process);
+  const credentialProcess = await getCredentialProcess();
+  if (credentialProcess) {
+    const output = spawnSync(credentialProcess);
     if (output.error) {
       log(
         'error encountered when executing credential process: ' + output.error

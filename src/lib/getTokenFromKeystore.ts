@@ -14,6 +14,6 @@ export async function getTokenFromKeystore(): Promise<string | undefined> {
     log('Failed to use keychain. Checking for plaintext file');
 
     const credentials = await getCredentials();
-    return credentials.token ?? undefined;
+    return credentials.refresh_token ?? undefined;
   }
 }

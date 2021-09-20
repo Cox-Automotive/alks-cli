@@ -25,7 +25,7 @@ export async function storeToken(token: string): Promise<void> {
     }
 
     const credentials = await getCredentials();
-    credentials.token = token;
+    credentials.refresh_token = token;
     await setCredentials(credentials);
   }
 }

@@ -40,7 +40,7 @@ function convertNetrcToIni() {
                     }
                     tokenAuth = node_netrc_1.default(NETRC_ALKS_TOKEN);
                     if (tokenAuth.password) {
-                        credentials.token = tokenAuth.password;
+                        credentials.refresh_token = tokenAuth.password;
                         // remove the alks token from the netrc file
                         node_netrc_1.default.update(NETRC_ALKS_PASSWORD);
                     }

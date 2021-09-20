@@ -27,7 +27,7 @@ function getTokenFromKeystore() {
                     return [4 /*yield*/, credentials_1.getCredentials()];
                 case 4:
                     credentials = _c.sent();
-                    return [2 /*return*/, (_b = credentials.token) !== null && _b !== void 0 ? _b : undefined];
+                    return [2 /*return*/, (_b = credentials.refresh_token) !== null && _b !== void 0 ? _b : undefined];
                 case 5: return [2 /*return*/];
             }
         });

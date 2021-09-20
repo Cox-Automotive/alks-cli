@@ -4,11 +4,11 @@ exports.getCredentialsFromProcess = void 0;
 var tslib_1 = require("tslib");
 var child_process_1 = require("child_process");
 var log_1 = require("./log");
-var credentials_1 = require("./state/credentials");
+var credentialProcess_1 = require("./state/credentialProcess");
 var cachedResult;
 function getCredentialsFromProcess() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var result, credentials, output;
+        var result, credentialProcess, output;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -16,11 +16,11 @@ function getCredentialsFromProcess() {
                     if (cachedResult) {
                         return [2 /*return*/, cachedResult];
                     }
-                    return [4 /*yield*/, credentials_1.getCredentials()];
+                    return [4 /*yield*/, credentialProcess_1.getCredentialProcess()];
                 case 1:
-                    credentials = _a.sent();
-                    if (credentials.credential_process) {
-                        output = child_process_1.spawnSync(credentials.credential_process);
+                    credentialProcess = _a.sent();
+                    if (credentialProcess) {
+                        output = child_process_1.spawnSync(credentialProcess);
                         if (output.error) {
                             log_1.log('error encountered when executing credential process: ' + output.error);
                             throw output.error;

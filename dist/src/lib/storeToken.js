@@ -39,7 +39,7 @@ function storeToken(token) {
                     return [4 /*yield*/, credentials_1.getCredentials()];
                 case 6:
                     credentials = _a.sent();
-                    credentials.token = token;
+                    credentials.refresh_token = token;
                     return [4 /*yield*/, credentials_1.setCredentials(credentials)];
                 case 7:
                     _a.sent();

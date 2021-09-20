@@ -7,7 +7,13 @@ import { log } from '../log';
 export const ALKS_CONFIG_FOLDER = join(homedir(), '.alks-cli');
 export const CREDENTIALS_FILE_PATH = join(ALKS_CONFIG_FOLDER, 'credentials');
 
-export async function getCredentials(): Promise<Record<string, any>> {
+export interface Credentials {
+  password?: string;
+  refresh_token?: string;
+  credential_process?: string;
+}
+
+export async function getCredentials(): Promise<Credentials> {
   const credentialsFile = await readFile(CREDENTIALS_FILE_PATH, 'utf-8').catch(
     () => ''
   );
@@ -17,9 +23,7 @@ export async function getCredentials(): Promise<Record<string, any>> {
   return credentials.default;
 }
 
-export async function setCredentials(
-  credentials: Record<string, any>
-): Promise<void> {
+export async function setCredentials(credentials: Credentials): Promise<void> {
   const fileContents = { default: credentials };
   const credentialsFile = stringify(fileContents);
   await mkdir(ALKS_CONFIG_FOLDER).catch(() => {});

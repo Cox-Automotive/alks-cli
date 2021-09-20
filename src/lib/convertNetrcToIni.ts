@@ -36,7 +36,7 @@ export async function convertNetrcToIni(): Promise<void> {
 
       const tokenAuth = netrc(NETRC_ALKS_TOKEN);
       if (tokenAuth.password) {
-        credentials.token = tokenAuth.password;
+        credentials.refresh_token = tokenAuth.password;
         // remove the alks token from the netrc file
         netrc.update(NETRC_ALKS_PASSWORD);
       }

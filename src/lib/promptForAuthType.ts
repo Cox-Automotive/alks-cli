@@ -2,6 +2,7 @@ import { getStdErrPrompt } from './getStdErrPrompt';
 
 export const REFRESH_TOKEN_AUTH_CHOICE = 'refresh-token';
 export const PASSWORD_AUTH_CHOICE = 'password';
+export const CREDENTIAL_PROCESS_AUTH_CHOICE = 'credential-process';
 export const ALWAYS_ASK_AUTH_CHOICE = 'always-ask';
 
 export async function promptForAuthType(): Promise<string> {
@@ -20,6 +21,11 @@ export async function promptForAuthType(): Promise<string> {
         name: `[${PASSWORD_AUTH_CHOICE}] Store your network password (not recommended)`,
         value: PASSWORD_AUTH_CHOICE,
         short: PASSWORD_AUTH_CHOICE,
+      },
+      {
+        name: `[${CREDENTIAL_PROCESS_AUTH_CHOICE}] Use a custom script for gathering credentials`,
+        value: CREDENTIAL_PROCESS_AUTH_CHOICE,
+        short: CREDENTIAL_PROCESS_AUTH_CHOICE,
       },
       {
         name: `[${ALWAYS_ASK_AUTH_CHOICE}] Ask for your password every time`,
