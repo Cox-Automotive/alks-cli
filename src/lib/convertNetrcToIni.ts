@@ -1,4 +1,5 @@
-import { access, rm, readFile } from 'fs/promises';
+import { promises as fsPromises } from 'fs';
+const { access, rm, readFile } = fsPromises;
 import { join } from 'path';
 import { homedir } from 'os';
 import {

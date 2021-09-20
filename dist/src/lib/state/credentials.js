@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setCredentials = exports.getCredentials = exports.CREDENTIALS_FILE_PATH = exports.ALKS_CONFIG_FOLDER = void 0;
 var tslib_1 = require("tslib");
-var promises_1 = require("fs/promises");
+var fs_1 = require("fs");
+var readFile = fs_1.promises.readFile, writeFile = fs_1.promises.writeFile, mkdir = fs_1.promises.mkdir;
 var path_1 = require("path");
 var os_1 = require("os");
 var ini_1 = require("ini");
@@ -15,7 +16,7 @@ function getCredentials() {
         var credentialsFile, credentials;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, promises_1.readFile(exports.CREDENTIALS_FILE_PATH, 'utf-8').catch(function () { return ''; })];
+                case 0: return [4 /*yield*/, readFile(exports.CREDENTIALS_FILE_PATH, 'utf-8').catch(function () { return ''; })];
                 case 1:
                     credentialsFile = _b.sent();
                     log_1.log('contents: ' + credentialsFile);
@@ -35,10 +36,10 @@ function setCredentials(credentials) {
                 case 0:
                     fileContents = { default: credentials };
                     credentialsFile = ini_1.stringify(fileContents);
-                    return [4 /*yield*/, promises_1.mkdir(exports.ALKS_CONFIG_FOLDER).catch(function () { })];
+                    return [4 /*yield*/, mkdir(exports.ALKS_CONFIG_FOLDER).catch(function () { })];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, promises_1.writeFile(exports.CREDENTIALS_FILE_PATH, credentialsFile, {
+                    return [4 /*yield*/, writeFile(exports.CREDENTIALS_FILE_PATH, credentialsFile, {
                             encoding: 'utf-8',
                             mode: 384,
                         })];

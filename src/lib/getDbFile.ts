@@ -1,4 +1,5 @@
-import { access, chmod, mkdir, rename } from 'fs/promises';
+import { promises as fsPromises } from 'fs';
+const { access, chmod, mkdir, rename } = fsPromises;
 import { join } from 'path';
 import { getFilePathInHome } from './getFilePathInHome';
 import { log } from './log';

@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertNetrcToIni = void 0;
 var tslib_1 = require("tslib");
-var promises_1 = require("fs/promises");
+var fs_1 = require("fs");
+var access = fs_1.promises.access, rm = fs_1.promises.rm, readFile = fs_1.promises.readFile;
 var path_1 = require("path");
 var os_1 = require("os");
 var credentials_1 = require("./state/credentials");
@@ -18,12 +19,12 @@ function convertNetrcToIni() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 8, , 9]);
-                    return [4 /*yield*/, promises_1.access(NETRC_FILE_PATH)
+                    return [4 /*yield*/, access(NETRC_FILE_PATH)
                             .then(function () { return true; })
                             .catch(function () { return false; })];
                 case 1:
                     netrcFileExists = _a.sent();
-                    return [4 /*yield*/, promises_1.access(credentials_1.CREDENTIALS_FILE_PATH)
+                    return [4 /*yield*/, access(credentials_1.CREDENTIALS_FILE_PATH)
                             .then(function () { return true; })
                             .catch(function () { return false; })];
                 case 2:
@@ -48,11 +49,11 @@ function convertNetrcToIni() {
                 case 4:
                     _a.sent();
                     if (!netrcFileExists) return [3 /*break*/, 7];
-                    return [4 /*yield*/, promises_1.readFile(NETRC_FILE_PATH, 'utf-8')];
+                    return [4 /*yield*/, readFile(NETRC_FILE_PATH, 'utf-8')];
                 case 5:
                     netrcData = _a.sent();
                     if (!(netrcData.trim().length === 0)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, promises_1.rm(NETRC_FILE_PATH)];
+                    return [4 /*yield*/, rm(NETRC_FILE_PATH)];
                 case 6:
                     _a.sent();
                     _a.label = 7;

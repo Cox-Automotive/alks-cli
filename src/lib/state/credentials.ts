@@ -1,4 +1,5 @@
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { promises as fsPromises } from 'fs';
+const { readFile, writeFile, mkdir } = fsPromises;
 import { join } from 'path';
 import { homedir } from 'os';
 import { parse, stringify } from 'ini';
