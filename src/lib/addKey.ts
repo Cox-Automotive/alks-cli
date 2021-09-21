@@ -28,8 +28,9 @@ export async function addKey(
     expires,
   });
 
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    getDb().save((err?: Error) => {
+    db.save((err?: Error) => {
       if (err) {
         reject(err);
       } else {

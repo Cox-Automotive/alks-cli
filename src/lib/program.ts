@@ -208,6 +208,10 @@ developer
     '-A, --auth-type <authType>',
     'automatically selects the auth type provided'
   )
+  .option(
+    '--credential-process <scriptPath>',
+    'the path to your credential_process script. Automatically sets the auth-type to credential-process'
+  )
   .action(handleAlksDeveloperConfigure);
 
 developer

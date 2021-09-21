@@ -26,6 +26,9 @@ import { validateAlksAccount } from '../validateAlksAccount';
 import tabtab from 'tabtab';
 import { setToken } from '../state/token';
 import { setPassword } from '../state/password';
+import { CREDENTIAL_PROCESS_AUTH_CHOICE } from '../promptForAuthType';
+import { setCredentialProcess } from '../state/credentialProcess';
+import { promptForCredentialProcess } from '../promptForCredentialProcess';
 
 export async function handleAlksDeveloperConfigure(
   options: commander.OptionValues
@@ -35,8 +38,13 @@ export async function handleAlksDeveloperConfigure(
 
     await setUserId(options.username ?? (await promptForUserId()));
 
-    // Prompt for auth type if none was chosen
-    const authType = options.authType ?? (await promptForAuthType());
+    // Override authType flag if a credential process was provided
+    let authTypeFlag = options.authType;
+    if (options.credentialProcess) {
+      authTypeFlag = CREDENTIAL_PROCESS_AUTH_CHOICE;
+    }
+
+    const authType = authTypeFlag ?? (await promptForAuthType());
 
     switch (authType) {
       case REFRESH_TOKEN_AUTH_CHOICE: {
@@ -49,6 +57,12 @@ export async function handleAlksDeveloperConfigure(
         if (savePasswordAnswer) {
           await setPassword(password);
         }
+        break;
+      }
+      case CREDENTIAL_PROCESS_AUTH_CHOICE: {
+        await setCredentialProcess(
+          options.credentialProcess ?? (await promptForCredentialProcess())
+        );
         break;
       }
       case ALWAYS_ASK_AUTH_CHOICE: {
@@ -88,6 +102,9 @@ export async function handleAlksDeveloperConfigure(
     await checkForUpdate();
     await trackActivity();
   } catch (err) {
-    errorAndExit('Error configuring developer: ' + err.message, err);
+    errorAndExit(
+      'Error configuring developer: ' + (err as Error).message,
+      err as Error
+    );
   }
 }

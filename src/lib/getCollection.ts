@@ -3,9 +3,9 @@ import { getDb } from './db';
 export async function getCollection<T extends object>(
   name: string
 ): Promise<Collection<T>> {
-  return new Promise((resolve, reject) => {
-    const db = getDb();
+  const db = await getDb();
 
+  return new Promise((resolve, reject) => {
     db.loadDatabase({}, (err: Error) => {
       if (err) {
         reject(err);

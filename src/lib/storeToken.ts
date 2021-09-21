@@ -1,14 +1,10 @@
 import { log } from './log';
 import { getKeytar } from './getKeytar';
-import netrc from 'node-netrc';
-import chmod from 'chmod';
-import { getFilePathInHome } from './getFilePathInHome';
-import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
 import { red } from 'cli-color';
 import { confirm } from './confirm';
+import { getCredentials, setCredentials } from './state/credentials';
 
 const SERVICE = 'alkscli';
-const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
 export async function storeToken(token: string): Promise<void> {
@@ -18,7 +14,6 @@ export async function storeToken(token: string): Promise<void> {
     await keytar.setPassword(SERVICE, ALKS_TOKEN, token);
   } catch (e) {
     log((e as Error).message);
-    log('Failed to use keychain. Falling back to plaintext file');
 
     console.error(red('No keychain could be found for storing the token'));
     const confirmation = await confirm(
@@ -29,10 +24,8 @@ export async function storeToken(token: string): Promise<void> {
       throw new Error('Failed to save token');
     }
 
-    netrc.update(SERVICETKN, {
-      password: token,
-    });
-
-    chmod(getFilePathInHome('.netrc'), getOwnerReadWriteOnlyPermission());
+    const credentials = await getCredentials();
+    credentials.refresh_token = token;
+    await setCredentials(credentials);
   }
 }

@@ -1,13 +1,14 @@
-import program from '../program';
-import { log } from '../log';
-import { isEmpty } from 'underscore';
-import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
-import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
-import { storePassword } from '../storePassword';
 import { white } from 'cli-color';
+import { isEmpty } from 'underscore';
+import { getCredentialsFromProcess } from '../getCredentialsFromProcess';
+import { getEnvironmentVariableSecretWarning } from '../getEnvironmentVariableSecretWarning';
+import { getPasswordFromKeystore } from '../getPasswordFromKeystore';
+import { log } from '../log';
+import program from '../program';
+import { storePassword } from '../storePassword';
 
 const PASSWORD_ENV_VAR_NAME = 'ALKS_PASSWORD';
-let cachedPassword: string;
+let cachedPassword: string | undefined;
 
 export async function getPassword(): Promise<string | undefined> {
   const passwordOption = program.opts().password;
@@ -24,6 +25,12 @@ export async function getPassword(): Promise<string | undefined> {
     console.error(getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
     log('using password from environment variable');
     return passwordFromEnv as string;
+  }
+
+  const credentialProcessResult = await getCredentialsFromProcess();
+  if (credentialProcessResult.password) {
+    log('using password from credential_process');
+    return credentialProcessResult.password;
   }
 
   const passwordFromKeystore = await getPasswordFromKeystore();

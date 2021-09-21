@@ -18,9 +18,10 @@ export async function getKeys(
   // first delete any expired keys
   keys.removeWhere({ expires: { $lte: now.toDate() } });
 
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     // save the db to prune expired keys, wait for transaction to complete
-    getDb().save((err) => {
+    db.save((err) => {
       if (err) {
         reject(err);
         return;

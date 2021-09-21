@@ -10,8 +10,9 @@ export async function saveMetadata(data: Metadata): Promise<void> {
 
   md.insert(data);
 
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    getDb().save((err?: Error) => {
+    db.save((err?: Error) => {
       if (err) {
         reject(err);
       } else {

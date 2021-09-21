@@ -1,9 +1,8 @@
 import { getKeytar } from './getKeytar';
 import { log } from './log';
-import netrc from 'node-netrc';
+import { getCredentials } from './state/credentials';
 
 const SERVICE = 'alkscli';
-const SERVICETKN = 'alksclitoken';
 const ALKS_TOKEN = 'alkstoken';
 
 export async function getTokenFromKeystore(): Promise<string | undefined> {
@@ -12,9 +11,9 @@ export async function getTokenFromKeystore(): Promise<string | undefined> {
     return (await keytar.getPassword(SERVICE, ALKS_TOKEN)) ?? undefined;
   } catch (e) {
     log((e as Error).message);
-    log('Failed to use keychain. Falling back to plaintext file');
+    log('Failed to use keychain. Checking for plaintext file');
 
-    const auth = netrc(SERVICETKN);
-    return auth.password ?? undefined;
+    const credentials = await getCredentials();
+    return credentials.refresh_token ?? undefined;
   }
 }

@@ -13,8 +13,9 @@ export async function saveFavorites(data: {
 
   favorites.insert(data.accounts);
 
+  const db = await getDb();
   return new Promise((resolve, reject) => {
-    getDb().save((err?: Error) => {
+    db.save((err?: Error) => {
       if (err) {
         reject(err);
       } else {

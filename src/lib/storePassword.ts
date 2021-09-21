@@ -1,11 +1,8 @@
 import { log } from './log';
 import { getKeytar } from './getKeytar';
-import netrc from 'node-netrc';
-import chmod from 'chmod';
-import { getFilePathInHome } from './getFilePathInHome';
-import { getOwnerReadWriteOnlyPermission } from './getOwnerReadWriteOwnerPermission';
 import { confirm } from './confirm';
 import { red } from 'cli-color';
+import { getCredentials, setCredentials } from './state/credentials';
 
 const SERVICE = 'alkscli';
 const ALKS_PASSWORD = 'alkspassword';
@@ -27,10 +24,8 @@ export async function storePassword(password: string): Promise<void> {
       throw new Error('Failed to save password');
     }
 
-    netrc.update(SERVICE, {
-      password,
-    });
-
-    chmod(getFilePathInHome('.netrc'), getOwnerReadWriteOnlyPermission());
+    const credentials = await getCredentials();
+    credentials.password = password;
+    await setCredentials(credentials);
   }
 }

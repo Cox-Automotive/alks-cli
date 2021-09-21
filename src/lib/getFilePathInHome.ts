@@ -1,8 +1,6 @@
 import { join } from 'path';
+import { homedir } from 'os';
 
 export function getFilePathInHome(filename: string) {
-  return join(
-    process.env.HOME || process.env.USERPROFILE || process.env.HOMEPATH || '',
-    filename
-  );
+  return join(homedir(), filename);
 }
