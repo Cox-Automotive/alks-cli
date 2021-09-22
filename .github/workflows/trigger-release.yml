@@ -13,7 +13,7 @@ jobs:
           token: ${{ secrets._GITHUB_TOKEN }}
 
       - name: Get the PR that this merge came from
-        uses: actions-ecosystem/action-get-merged-pull-request@v1
+        uses: actions-ecosystem/action-get-merged-pull-request@136e2f3a66a0d28e8d85094e1042ddbe5abea267
         id: get-merged-pull-request
         with:
           github_token: ${{ secrets._GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
         run: npm ci
 
       - name: Get the release level (major/minor/patch) from the labels
-        uses: actions-ecosystem/action-release-label@v1
+        uses: actions-ecosystem/action-release-label@955bf130fba6be3d99d2c14457d0dc7f176bc563
         id: release-label
         if: ${{ needs.get_pull_request.outputs.pull_request_title != null }}
         with:
@@ -78,7 +78,7 @@ jobs:
 
       # Temporarily disable and reenable enforce administrators
       - name: Temporarily disable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
+        uses: benjefferies/branch-protection-bot@76b8a9d745a68c6a6e9b4bf745d4b32ad805e9a1
         if: always()
         with:
           access-token: ${{ secrets._GITHUB_TOKEN }}
@@ -87,7 +87,7 @@ jobs:
           enforce_admins: false
 
       - name: Commit & Push changes
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@8407731efefc0d8f72af254c74276b7a90be36e1
         with:
           github_token: ${{ secrets._GITHUB_TOKEN }}
           branch: ${{ github.ref }}
@@ -95,7 +95,7 @@ jobs:
           tags: true
 
       - name: Enable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
+        uses: benjefferies/branch-protection-bot@76b8a9d745a68c6a6e9b4bf745d4b32ad805e9a1
         if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
         with:
           access-token: ${{ secrets._GITHUB_TOKEN }}
@@ -105,7 +105,7 @@ jobs:
 
       - name: Get the latest tag
         id: previoustag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
+        uses: WyriHaximus/github-action-get-previous-tag@8656db79964f6757c940965c172d371ceedc8a7f
         with:
           fallback: 0.0.1 # Optional fallback tag to use when no tag can be found
 
