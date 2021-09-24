@@ -1,11 +1,10 @@
 import { promises as fsPromises } from 'fs';
 const { readFile, writeFile, mkdir } = fsPromises;
 import { join } from 'path';
-import { homedir } from 'os';
 import { parse, stringify } from 'ini';
 import { log } from '../log';
+import { ALKS_CONFIG_FOLDER } from '../configFolder';
 
-export const ALKS_CONFIG_FOLDER = join(homedir(), '.alks-cli');
 export const CREDENTIALS_FILE_PATH = join(ALKS_CONFIG_FOLDER, 'credentials');
 
 export interface Credentials {

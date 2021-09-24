@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { ALKS_CONFIG_FOLDER } from './state/credentials';
+import { ALKS_CONFIG_FOLDER } from './configFolder';
 
 export const DB_FILE_NAME = 'alks.db';
 

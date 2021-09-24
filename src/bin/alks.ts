@@ -4,6 +4,7 @@ process.title = 'ALKS';
 
 import clc from 'cli-color';
 import { version } from '../../package.json';
+import { ensureConfigFolderExists } from '../lib/configFolder';
 import { convertNetrcToIni } from '../lib/convertNetrcToIni';
 import { handleCommanderError } from '../lib/handlers/handleCommanderError';
 import program from '../lib/program';
@@ -15,6 +16,7 @@ if (process.stdout.isTTY) {
 
 (async function main() {
   try {
+    await ensureConfigFolderExists();
     await convertNetrcToIni();
     await updateDbFileLocation();
 
