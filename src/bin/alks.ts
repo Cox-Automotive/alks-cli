@@ -7,6 +7,7 @@ import { version } from '../../package.json';
 import { convertNetrcToIni } from '../lib/convertNetrcToIni';
 import { handleCommanderError } from '../lib/handlers/handleCommanderError';
 import program from '../lib/program';
+import { updateDbFileLocation } from '../lib/updateDbFileLocation';
 
 if (process.stdout.isTTY) {
   console.error(clc.whiteBright.bold('ALKS v%s'), version);
@@ -15,6 +16,7 @@ if (process.stdout.isTTY) {
 (async function main() {
   try {
     await convertNetrcToIni();
+    await updateDbFileLocation();
 
     await program.parseAsync();
   } catch (err) {
