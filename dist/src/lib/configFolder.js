@@ -18,7 +18,7 @@ function ensureConfigFolderExists() {
                 case 0: 
                 // ensure the alks config folder exists
                 return [4 /*yield*/, mkdir(getAlksConfigFolder()).catch(function (err) {
-                        if (err.message.includes('EEXISTS')) {
+                        if (err.message.includes('EEXIST')) {
                             log_1.log('config folder already exists');
                         }
                         else {
