@@ -49,7 +49,6 @@
         "fuzzy": "^0.1.1",
         "ini": "^2.0.0",
         "inquirer": "^6.5.2",
-        "keytar": "^7.7.0",
         "lokijs": "^1.5.1",
         "moment": "^2.13.0",
         "node-netrc": "^0.1.0",
@@ -95,7 +94,8 @@
     "optionalDependencies": {
         "express": "^4.17.1",
         "express-list-endpoints": "^3.0.1",
-        "forever": "^3.0.4"
+        "forever": "^3.0.4",
+        "keytar": "^7.7.0"
     },
     "lint-staged": {
         "src/**/*.{js,ts,json,md}": [
