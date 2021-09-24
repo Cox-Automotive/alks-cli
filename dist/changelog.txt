@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a bug with the automatic migration of alks.db to the new ALKS config folder
+* Fixes a bug with the ALKS CLI where it fails to run if the config folder doesn't already exist
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  

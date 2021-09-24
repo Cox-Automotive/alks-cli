@@ -9,6 +9,7 @@ var os_1 = require("os");
 var credentials_1 = require("./state/credentials");
 var node_netrc_1 = tslib_1.__importDefault(require("node-netrc"));
 var log_1 = require("./log");
+var credentials_2 = require("./state/credentials");
 var NETRC_FILE_PATH = path_1.join(os_1.homedir(), '.netrc');
 var NETRC_ALKS_PASSWORD = 'alkscli';
 var NETRC_ALKS_TOKEN = 'alksclitoken';
@@ -24,7 +25,7 @@ function convertNetrcToIni() {
                             .catch(function () { return false; })];
                 case 1:
                     netrcFileExists = _a.sent();
-                    return [4 /*yield*/, access(credentials_1.CREDENTIALS_FILE_PATH)
+                    return [4 /*yield*/, access(credentials_2.getCredentialsFilePath())
                             .then(function () { return true; })
                             .catch(function () { return false; })];
                 case 2:

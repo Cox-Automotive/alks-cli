@@ -1,13 +1,13 @@
 import { promises } from 'fs';
-const { access, chmod, mkdir, rename } = promises;
+const { access, chmod, rename } = promises;
 import { homedir } from 'os';
 import { join } from 'path';
-import { DB_FILE_NAME } from './getDbFile';
 import { log } from './log';
-import { ALKS_CONFIG_FOLDER } from './state/credentials';
+import { getDbFileName } from './getDbFile';
+import { getAlksConfigFolder } from './configFolder';
 
-const OLD_DB_FILE_PATH = join(homedir(), DB_FILE_NAME);
-const NEW_DB_FILE_PATH = join(ALKS_CONFIG_FOLDER, DB_FILE_NAME);
+const OLD_DB_FILE_PATH = join(homedir(), getDbFileName());
+const NEW_DB_FILE_PATH = join(getAlksConfigFolder(), getDbFileName());
 
 export async function updateDbFileLocation(): Promise<void> {
   try {
@@ -20,9 +20,6 @@ export async function updateDbFileLocation(): Promise<void> {
 
     // If new file hasn't been created yet but the old file exists, move the old file to the new location
     if (oldFileExists && !newFileExists) {
-      // ensure the alks config folder exists
-      await mkdir(ALKS_CONFIG_FOLDER).catch(() => {});
-
       log('rename ' + OLD_DB_FILE_PATH + ' to ' + NEW_DB_FILE_PATH);
       await rename(OLD_DB_FILE_PATH, NEW_DB_FILE_PATH);
 
