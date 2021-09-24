@@ -2,12 +2,12 @@ import { promises } from 'fs';
 const { access, chmod, rename } = promises;
 import { homedir } from 'os';
 import { join } from 'path';
-import { ALKS_CONFIG_FOLDER } from './configFolder';
-import { DB_FILE_NAME } from './getDbFile';
 import { log } from './log';
+import { getDbFileName } from './getDbFile';
+import { getAlksConfigFolder } from './configFolder';
 
-const OLD_DB_FILE_PATH = join(homedir(), DB_FILE_NAME);
-const NEW_DB_FILE_PATH = join(ALKS_CONFIG_FOLDER, DB_FILE_NAME);
+const OLD_DB_FILE_PATH = join(homedir(), getDbFileName());
+const NEW_DB_FILE_PATH = join(getAlksConfigFolder(), getDbFileName());
 
 export async function updateDbFileLocation(): Promise<void> {
   try {

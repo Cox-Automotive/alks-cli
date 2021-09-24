@@ -6,11 +6,11 @@ var fs_1 = require("fs");
 var access = fs_1.promises.access, chmod = fs_1.promises.chmod, rename = fs_1.promises.rename;
 var os_1 = require("os");
 var path_1 = require("path");
-var configFolder_1 = require("./configFolder");
-var getDbFile_1 = require("./getDbFile");
 var log_1 = require("./log");
-var OLD_DB_FILE_PATH = path_1.join(os_1.homedir(), getDbFile_1.DB_FILE_NAME);
-var NEW_DB_FILE_PATH = path_1.join(configFolder_1.ALKS_CONFIG_FOLDER, getDbFile_1.DB_FILE_NAME);
+var getDbFile_1 = require("./getDbFile");
+var configFolder_1 = require("./configFolder");
+var OLD_DB_FILE_PATH = path_1.join(os_1.homedir(), getDbFile_1.getDbFileName());
+var NEW_DB_FILE_PATH = path_1.join(configFolder_1.getAlksConfigFolder(), getDbFile_1.getDbFileName());
 function updateDbFileLocation() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var oldFileExists, newFileExists, e_1;
