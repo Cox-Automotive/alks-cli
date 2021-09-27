@@ -3,37 +3,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateDbFileLocation = void 0;
 var tslib_1 = require("tslib");
 var fs_1 = require("fs");
-var access = fs_1.promises.access, chmod = fs_1.promises.chmod, mkdir = fs_1.promises.mkdir, rename = fs_1.promises.rename;
+var access = fs_1.promises.access, chmod = fs_1.promises.chmod, rename = fs_1.promises.rename;
 var os_1 = require("os");
 var path_1 = require("path");
-var getDbFile_1 = require("./getDbFile");
 var log_1 = require("./log");
-var credentials_1 = require("./state/credentials");
-var OLD_DB_FILE_PATH = path_1.join(os_1.homedir(), getDbFile_1.DB_FILE_NAME);
-var NEW_DB_FILE_PATH = path_1.join(credentials_1.ALKS_CONFIG_FOLDER, getDbFile_1.DB_FILE_NAME);
+var getDbFile_1 = require("./getDbFile");
+var configFolder_1 = require("./configFolder");
+var OLD_DB_FILE_PATH = path_1.join(os_1.homedir(), getDbFile_1.getDbFileName());
+var NEW_DB_FILE_PATH = path_1.join(configFolder_1.getAlksConfigFolder(), getDbFile_1.getDbFileName());
 function updateDbFileLocation() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var oldFileExists, newFileExists, e_1;
+        var customDbFilePath, oldFileExists, newFileExists, e_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    customDbFilePath = getDbFile_1.getCustomDbFilePath();
+                    if (!customDbFilePath) return [3 /*break*/, 1];
+                    // Don't attempt to migrate if they're using a custom db file path
+                    log_1.log("Custom db file path detected so no migration is attempted. Using DB file at " + customDbFilePath);
+                    return [2 /*return*/];
+                case 1:
+                    _a.trys.push([1, 7, , 8]);
                     return [4 /*yield*/, access(OLD_DB_FILE_PATH)
                             .then(function () { return true; })
                             .catch(function () { return false; })];
-                case 1:
+                case 2:
                     oldFileExists = _a.sent();
                     return [4 /*yield*/, access(NEW_DB_FILE_PATH)
                             .then(function () { return true; })
                             .catch(function () { return false; })];
-                case 2:
+                case 3:
                     newFileExists = _a.sent();
                     if (!(oldFileExists && !newFileExists)) return [3 /*break*/, 6];
-                    // ensure the alks config folder exists
-                    return [4 /*yield*/, mkdir(credentials_1.ALKS_CONFIG_FOLDER).catch(function () { })];
-                case 3:
-                    // ensure the alks config folder exists
-                    _a.sent();
                     log_1.log('rename ' + OLD_DB_FILE_PATH + ' to ' + NEW_DB_FILE_PATH);
                     return [4 /*yield*/, rename(OLD_DB_FILE_PATH, NEW_DB_FILE_PATH)];
                 case 4:

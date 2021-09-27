@@ -2,13 +2,10 @@ import { promises as fsPromises } from 'fs';
 const { access, rm, readFile } = fsPromises;
 import { join } from 'path';
 import { homedir } from 'os';
-import {
-  CREDENTIALS_FILE_PATH,
-  getCredentials,
-  setCredentials,
-} from './state/credentials';
+import { getCredentials, setCredentials } from './state/credentials';
 import netrc from 'node-netrc';
 import { log } from './log';
+import { getCredentialsFilePath } from './state/credentials';
 
 const NETRC_FILE_PATH = join(homedir(), '.netrc');
 
@@ -20,7 +17,7 @@ export async function convertNetrcToIni(): Promise<void> {
     const netrcFileExists = await access(NETRC_FILE_PATH)
       .then(() => true)
       .catch(() => false);
-    const credentialsFileExists = await access(CREDENTIALS_FILE_PATH)
+    const credentialsFileExists = await access(getCredentialsFilePath())
       .then(() => true)
       .catch(() => false);
 

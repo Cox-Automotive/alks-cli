@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Converts keytar to an optional dependency
+* Fixes a bug with the ALKS CLI where it fails to run if the config folder doesn't already exist
+* Re-adds support for the ALKS_DB environment variable for specifying a custom alks.db file location
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  

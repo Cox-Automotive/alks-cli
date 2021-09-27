@@ -22,7 +22,7 @@ WORKDIR /root/alks-cli
 # For the record, the permission that keytar needs is the ability to scan for a folder that it's supposed to create, so I 
 # really hate that we have to do this for something so small but I could find no other way, aside from manually running
 # `npm run build` inside the `node_modules/keytar` folder - Ben W.
-RUN npm install --no-optional --unsafe-perm=true . -g
+RUN npm install --unsafe-perm=true . -g
 
 # Start a dbus session and then run /bash/bash as the callback
 ENTRYPOINT [ "dbus-run-session", "--", "/bin/bash" ]
