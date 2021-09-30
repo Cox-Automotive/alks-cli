@@ -1,9 +1,6 @@
-FROM node:9.4.0
+FROM node:16
 
-RUN apt-get update && \
-    apt-get install libgnome-keyring-dev -y
-
-RUN npm install --no-optional alks -g
+RUN npm install -g alks
 
 ENTRYPOINT ["/usr/local/bin/alks"]
 CMD ["help"]
