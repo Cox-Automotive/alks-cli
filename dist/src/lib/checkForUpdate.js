@@ -18,6 +18,28 @@ function getChangeLog() {
 }
 function checkForUpdate() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Promise.race([
+                        checkForUpdateInternal(),
+                        // Force a timeout of 1 second
+                        new Promise(function (resolve) {
+                            setTimeout(function () {
+                                log_1.log('check for update timed out. Skipping...');
+                                resolve(undefined);
+                            }, 1000);
+                        }),
+                    ])];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.checkForUpdate = checkForUpdate;
+function checkForUpdateInternal() {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
         var currentVersion, app, client, data, latestVersion, needsUpdate, msg, lastVersion;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
@@ -70,5 +92,4 @@ function checkForUpdate() {
         });
     });
 }
-exports.checkForUpdate = checkForUpdate;
 //# sourceMappingURL=checkForUpdate.js.map

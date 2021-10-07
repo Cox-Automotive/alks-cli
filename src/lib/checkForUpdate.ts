@@ -16,6 +16,19 @@ function getChangeLog() {
 }
 
 export async function checkForUpdate() {
+  await Promise.race([
+    checkForUpdateInternal(),
+    // Force a timeout of 1 second
+    new Promise((resolve) => {
+      setTimeout(() => {
+        log('check for update timed out. Skipping...');
+        resolve(undefined);
+      }, 1000);
+    }),
+  ]);
+}
+
+async function checkForUpdateInternal() {
   const currentVersion = version;
   const app = name;
   const client = new npm({ log: { verbose: noop, info: noop, http: noop } });
