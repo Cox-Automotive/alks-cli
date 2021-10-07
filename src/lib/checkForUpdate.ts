@@ -16,16 +16,17 @@ function getChangeLog() {
 }
 
 export async function checkForUpdate() {
-  await Promise.race([
-    checkForUpdateInternal(),
+  const success = await Promise.race([
+    checkForUpdateInternal().then(() => true),
     // Force a timeout of 1 second
     new Promise((resolve) => {
-      setTimeout(() => {
-        log('check for update timed out. Skipping...');
-        resolve(undefined);
-      }, 1000);
+      setTimeout(resolve.bind(null, false), 1000);
     }),
   ]);
+
+  if (!success) {
+    log('check for update timed out. Skipping...');
+  }
 }
 
 async function checkForUpdateInternal() {

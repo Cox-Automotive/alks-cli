@@ -18,20 +18,21 @@ function getChangeLog() {
 }
 function checkForUpdate() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var success;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, Promise.race([
-                        checkForUpdateInternal(),
+                        checkForUpdateInternal().then(function () { return true; }),
                         // Force a timeout of 1 second
                         new Promise(function (resolve) {
-                            setTimeout(function () {
-                                log_1.log('check for update timed out. Skipping...');
-                                resolve(undefined);
-                            }, 1000);
+                            setTimeout(resolve.bind(null, false), 1000);
                         }),
                     ])];
                 case 1:
-                    _a.sent();
+                    success = _a.sent();
+                    if (!success) {
+                        log_1.log('check for update timed out. Skipping...');
+                    }
                     return [2 /*return*/];
             }
         });
