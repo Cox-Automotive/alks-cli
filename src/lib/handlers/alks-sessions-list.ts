@@ -7,7 +7,6 @@ import { ensureConfigured } from '../ensureConfigured';
 import { errorAndExit } from '../errorAndExit';
 import { getAuth } from '../getAuth';
 import { obfuscate } from '../obfuscate';
-import { trackActivity } from '../trackActivity';
 import { getKeys } from '../getKeys';
 import { each, groupBy } from 'underscore';
 import { log } from '../log';
@@ -68,10 +67,8 @@ export async function handleAlksSessionsList(_options: commander.OptionValues) {
     console.error(clc.white.underline.bold('Active Sessions'));
     console.log(clc.white(table.toString()));
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

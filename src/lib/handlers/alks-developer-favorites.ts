@@ -10,7 +10,6 @@ import { getAuth } from '../getAuth';
 import { getFavorites } from '../getFavorites';
 import { log } from '../log';
 import { saveFavorites } from '../saveFavorites';
-import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperFavorites(
   _options: commander.OptionValues
@@ -70,10 +69,8 @@ export async function handleAlksDeveloperFavorites(
     await saveFavorites({ accounts: faves });
     console.log('Favorites have been saved!');
 
-    log('checking for update');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

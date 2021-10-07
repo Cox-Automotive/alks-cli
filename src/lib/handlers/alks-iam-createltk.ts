@@ -7,7 +7,6 @@ import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
@@ -95,10 +94,8 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
       );
     }
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

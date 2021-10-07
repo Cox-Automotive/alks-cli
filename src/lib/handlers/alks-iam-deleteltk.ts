@@ -7,7 +7,6 @@ import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamDeleteLtk(options: commander.OptionValues) {
@@ -49,17 +48,15 @@ export async function handleAlksIamDeleteLtk(options: commander.OptionValues) {
         iamUserName: iamUsername,
       });
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     console.log(
       clc.white(['LTK deleted for IAM User: ', iamUsername].join(''))
     );
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

@@ -4,22 +4,21 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { log } from '../log';
 import { removeToken } from '../removeToken';
-import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogout2fa(
   _options: commander.OptionValues
 ) {
-  if (removeToken()) {
+  try {
+    await removeToken();
     console.error(clc.white('Token removed!'));
-  } else {
+  } catch (e) {
+    log((e as Error).message);
     console.error(clc.red.bold('Error removing token!'));
   }
 
   try {
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

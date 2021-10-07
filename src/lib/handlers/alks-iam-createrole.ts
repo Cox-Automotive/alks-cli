@@ -7,7 +7,6 @@ import { getAlks } from '../getAlks';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { parseKeyValuePairs } from '../parseKeyValuePairs';
 
@@ -74,7 +73,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
         templateFields,
       });
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     console.log(
@@ -89,10 +88,8 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
         ) + clc.white.underline(role.instanceProfileArn)
       );
     }
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

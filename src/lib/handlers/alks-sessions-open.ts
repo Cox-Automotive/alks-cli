@@ -5,7 +5,6 @@ import { getIamKey } from '../getIamKey';
 import { getKeyOutput } from '../getKeyOutput';
 import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { Key } from '../../model/keys';
 import { getAlksAccount } from '../state/alksAccount';
@@ -58,10 +57,8 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       )
     );
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

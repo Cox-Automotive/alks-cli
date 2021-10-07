@@ -7,7 +7,6 @@ import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
 import { saveMetadata } from '../saveMetadata';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksServerConfigure(
@@ -43,7 +42,7 @@ export async function handleAlksServerConfigure(
         );
       }
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -55,15 +54,13 @@ export async function handleAlksServerConfigure(
         isIam: key.isIAM,
       });
     } catch (err) {
-      errorAndExit('Unable to save metadata!', err);
+      errorAndExit('Unable to save metadata!', err as Error);
     }
 
     console.error(clc.white('Metadata has been saved!'));
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

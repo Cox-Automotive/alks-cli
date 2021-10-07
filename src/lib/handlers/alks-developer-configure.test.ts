@@ -8,7 +8,6 @@ import { confirm } from '../confirm';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { promptForOutputFormat } from '../promptForOutputFormat';
 import { checkForUpdate } from '../checkForUpdate';
-import { trackActivity } from '../trackActivity';
 import { setServer } from '../state/server';
 import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
@@ -38,7 +37,6 @@ jest.mock('../confirm');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
-jest.mock('../trackActivity');
 jest.mock('../promptForAuthType', () => ({
   __esModule: true,
   REFRESH_TOKEN_AUTH_CHOICE: 'refresh-token',
@@ -82,7 +80,6 @@ describe('handleAlksDeveloperConfigure', () => {
     shouldSaveOutputFormat: boolean;
     tabtabInstallFails: boolean;
     checkForUpdateFails: boolean;
-    trackActivityFails: boolean;
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
@@ -113,7 +110,6 @@ describe('handleAlksDeveloperConfigure', () => {
     shouldSaveOutputFormat: false,
     tabtabInstallFails: false,
     checkForUpdateFails: false,
-    trackActivityFails: false,
   };
 
   const testCases: TestCase[] = [
@@ -264,7 +260,6 @@ describe('handleAlksDeveloperConfigure', () => {
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
       outputFormat: 'env',
-      trackActivityFails: true,
       shouldSaveServer: true,
       shouldSaveUserId: true,
       shouldSetPassword: true,
@@ -380,11 +375,6 @@ describe('handleAlksDeveloperConfigure', () => {
         });
         (checkForUpdate as jest.Mock).mockImplementation(async () => {
           if (t.checkForUpdateFails) {
-            throw new Error();
-          }
-        });
-        (trackActivity as jest.Mock).mockImplementation(async () => {
-          if (t.trackActivityFails) {
             throw new Error();
           }
         });

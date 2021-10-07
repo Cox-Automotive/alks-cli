@@ -7,7 +7,6 @@ import { getAlks } from '../getAlks';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 
 export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
@@ -52,14 +51,12 @@ export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
         roleName,
       });
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

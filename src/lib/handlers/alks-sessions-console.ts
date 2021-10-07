@@ -7,7 +7,6 @@ import { getIamKey } from '../getIamKey';
 import { getSessionKey } from '../getSessionKey';
 import { getUserAgentString } from '../getUserAgentString';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import alksNode from 'alks-node';
 import open from 'open';
@@ -57,7 +56,7 @@ export async function handleAlksSessionsConsole(
         );
       }
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     log('calling aws to generate 15min console URL');
@@ -96,12 +95,10 @@ export async function handleAlksSessionsConsole(
         console.error('Please open the url in the browser of your choice');
       }
 
-      log('checking for updates');
       await checkForUpdate();
-      await trackActivity();
       await new Promise((resolve) => setTimeout(resolve, 3000)); // needed for if browser is still open
     }
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }
