@@ -10,7 +10,6 @@ var ensureConfigured_1 = require("../ensureConfigured");
 var errorAndExit_1 = require("../errorAndExit");
 var getAuth_1 = require("../getAuth");
 var obfuscate_1 = require("../obfuscate");
-var trackActivity_1 = require("../trackActivity");
 var getKeys_1 = require("../getKeys");
 var underscore_1 = require("underscore");
 var log_1 = require("../log");
@@ -20,7 +19,7 @@ function handleAlksSessionsList(_options) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    _a.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, ensureConfigured_1.ensureConfigured()];
                 case 1:
                     _a.sent();
@@ -72,19 +71,15 @@ function handleAlksSessionsList(_options) {
                     }
                     console.error(cli_color_1.default.white.underline.bold('Active Sessions'));
                     console.log(cli_color_1.default.white(table_1.toString()));
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 7];
                 case 6:
-                    _a.sent();
-                    return [3 /*break*/, 8];
-                case 7:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });

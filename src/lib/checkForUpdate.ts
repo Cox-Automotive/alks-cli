@@ -29,6 +29,8 @@ export async function checkForUpdate() {
 }
 
 async function checkForUpdateInternal() {
+  log('checking for update...');
+
   const currentVersion = version;
   const app = name;
   const client = new npm({ log: { verbose: noop, info: noop, http: noop } });

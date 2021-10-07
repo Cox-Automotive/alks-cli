@@ -11,7 +11,6 @@ var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
 var isWindows_1 = require("../isWindows");
 var log_1 = require("../log");
-var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 function handleAlksDeveloperAccounts(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -52,7 +51,7 @@ function handleAlksDeveloperAccounts(options) {
                     accounts = [];
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 7, , 8]);
+                    _a.trys.push([1, 6, , 7]);
                     log_1.log('getting auth');
                     return [4 /*yield*/, getAuth_1.getAuth()];
                 case 2:
@@ -77,19 +76,15 @@ function handleAlksDeveloperAccounts(options) {
                         console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
                         console.log(cli_color_1.default.white(table.toString()));
                     }
-                    log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 7];
                 case 6:
-                    _a.sent();
-                    return [3 /*break*/, 8];
-                case 7:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });

@@ -8,7 +8,6 @@ var getIamKey_1 = require("../getIamKey");
 var getKeyOutput_1 = require("../getKeyOutput");
 var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alksAccount_1 = require("../state/alksAccount");
 var alksRole_1 = require("../state/alksRole");
@@ -28,7 +27,7 @@ function handleAlksSessionsOpen(options) {
                     }
                     _e.label = 1;
                 case 1:
-                    _e.trys.push([1, 13, , 14]);
+                    _e.trys.push([1, 12, , 13]);
                     if (!options.default) return [3 /*break*/, 4];
                     return [4 /*yield*/, alksAccount_1.getAlksAccount()];
                 case 2:
@@ -64,19 +63,15 @@ function handleAlksSessionsOpen(options) {
                     _b.apply(_a, [_c.apply(void 0, [_d, key,
                             options.namedProfile,
                             options.force])]);
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 11:
                     _e.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 13];
                 case 12:
-                    _e.sent();
-                    return [3 /*break*/, 14];
-                case 13:
                     err_1 = _e.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 14];
-                case 14: return [2 /*return*/];
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
             }
         });
     });

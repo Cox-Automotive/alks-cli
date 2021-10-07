@@ -10,7 +10,6 @@ var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamCreateLtk(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -40,7 +39,7 @@ function handleAlksIamCreateLtk(options) {
                     }
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 9, , 10]);
+                    _b.trys.push([1, 8, , 9]);
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
                     return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             iamOnly: true,
@@ -94,19 +93,15 @@ function handleAlksIamCreateLtk(options) {
                         console.log(cli_color_1.default.white(['LTK Secret Key: '].join('')) +
                             cli_color_1.default.white.underline(ltkData.secretKey));
                     }
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 7:
                     _b.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 9];
                 case 8:
-                    _b.sent();
-                    return [3 /*break*/, 10];
-                case 9:
                     err_1 = _b.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 10];
-                case 10: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });

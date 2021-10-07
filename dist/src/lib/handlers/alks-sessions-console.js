@@ -9,7 +9,6 @@ var getIamKey_1 = require("../getIamKey");
 var getSessionKey_1 = require("../getSessionKey");
 var getUserAgentString_1 = require("../getUserAgentString");
 var log_1 = require("../log");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alks_node_1 = tslib_1.__importDefault(require("alks-node"));
 var open_1 = tslib_1.__importDefault(require("open"));
@@ -33,7 +32,7 @@ function handleAlksSessionsConsole(options) {
                     }
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 21, , 22]);
+                    _a.trys.push([1, 20, , 21]);
                     if (!useDefaultAcct) return [3 /*break*/, 4];
                     return [4 /*yield*/, alksAccount_1.getAlksAccount()];
                 case 2:
@@ -77,7 +76,7 @@ function handleAlksSessionsConsole(options) {
                     url = _a.sent();
                     if (!options.url) return [3 /*break*/, 12];
                     console.log(url);
-                    return [3 /*break*/, 20];
+                    return [3 /*break*/, 19];
                 case 12:
                     opts = !underscore_1.isEmpty(options.openWith) ? { app: options.openWith } : {};
                     console.error("Opening " + cli_color_1.default.underline(url) + " in the browser...");
@@ -98,24 +97,19 @@ function handleAlksSessionsConsole(options) {
                     console.error("Failed to open " + url);
                     console.error('Please open the url in the browser of your choice');
                     return [3 /*break*/, 16];
-                case 16:
-                    log_1.log('checking for updates');
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                case 16: return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 17:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
-                case 18:
-                    _a.sent();
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
-                case 19:
+                case 18:
                     _a.sent(); // needed for if browser is still open
-                    _a.label = 20;
-                case 20: return [3 /*break*/, 22];
-                case 21:
+                    _a.label = 19;
+                case 19: return [3 /*break*/, 21];
+                case 20:
                     err_3 = _a.sent();
                     errorAndExit_1.errorAndExit(err_3.message, err_3);
-                    return [3 /*break*/, 22];
-                case 22: return [2 /*return*/];
+                    return [3 /*break*/, 21];
+                case 21: return [2 /*return*/];
             }
         });
     });

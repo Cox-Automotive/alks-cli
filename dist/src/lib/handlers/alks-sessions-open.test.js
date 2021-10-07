@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var errorAndExit_1 = require("../errorAndExit");
 var checkForUpdate_1 = require("../checkForUpdate");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var getKeyOutput_1 = require("../getKeyOutput");
 var getIamKey_1 = require("../getIamKey");
@@ -14,7 +13,6 @@ var alksRole_1 = require("../state/alksRole");
 var outputFormat_1 = require("../state/outputFormat");
 jest.mock('../errorAndExit');
 jest.mock('../checkForUpdate');
-jest.mock('../trackActivity');
 jest.mock('../tryToExtractRole');
 jest.mock('../state/alksAccount');
 jest.mock('../state/alksRole');
@@ -32,7 +30,6 @@ describe('handleAlksSessionsOpen', function () {
         options: {},
         shouldErr: false,
         checkForUpdateFails: false,
-        trackActivityFails: false,
         tryToExtractRoleFails: false,
         shouldTryToExtractRole: false,
         extractedRole: '',
@@ -158,28 +155,6 @@ describe('handleAlksSessionsOpen', function () {
                 profile: undefined,
                 force: undefined,
             }, checkForUpdateFails: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when trackActivity fails', shouldErr: true, options: {
-                account: '012345678910/ALKSAdmin - awstest',
-                role: 'Admin',
-                iam: true,
-            }, alksAccount: '444455556666/ALKSPowerUser - awsthing', alksRole: 'PowerUser', outputFormat: 'env', shouldGetIamKey: true, getIamKeyParams: {
-                alksAccount: '012345678910/ALKSAdmin - awstest',
-                alksRole: 'Admin',
-                newSession: undefined,
-                favorites: undefined,
-            }, key: {
-                alksAccount: '012345678910/ALKSAdmin - awstest',
-                alksRole: 'Admin',
-                isIAM: true,
-                expires: new Date(),
-                accessKey: 'abcd',
-                secretKey: 'efgh',
-                sessionToken: 'ijkl',
-            }, shouldGetKeyOutput: true, getKeyOutputParams: {
-                format: 'env',
-                profile: undefined,
-                force: undefined,
-            }, trackActivityFails: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getIamKey succeeds', shouldErr: false, options: {
                 account: '012345678910/ALKSAdmin - awstest',
                 role: 'Admin',
@@ -388,14 +363,6 @@ describe('handleAlksSessionsOpen', function () {
                             checkForUpdate_1.checkForUpdate.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
                                     if (t.checkForUpdateFails) {
-                                        throw new Error();
-                                    }
-                                    return [2 /*return*/];
-                                });
-                            }); });
-                            trackActivity_1.trackActivity.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-                                return tslib_1.__generator(this, function (_a) {
-                                    if (t.trackActivityFails) {
                                         throw new Error();
                                     }
                                     return [2 /*return*/];

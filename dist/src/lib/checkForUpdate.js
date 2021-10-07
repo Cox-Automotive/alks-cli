@@ -44,6 +44,7 @@ function checkForUpdateInternal() {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    log_1.log('checking for update...');
                     currentVersion = package_json_1.version;
                     app = package_json_1.name;
                     client = new npm_registry_client_1.default({ log: { verbose: noop, info: noop, http: noop } });

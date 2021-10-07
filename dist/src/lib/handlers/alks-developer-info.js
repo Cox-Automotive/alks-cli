@@ -6,7 +6,6 @@ var cli_color_1 = tslib_1.__importDefault(require("cli-color"));
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var log_1 = require("../log");
-var trackActivity_1 = require("../trackActivity");
 var cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
 var underscore_1 = require("underscore");
 var password_1 = require("../state/password");
@@ -24,7 +23,7 @@ function handleAlksDeveloperInfo(_options) {
                     });
                     _c.label = 1;
                 case 1:
-                    _c.trys.push([1, 7, , 8]);
+                    _c.trys.push([1, 6, , 7]);
                     log_1.log('getting developer');
                     return [4 /*yield*/, developer_1.getDeveloper()];
                 case 2:
@@ -59,19 +58,15 @@ function handleAlksDeveloperInfo(_options) {
                     table.push(['2FA Token', tableToken]);
                     console.error(cli_color_1.default.white.underline.bold('\nDeveloper Configuration'));
                     console.log(cli_color_1.default.white(table.toString()));
-                    log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _c.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 7];
                 case 6:
-                    _c.sent();
-                    return [3 /*break*/, 8];
-                case 7:
                     err_1 = _c.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
