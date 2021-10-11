@@ -9,7 +9,6 @@ var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
-var trackActivity_1 = require("../trackActivity");
 function handleAlksIamRoleTypes(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var outputVals, output, auth, alks, roleTypes, err_1, err_2;
@@ -26,7 +25,7 @@ function handleAlksIamRoleTypes(options) {
                     }
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 10, , 11]);
+                    _a.trys.push([1, 9, , 10]);
                     log_1.log('getting auth');
                     return [4 /*yield*/, getAuth_1.getAuth()];
                 case 2:
@@ -60,19 +59,15 @@ function handleAlksIamRoleTypes(options) {
                     else {
                         console.log(JSON.stringify(roleTypes.map(function (roleType) { return roleType.roleTypeName; })));
                     }
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 8:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 10];
                 case 9:
-                    _a.sent();
-                    return [3 /*break*/, 11];
-                case 10:
                     err_2 = _a.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 11];
-                case 11: return [2 /*return*/];
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     });

@@ -8,7 +8,6 @@ import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { isWindows } from '../isWindows';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 
 export async function handleAlksDeveloperAccounts(
@@ -79,10 +78,8 @@ export async function handleAlksDeveloperAccounts(
       console.log(clc.white(table.toString()));
     }
 
-    log('checking for update');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

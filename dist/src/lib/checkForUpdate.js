@@ -18,10 +18,34 @@ function getChangeLog() {
 }
 function checkForUpdate() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
+        var success;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Promise.race([
+                        checkForUpdateInternal().then(function () { return true; }),
+                        // Force a timeout of 1 second
+                        new Promise(function (resolve) {
+                            setTimeout(resolve.bind(null, false), 1000);
+                        }),
+                    ])];
+                case 1:
+                    success = _a.sent();
+                    if (!success) {
+                        log_1.log('check for update timed out. Skipping...');
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.checkForUpdate = checkForUpdate;
+function checkForUpdateInternal() {
+    return tslib_1.__awaiter(this, void 0, void 0, function () {
         var currentVersion, app, client, data, latestVersion, needsUpdate, msg, lastVersion;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    log_1.log('checking for update...');
                     currentVersion = package_json_1.version;
                     app = package_json_1.name;
                     client = new npm_registry_client_1.default({ log: { verbose: noop, info: noop, http: noop } });
@@ -70,5 +94,4 @@ function checkForUpdate() {
         });
     });
 }
-exports.checkForUpdate = checkForUpdate;
 //# sourceMappingURL=checkForUpdate.js.map

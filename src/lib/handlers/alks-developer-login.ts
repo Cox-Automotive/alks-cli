@@ -6,7 +6,6 @@ import { promptForPassword } from '../promptForPassword';
 import { promptForUserId } from '../promptForUserId';
 import { setPassword } from '../state/password';
 import { setUserId } from '../state/userId';
-import { trackActivity } from '../trackActivity';
 
 export async function handleAlksDeveloperLogin(
   _options: commander.OptionValues
@@ -20,9 +19,7 @@ export async function handleAlksDeveloperLogin(
     log('saving password');
     await setPassword(password);
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
     errorAndExit((err as Error).message, err as Error);
   }

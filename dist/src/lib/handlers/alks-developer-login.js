@@ -9,14 +9,13 @@ var promptForPassword_1 = require("../promptForPassword");
 var promptForUserId_1 = require("../promptForUserId");
 var password_1 = require("../state/password");
 var userId_1 = require("../state/userId");
-var trackActivity_1 = require("../trackActivity");
 function handleAlksDeveloperLogin(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var userId, password, err_1;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
+                    _a.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, promptForUserId_1.promptForUserId()];
                 case 1:
                     userId = _a.sent();
@@ -31,19 +30,15 @@ function handleAlksDeveloperLogin(_options) {
                     return [4 /*yield*/, password_1.setPassword(password)];
                 case 4:
                     _a.sent();
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 5:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 7];
                 case 6:
-                    _a.sent();
-                    return [3 /*break*/, 8];
-                case 7:
                     err_1 = _a.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });

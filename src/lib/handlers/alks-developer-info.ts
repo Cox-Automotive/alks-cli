@@ -3,7 +3,6 @@ import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 import Table from 'cli-table3';
 import { isEmpty } from 'underscore';
 import { Developer } from '../../model/developer';
@@ -55,10 +54,8 @@ export async function handleAlksDeveloperInfo(
     console.error(clc.white.underline.bold('\nDeveloper Configuration'));
     console.log(clc.white(table.toString()));
 
-    log('checking for update');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

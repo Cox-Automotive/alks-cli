@@ -12,7 +12,6 @@ var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var promptForPassword_1 = require("../promptForPassword");
 var promptForServer_1 = require("../promptForServer");
 var promptForUserId_1 = require("../promptForUserId");
-var trackActivity_1 = require("../trackActivity");
 var server_1 = require("../state/server");
 var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
@@ -34,7 +33,7 @@ function handleAlksDeveloperConfigure(options) {
         return tslib_1.__generator(this, function (_s) {
             switch (_s.label) {
                 case 0:
-                    _s.trys.push([0, 42, , 43]);
+                    _s.trys.push([0, 41, , 42]);
                     _e = server_1.setServer;
                     if (!((_a = options.server) !== null && _a !== void 0)) return [3 /*break*/, 1];
                     _f = _a;
@@ -166,19 +165,15 @@ function handleAlksDeveloperConfigure(options) {
                         })];
                 case 39:
                     _s.sent();
-                    log_1.log('checking for update');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 40:
                     _s.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 42];
                 case 41:
-                    _s.sent();
-                    return [3 /*break*/, 43];
-                case 42:
                     err_1 = _s.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 43];
-                case 43: return [2 /*return*/];
+                    return [3 /*break*/, 42];
+                case 42: return [2 /*return*/];
             }
         });
     });

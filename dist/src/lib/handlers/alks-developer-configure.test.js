@@ -10,7 +10,6 @@ var confirm_1 = require("../confirm");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var promptForOutputFormat_1 = require("../promptForOutputFormat");
 var checkForUpdate_1 = require("../checkForUpdate");
-var trackActivity_1 = require("../trackActivity");
 var server_1 = require("../state/server");
 var userId_1 = require("../state/userId");
 var alksAccount_1 = require("../state/alksAccount");
@@ -35,7 +34,6 @@ jest.mock('../confirm');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../promptForOutputFormat');
 jest.mock('../checkForUpdate');
-jest.mock('../trackActivity');
 jest.mock('../promptForAuthType', function () { return ({
     __esModule: true,
     REFRESH_TOKEN_AUTH_CHOICE: 'refresh-token',
@@ -76,7 +74,6 @@ describe('handleAlksDeveloperConfigure', function () {
         shouldSaveOutputFormat: false,
         tabtabInstallFails: false,
         checkForUpdateFails: false,
-        trackActivityFails: false,
     };
     var testCases = [
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the server url fails', shouldErr: true, promptForServerFails: true }),
@@ -90,7 +87,6 @@ describe('handleAlksDeveloperConfigure', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when prompting for the output format fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', promptForOutputFormatFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when installing tab completion fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true, tabtabInstallFails: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when checkForUpdate fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', checkForUpdateFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when tracking activity fails', shouldErr: true, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', trackActivityFails: true, shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds', shouldErr: false, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', savePassword: true, alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveServer: true, shouldSaveUserId: true, shouldSetPassword: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when everything succeeds but the user declines saving password', shouldErr: false, server: 'https://alks.com/rest', userId: 'bobby', password: 'letmein', alksAccount: '012345678910/ALKSAdmin - awstest', alksRole: 'Admin', outputFormat: 'env', shouldSaveServer: true, shouldSaveUserId: true, shouldSaveAlksAccount: true, shouldSaveAlksRole: true, shouldSaveOutputFormat: true }),
     ];
@@ -200,14 +196,6 @@ describe('handleAlksDeveloperConfigure', function () {
                             checkForUpdate_1.checkForUpdate.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_a) {
                                     if (t.checkForUpdateFails) {
-                                        throw new Error();
-                                    }
-                                    return [2 /*return*/];
-                                });
-                            }); });
-                            trackActivity_1.trackActivity.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-                                return tslib_1.__generator(this, function (_a) {
-                                    if (t.trackActivityFails) {
                                         throw new Error();
                                     }
                                     return [2 /*return*/];

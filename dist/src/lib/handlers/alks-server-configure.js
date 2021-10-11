@@ -10,7 +10,6 @@ var getIamKey_1 = require("../getIamKey");
 var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
 var saveMetadata_1 = require("../saveMetadata");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksServerConfigure(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -28,7 +27,7 @@ function handleAlksServerConfigure(options) {
                     }
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 16, , 17]);
+                    _a.trys.push([1, 15, , 16]);
                     key = void 0;
                     _a.label = 2;
                 case 2:
@@ -67,19 +66,15 @@ function handleAlksServerConfigure(options) {
                     return [3 /*break*/, 13];
                 case 13:
                     console.error(cli_color_1.default.white('Metadata has been saved!'));
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 14:
                     _a.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 16];
                 case 15:
-                    _a.sent();
-                    return [3 /*break*/, 17];
-                case 16:
                     err_3 = _a.sent();
                     errorAndExit_1.errorAndExit(err_3.message, err_3);
-                    return [3 /*break*/, 17];
-                case 17: return [2 /*return*/];
+                    return [3 /*break*/, 16];
+                case 16: return [2 /*return*/];
             }
         });
     });

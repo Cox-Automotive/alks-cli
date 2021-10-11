@@ -6,7 +6,6 @@ import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
-import { trackActivity } from '../trackActivity';
 
 export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
   const outputVals = ['list', 'json'];
@@ -34,7 +33,7 @@ export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
     try {
       roleTypes = await alks.getAllAWSRoleTypes({});
     } catch (err) {
-      errorAndExit(err);
+      errorAndExit(err as Error);
     }
 
     log(
@@ -58,10 +57,8 @@ export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
       );
     }
 
-    log('checking for updates');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
-    errorAndExit(err.message, err);
+    errorAndExit((err as Error).message, err as Error);
   }
 }

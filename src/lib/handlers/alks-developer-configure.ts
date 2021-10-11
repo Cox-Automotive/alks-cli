@@ -9,7 +9,6 @@ import { promptForOutputFormat } from '../promptForOutputFormat';
 import { promptForPassword } from '../promptForPassword';
 import { promptForServer } from '../promptForServer';
 import { promptForUserId } from '../promptForUserId';
-import { trackActivity } from '../trackActivity';
 import { setServer } from '../state/server';
 import { setUserId } from '../state/userId';
 import { setAlksAccount } from '../state/alksAccount';
@@ -98,9 +97,7 @@ export async function handleAlksDeveloperConfigure(
       completer: 'alks',
     });
 
-    log('checking for update');
     await checkForUpdate();
-    await trackActivity();
   } catch (err) {
     errorAndExit(
       'Error configuring developer: ' + (err as Error).message,

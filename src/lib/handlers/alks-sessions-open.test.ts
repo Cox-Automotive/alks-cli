@@ -1,7 +1,6 @@
 import { errorAndExit } from '../errorAndExit';
 import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
-import { trackActivity } from '../trackActivity';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { getKeyOutput } from '../getKeyOutput';
 import { getIamKey } from '../getIamKey';
@@ -14,7 +13,6 @@ import { getOutputFormat } from '../state/outputFormat';
 
 jest.mock('../errorAndExit');
 jest.mock('../checkForUpdate');
-jest.mock('../trackActivity');
 jest.mock('../tryToExtractRole');
 jest.mock('../state/alksAccount');
 jest.mock('../state/alksRole');
@@ -36,7 +34,6 @@ describe('handleAlksSessionsOpen', () => {
     options: commander.OptionValues;
     shouldErr: boolean;
     checkForUpdateFails: boolean;
-    trackActivityFails: boolean;
     tryToExtractRoleFails: boolean;
     shouldTryToExtractRole: boolean;
     extractedRole: string;
@@ -77,7 +74,6 @@ describe('handleAlksSessionsOpen', () => {
     options: {} as commander.OptionValues,
     shouldErr: false,
     checkForUpdateFails: false,
-    trackActivityFails: false,
     tryToExtractRoleFails: false,
     shouldTryToExtractRole: false,
     extractedRole: '',
@@ -274,42 +270,6 @@ describe('handleAlksSessionsOpen', () => {
         force: undefined,
       },
       checkForUpdateFails: true,
-    },
-    {
-      ...defaultTestCase,
-      description: 'when trackActivity fails',
-      shouldErr: true,
-      options: {
-        account: '012345678910/ALKSAdmin - awstest',
-        role: 'Admin',
-        iam: true,
-      },
-      alksAccount: '444455556666/ALKSPowerUser - awsthing',
-      alksRole: 'PowerUser',
-      outputFormat: 'env',
-      shouldGetIamKey: true,
-      getIamKeyParams: {
-        alksAccount: '012345678910/ALKSAdmin - awstest',
-        alksRole: 'Admin',
-        newSession: undefined,
-        favorites: undefined,
-      },
-      key: {
-        alksAccount: '012345678910/ALKSAdmin - awstest',
-        alksRole: 'Admin',
-        isIAM: true,
-        expires: new Date(),
-        accessKey: 'abcd',
-        secretKey: 'efgh',
-        sessionToken: 'ijkl',
-      },
-      shouldGetKeyOutput: true,
-      getKeyOutputParams: {
-        format: 'env',
-        profile: undefined,
-        force: undefined,
-      },
-      trackActivityFails: true,
     },
     {
       ...defaultTestCase,
@@ -642,11 +602,6 @@ describe('handleAlksSessionsOpen', () => {
       beforeEach(async () => {
         (checkForUpdate as jest.Mock).mockImplementation(async () => {
           if (t.checkForUpdateFails) {
-            throw new Error();
-          }
-        });
-        (trackActivity as jest.Mock).mockImplementation(async () => {
-          if (t.trackActivityFails) {
             throw new Error();
           }
         });

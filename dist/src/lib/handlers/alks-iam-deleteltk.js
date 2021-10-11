@@ -10,7 +10,6 @@ var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
-var trackActivity_1 = require("../trackActivity");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 function handleAlksIamDeleteLtk(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -33,7 +32,7 @@ function handleAlksIamDeleteLtk(options) {
                     }
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 12, , 13]);
+                    _b.trys.push([1, 11, , 12]);
                     if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
                     return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             iamOnly: true,
@@ -66,19 +65,15 @@ function handleAlksIamDeleteLtk(options) {
                     return [3 /*break*/, 9];
                 case 9:
                     console.log(cli_color_1.default.white(['LTK deleted for IAM User: ', iamUsername].join('')));
-                    log_1.log('checking for updates');
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 10:
                     _b.sent();
-                    return [4 /*yield*/, trackActivity_1.trackActivity()];
+                    return [3 /*break*/, 12];
                 case 11:
-                    _b.sent();
-                    return [3 /*break*/, 13];
-                case 12:
                     err_2 = _b.sent();
                     errorAndExit_1.errorAndExit(err_2.message, err_2);
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 12];
+                case 12: return [2 /*return*/];
             }
         });
     });
