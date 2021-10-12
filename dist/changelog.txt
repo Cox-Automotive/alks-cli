@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a timeout bug when checking for updates via NPM
-* Removes old Google Analytics tracking logic
+* Fixes a spacing issue with the Docker output format
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
