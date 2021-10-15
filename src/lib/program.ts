@@ -238,6 +238,7 @@ developer
 developer
   .command('login2fa')
   .description('stores your alks refresh token')
+  .option('-t, --token <alksRefreshToken>', 'alks refresh token use')
   .action(handleAlksDeveloperLogin2fa);
 
 developer

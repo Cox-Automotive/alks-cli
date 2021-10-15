@@ -1,9 +1,9 @@
-★ Release Notes: 2021-10-12 ★
+★ Release Notes: 2021-10-15 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a spacing issue with the Docker output format
+* Added passing in refresh token when using the login2fa command
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
