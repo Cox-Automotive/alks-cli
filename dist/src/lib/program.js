@@ -138,6 +138,7 @@ developer
     .option('-r, --role <alksRole>', 'alks role to use as the default role')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
     .option('-u, --username <username>', 'your username')
+    .option('-s, --server <server>', 'alks server')
     .option('-A, --auth-type <authType>', 'automatically selects the auth type provided')
     .option('--credential-process <scriptPath>', 'the path to your credential_process script. Automatically sets the auth-type to credential-process')
     .action(alks_developer_configure_1.handleAlksDeveloperConfigure);
