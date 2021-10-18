@@ -28,6 +28,7 @@ import { setPassword } from '../state/password';
 import { CREDENTIAL_PROCESS_AUTH_CHOICE } from '../promptForAuthType';
 import { setCredentialProcess } from '../state/credentialProcess';
 import { promptForCredentialProcess } from '../promptForCredentialProcess';
+import { isUndefined } from 'underscore';
 
 export async function handleAlksDeveloperConfigure(
   options: commander.OptionValues
@@ -47,7 +48,12 @@ export async function handleAlksDeveloperConfigure(
 
     switch (authType) {
       case REFRESH_TOKEN_AUTH_CHOICE: {
-        await setToken(await promptForToken());
+        if (isUndefined(options.token)) {
+          await setToken(await promptForToken());
+        } else {
+          log('trying to set token provided by cli');
+          await setToken(options.token);
+        }
         break;
       }
       case PASSWORD_AUTH_CHOICE: {
