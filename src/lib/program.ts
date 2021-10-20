@@ -207,7 +207,7 @@ developer
   .option('-s, --server <server>', 'alks server')
   .option(
     '-A, --auth-type <authType>',
-    'automatically selects the auth type provided. If the auth type is refresh-token or password, the prompt can be skipped by piping in token/password via stdin'
+    'automatically selects the auth type provided'
   )
   .option(
     '--credential-process <scriptPath>',
@@ -233,16 +233,13 @@ developer
 
 developer
   .command('login')
-  .description(
-    'stores password. If a password is piped into this command via stdin, alks will skip the prompt and use it instead'
-  )
+  .description('stores password')
+  .option('-u, --username <username>', 'your username')
   .action(handleAlksDeveloperLogin);
 
 developer
   .command('login2fa')
-  .description(
-    'stores your alks refresh token. If a token is piped into this command via stdin, alks will skip the prompt and use it instead'
-  )
+  .description('stores your alks refresh token')
   .action(handleAlksDeveloperLogin2fa);
 
 developer
