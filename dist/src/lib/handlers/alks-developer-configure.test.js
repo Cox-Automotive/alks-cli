@@ -204,6 +204,7 @@ describe('handleAlksDeveloperConfigure', function () {
                             errorAndExit_1.errorAndExit.mockImplementation(function () {
                                 errorThrown = true;
                             });
+                            process.stdin.isTTY = true;
                             return [4 /*yield*/, alks_developer_configure_1.handleAlksDeveloperConfigure(t.options)];
                         case 1:
                             _a.sent();
