@@ -33,7 +33,7 @@ function handleAlksDeveloperConfigure(options) {
         return tslib_1.__generator(this, function (_s) {
             switch (_s.label) {
                 case 0:
-                    _s.trys.push([0, 41, , 42]);
+                    _s.trys.push([0, 42, , 43]);
                     _e = server_1.setServer;
                     if (!((_a = options.server) !== null && _a !== void 0)) return [3 /*break*/, 1];
                     _f = _a;
@@ -148,7 +148,7 @@ function handleAlksDeveloperConfigure(options) {
                 case 35:
                     log_1.log('Getting output formats');
                     _q = outputFormat_1.setOutputFormat;
-                    if (!((_d = options.format) !== null && _d !== void 0)) return [3 /*break*/, 36];
+                    if (!((_d = options.output) !== null && _d !== void 0)) return [3 /*break*/, 36];
                     _r = _d;
                     return [3 /*break*/, 38];
                 case 36: return [4 /*yield*/, promptForOutputFormat_1.promptForOutputFormat()];
@@ -159,21 +159,23 @@ function handleAlksDeveloperConfigure(options) {
                     _q.apply(void 0, [_r]);
                     // create developer
                     console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
+                    if (!process.stdin.isTTY) return [3 /*break*/, 40];
                     return [4 /*yield*/, tabtab_1.default.install({
                             name: 'alks',
                             completer: 'alks',
                         })];
                 case 39:
                     _s.sent();
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 40:
-                    _s.sent();
-                    return [3 /*break*/, 42];
+                    _s.label = 40;
+                case 40: return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
                 case 41:
+                    _s.sent();
+                    return [3 /*break*/, 43];
+                case 42:
                     err_1 = _s.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 42];
-                case 42: return [2 /*return*/];
+                    return [3 /*break*/, 43];
+                case 43: return [2 /*return*/];
             }
         });
     });

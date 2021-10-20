@@ -9,36 +9,43 @@ var promptForPassword_1 = require("../promptForPassword");
 var promptForUserId_1 = require("../promptForUserId");
 var password_1 = require("../state/password");
 var userId_1 = require("../state/userId");
-function handleAlksDeveloperLogin(_options) {
+function handleAlksDeveloperLogin(options) {
+    var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var userId, password, err_1;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var userId, _b, password, err_1;
+        return tslib_1.__generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _a.trys.push([0, 6, , 7]);
-                    return [4 /*yield*/, promptForUserId_1.promptForUserId()];
-                case 1:
-                    userId = _a.sent();
+                    _c.trys.push([0, 8, , 9]);
+                    if (!((_a = options.username) !== null && _a !== void 0)) return [3 /*break*/, 1];
+                    _b = _a;
+                    return [3 /*break*/, 3];
+                case 1: return [4 /*yield*/, promptForUserId_1.promptForUserId()];
+                case 2:
+                    _b = _c.sent();
+                    _c.label = 3;
+                case 3:
+                    userId = _b;
                     log_1.log('saving user ID');
                     return [4 /*yield*/, userId_1.setUserId(userId)];
-                case 2:
-                    _a.sent();
+                case 4:
+                    _c.sent();
                     return [4 /*yield*/, promptForPassword_1.promptForPassword()];
-                case 3:
-                    password = _a.sent();
+                case 5:
+                    password = _c.sent();
                     log_1.log('saving password');
                     return [4 /*yield*/, password_1.setPassword(password)];
-                case 4:
-                    _a.sent();
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 5:
-                    _a.sent();
-                    return [3 /*break*/, 7];
                 case 6:
-                    err_1 = _a.sent();
+                    _c.sent();
+                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                case 7:
+                    _c.sent();
+                    return [3 /*break*/, 9];
+                case 8:
+                    err_1 = _c.sent();
                     errorAndExit_1.errorAndExit(err_1.message, err_1);
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });
