@@ -2,10 +2,16 @@ import clc from 'cli-color';
 import open from 'open';
 import { getAlks, Props as AlksProps } from './getAlks';
 import { getPasswordFromPrompt } from './getPasswordFromPrompt';
+import { getSecretFromStdin } from './getSecretFromStdin';
 import { log } from './log';
 import { getServer } from './state/server';
 
 export async function promptForToken() {
+  const tokenFromStdin = await getSecretFromStdin();
+  if (tokenFromStdin) {
+    return tokenFromStdin;
+  }
+
   const server = await getServer();
   if (!server) {
     throw new Error(

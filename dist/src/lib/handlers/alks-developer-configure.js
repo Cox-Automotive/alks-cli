@@ -26,7 +26,6 @@ var password_1 = require("../state/password");
 var promptForAuthType_2 = require("../promptForAuthType");
 var credentialProcess_1 = require("../state/credentialProcess");
 var promptForCredentialProcess_1 = require("../promptForCredentialProcess");
-var underscore_1 = require("underscore");
 function handleAlksDeveloperConfigure(options) {
     var _a, _b, _c, _d;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -34,7 +33,7 @@ function handleAlksDeveloperConfigure(options) {
         return tslib_1.__generator(this, function (_s) {
             switch (_s.label) {
                 case 0:
-                    _s.trys.push([0, 44, , 45]);
+                    _s.trys.push([0, 41, , 42]);
                     _e = server_1.setServer;
                     if (!((_a = options.server) !== null && _a !== void 0)) return [3 /*break*/, 1];
                     _f = _a;
@@ -73,98 +72,90 @@ function handleAlksDeveloperConfigure(options) {
                     _k = authType;
                     switch (_k) {
                         case promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE: return [3 /*break*/, 12];
-                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 18];
-                        case promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE: return [3 /*break*/, 23];
-                        case promptForAuthType_1.ALWAYS_ASK_AUTH_CHOICE: return [3 /*break*/, 28];
+                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 15];
+                        case promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE: return [3 /*break*/, 20];
+                        case promptForAuthType_1.ALWAYS_ASK_AUTH_CHOICE: return [3 /*break*/, 25];
                     }
-                    return [3 /*break*/, 29];
+                    return [3 /*break*/, 26];
                 case 12:
-                    if (!underscore_1.isUndefined(options.token)) return [3 /*break*/, 15];
                     _l = token_1.setToken;
                     return [4 /*yield*/, promptForToken_1.promptForToken()];
                 case 13: return [4 /*yield*/, _l.apply(void 0, [_s.sent()])];
                 case 14:
                     _s.sent();
-                    return [3 /*break*/, 17];
-                case 15:
-                    log_1.log('trying to set token provided by cli');
-                    return [4 /*yield*/, token_1.setToken(options.token)];
+                    return [3 /*break*/, 27];
+                case 15: return [4 /*yield*/, promptForPassword_1.promptForPassword()];
                 case 16:
-                    _s.sent();
-                    _s.label = 17;
-                case 17: return [3 /*break*/, 30];
-                case 18: return [4 /*yield*/, promptForPassword_1.promptForPassword()];
-                case 19:
                     password = _s.sent();
                     return [4 /*yield*/, confirm_1.confirm('Save password')];
-                case 20:
+                case 17:
                     savePasswordAnswer = _s.sent();
-                    if (!savePasswordAnswer) return [3 /*break*/, 22];
+                    if (!savePasswordAnswer) return [3 /*break*/, 19];
                     return [4 /*yield*/, password_1.setPassword(password)];
-                case 21:
+                case 18:
                     _s.sent();
-                    _s.label = 22;
-                case 22: return [3 /*break*/, 30];
-                case 23:
+                    _s.label = 19;
+                case 19: return [3 /*break*/, 27];
+                case 20:
                     _m = credentialProcess_1.setCredentialProcess;
-                    if (!((_c = options.credentialProcess) !== null && _c !== void 0)) return [3 /*break*/, 24];
+                    if (!((_c = options.credentialProcess) !== null && _c !== void 0)) return [3 /*break*/, 21];
                     _o = _c;
-                    return [3 /*break*/, 26];
-                case 24: return [4 /*yield*/, promptForCredentialProcess_1.promptForCredentialProcess()];
-                case 25:
+                    return [3 /*break*/, 23];
+                case 21: return [4 /*yield*/, promptForCredentialProcess_1.promptForCredentialProcess()];
+                case 22:
                     _o = (_s.sent());
-                    _s.label = 26;
-                case 26: return [4 /*yield*/, _m.apply(void 0, [_o])];
-                case 27:
+                    _s.label = 23;
+                case 23: return [4 /*yield*/, _m.apply(void 0, [_o])];
+                case 24:
                     _s.sent();
-                    return [3 /*break*/, 30];
-                case 28:
+                    return [3 /*break*/, 27];
+                case 25:
                     {
                         // do nothing
-                        return [3 /*break*/, 30];
+                        return [3 /*break*/, 27];
                     }
-                    _s.label = 29;
-                case 29:
+                    _s.label = 26;
+                case 26:
                     {
                         throw new Error('Invalid auth type selected');
                     }
-                    _s.label = 30;
-                case 30:
-                    if (!(!options.account || !options.role)) return [3 /*break*/, 34];
+                    _s.label = 27;
+                case 27:
+                    if (!(!options.account || !options.role)) return [3 /*break*/, 31];
                     log_1.log('Getting ALKS accounts');
                     return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             prompt: 'Please select your default ALKS account/role',
                         })];
-                case 31:
+                case 28:
                     _p = _s.sent(), alksAccount = _p.alksAccount, alksRole = _p.alksRole;
                     return [4 /*yield*/, alksAccount_1.setAlksAccount(alksAccount)];
-                case 32:
+                case 29:
                     _s.sent();
                     return [4 /*yield*/, alksRole_1.setAlksRole(alksRole)];
-                case 33:
+                case 30:
                     _s.sent();
-                    return [3 /*break*/, 38];
-                case 34: return [4 /*yield*/, validateAlksAccount_1.validateAlksAccount(options.account, options.role)];
-                case 35:
+                    return [3 /*break*/, 35];
+                case 31: return [4 /*yield*/, validateAlksAccount_1.validateAlksAccount(options.account, options.role)];
+                case 32:
                     _s.sent();
                     return [4 /*yield*/, alksAccount_1.setAlksAccount(options.account)];
-                case 36:
+                case 33:
                     _s.sent();
                     return [4 /*yield*/, alksRole_1.setAlksRole(options.role)];
-                case 37:
+                case 34:
                     _s.sent();
-                    _s.label = 38;
-                case 38:
+                    _s.label = 35;
+                case 35:
                     log_1.log('Getting output formats');
                     _q = outputFormat_1.setOutputFormat;
-                    if (!((_d = options.format) !== null && _d !== void 0)) return [3 /*break*/, 39];
+                    if (!((_d = options.format) !== null && _d !== void 0)) return [3 /*break*/, 36];
                     _r = _d;
-                    return [3 /*break*/, 41];
-                case 39: return [4 /*yield*/, promptForOutputFormat_1.promptForOutputFormat()];
-                case 40:
+                    return [3 /*break*/, 38];
+                case 36: return [4 /*yield*/, promptForOutputFormat_1.promptForOutputFormat()];
+                case 37:
                     _r = (_s.sent());
-                    _s.label = 41;
-                case 41:
+                    _s.label = 38;
+                case 38:
                     _q.apply(void 0, [_r]);
                     // create developer
                     console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
@@ -172,17 +163,17 @@ function handleAlksDeveloperConfigure(options) {
                             name: 'alks',
                             completer: 'alks',
                         })];
-                case 42:
+                case 39:
                     _s.sent();
                     return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 43:
+                case 40:
                     _s.sent();
-                    return [3 /*break*/, 45];
-                case 44:
+                    return [3 /*break*/, 42];
+                case 41:
                     err_1 = _s.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 45];
-                case 45: return [2 /*return*/];
+                    return [3 /*break*/, 42];
+                case 42: return [2 /*return*/];
             }
         });
     });

@@ -139,8 +139,7 @@ developer
     .option('-o, --output <format>', 'output format (text, json)', 'text')
     .option('-u, --username <username>', 'your username')
     .option('-s, --server <server>', 'alks server')
-    .option('-t, --token <token>', 'alks refresh token use')
-    .option('-A, --auth-type <authType>', 'automatically selects the auth type provided')
+    .option('-A, --auth-type <authType>', 'automatically selects the auth type provided. If the auth type is refresh-token or password, the prompt can be skipped by piping in token/password via stdin')
     .option('--credential-process <scriptPath>', 'the path to your credential_process script. Automatically sets the auth-type to credential-process')
     .action(alks_developer_configure_1.handleAlksDeveloperConfigure);
 developer
@@ -158,12 +157,11 @@ developer
     .action(alks_developer_info_1.handleAlksDeveloperInfo);
 developer
     .command('login')
-    .description('stores password')
+    .description('stores password. If a password is piped into this command via stdin, alks will skip the prompt and use it instead')
     .action(alks_developer_login_1.handleAlksDeveloperLogin);
 developer
     .command('login2fa')
-    .description('stores your alks refresh token')
-    .option('-t, --token <token>', 'alks refresh token use')
+    .description('stores your alks refresh token. If a token is piped into this command via stdin, alks will skip the prompt and use it instead')
     .action(alks_developer_login2fa_1.handleAlksDeveloperLogin2fa);
 developer
     .command('logout')

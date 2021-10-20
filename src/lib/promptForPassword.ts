@@ -1,10 +1,15 @@
 import { getPasswordFromPrompt } from './getPasswordFromPrompt';
+import { getSecretFromStdin } from './getSecretFromStdin';
 import { getPassword, cachePassword } from './state/password';
 
 export async function promptForPassword(): Promise<string> {
-  const password = await getPassword();
+  let answer = await getSecretFromStdin();
 
-  const answer = await getPasswordFromPrompt('Network Password', password);
+  // Only prompt if no password was provided via stdin
+  if (!answer) {
+    const password = await getPassword();
+    answer = await getPasswordFromPrompt('Network Password', password);
+  }
 
   cachePassword(answer);
 
