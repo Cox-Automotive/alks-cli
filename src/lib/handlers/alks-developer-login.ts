@@ -8,10 +8,10 @@ import { setPassword } from '../state/password';
 import { setUserId } from '../state/userId';
 
 export async function handleAlksDeveloperLogin(
-  _options: commander.OptionValues
+  options: commander.OptionValues
 ) {
   try {
-    const userId = await promptForUserId();
+    const userId = options.username ?? (await promptForUserId());
     log('saving user ID');
     await setUserId(userId);
 

@@ -22,7 +22,7 @@ function handleAlksDeveloperLogin(options) {
                     return [3 /*break*/, 3];
                 case 1: return [4 /*yield*/, promptForUserId_1.promptForUserId()];
                 case 2:
-                    _b = _c.sent();
+                    _b = (_c.sent());
                     _c.label = 3;
                 case 3:
                     userId = _b;
