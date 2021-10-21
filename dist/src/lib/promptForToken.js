@@ -13,7 +13,9 @@ function promptForToken() {
         var server, url, err_1, refreshToken, alks, err_2;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, server_1.getServer()];
+                case 0:
+                    if (!process.stdin.isTTY) return [3 /*break*/, 6];
+                    return [4 /*yield*/, server_1.getServer()];
                 case 1:
                     server = _a.sent();
                     if (!server) {
@@ -43,27 +45,28 @@ function promptForToken() {
                     return [3 /*break*/, 5];
                 case 5:
                     console.error('Please copy your refresh token from ALKS and paste below..');
-                    return [4 /*yield*/, getPasswordFromPrompt_1.getPasswordFromPrompt('Refresh Token')];
-                case 6:
+                    _a.label = 6;
+                case 6: return [4 /*yield*/, getPasswordFromPrompt_1.getPasswordFromPrompt('Refresh Token')];
+                case 7:
                     refreshToken = _a.sent();
                     log_1.log('exchanging refresh token for access token');
                     return [4 /*yield*/, getAlks_1.getAlks({})];
-                case 7:
-                    alks = _a.sent();
-                    _a.label = 8;
                 case 8:
-                    _a.trys.push([8, 10, , 11]);
+                    alks = _a.sent();
+                    _a.label = 9;
+                case 9:
+                    _a.trys.push([9, 11, , 12]);
                     return [4 /*yield*/, alks.getAccessToken({
                             refreshToken: refreshToken,
                         })];
-                case 9:
-                    _a.sent();
-                    return [3 /*break*/, 11];
                 case 10:
+                    _a.sent();
+                    return [3 /*break*/, 12];
+                case 11:
                     err_2 = _a.sent();
                     err_2.message = 'Error validating refresh token. ' + err_2.message;
                     throw err_2;
-                case 11:
+                case 12:
                     console.error(cli_color_1.default.white('Refresh token validated!'));
                     return [2 /*return*/, refreshToken];
             }

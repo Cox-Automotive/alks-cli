@@ -365,6 +365,7 @@ describe('handleAlksDeveloperConfigure', () => {
           errorThrown = true;
         });
 
+        process.stdin.isTTY = true;
         await handleAlksDeveloperConfigure(t.options);
       });
 

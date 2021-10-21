@@ -87,15 +87,17 @@ export async function handleAlksDeveloperConfigure(
     }
 
     log('Getting output formats');
-    setOutputFormat(options.format ?? (await promptForOutputFormat()));
+    setOutputFormat(options.output ?? (await promptForOutputFormat()));
 
     // create developer
     console.error(clc.white('Your developer configuration has been updated.'));
 
-    await tabtab.install({
-      name: 'alks',
-      completer: 'alks',
-    });
+    if (process.stdin.isTTY) {
+      await tabtab.install({
+        name: 'alks',
+        completer: 'alks',
+      });
+    }
 
     await checkForUpdate();
   } catch (err) {
