@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Added passing in refresh token when using the login2fa command
+* Added --non-interactive flag to alks-developer-configure for skipping prompts for any field not provided via cli args
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
