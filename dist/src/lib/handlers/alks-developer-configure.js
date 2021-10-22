@@ -34,6 +34,9 @@ function handleAlksDeveloperConfigure(options) {
             switch (_s.label) {
                 case 0:
                     _s.trys.push([0, 45, , 46]);
+                    if (options.nonInteractive) {
+                        console.log('Warning: configuring in non-interactive mode may leave the alks cli only partially configured. Running this command in interactive mode may still be needed to fully configure this tool');
+                    }
                     shouldPrompt = !options.nonInteractive;
                     if (!(options.server || shouldPrompt)) return [3 /*break*/, 5];
                     _e = server_1.setServer;

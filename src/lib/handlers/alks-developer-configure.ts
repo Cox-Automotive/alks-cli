@@ -33,6 +33,12 @@ export async function handleAlksDeveloperConfigure(
   options: commander.OptionValues
 ) {
   try {
+    if (options.nonInteractive) {
+      console.log(
+        'Warning: configuring in non-interactive mode may leave the alks cli only partially configured. Running this command in interactive mode may still be needed to fully configure this tool'
+      );
+    }
+
     const shouldPrompt = !options.nonInteractive;
     if (options.server || shouldPrompt) {
       await setServer(options.server ?? (await promptForServer()));
