@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Added --non-interactive flag to alks-developer-configure for skipping prompts for any field not provided via cli args
+* Fixes a bug with storing/retrieving your network password from the OS keychain. This may cause you to have to enter it in again
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  

@@ -6,7 +6,7 @@ var getKeytar_1 = require("./getKeytar");
 var log_1 = require("./log");
 var credentials_1 = require("./state/credentials");
 var SERVICE = 'alkscli';
-var ALKS_USERID = 'alksuid';
+var ALKS_PASSWORD = 'alkspassword';
 function getPasswordFromKeystore() {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
@@ -18,7 +18,7 @@ function getPasswordFromKeystore() {
                     return [4 /*yield*/, getKeytar_1.getKeytar()];
                 case 1:
                     keytar = _c.sent();
-                    return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_USERID)];
+                    return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_PASSWORD)];
                 case 2: return [2 /*return*/, (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined];
                 case 3:
                     e_1 = _c.sent();

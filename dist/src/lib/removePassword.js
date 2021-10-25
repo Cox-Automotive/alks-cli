@@ -5,7 +5,7 @@ var tslib_1 = require("tslib");
 var log_1 = require("./log");
 var getKeytar_1 = require("./getKeytar");
 var SERVICE = 'alkscli';
-var ALKS_USERID = 'alksuid';
+var ALKS_PASSWORD = 'alkspassword';
 function removePassword() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var keytar;
@@ -16,7 +16,7 @@ function removePassword() {
                     return [4 /*yield*/, getKeytar_1.getKeytar()];
                 case 1:
                     keytar = _a.sent();
-                    keytar.deletePassword(SERVICE, ALKS_USERID);
+                    keytar.deletePassword(SERVICE, ALKS_PASSWORD);
                     return [2 /*return*/];
             }
         });
