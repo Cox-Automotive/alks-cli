@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
-RUN apt update && \
-    apt install -y libgnome-keyring-dev libsecret-1-dev curl
+RUN DEBIAN_FRONTEND=noninteractive apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y libsecret-1-dev curl
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o /usr/local/bin/n && chmod +x /usr/local/bin/n
 RUN n lts
 RUN apt install -y gnome-keyring dbus-x11

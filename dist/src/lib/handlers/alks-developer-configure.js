@@ -29,11 +29,16 @@ var promptForCredentialProcess_1 = require("../promptForCredentialProcess");
 function handleAlksDeveloperConfigure(options) {
     var _a, _b, _c, _d;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var _e, _f, _g, _h, authTypeFlag, authType, _j, _k, _l, password, savePasswordAnswer, _m, _o, _p, alksAccount, alksRole, _q, _r, err_1;
+        var shouldPrompt, _e, _f, _g, _h, authTypeFlag, authType, _j, _k, _l, password, savePasswordAnswer, _m, _o, _p, alksAccount, alksRole, _q, _r, err_1;
         return tslib_1.__generator(this, function (_s) {
             switch (_s.label) {
                 case 0:
-                    _s.trys.push([0, 42, , 43]);
+                    _s.trys.push([0, 45, , 46]);
+                    if (options.nonInteractive) {
+                        console.log('Warning: configuring in non-interactive mode may leave the alks cli only partially configured. Running this command in interactive mode may still be needed to fully configure this tool');
+                    }
+                    shouldPrompt = !options.nonInteractive;
+                    if (!(options.server || shouldPrompt)) return [3 /*break*/, 5];
                     _e = server_1.setServer;
                     if (!((_a = options.server) !== null && _a !== void 0)) return [3 /*break*/, 1];
                     _f = _a;
@@ -45,137 +50,147 @@ function handleAlksDeveloperConfigure(options) {
                 case 3: return [4 /*yield*/, _e.apply(void 0, [_f])];
                 case 4:
                     _s.sent();
+                    _s.label = 5;
+                case 5:
+                    if (!(options.username || shouldPrompt)) return [3 /*break*/, 10];
                     _g = userId_1.setUserId;
-                    if (!((_b = options.username) !== null && _b !== void 0)) return [3 /*break*/, 5];
+                    if (!((_b = options.username) !== null && _b !== void 0)) return [3 /*break*/, 6];
                     _h = _b;
-                    return [3 /*break*/, 7];
-                case 5: return [4 /*yield*/, promptForUserId_1.promptForUserId()];
-                case 6:
+                    return [3 /*break*/, 8];
+                case 6: return [4 /*yield*/, promptForUserId_1.promptForUserId()];
+                case 7:
                     _h = (_s.sent());
-                    _s.label = 7;
-                case 7: return [4 /*yield*/, _g.apply(void 0, [_h])];
-                case 8:
+                    _s.label = 8;
+                case 8: return [4 /*yield*/, _g.apply(void 0, [_h])];
+                case 9:
                     _s.sent();
+                    _s.label = 10;
+                case 10:
                     authTypeFlag = options.authType;
                     if (options.credentialProcess) {
                         authTypeFlag = promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE;
                     }
-                    if (!(authTypeFlag !== null && authTypeFlag !== void 0)) return [3 /*break*/, 9];
+                    if (!(authTypeFlag || shouldPrompt)) return [3 /*break*/, 29];
+                    if (!(authTypeFlag !== null && authTypeFlag !== void 0)) return [3 /*break*/, 11];
                     _j = authTypeFlag;
-                    return [3 /*break*/, 11];
-                case 9: return [4 /*yield*/, promptForAuthType_1.promptForAuthType()];
-                case 10:
+                    return [3 /*break*/, 13];
+                case 11: return [4 /*yield*/, promptForAuthType_1.promptForAuthType()];
+                case 12:
                     _j = (_s.sent());
-                    _s.label = 11;
-                case 11:
+                    _s.label = 13;
+                case 13:
                     authType = _j;
                     _k = authType;
                     switch (_k) {
-                        case promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE: return [3 /*break*/, 12];
-                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 15];
-                        case promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE: return [3 /*break*/, 20];
-                        case promptForAuthType_1.ALWAYS_ASK_AUTH_CHOICE: return [3 /*break*/, 25];
+                        case promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE: return [3 /*break*/, 14];
+                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 17];
+                        case promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE: return [3 /*break*/, 22];
+                        case promptForAuthType_1.ALWAYS_ASK_AUTH_CHOICE: return [3 /*break*/, 27];
                     }
-                    return [3 /*break*/, 26];
-                case 12:
+                    return [3 /*break*/, 28];
+                case 14:
                     _l = token_1.setToken;
                     return [4 /*yield*/, promptForToken_1.promptForToken()];
-                case 13: return [4 /*yield*/, _l.apply(void 0, [_s.sent()])];
-                case 14:
-                    _s.sent();
-                    return [3 /*break*/, 27];
-                case 15: return [4 /*yield*/, promptForPassword_1.promptForPassword()];
+                case 15: return [4 /*yield*/, _l.apply(void 0, [_s.sent()])];
                 case 16:
+                    _s.sent();
+                    return [3 /*break*/, 29];
+                case 17: return [4 /*yield*/, promptForPassword_1.promptForPassword()];
+                case 18:
                     password = _s.sent();
                     return [4 /*yield*/, confirm_1.confirm('Save password')];
-                case 17:
+                case 19:
                     savePasswordAnswer = _s.sent();
-                    if (!savePasswordAnswer) return [3 /*break*/, 19];
+                    if (!savePasswordAnswer) return [3 /*break*/, 21];
                     return [4 /*yield*/, password_1.setPassword(password)];
-                case 18:
-                    _s.sent();
-                    _s.label = 19;
-                case 19: return [3 /*break*/, 27];
                 case 20:
-                    _m = credentialProcess_1.setCredentialProcess;
-                    if (!((_c = options.credentialProcess) !== null && _c !== void 0)) return [3 /*break*/, 21];
-                    _o = _c;
-                    return [3 /*break*/, 23];
-                case 21: return [4 /*yield*/, promptForCredentialProcess_1.promptForCredentialProcess()];
-                case 22:
-                    _o = (_s.sent());
-                    _s.label = 23;
-                case 23: return [4 /*yield*/, _m.apply(void 0, [_o])];
-                case 24:
                     _s.sent();
-                    return [3 /*break*/, 27];
-                case 25:
+                    _s.label = 21;
+                case 21: return [3 /*break*/, 29];
+                case 22:
+                    _m = credentialProcess_1.setCredentialProcess;
+                    if (!((_c = options.credentialProcess) !== null && _c !== void 0)) return [3 /*break*/, 23];
+                    _o = _c;
+                    return [3 /*break*/, 25];
+                case 23: return [4 /*yield*/, promptForCredentialProcess_1.promptForCredentialProcess()];
+                case 24:
+                    _o = (_s.sent());
+                    _s.label = 25;
+                case 25: return [4 /*yield*/, _m.apply(void 0, [_o])];
+                case 26:
+                    _s.sent();
+                    return [3 /*break*/, 29];
+                case 27:
                     {
                         // do nothing
-                        return [3 /*break*/, 27];
+                        return [3 /*break*/, 29];
                     }
-                    _s.label = 26;
-                case 26:
+                    _s.label = 28;
+                case 28:
                     {
                         throw new Error('Invalid auth type selected');
                     }
-                    _s.label = 27;
-                case 27:
-                    if (!(!options.account || !options.role)) return [3 /*break*/, 31];
+                    _s.label = 29;
+                case 29:
+                    if (!(options.account && options.role)) return [3 /*break*/, 33];
+                    return [4 /*yield*/, validateAlksAccount_1.validateAlksAccount(options.account, options.role)];
+                case 30:
+                    _s.sent();
+                    return [4 /*yield*/, alksAccount_1.setAlksAccount(options.account)];
+                case 31:
+                    _s.sent();
+                    return [4 /*yield*/, alksRole_1.setAlksRole(options.role)];
+                case 32:
+                    _s.sent();
+                    return [3 /*break*/, 37];
+                case 33:
+                    if (!shouldPrompt) return [3 /*break*/, 37];
                     log_1.log('Getting ALKS accounts');
                     return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
                             prompt: 'Please select your default ALKS account/role',
                         })];
-                case 28:
+                case 34:
                     _p = _s.sent(), alksAccount = _p.alksAccount, alksRole = _p.alksRole;
                     return [4 /*yield*/, alksAccount_1.setAlksAccount(alksAccount)];
-                case 29:
+                case 35:
                     _s.sent();
                     return [4 /*yield*/, alksRole_1.setAlksRole(alksRole)];
-                case 30:
+                case 36:
                     _s.sent();
-                    return [3 /*break*/, 35];
-                case 31: return [4 /*yield*/, validateAlksAccount_1.validateAlksAccount(options.account, options.role)];
-                case 32:
-                    _s.sent();
-                    return [4 /*yield*/, alksAccount_1.setAlksAccount(options.account)];
-                case 33:
-                    _s.sent();
-                    return [4 /*yield*/, alksRole_1.setAlksRole(options.role)];
-                case 34:
-                    _s.sent();
-                    _s.label = 35;
-                case 35:
+                    _s.label = 37;
+                case 37:
+                    if (!(options.output || shouldPrompt)) return [3 /*break*/, 41];
                     log_1.log('Getting output formats');
                     _q = outputFormat_1.setOutputFormat;
-                    if (!((_d = options.output) !== null && _d !== void 0)) return [3 /*break*/, 36];
+                    if (!((_d = options.output) !== null && _d !== void 0)) return [3 /*break*/, 38];
                     _r = _d;
-                    return [3 /*break*/, 38];
-                case 36: return [4 /*yield*/, promptForOutputFormat_1.promptForOutputFormat()];
-                case 37:
+                    return [3 /*break*/, 40];
+                case 38: return [4 /*yield*/, promptForOutputFormat_1.promptForOutputFormat()];
+                case 39:
                     _r = (_s.sent());
-                    _s.label = 38;
-                case 38:
+                    _s.label = 40;
+                case 40:
                     _q.apply(void 0, [_r]);
-                    // create developer
+                    _s.label = 41;
+                case 41:
                     console.error(cli_color_1.default.white('Your developer configuration has been updated.'));
-                    if (!process.stdin.isTTY) return [3 /*break*/, 40];
+                    if (!(process.stdin.isTTY && shouldPrompt)) return [3 /*break*/, 43];
                     return [4 /*yield*/, tabtab_1.default.install({
                             name: 'alks',
                             completer: 'alks',
                         })];
-                case 39:
-                    _s.sent();
-                    _s.label = 40;
-                case 40: return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
-                case 41:
-                    _s.sent();
-                    return [3 /*break*/, 43];
                 case 42:
+                    _s.sent();
+                    _s.label = 43;
+                case 43: return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                case 44:
+                    _s.sent();
+                    return [3 /*break*/, 46];
+                case 45:
                     err_1 = _s.sent();
                     errorAndExit_1.errorAndExit('Error configuring developer: ' + err_1.message, err_1);
-                    return [3 /*break*/, 43];
-                case 43: return [2 /*return*/];
+                    return [3 /*break*/, 46];
+                case 46: return [2 /*return*/];
             }
         });
     });

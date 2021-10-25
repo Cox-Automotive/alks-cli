@@ -213,6 +213,10 @@ developer
     '--credential-process <scriptPath>',
     'the path to your credential_process script. Automatically sets the auth-type to credential-process'
   )
+  .option(
+    '--non-interactive',
+    'do not prompt for anything. When this flag is passes, only fields passed via command-line arguments will be set'
+  )
   .action(handleAlksDeveloperConfigure);
 
 developer
