@@ -136,7 +136,7 @@ developer
     .description('configures developer')
     .option('-a, --account <alksAccount>', 'alks account to use as the default account')
     .option('-r, --role <alksRole>', 'alks role to use as the default role')
-    .option('-o, --output <format>', 'output format (text, json)', 'text')
+    .option('-o, --output <format>', 'output format')
     .option('-u, --username <username>', 'your username')
     .option('-s, --server <server>', 'alks server')
     .option('-A, --auth-type <authType>', 'automatically selects the auth type provided')

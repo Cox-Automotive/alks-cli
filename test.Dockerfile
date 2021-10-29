@@ -3,7 +3,7 @@ FROM ubuntu:latest
 RUN DEBIAN_FRONTEND=noninteractive apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y libsecret-1-dev curl
 RUN curl -L https://raw.githubusercontent.com/tj/n/master/bin/n -o /usr/local/bin/n && chmod +x /usr/local/bin/n
-RUN n lts
+RUN n v14
 RUN apt install -y gnome-keyring dbus-x11
 
 # Start the gnome keyring daemon when a bash session is initialized (requires passing --privileged when calling `docker run`)
