@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a bug where `alks developer configure` wouldn't prompt for a default output format
+* Add console.log
+* removes herobrine
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
