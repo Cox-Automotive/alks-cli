@@ -13,6 +13,7 @@ var updateDbFileLocation_1 = require("../lib/updateDbFileLocation");
 if (process.stdout.isTTY) {
     console.error(cli_color_1.default.whiteBright.bold('ALKS v%s'), package_json_1.version);
 }
+console.log('hello');
 (function main() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var err_1;

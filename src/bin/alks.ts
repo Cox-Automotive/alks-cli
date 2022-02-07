@@ -14,6 +14,8 @@ if (process.stdout.isTTY) {
   console.error(clc.whiteBright.bold('ALKS v%s'), version);
 }
 
+console.log('hello');
+
 (async function main() {
   try {
     await ensureConfigFolderExists();
