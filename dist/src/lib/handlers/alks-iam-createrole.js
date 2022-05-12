@@ -12,9 +12,10 @@ var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var parseKeyValuePairs_1 = require("../parseKeyValuePairs");
+var unpackTags_1 = require("../unpackTags");
 function handleAlksIamCreateRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, templateFields, auth, alks, role, err_1, err_2;
+        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, tags, templateFields, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -28,6 +29,7 @@ function handleAlksIamCreateRole(options) {
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFavorites = options.favorites || false;
+                    tags = options.tags ? unpackTags_1.unpackTags(options.tags) : undefined;
                     templateFields = options.templateFields
                         ? parseKeyValuePairs_1.parseKeyValuePairs(options.templateFields)
                         : undefined;
