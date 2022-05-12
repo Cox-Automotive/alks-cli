@@ -13,14 +13,14 @@ function getKeys(auth, isIAM) {
         var keys, now, enc, db;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getKeysCollection_1.getKeysCollection()];
+                case 0: return [4 /*yield*/, (0, getKeysCollection_1.getKeysCollection)()];
                 case 1:
                     keys = _a.sent();
-                    now = moment_1.default();
-                    enc = isTokenAuth_1.isTokenAuth(auth) ? auth.token : auth.password;
+                    now = (0, moment_1.default)();
+                    enc = (0, isTokenAuth_1.isTokenAuth)(auth) ? auth.token : auth.password;
                     // first delete any expired keys
                     keys.removeWhere({ expires: { $lte: now.toDate() } });
-                    return [4 /*yield*/, db_1.getDb()];
+                    return [4 /*yield*/, (0, db_1.getDb)()];
                 case 2:
                     db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {
@@ -37,14 +37,14 @@ function getKeys(auth, isIAM) {
                                     .simplesort('expires')
                                     .data();
                                 var dataOut = [];
-                                underscore_1.each(data, function (keydata) {
+                                (0, underscore_1.each)(data, function (keydata) {
                                     // try catch here since we upgraded encryption and previously encrypted sessions will fail to decrypt
                                     try {
-                                        keydata.accessKey = decrypt_1.decrypt(keydata.accessKey, enc);
-                                        keydata.secretKey = decrypt_1.decrypt(keydata.secretKey, enc);
-                                        keydata.sessionToken = decrypt_1.decrypt(keydata.sessionToken, enc);
-                                        keydata.alksAccount = decrypt_1.decrypt(keydata.alksAccount, enc);
-                                        keydata.alksRole = decrypt_1.decrypt(keydata.alksRole, enc);
+                                        keydata.accessKey = (0, decrypt_1.decrypt)(keydata.accessKey, enc);
+                                        keydata.secretKey = (0, decrypt_1.decrypt)(keydata.secretKey, enc);
+                                        keydata.sessionToken = (0, decrypt_1.decrypt)(keydata.sessionToken, enc);
+                                        keydata.alksAccount = (0, decrypt_1.decrypt)(keydata.alksAccount, enc);
+                                        keydata.alksRole = (0, decrypt_1.decrypt)(keydata.alksRole, enc);
                                         keydata.isIAM = isIAM;
                                         dataOut.push(keydata);
                                     }

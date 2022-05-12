@@ -10,8 +10,8 @@ function getMetadata() {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('retreiving metadata');
-                    return [4 /*yield*/, getCollection_1.getCollection('metadata')];
+                    (0, log_1.log)('retreiving metadata');
+                    return [4 /*yield*/, (0, getCollection_1.getCollection)('metadata')];
                 case 1:
                     md = _a.sent();
                     data = md.chain().data()[0];

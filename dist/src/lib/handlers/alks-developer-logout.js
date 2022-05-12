@@ -14,25 +14,25 @@ function handleAlksDeveloperLogout(_options) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, removePassword_1.removePassword()];
+                    return [4 /*yield*/, (0, removePassword_1.removePassword)()];
                 case 1:
                     _a.sent();
                     console.error(cli_color_1.default.white('Password removed!'));
                     return [3 /*break*/, 3];
                 case 2:
                     e_1 = _a.sent();
-                    log_1.log(e_1.message);
+                    (0, log_1.log)(e_1.message);
                     console.error(cli_color_1.default.red.bold('Error removing password!'));
                     return [3 /*break*/, 3];
                 case 3:
                     _a.trys.push([3, 5, , 6]);
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 4:
                     _a.sent();
                     return [3 /*break*/, 6];
                 case 5:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

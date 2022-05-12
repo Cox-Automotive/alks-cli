@@ -15,19 +15,19 @@ function getUserId() {
                 case 0:
                     userIdOption = program_1.default.opts().userid;
                     if (userIdOption) {
-                        log_1.log('using userid from CLI arg');
+                        (0, log_1.log)('using userid from CLI arg');
                         return [2 /*return*/, userIdOption];
                     }
                     userIdFromEnv = process.env[USER_ID_ENV_VAR_NAME];
-                    if (!underscore_1.isEmpty(userIdFromEnv)) {
-                        log_1.log('using userid from environment variable');
+                    if (!(0, underscore_1.isEmpty)(userIdFromEnv)) {
+                        (0, log_1.log)('using userid from environment variable');
                         return [2 /*return*/, userIdFromEnv];
                     }
-                    return [4 /*yield*/, developer_1.getDeveloper()];
+                    return [4 /*yield*/, (0, developer_1.getDeveloper)()];
                 case 1:
                     developer = _a.sent();
                     if (developer.userid) {
-                        log_1.log('using stored userid');
+                        (0, log_1.log)('using stored userid');
                         return [2 /*return*/, developer.userid];
                     }
                     return [2 /*return*/, undefined];
@@ -40,7 +40,7 @@ function setUserId(userId) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, developer_1.updateDeveloper({ userid: userId })];
+                case 0: return [4 /*yield*/, (0, developer_1.updateDeveloper)({ userid: userId })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];

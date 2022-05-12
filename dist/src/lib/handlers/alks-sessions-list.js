@@ -20,22 +20,22 @@ function handleAlksSessionsList(_options) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 6, , 7]);
-                    return [4 /*yield*/, ensureConfigured_1.ensureConfigured()];
+                    return [4 /*yield*/, (0, ensureConfigured_1.ensureConfigured)()];
                 case 1:
                     _a.sent();
-                    log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth()];
+                    (0, log_1.log)('getting auth');
+                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 2:
                     auth = _a.sent();
-                    log_1.log('getting existing sesions');
-                    return [4 /*yield*/, getKeys_1.getKeys(auth, false)];
+                    (0, log_1.log)('getting existing sesions');
+                    return [4 /*yield*/, (0, getKeys_1.getKeys)(auth, false)];
                 case 3:
                     nonIamKeys = _a.sent();
-                    log_1.log('getting existing iam sesions');
-                    return [4 /*yield*/, getKeys_1.getKeys(auth, true)];
+                    (0, log_1.log)('getting existing iam sesions');
+                    return [4 /*yield*/, (0, getKeys_1.getKeys)(auth, true)];
                 case 4:
                     iamKeys = _a.sent();
-                    foundKeys = tslib_1.__spreadArray(tslib_1.__spreadArray([], nonIamKeys), iamKeys);
+                    foundKeys = tslib_1.__spreadArray(tslib_1.__spreadArray([], nonIamKeys, true), iamKeys, true);
                     table_1 = new cli_table3_1.default({
                         head: [
                             cli_color_1.default.white.bold('Access Key'),
@@ -46,21 +46,21 @@ function handleAlksSessionsList(_options) {
                         ],
                         colWidths: [25, 25, 10, 25, 25],
                     });
-                    groupedKeys = underscore_1.groupBy(foundKeys, 'alksAccount');
-                    underscore_1.each(groupedKeys, function (keys, alksAccount) {
+                    groupedKeys = (0, underscore_1.groupBy)(foundKeys, 'alksAccount');
+                    (0, underscore_1.each)(groupedKeys, function (keys, alksAccount) {
                         table_1.push([
                             {
                                 colSpan: 4,
                                 content: cli_color_1.default.yellow.bold('ALKS Account: ' + alksAccount),
                             },
                         ]);
-                        underscore_1.each(keys, function (keydata) {
+                        (0, underscore_1.each)(keys, function (keydata) {
                             table_1.push([
-                                obfuscate_1.obfuscate(keydata.accessKey),
-                                obfuscate_1.obfuscate(keydata.secretKey),
+                                (0, obfuscate_1.obfuscate)(keydata.accessKey),
+                                (0, obfuscate_1.obfuscate)(keydata.secretKey),
                                 keydata.isIAM ? 'IAM' : 'Standard',
-                                moment_1.default(keydata.expires).calendar(),
-                                moment_1.default(keydata.meta.created).fromNow(),
+                                (0, moment_1.default)(keydata.expires).calendar(),
+                                (0, moment_1.default)(keydata.meta.created).fromNow(),
                             ]);
                         });
                     });
@@ -71,13 +71,13 @@ function handleAlksSessionsList(_options) {
                     }
                     console.error(cli_color_1.default.white.underline.bold('Active Sessions'));
                     console.log(cli_color_1.default.white(table_1.toString()));
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 5:
                     _a.sent();
                     return [3 /*break*/, 7];
                 case 6:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 7];
                 case 7: return [2 /*return*/];
             }

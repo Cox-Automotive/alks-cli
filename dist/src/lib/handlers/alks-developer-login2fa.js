@@ -14,11 +14,11 @@ function handleAlksDeveloperLogin2fa(_options) {
                 case 0:
                     _b.trys.push([0, 4, , 5]);
                     _a = token_1.setToken;
-                    return [4 /*yield*/, promptForToken_1.promptForToken()];
+                    return [4 /*yield*/, (0, promptForToken_1.promptForToken)()];
                 case 1: return [4 /*yield*/, _a.apply(void 0, [_b.sent()])];
                 case 2:
                     _b.sent();
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 3:
                     _b.sent();
                     setTimeout(function () {
@@ -27,7 +27,7 @@ function handleAlksDeveloperLogin2fa(_options) {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _b.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 5];
                 case 5: return [2 /*return*/];
             }

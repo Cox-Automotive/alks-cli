@@ -12,8 +12,8 @@ function removePassword() {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('removing password');
-                    return [4 /*yield*/, getKeytar_1.getKeytar()];
+                    (0, log_1.log)('removing password');
+                    return [4 /*yield*/, (0, getKeytar_1.getKeytar)()];
                 case 1:
                     keytar = _a.sent();
                     keytar.deletePassword(SERVICE, ALKS_PASSWORD);

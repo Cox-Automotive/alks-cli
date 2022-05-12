@@ -8,14 +8,14 @@ var ENCODING = 'hex';
 var ALGORITHM = 'aes-256-cbc';
 var PART_CHAR = ':';
 function decrypt(text, key) {
-    if (underscore_1.isEmpty(text)) {
+    if ((0, underscore_1.isEmpty)(text)) {
         return '';
     }
     var parts = text.split(PART_CHAR);
     // Warning: if parts is empty, parts.shift() returns undefined and breaks Buffer.from(...)
     var iv = Buffer.from(parts.shift(), ENCODING);
     var encd = Buffer.from(parts.join(PART_CHAR), ENCODING);
-    var decipher = crypto_1.createDecipheriv(ALGORITHM, Buffer.from(getSizedEncryptionKey_1.getSizedEncryptionKey(key)), iv);
+    var decipher = (0, crypto_1.createDecipheriv)(ALGORITHM, Buffer.from((0, getSizedEncryptionKey_1.getSizedEncryptionKey)(key)), iv);
     var decrypt = Buffer.concat([decipher.update(encd), decipher.final()]);
     return decrypt.toString();
 }

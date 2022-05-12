@@ -11,13 +11,13 @@ function saveFavorites(data) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('saving favorites');
-                    return [4 /*yield*/, getCollection_1.getCollection('favorites')];
+                    (0, log_1.log)('saving favorites');
+                    return [4 /*yield*/, (0, getCollection_1.getCollection)('favorites')];
                 case 1:
                     favorites = _a.sent();
                     favorites.removeDataOnly();
                     favorites.insert(data.accounts);
-                    return [4 /*yield*/, db_1.getDb()];
+                    return [4 /*yield*/, (0, db_1.getDb)()];
                 case 2:
                     db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {

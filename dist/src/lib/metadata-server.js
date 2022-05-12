@@ -6,7 +6,7 @@ var getSessionKey_js_1 = require("./getSessionKey.js");
 var express_list_endpoints_1 = tslib_1.__importDefault(require("express-list-endpoints"));
 var getMetadata_js_1 = require("./getMetadata.js");
 var getIamKey_js_1 = require("./getIamKey.js");
-var app = express_1.default();
+var app = (0, express_1.default)();
 function generateResponse(key) {
     return {
         Code: 'Success',
@@ -22,7 +22,7 @@ function generateResponse(key) {
     };
 }
 app.get('/', function (_req, resp) {
-    resp.json(express_list_endpoints_1.default(app));
+    resp.json((0, express_list_endpoints_1.default)(app));
 });
 app.get('/latest/dynamic/instance-identity/document', function (_req, resp) {
     resp.json({
@@ -39,16 +39,16 @@ app.get('/latest/meta-data/iam/security-credentials/*', function (_req, resp) { 
     var metadata, key, key;
     return tslib_1.__generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, getMetadata_js_1.getMetadata()];
+            case 0: return [4 /*yield*/, (0, getMetadata_js_1.getMetadata)()];
             case 1:
                 metadata = _a.sent();
                 if (!metadata.isIam) return [3 /*break*/, 3];
-                return [4 /*yield*/, getIamKey_js_1.getIamKey(metadata.alksAccount, metadata.alksRole, false, false)];
+                return [4 /*yield*/, (0, getIamKey_js_1.getIamKey)(metadata.alksAccount, metadata.alksRole, false, false)];
             case 2:
                 key = _a.sent();
                 resp.json(generateResponse(key));
                 return [3 /*break*/, 5];
-            case 3: return [4 /*yield*/, getSessionKey_js_1.getSessionKey(metadata.alksAccount, metadata.alksRole, false, false, false)];
+            case 3: return [4 /*yield*/, (0, getSessionKey_js_1.getSessionKey)(metadata.alksAccount, metadata.alksRole, false, false, false)];
             case 4:
                 key = _a.sent();
                 resp.json(generateResponse(key));

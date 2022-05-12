@@ -9,7 +9,7 @@ function getCallerInfo() {
     var parts = stackLine.trim().slice(3).split(' ');
     var info = tslib_1.__spreadArray([
         parts[0]
-    ], parts[parts.length - 1].replace(/\(|\)/g, '').split(':'));
+    ], parts[parts.length - 1].replace(/\(|\)/g, '').split(':'), true);
     var fileComponents = info[1].split('/');
     return {
         func: info[0],

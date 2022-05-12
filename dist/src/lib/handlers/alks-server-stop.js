@@ -10,7 +10,7 @@ function handleAlksServerStop(_options) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!isOsx_1.isOsx()) {
+                    if (!(0, isOsx_1.isOsx)()) {
                         console.error(cli_color_1.default.red('The metadata server is only supported on OSX.'));
                         process.exit(0);
                     }

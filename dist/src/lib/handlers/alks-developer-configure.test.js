@@ -205,7 +205,7 @@ describe('handleAlksDeveloperConfigure', function () {
                                 errorThrown = true;
                             });
                             process.stdin.isTTY = true;
-                            return [4 /*yield*/, alks_developer_configure_1.handleAlksDeveloperConfigure(t.options)];
+                            return [4 /*yield*/, (0, alks_developer_configure_1.handleAlksDeveloperConfigure)(t.options)];
                         case 1:
                             _a.sent();
                             return [2 /*return*/];

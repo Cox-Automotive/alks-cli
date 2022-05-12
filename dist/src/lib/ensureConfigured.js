@@ -10,17 +10,17 @@ function ensureConfigured() {
         var developer, _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, developer_1.getDeveloper()];
+                case 0: return [4 /*yield*/, (0, developer_1.getDeveloper)()];
                 case 1:
                     developer = _b.sent();
                     if (!developer.server || !developer.userid) {
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, userId_1.getUserId()];
+                    return [4 /*yield*/, (0, userId_1.getUserId)()];
                 case 2:
                     _a = !(_b.sent());
                     if (_a) return [3 /*break*/, 4];
-                    return [4 /*yield*/, server_1.getServer()];
+                    return [4 /*yield*/, (0, server_1.getServer)()];
                 case 3:
                     _a = !(_b.sent());
                     _b.label = 4;
