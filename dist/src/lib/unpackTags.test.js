@@ -25,7 +25,7 @@ var testCases = [
         input: ['{"Key":"foo", "Value":"bar"}'],
         result: {
             Key: 'foo',
-            Value: 'bar'
+            Value: 'bar',
         },
         tests: [checkResult, shouldNotThrow],
     },
@@ -34,7 +34,7 @@ var testCases = [
         input: ['{"Key":"foo", "Value":["bar", "bardot"]}'],
         result: {
             Key: 'foo',
-            Value: ['bar', 'bardot']
+            Value: ['bar', 'bardot'],
         },
         tests: [checkResult, shouldNotThrow],
     },

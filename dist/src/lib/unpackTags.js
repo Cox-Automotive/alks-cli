@@ -14,17 +14,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unpackTags = void 0;
 function unpackTags(inputs) {
-    //var record: Record<string, string | string[]> = {};
+    // var record: Record<string, string | string[]> = {};
     // First, attempt a JSON parse
     // Should fail fast if a parsing error is encountered
     if (inputs.length === 1) {
         var record = JSON.parse(inputs[0], function (_, value) {
-            return typeof value !== 'object'
-                ? String(value)
-                : value;
+            return typeof value !== 'object' ? String(value) : value;
         });
     }
-    ;
     console.log(record);
     // } else {
     //   for (const input of inputs) {
