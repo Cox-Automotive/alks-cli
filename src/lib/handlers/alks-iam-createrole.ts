@@ -72,6 +72,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
         roleType,
         includeDefaultPolicy: incDefPolicies ? 1 : 0,
         enableAlksAccess,
+        tags,
         templateFields,
       });
     } catch (err) {
