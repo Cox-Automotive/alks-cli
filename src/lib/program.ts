@@ -172,6 +172,10 @@ iam
   .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .option(
+    '--tags <tags...>',
+    `A list of resource tags. Keys are uniquely identifiable and values can contain a comma separated list . Can either be a JSON representation '[{"Key":"key1","Value":"value1"},{"Key":"key2","Value":"value2,value3"}]' or in shorthand Key=key1,Value=value1 Key=key2,Value=value2,value3`
+  )
+  .option(
     '-T, --template-fields <templateFields...>',
     `key-value pairs used to populate template fields in the trust policy document of the role. Can either be a JSON string like '{"key1":"value1","key2":"value2"}' or a list of pairs like key1=value1,key2=value2`
   )
