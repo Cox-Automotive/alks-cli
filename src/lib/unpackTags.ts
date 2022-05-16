@@ -13,61 +13,53 @@ import { Tag } from 'alks.js';
  */
 
 export function unpackTags(inputs: string[]): Tag[] {
-  let record: Record<string, string> | undefined = parseShorthand(inputs);
-  if (typeof record == 'undefined') {
-    let obj = JSON.parse(inputs[0], (_, value) =>
-      typeof value !== 'object' ? String(value) : value
-    );
-
-    record = {} as Record<string, string>;
-
-    if (!obj.length) {
-      obj = [obj];
-    }
-    for (const entry of obj) {
-      record[entry.Key] = entry.Value;
-    }
-  }
-
   const tags: Tag[] = [];
 
-  for (const [key, value] of Object.entries(record)) {
-    const t: Tag = {
-      key,
-      value,
-    };
-    tags.push(t);
+  for (const input of inputs) {
+    let record: Record<string, string> | undefined = parseShorthand(input);
+    if (typeof record == 'undefined') {
+      let obj = JSON.parse(input, (_, value) =>
+        typeof value !== 'object' ? String(value) : value
+      );
+      // iterable object must be a list
+      if (!obj.length) {
+        obj = [obj];
+      }
+
+      record = {} as Record<string, string>;
+      for (const entry of obj) {
+        record[entry.Key] = entry.Value;
+      }
+    }
+    for (const [key, value] of Object.entries(record)) {
+      const t: Tag = {
+        key,
+        value,
+      };
+      tags.push(t);
+    }
   }
   return tags;
 }
 
-function parseShorthand(inputs: string[]): Record<string, string> | undefined {
-  const record: Record<string, string> = {};
+function parseShorthand(input: string): Record<string, string> | undefined {
+  let record: Record<string, string> = {};
   try {
-    JSON.parse(inputs[0]);
-    if (inputs.length > 1) {
-      throw SyntaxError('JSON option syntax should be a single string');
-    }
+    JSON.parse(input);
     return;
   } catch (e) {
     const errorMsg =
-      'Improper syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
-    for (const input of inputs) {
-      try {
-        const pair = input.split(',');
-        let key: string = '';
-        let value: string = '';
-        if (pair[0].includes('Key=') && pair[1].includes('Value=')) {
-          key = pair[0].split('=')[1];
-          value = pair[1].split('=')[1];
-        }
-        if (!key || !value) {
-          throw SyntaxError(errorMsg);
-        }
-        record[key] = value;
-      } catch (e) {
+      'Improper tag syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
+    try {
+      const pair = input.split(',');
+      const key = pair[0].split('=');
+      const value = pair[1].split('=');
+      if (!(key[0] === 'Key' && value[0] === 'Value')) {
         throw SyntaxError(errorMsg);
       }
+      record[key[1]] = value[1];
+    } catch (e) {
+      throw SyntaxError(errorMsg);
     }
   }
   return record;

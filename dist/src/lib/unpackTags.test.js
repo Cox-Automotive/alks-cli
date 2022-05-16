@@ -66,8 +66,11 @@ var testCases = [
     {
         description: 'when the input includes multiple JSON options ',
         input: ['{"Key":"foo1", "Value":"bar1"}', '{"Key":"foo2", "Value":"bar2"}'],
-        result: [],
-        tests: [shouldThrow],
+        result: [
+            { key: 'foo1', value: 'bar1' },
+            { key: 'foo2', value: 'bar2' },
+        ],
+        tests: [checkResult, shouldNotThrow],
     },
     {
         description: 'when the input is a JSON string with a single tag that has multiple comma seperated values',
@@ -95,16 +98,19 @@ var testCases = [
     },
     {
         description: 'when the input is a mix of JSON items and key-value pairs',
-        input: ['{"Key":"foo", "Value":"bar"}', 'Key=foo1,Value=bar1'],
+        input: ['{"Key":"foo1", "Value":"bar1"}', 'Key=foo2,Value=bar2'],
+        result: [
+            { key: 'foo1', value: 'bar1' },
+            { key: 'foo2', value: 'bar2' },
+        ],
+        tests: [checkResult, shouldNotThrow],
+    },
+    {
+        description: 'when the input is an empty string',
+        input: [''],
         result: [],
         tests: [shouldThrow],
     },
-    // {
-    //   description: 'when the input is an empty string',
-    //   input: [''],
-    //   result: [],
-    //   tests: [checkResult, shouldNotThrow],
-    // },
 ];
 describe('unpackTags', function () {
     var _loop_1 = function (t) {

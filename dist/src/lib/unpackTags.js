@@ -14,61 +14,55 @@ exports.unpackTags = void 0;
  * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
  */
 function unpackTags(inputs) {
-    var record = parseShorthand(inputs);
-    if (typeof record == 'undefined') {
-        var obj = JSON.parse(inputs[0], function (_, value) {
-            return typeof value !== 'object' ? String(value) : value;
-        });
-        record = {};
-        if (!obj.length) {
-            obj = [obj];
-        }
-        for (var _i = 0, obj_1 = obj; _i < obj_1.length; _i++) {
-            var entry = obj_1[_i];
-            record[entry.Key] = entry.Value;
-        }
-    }
     var tags = [];
-    for (var _a = 0, _b = Object.entries(record); _a < _b.length; _a++) {
-        var _c = _b[_a], key = _c[0], value = _c[1];
-        var t = {
-            key: key,
-            value: value,
-        };
-        tags.push(t);
+    for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
+        var input = inputs_1[_i];
+        var record = parseShorthand(input);
+        if (typeof record == 'undefined') {
+            var obj = JSON.parse(input, function (_, value) {
+                return typeof value !== 'object' ? String(value) : value;
+            });
+            // iterable object must be a list
+            if (!obj.length) {
+                obj = [obj];
+            }
+            record = {};
+            for (var _a = 0, obj_1 = obj; _a < obj_1.length; _a++) {
+                var entry = obj_1[_a];
+                record[entry.Key] = entry.Value;
+            }
+        }
+        for (var _b = 0, _c = Object.entries(record); _b < _c.length; _b++) {
+            var _d = _c[_b], key = _d[0], value = _d[1];
+            var t = {
+                key: key,
+                value: value,
+            };
+            tags.push(t);
+        }
     }
     return tags;
 }
 exports.unpackTags = unpackTags;
-function parseShorthand(inputs) {
+function parseShorthand(input) {
     var record = {};
     try {
-        JSON.parse(inputs[0]);
-        if (inputs.length > 1) {
-            throw SyntaxError('JSON option syntax should be a single string');
-        }
+        JSON.parse(input);
         return;
     }
     catch (e) {
-        var errorMsg = 'Improper syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
-        for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
-            var input = inputs_1[_i];
-            try {
-                var pair = input.split(',');
-                var key = '';
-                var value = '';
-                if (pair[0].includes('Key=') && pair[1].includes('Value=')) {
-                    key = pair[0].split('=')[1];
-                    value = pair[1].split('=')[1];
-                }
-                if (!key || !value) {
-                    throw SyntaxError(errorMsg);
-                }
-                record[key] = value;
-            }
-            catch (e) {
+        var errorMsg = 'Improper tag syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
+        try {
+            var pair = input.split(',');
+            var key = pair[0].split('=');
+            var value = pair[1].split('=');
+            if (!(key[0] === 'Key' && value[0] === 'Value')) {
                 throw SyntaxError(errorMsg);
             }
+            record[key[1]] = value[1];
+        }
+        catch (e) {
+            throw SyntaxError(errorMsg);
         }
     }
     return record;
