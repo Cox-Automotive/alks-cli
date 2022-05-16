@@ -23,7 +23,7 @@ function shouldNotThrow(t: TestCase) {
     try {
       unpackTags(t.input);
     } catch (e) {
-      err = e;
+      err = e as any;
     }
 
     expect(err).toBeUndefined();

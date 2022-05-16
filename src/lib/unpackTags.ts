@@ -19,7 +19,7 @@ export function unpackTags(
   // First, attempt a JSON parse
   // Should fail fast if a parsing error is encountered
   if (inputs.length === 1) {
-    let record = JSON.parse(inputs[0], (_, value) =>
+    var record = JSON.parse(inputs[0], (_, value) =>
       typeof value !== 'object' ? String(value) : value
     );
   }
