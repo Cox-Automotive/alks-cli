@@ -10,7 +10,7 @@ var credentials_1 = require("./state/credentials");
 var node_netrc_1 = tslib_1.__importDefault(require("node-netrc"));
 var log_1 = require("./log");
 var credentials_2 = require("./state/credentials");
-var NETRC_FILE_PATH = path_1.join(os_1.homedir(), '.netrc');
+var NETRC_FILE_PATH = (0, path_1.join)((0, os_1.homedir)(), '.netrc');
 var NETRC_ALKS_PASSWORD = 'alkscli';
 var NETRC_ALKS_TOKEN = 'alksclitoken';
 function convertNetrcToIni() {
@@ -25,28 +25,28 @@ function convertNetrcToIni() {
                             .catch(function () { return false; })];
                 case 1:
                     netrcFileExists = _a.sent();
-                    return [4 /*yield*/, access(credentials_2.getCredentialsFilePath())
+                    return [4 /*yield*/, access((0, credentials_2.getCredentialsFilePath)())
                             .then(function () { return true; })
                             .catch(function () { return false; })];
                 case 2:
                     credentialsFileExists = _a.sent();
                     if (!(netrcFileExists && !credentialsFileExists)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, credentials_1.getCredentials()];
+                    return [4 /*yield*/, (0, credentials_1.getCredentials)()];
                 case 3:
                     credentials = _a.sent();
-                    passwordAuth = node_netrc_1.default(NETRC_ALKS_PASSWORD);
+                    passwordAuth = (0, node_netrc_1.default)(NETRC_ALKS_PASSWORD);
                     if (passwordAuth.password) {
                         credentials.password = passwordAuth.password;
                         // remove the alks password from the netrc file
                         node_netrc_1.default.update(NETRC_ALKS_PASSWORD);
                     }
-                    tokenAuth = node_netrc_1.default(NETRC_ALKS_TOKEN);
+                    tokenAuth = (0, node_netrc_1.default)(NETRC_ALKS_TOKEN);
                     if (tokenAuth.password) {
                         credentials.refresh_token = tokenAuth.password;
                         // remove the alks token from the netrc file
                         node_netrc_1.default.update(NETRC_ALKS_PASSWORD);
                     }
-                    return [4 /*yield*/, credentials_1.setCredentials(credentials)];
+                    return [4 /*yield*/, (0, credentials_1.setCredentials)(credentials)];
                 case 4:
                     _a.sent();
                     if (!netrcFileExists) return [3 /*break*/, 7];
@@ -62,7 +62,7 @@ function convertNetrcToIni() {
                 case 8:
                     e_1 = _a.sent();
                     // If the conversion fails, just pretend like the netrc file doesn't exist and continue anyway
-                    log_1.log('failed to convert netrc file to ini file: ' + e_1);
+                    (0, log_1.log)('failed to convert netrc file to ini file: ' + e_1);
                     return [3 /*break*/, 9];
                 case 9: return [2 /*return*/];
             }

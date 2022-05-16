@@ -20,29 +20,29 @@ function promptForAuthType() {
                         message: 'Please choose an authentication type',
                         choices: [
                             {
-                                name: "[" + exports.REFRESH_TOKEN_AUTH_CHOICE + "] Store an OAuth2 refresh token",
+                                name: "[".concat(exports.REFRESH_TOKEN_AUTH_CHOICE, "] Store an OAuth2 refresh token"),
                                 value: exports.REFRESH_TOKEN_AUTH_CHOICE,
                                 short: exports.REFRESH_TOKEN_AUTH_CHOICE,
                             },
                             {
-                                name: "[" + exports.PASSWORD_AUTH_CHOICE + "] Store your network password (not recommended)",
+                                name: "[".concat(exports.PASSWORD_AUTH_CHOICE, "] Store your network password (not recommended)"),
                                 value: exports.PASSWORD_AUTH_CHOICE,
                                 short: exports.PASSWORD_AUTH_CHOICE,
                             },
                             {
-                                name: "[" + exports.CREDENTIAL_PROCESS_AUTH_CHOICE + "] Use a custom script for gathering credentials",
+                                name: "[".concat(exports.CREDENTIAL_PROCESS_AUTH_CHOICE, "] Use a custom script for gathering credentials"),
                                 value: exports.CREDENTIAL_PROCESS_AUTH_CHOICE,
                                 short: exports.CREDENTIAL_PROCESS_AUTH_CHOICE,
                             },
                             {
-                                name: "[" + exports.ALWAYS_ASK_AUTH_CHOICE + "] Ask for your password every time",
+                                name: "[".concat(exports.ALWAYS_ASK_AUTH_CHOICE, "] Ask for your password every time"),
                                 value: exports.ALWAYS_ASK_AUTH_CHOICE,
                                 short: exports.ALWAYS_ASK_AUTH_CHOICE,
                             },
                         ],
                         pageSize: 10,
                     };
-                    return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([promptData])];
+                    return [4 /*yield*/, (0, getStdErrPrompt_1.getStdErrPrompt)()([promptData])];
                 case 1:
                     answers = _a.sent();
                     return [2 /*return*/, answers.authType];

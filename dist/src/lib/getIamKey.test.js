@@ -80,7 +80,7 @@ describe('getIamKey', function () {
                             return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                                 return tslib_1.__generator(this, function (_b) {
                                     return [2 /*return*/, ({
-                                            account: accountId + "/ALKS" + role,
+                                            account: "".concat(accountId, "/ALKS").concat(role),
                                             role: role,
                                             iamKeyActive: true,
                                             maxKeyDuration: 12,
@@ -295,7 +295,7 @@ describe('getIamKey', function () {
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);
-                            return [4 /*yield*/, getIamKey_1.getIamKey(t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
+                            return [4 /*yield*/, (0, getIamKey_1.getIamKey)(t.alksAccount, t.alksRole, t.forceNewSession, t.filterFavorites)];
                         case 2:
                             result = _a.sent();
                             return [3 /*break*/, 4];

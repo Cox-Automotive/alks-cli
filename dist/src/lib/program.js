@@ -24,7 +24,7 @@ var alks_developer_login2fa_1 = require("../lib/handlers/alks-developer-login2fa
 var alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
 var alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
 var alks_completion_1 = require("./handlers/alks-completion");
-var outputValues = getOutputValues_1.getOutputValues();
+var outputValues = (0, getOutputValues_1.getOutputValues)();
 var nameDesc = 'alphanumeric including @+=._-';
 var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
 var program = new commander_1.Command();

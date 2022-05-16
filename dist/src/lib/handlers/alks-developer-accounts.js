@@ -17,7 +17,7 @@ function handleAlksDeveloperAccounts(options) {
         function getUniqueAccountName(accountName) {
             var i = 1;
             var test = accountName;
-            while (underscore_1.contains(accounts, test)) {
+            while ((0, underscore_1.contains)(accounts, test)) {
                 test = accountName + i++;
             }
             return test;
@@ -46,20 +46,20 @@ function handleAlksDeveloperAccounts(options) {
                         colWidths: [50, 50, 25],
                     });
                     doExport = options.export;
-                    accountRegex = getAccountRegex_1.getAccountRegex();
-                    exportCmd = isWindows_1.isWindows() ? 'SET' : 'export';
+                    accountRegex = (0, getAccountRegex_1.getAccountRegex)();
+                    exportCmd = (0, isWindows_1.isWindows)() ? 'SET' : 'export';
                     accounts = [];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 6, , 7]);
-                    log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth()];
+                    (0, log_1.log)('getting auth');
+                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 2:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 3:
                     alks = _a.sent();
-                    log_1.log('getting alks accounts');
+                    (0, log_1.log)('getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
                 case 4:
                     alksAccounts = _a.sent();
@@ -76,13 +76,13 @@ function handleAlksDeveloperAccounts(options) {
                         console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
                         console.log(cli_color_1.default.white(table.toString()));
                     }
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 5:
                     _a.sent();
                     return [3 /*break*/, 7];
                 case 6:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 7];
                 case 7: return [2 /*return*/];
             }

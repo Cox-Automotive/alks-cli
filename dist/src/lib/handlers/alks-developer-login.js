@@ -20,30 +20,30 @@ function handleAlksDeveloperLogin(options) {
                     if (!((_a = options.username) !== null && _a !== void 0)) return [3 /*break*/, 1];
                     _b = _a;
                     return [3 /*break*/, 3];
-                case 1: return [4 /*yield*/, promptForUserId_1.promptForUserId()];
+                case 1: return [4 /*yield*/, (0, promptForUserId_1.promptForUserId)()];
                 case 2:
                     _b = (_c.sent());
                     _c.label = 3;
                 case 3:
                     userId = _b;
-                    log_1.log('saving user ID');
-                    return [4 /*yield*/, userId_1.setUserId(userId)];
+                    (0, log_1.log)('saving user ID');
+                    return [4 /*yield*/, (0, userId_1.setUserId)(userId)];
                 case 4:
                     _c.sent();
-                    return [4 /*yield*/, promptForPassword_1.promptForPassword()];
+                    return [4 /*yield*/, (0, promptForPassword_1.promptForPassword)()];
                 case 5:
                     password = _c.sent();
-                    log_1.log('saving password');
-                    return [4 /*yield*/, password_1.setPassword(password)];
+                    (0, log_1.log)('saving password');
+                    return [4 /*yield*/, (0, password_1.setPassword)(password)];
                 case 6:
                     _c.sent();
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 7:
                     _c.sent();
                     return [3 /*break*/, 9];
                 case 8:
                     err_1 = _c.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 9];
                 case 9: return [2 /*return*/];
             }

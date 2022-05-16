@@ -8,12 +8,12 @@ function validateAlksAccount(account, role) {
         var alksAccounts, matchingAccount;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getAlksAccounts_1.getAlksAccounts()];
+                case 0: return [4 /*yield*/, (0, getAlksAccounts_1.getAlksAccounts)()];
                 case 1:
                     alksAccounts = _a.sent();
                     matchingAccount = alksAccounts.find(function (alksAccount) { return alksAccount.account == account && alksAccount.role == role; });
                     if (!matchingAccount) {
-                        throw new Error("account: \"" + account + "\" and role: \"" + role + "\" do not match any valid accounts");
+                        throw new Error("account: \"".concat(account, "\" and role: \"").concat(role, "\" do not match any valid accounts"));
                     }
                     return [2 /*return*/];
             }

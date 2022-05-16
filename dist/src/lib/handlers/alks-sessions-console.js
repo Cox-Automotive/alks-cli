@@ -26,46 +26,46 @@ function handleAlksSessionsConsole(options) {
                     forceNewSession = options.newSession;
                     useDefaultAcct = options.default;
                     filterFaves = options.favorites || false;
-                    if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log('trying to extract role from account');
-                        alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
+                    if (!(0, underscore_1.isUndefined)(alksAccount) && (0, underscore_1.isUndefined)(alksRole)) {
+                        (0, log_1.log)('trying to extract role from account');
+                        alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
                     }
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 20, , 21]);
                     if (!useDefaultAcct) return [3 /*break*/, 4];
-                    return [4 /*yield*/, alksAccount_1.getAlksAccount()];
+                    return [4 /*yield*/, (0, alksAccount_1.getAlksAccount)()];
                 case 2:
                     alksAccount = _a.sent();
-                    return [4 /*yield*/, alksRole_1.getAlksRole()];
+                    return [4 /*yield*/, (0, alksRole_1.getAlksRole)()];
                 case 3:
                     alksRole = _a.sent();
                     if (!alksAccount || !alksRole) {
-                        errorAndExit_1.errorAndExit('Unable to load default account!');
+                        (0, errorAndExit_1.errorAndExit)('Unable to load default account!');
                     }
                     _a.label = 4;
                 case 4:
                     _a.trys.push([4, 9, , 10]);
-                    if (!underscore_1.isUndefined(options.iam)) return [3 /*break*/, 6];
-                    return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    if (!(0, underscore_1.isUndefined)(options.iam)) return [3 /*break*/, 6];
+                    return [4 /*yield*/, (0, getSessionKey_1.getSessionKey)(alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 5:
                     key_1 = _a.sent();
                     return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, forceNewSession, filterFaves)];
+                case 6: return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, forceNewSession, filterFaves)];
                 case 7:
                     key_1 = _a.sent();
                     _a.label = 8;
                 case 8: return [3 /*break*/, 10];
                 case 9:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1);
                     return [3 /*break*/, 10];
                 case 10:
-                    log_1.log('calling aws to generate 15min console URL');
+                    (0, log_1.log)('calling aws to generate 15min console URL');
                     return [4 /*yield*/, new Promise(function (resolve) {
-                            alks_node_1.default.generateConsoleUrl(key_1, { debug: options.verbose, ua: getUserAgentString_1.getUserAgentString() }, function (err, consoleUrl) {
+                            alks_node_1.default.generateConsoleUrl(key_1, { debug: options.verbose, ua: (0, getUserAgentString_1.getUserAgentString)() }, function (err, consoleUrl) {
                                 if (err) {
-                                    errorAndExit_1.errorAndExit(err.message, err);
+                                    (0, errorAndExit_1.errorAndExit)(err.message, err);
                                 }
                                 else {
                                     resolve(consoleUrl);
@@ -78,13 +78,13 @@ function handleAlksSessionsConsole(options) {
                     console.log(url);
                     return [3 /*break*/, 19];
                 case 12:
-                    opts = !underscore_1.isEmpty(options.openWith) ? { app: options.openWith } : {};
-                    console.error("Opening " + cli_color_1.default.underline(url) + " in the browser...");
+                    opts = !(0, underscore_1.isEmpty)(options.openWith) ? { app: options.openWith } : {};
+                    console.error("Opening ".concat(cli_color_1.default.underline(url), " in the browser..."));
                     _a.label = 13;
                 case 13:
                     _a.trys.push([13, 15, , 16]);
                     return [4 /*yield*/, Promise.race([
-                            open_1.default(url, tslib_1.__assign(tslib_1.__assign({}, opts), { newInstance: true })),
+                            (0, open_1.default)(url, tslib_1.__assign(tslib_1.__assign({}, opts), { newInstance: true })),
                             new Promise(function (_, rej) {
                                 setTimeout(function () { return rej(); }, 5000);
                             }), // timeout after 5 seconds
@@ -94,10 +94,10 @@ function handleAlksSessionsConsole(options) {
                     return [3 /*break*/, 16];
                 case 15:
                     err_2 = _a.sent();
-                    console.error("Failed to open " + url);
+                    console.error("Failed to open ".concat(url));
                     console.error('Please open the url in the browser of your choice');
                     return [3 /*break*/, 16];
-                case 16: return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                case 16: return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 17:
                     _a.sent();
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3000); })];
@@ -107,7 +107,7 @@ function handleAlksSessionsConsole(options) {
                 case 19: return [3 /*break*/, 21];
                 case 20:
                     err_3 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_3.message, err_3);
+                    (0, errorAndExit_1.errorAndExit)(err_3.message, err_3);
                     return [3 /*break*/, 21];
                 case 21: return [2 /*return*/];
             }

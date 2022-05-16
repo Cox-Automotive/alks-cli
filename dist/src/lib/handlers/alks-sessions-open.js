@@ -22,31 +22,31 @@ function handleAlksSessionsOpen(options) {
                     alksRole = options.role;
                     // Try to guess role from account if only account was provided
                     if (alksAccount && !alksRole) {
-                        log_1.log('trying to extract role from account');
-                        alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
+                        (0, log_1.log)('trying to extract role from account');
+                        alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
                     }
                     _e.label = 1;
                 case 1:
                     _e.trys.push([1, 12, , 13]);
                     if (!options.default) return [3 /*break*/, 4];
-                    return [4 /*yield*/, alksAccount_1.getAlksAccount()];
+                    return [4 /*yield*/, (0, alksAccount_1.getAlksAccount)()];
                 case 2:
                     alksAccount = _e.sent();
-                    return [4 /*yield*/, alksRole_1.getAlksRole()];
+                    return [4 /*yield*/, (0, alksRole_1.getAlksRole)()];
                 case 3:
                     alksRole = _e.sent();
                     if (!alksAccount || !alksRole) {
-                        errorAndExit_1.errorAndExit('Unable to load default account!');
+                        (0, errorAndExit_1.errorAndExit)('Unable to load default account!');
                     }
                     _e.label = 4;
                 case 4:
                     key = void 0;
                     if (!options.iam) return [3 /*break*/, 6];
-                    return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, options.newSession, options.favorites)];
+                    return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites)];
                 case 5:
                     key = _e.sent();
                     return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, options.newSession, options.favorites)];
+                case 6: return [4 /*yield*/, (0, getSessionKey_1.getSessionKey)(alksAccount, alksRole, false, options.newSession, options.favorites)];
                 case 7:
                     key = _e.sent();
                     _e.label = 8;
@@ -55,7 +55,7 @@ function handleAlksSessionsOpen(options) {
                     _c = getKeyOutput_1.getKeyOutput;
                     _d = options.output;
                     if (_d) return [3 /*break*/, 10];
-                    return [4 /*yield*/, outputFormat_1.getOutputFormat()];
+                    return [4 /*yield*/, (0, outputFormat_1.getOutputFormat)()];
                 case 9:
                     _d = (_e.sent());
                     _e.label = 10;
@@ -63,13 +63,13 @@ function handleAlksSessionsOpen(options) {
                     _b.apply(_a, [_c.apply(void 0, [_d, key,
                             options.namedProfile,
                             options.force])]);
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 11:
                     _e.sent();
                     return [3 /*break*/, 13];
                 case 12:
                     err_1 = _e.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }

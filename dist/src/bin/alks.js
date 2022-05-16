@@ -20,13 +20,13 @@ if (process.stdout.isTTY) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    return [4 /*yield*/, configFolder_1.ensureConfigFolderExists()];
+                    return [4 /*yield*/, (0, configFolder_1.ensureConfigFolderExists)()];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, convertNetrcToIni_1.convertNetrcToIni()];
+                    return [4 /*yield*/, (0, convertNetrcToIni_1.convertNetrcToIni)()];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, updateDbFileLocation_1.updateDbFileLocation()];
+                    return [4 /*yield*/, (0, updateDbFileLocation_1.updateDbFileLocation)()];
                 case 3:
                     _a.sent();
                     return [4 /*yield*/, program_1.default.parseAsync()];
@@ -36,7 +36,7 @@ if (process.stdout.isTTY) {
                 case 5:
                     err_1 = _a.sent();
                     // We need to catch in both ways because some errors are thrown and others are rejected promises
-                    handleCommanderError_1.handleCommanderError(program_1.default, err_1);
+                    (0, handleCommanderError_1.handleCommanderError)(program_1.default, err_1);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

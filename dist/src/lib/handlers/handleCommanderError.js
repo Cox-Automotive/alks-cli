@@ -9,10 +9,10 @@ function isCommanderError(err) {
 }
 function handleCommanderError(program, err) {
     if (isCommanderError(err)) {
-        log_1.log(err.code);
+        (0, log_1.log)(err.code);
         switch (err.code) {
             case 'commander.unknownCommand': {
-                return handleUnknownCommand_1.handleUnknownCommand(program);
+                return (0, handleUnknownCommand_1.handleUnknownCommand)(program);
             }
             case 'commander.help':
             case 'commander.version':
@@ -21,7 +21,7 @@ function handleCommanderError(program, err) {
             }
         }
     }
-    errorAndExit_1.errorAndExit(err.message, err);
+    (0, errorAndExit_1.errorAndExit)(err.message, err);
 }
 exports.handleCommanderError = handleCommanderError;
 //# sourceMappingURL=handleCommanderError.js.map

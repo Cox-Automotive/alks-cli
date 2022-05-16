@@ -13,7 +13,7 @@ function getDb() {
                 case 0:
                     if (!!db) return [3 /*break*/, 2];
                     _a = lokijs_1.default.bind;
-                    return [4 /*yield*/, getDbFile_1.getDbFile()];
+                    return [4 /*yield*/, (0, getDbFile_1.getDbFile)()];
                 case 1:
                     db = new (_a.apply(lokijs_1.default, [void 0, _b.sent()]))();
                     _b.label = 2;

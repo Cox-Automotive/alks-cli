@@ -10,8 +10,8 @@ function getFavorites() {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('retreiving favorites');
-                    return [4 /*yield*/, getCollection_1.getCollection('favorites')];
+                    (0, log_1.log)('retreiving favorites');
+                    return [4 /*yield*/, (0, getCollection_1.getCollection)('favorites')];
                 case 1:
                     favorites = _a.sent();
                     data = favorites.chain().data()[0];

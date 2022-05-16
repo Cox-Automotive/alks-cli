@@ -9,10 +9,10 @@ var errorAndExit_1 = require("./errorAndExit");
  */
 function addNewLineToEof(file) {
     try {
-        fs_1.appendFileSync(file, os_1.EOL);
+        (0, fs_1.appendFileSync)(file, os_1.EOL);
     }
     catch (err) {
-        errorAndExit_1.errorAndExit('Error adding new line!', err);
+        (0, errorAndExit_1.errorAndExit)('Error adding new line!', err);
     }
 }
 exports.addNewLineToEof = addNewLineToEof;

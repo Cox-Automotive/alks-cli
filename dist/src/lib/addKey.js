@@ -12,20 +12,20 @@ function addKey(accessKey, secretKey, sessionToken, alksAccount, alksRole, expir
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    enc = isTokenAuth_1.isTokenAuth(auth) ? auth.token : auth.password;
-                    return [4 /*yield*/, getKeysCollection_1.getKeysCollection()];
+                    enc = (0, isTokenAuth_1.isTokenAuth)(auth) ? auth.token : auth.password;
+                    return [4 /*yield*/, (0, getKeysCollection_1.getKeysCollection)()];
                 case 1:
                     keys = _a.sent();
                     keys.insert({
-                        accessKey: encrypt_1.encrypt(accessKey, enc),
-                        secretKey: encrypt_1.encrypt(secretKey, enc),
-                        sessionToken: encrypt_1.encrypt(sessionToken, enc),
-                        alksAccount: encrypt_1.encrypt(alksAccount, enc),
-                        alksRole: encrypt_1.encrypt(alksRole, enc),
+                        accessKey: (0, encrypt_1.encrypt)(accessKey, enc),
+                        secretKey: (0, encrypt_1.encrypt)(secretKey, enc),
+                        sessionToken: (0, encrypt_1.encrypt)(sessionToken, enc),
+                        alksAccount: (0, encrypt_1.encrypt)(alksAccount, enc),
+                        alksRole: (0, encrypt_1.encrypt)(alksRole, enc),
                         isIAM: isIAM,
                         expires: expires,
                     });
-                    return [4 /*yield*/, db_1.getDb()];
+                    return [4 /*yield*/, (0, db_1.getDb)()];
                 case 2:
                     db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {

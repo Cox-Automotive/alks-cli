@@ -9,7 +9,7 @@ function getPrompt(field, defaultValue, text, validator) {
         var answers;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([
+                case 0: return [4 /*yield*/, (0, getStdErrPrompt_1.getStdErrPrompt)()([
                         {
                             type: 'input',
                             name: field,
@@ -20,7 +20,7 @@ function getPrompt(field, defaultValue, text, validator) {
                             validate: validator
                                 ? validator
                                 : function (val) {
-                                    return !underscore_1.isEmpty(val)
+                                    return !(0, underscore_1.isEmpty)(val)
                                         ? true
                                         : 'Please enter a value for ' + text + '.';
                                 },

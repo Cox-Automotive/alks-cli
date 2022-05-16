@@ -27,7 +27,7 @@ function handleCompletion(_options) {
                     else {
                         for (_a = 0, subcommands_1 = subcommands; _a < subcommands_1.length; _a++) {
                             subcommand = subcommands_1[_a];
-                            subcommandRegex = new RegExp("\\s" + subcommand.name() + "\\s");
+                            subcommandRegex = new RegExp("\\s".concat(subcommand.name(), "\\s"));
                             if (subcommandRegex.test(env.line)) {
                                 rawOptions = subcommand.options;
                                 options = Object.values(rawOptions

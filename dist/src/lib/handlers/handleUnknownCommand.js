@@ -8,12 +8,12 @@ var cli_color_1 = require("cli-color");
 var getLastMatchingProgram_1 = require("../getLastMatchingProgram");
 function handleUnknownCommand(program) {
     if (!program.args.length) {
-        errorAndExit_1.errorAndExit('handleUnknownCommand was called but there are no arguments to process');
+        (0, errorAndExit_1.errorAndExit)('handleUnknownCommand was called but there are no arguments to process');
     }
-    var command = getLastMatchingProgram_1.getLastMatchingProgram(program);
+    var command = (0, getLastMatchingProgram_1.getLastMatchingProgram)(program);
     var commandNames = command.commands.map(function (c) { return c.name(); });
     var prefixArgs = [];
-    var args = tslib_1.__spreadArray(['alks'], program.args);
+    var args = tslib_1.__spreadArray(['alks'], program.args, true);
     var arg;
     while ((arg = args.shift())) {
         prefixArgs.push(arg);
@@ -27,11 +27,11 @@ function handleUnknownCommand(program) {
     var suggests = fuzzy_1.default.filter(unknownCommand, commandNames);
     var suggest = suggests.map(function (sug) { return sug.string; });
     if (suggest.length) {
-        msg.push(cli_color_1.white(' Did you mean '));
+        msg.push((0, cli_color_1.white)(' Did you mean '));
         msg.push(cli_color_1.white.underline(prefix + ' ' + suggest[0]));
-        msg.push(cli_color_1.white('?'));
+        msg.push((0, cli_color_1.white)('?'));
     }
-    errorAndExit_1.errorAndExit(msg.join(''));
+    (0, errorAndExit_1.errorAndExit)(msg.join(''));
 }
 exports.handleUnknownCommand = handleUnknownCommand;
 //# sourceMappingURL=handleUnknownCommand.js.map

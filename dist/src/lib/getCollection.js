@@ -8,7 +8,7 @@ function getCollection(name) {
         var db;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, db_1.getDb()];
+                case 0: return [4 /*yield*/, (0, db_1.getDb)()];
                 case 1:
                     db = _a.sent();
                     return [2 /*return*/, new Promise(function (resolve, reject) {

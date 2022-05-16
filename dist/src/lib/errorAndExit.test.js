@@ -46,7 +46,7 @@ describe('errorAndExit', function () {
                 program_1.default.opts.mockImplementation(t.opts);
                 global.console.error.mockImplementation(function () { });
                 global.process.exit.mockImplementation(function () { return undefined; });
-                errorAndExit_1.errorAndExit(t.message, t.error);
+                (0, errorAndExit_1.errorAndExit)(t.message, t.error);
             });
             afterEach(function () {
                 cli_color_1.red.mockReset();

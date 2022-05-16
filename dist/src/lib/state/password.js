@@ -20,32 +20,32 @@ function getPassword() {
                 case 0:
                     passwordOption = program_1.default.opts().password;
                     if (passwordOption) {
-                        log_1.log('using password from CLI arg');
+                        (0, log_1.log)('using password from CLI arg');
                         console.error('Warning: Passing secrets via cli options is unsafe. Please instead run `alks developer configure`, `alks-developer-login`, or set the ALKS_PASSWORD environment variable');
                         return [2 /*return*/, passwordOption];
                     }
                     passwordFromEnv = process.env[PASSWORD_ENV_VAR_NAME];
-                    if (!underscore_1.isEmpty(passwordFromEnv)) {
-                        console.error(getEnvironmentVariableSecretWarning_1.getEnvironmentVariableSecretWarning(PASSWORD_ENV_VAR_NAME));
-                        log_1.log('using password from environment variable');
+                    if (!(0, underscore_1.isEmpty)(passwordFromEnv)) {
+                        console.error((0, getEnvironmentVariableSecretWarning_1.getEnvironmentVariableSecretWarning)(PASSWORD_ENV_VAR_NAME));
+                        (0, log_1.log)('using password from environment variable');
                         return [2 /*return*/, passwordFromEnv];
                     }
-                    return [4 /*yield*/, getCredentialsFromProcess_1.getCredentialsFromProcess()];
+                    return [4 /*yield*/, (0, getCredentialsFromProcess_1.getCredentialsFromProcess)()];
                 case 1:
                     credentialProcessResult = _a.sent();
                     if (credentialProcessResult.password) {
-                        log_1.log('using password from credential_process');
+                        (0, log_1.log)('using password from credential_process');
                         return [2 /*return*/, credentialProcessResult.password];
                     }
-                    return [4 /*yield*/, getPasswordFromKeystore_1.getPasswordFromKeystore()];
+                    return [4 /*yield*/, (0, getPasswordFromKeystore_1.getPasswordFromKeystore)()];
                 case 2:
                     passwordFromKeystore = _a.sent();
                     if (passwordFromKeystore) {
-                        log_1.log('using stored password');
+                        (0, log_1.log)('using stored password');
                         return [2 /*return*/, passwordFromKeystore];
                     }
                     if (cachedPassword) {
-                        log_1.log('using cached password');
+                        (0, log_1.log)('using cached password');
                         return [2 /*return*/, cachedPassword];
                     }
                     return [2 /*return*/, undefined];
@@ -58,10 +58,10 @@ function setPassword(password) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, storePassword_1.storePassword(password)];
+                case 0: return [4 /*yield*/, (0, storePassword_1.storePassword)(password)];
                 case 1:
                     _a.sent();
-                    console.error(cli_color_1.white('Password saved!'));
+                    console.error((0, cli_color_1.white)('Password saved!'));
                     return [2 /*return*/];
             }
         });

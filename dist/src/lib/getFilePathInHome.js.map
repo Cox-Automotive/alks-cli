@@ -1,1 +1,1 @@
-{"version":3,"file":"getFilePathInHome.js","sourceRoot":"","sources":["../../../src/lib/getFilePathInHome.ts"],"names":[],"mappings":";;;AAAA,6BAA4B;AAC5B,yBAA6B;AAE7B,SAAgB,iBAAiB,CAAC,QAAgB;IAChD,OAAO,WAAI,CAAC,YAAO,EAAE,EAAE,QAAQ,CAAC,CAAC;AACnC,CAAC;AAFD,8CAEC"}
+{"version":3,"file":"getFilePathInHome.js","sourceRoot":"","sources":["../../../src/lib/getFilePathInHome.ts"],"names":[],"mappings":";;;AAAA,6BAA4B;AAC5B,yBAA6B;AAE7B,SAAgB,iBAAiB,CAAC,QAAgB;IAChD,OAAO,IAAA,WAAI,EAAC,IAAA,YAAO,GAAE,EAAE,QAAQ,CAAC,CAAC;AACnC,CAAC;AAFD,8CAEC"}

@@ -9,12 +9,12 @@ function log(msg, opts) {
     if (opts === void 0) { opts = {}; }
     var prefix = opts.prefix;
     if (!prefix) {
-        var caller = getCallerInfo_1.getCallerInfo();
-        prefix = caller.fileName + ":" + caller.line + ":" + caller.char;
+        var caller = (0, getCallerInfo_1.getCallerInfo)();
+        prefix = "".concat(caller.fileName, ":").concat(caller.line, ":").concat(caller.char);
     }
     var verbose = opts.verbose === undefined ? program_1.default.opts().verbose : opts.verbose;
     if (verbose) {
-        console.error(cli_color_1.yellow("[" + prefix + "]: " + msg));
+        console.error((0, cli_color_1.yellow)("[".concat(prefix, "]: ").concat(msg)));
     }
 }
 exports.log = log;

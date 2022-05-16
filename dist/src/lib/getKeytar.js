@@ -16,8 +16,8 @@ function getKeytar() {
                 case 1: return [2 /*return*/, _a.sent()];
                 case 2:
                     err_1 = _a.sent();
-                    log_1.log('failed to import keytar');
-                    if (!isOsx_1.isOsx() && !isWindows_1.isWindows()) {
+                    (0, log_1.log)('failed to import keytar');
+                    if (!(0, isOsx_1.isOsx)() && !(0, isWindows_1.isWindows)()) {
                         // see https://github.com/atom/node-keytar#on-linux
                         throw new Error("Please ensure that either libsecret-1-dev, libsecret-devel, or libsecret is installed, then reinstall this tool with 'npm install -g --unsafe-perm=true alks'");
                     }
