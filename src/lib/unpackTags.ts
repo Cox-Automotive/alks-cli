@@ -55,8 +55,12 @@ function parseShorthand(inputs: string[]): Record<string, string> | undefined {
     for (const input of inputs) {
       try {
         const pair = input.split(',');
-        const key = pair[0].split('=')[1];
-        const value = pair[1].split('=')[1];
+        let key: string = '';
+        let value: string = '';
+        if (pair[0].includes('Key=') && pair[1].includes('Value=')) {
+          key = pair[0].split('=')[1];
+          value = pair[1].split('=')[1];
+        }
         if (!key || !value) {
           throw SyntaxError(errorMsg);
         }

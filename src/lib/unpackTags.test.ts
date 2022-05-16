@@ -94,12 +94,12 @@ const testCases: TestCase[] = [
     result: [],
     tests: [shouldThrow],
   },
-  // {
-  //   description: 'when the input is a variation of the wrong shorthand syntax',
-  //   input: ['Key=key1,=Valueval1'],
-  //   result: [],
-  //   tests: [shouldThrow],
-  // },
+  {
+    description: 'when the input is a variation of the wrong shorthand syntax',
+    input: ['Key=key1,=Valueval1'],
+    result: [],
+    tests: [shouldThrow],
+  },
   {
     description:
       'when the input is multiple options with the wrong shorthand syntax',
@@ -107,42 +107,19 @@ const testCases: TestCase[] = [
     result: [],
     tests: [shouldThrow],
   },
-  //   {
-  //     description: 'when the input is multiple JSON items',
-  //     input: ['{"alpha":"beta"}', '{"gamma":"delta"}'],
-  //     result: {
-  //       alpha: 'beta',
-  //       gamma: 'delta',
-  //     },
-  //     tests: [checkResult, shouldNotThrow],
-  //   },
-  //   {
-  //     description: 'when the input is a mix of JSON items and key-value pairs',
-  //     input: ['{"alpha":"beta"}', 'gamma=delta'],
-  //     result: {
-  //       alpha: 'beta',
-  //       gamma: 'delta',
-  //     },
-  //     tests: [checkResult, shouldNotThrow],
-  //   },
-  //   {
-  //     description: 'when the input is an empty string',
-  //     input: [''],
-  //     result: {},
-  //     tests: [checkResult, shouldNotThrow],
-  //   },
-  //   {
-  //     description: 'when the input is invalid JSON',
-  //     input: ['{"alpha":"beta'],
-  //     result: {},
-  //     tests: [checkResult, shouldNotThrow],
-  //   },
-  //   {
-  //     description: 'when the input is invalid comma-separated key=value pairs',
-  //     input: ['alpha,beta,=gamma,delta='],
-  //     result: {},
-  //     tests: [checkResult, shouldNotThrow],
-  //   },
+
+  {
+    description: 'when the input is a mix of JSON items and key-value pairs',
+    input: ['{"Key":"foo", "Value":"bar"}', 'Key=foo1,Value=bar1'],
+    result: [],
+    tests: [shouldThrow],
+  },
+  // {
+  //   description: 'when the input is an empty string',
+  //   input: [''],
+  //   result: [],
+  //   tests: [checkResult, shouldNotThrow],
+  // },
 ];
 
 describe('unpackTags', () => {

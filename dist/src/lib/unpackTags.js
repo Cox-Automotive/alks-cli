@@ -55,8 +55,12 @@ function parseShorthand(inputs) {
             var input = inputs_1[_i];
             try {
                 var pair = input.split(',');
-                var key = pair[0].split('=')[1];
-                var value = pair[1].split('=')[1];
+                var key = '';
+                var value = '';
+                if (pair[0].includes('Key=') && pair[1].includes('Value=')) {
+                    key = pair[0].split('=')[1];
+                    value = pair[1].split('=')[1];
+                }
                 if (!key || !value) {
                     throw SyntaxError(errorMsg);
                 }
