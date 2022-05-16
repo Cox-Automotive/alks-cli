@@ -15,7 +15,6 @@ import { Tag } from 'alks.js';
 export function unpackTags(inputs: string[]): Tag[] {
   let record: Record<string, string> | undefined = parseShorthand(inputs);
   if (typeof record == 'undefined') {
-    // Should fail fast if a parsing error is encountered
     let obj = JSON.parse(inputs[0], (_, value) =>
       typeof value !== 'object' ? String(value) : value
     );
@@ -30,7 +29,7 @@ export function unpackTags(inputs: string[]): Tag[] {
     }
   }
 
-  let tags: Tag[] = [];
+  const tags: Tag[] = [];
 
   for (const [key, value] of Object.entries(record)) {
     const t: Tag = {
@@ -43,16 +42,28 @@ export function unpackTags(inputs: string[]): Tag[] {
 }
 
 function parseShorthand(inputs: string[]): Record<string, string> | undefined {
-  let record: Record<string, string> = {};
+  const record: Record<string, string> = {};
   try {
     JSON.parse(inputs[0]);
+    if (inputs.length > 1) {
+      throw SyntaxError('JSON option syntax should be a single string');
+    }
     return;
   } catch (e) {
+    const errorMsg =
+      'Improper syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
     for (const input of inputs) {
-      const pair = input.split(',');
-      const key = pair[0].split('=')[1];
-      const value = pair[1].split('=')[1];
-      record[key] = value;
+      try {
+        const pair = input.split(',');
+        const key = pair[0].split('=')[1];
+        const value = pair[1].split('=')[1];
+        if (!key || !value) {
+          throw SyntaxError(errorMsg);
+        }
+        record[key] = value;
+      } catch (e) {
+        throw SyntaxError(errorMsg);
+      }
     }
   }
   return record;

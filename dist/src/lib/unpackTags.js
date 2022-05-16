@@ -16,7 +16,6 @@ exports.unpackTags = void 0;
 function unpackTags(inputs) {
     var record = parseShorthand(inputs);
     if (typeof record == 'undefined') {
-        // Should fail fast if a parsing error is encountered
         var obj = JSON.parse(inputs[0], function (_, value) {
             return typeof value !== 'object' ? String(value) : value;
         });
@@ -45,15 +44,27 @@ function parseShorthand(inputs) {
     var record = {};
     try {
         JSON.parse(inputs[0]);
+        if (inputs.length > 1) {
+            throw SyntaxError('JSON option syntax should be a single string');
+        }
         return;
     }
     catch (e) {
+        var errorMsg = 'Improper syntax. Should look like either \'{"Key":"key1", "Value":"val1"}\' or "Key=key1,Value=val1"';
         for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
             var input = inputs_1[_i];
-            var pair = input.split(',');
-            var key = pair[0].split('=')[1];
-            var value = pair[1].split('=')[1];
-            record[key] = value;
+            try {
+                var pair = input.split(',');
+                var key = pair[0].split('=')[1];
+                var value = pair[1].split('=')[1];
+                if (!key || !value) {
+                    throw SyntaxError(errorMsg);
+                }
+                record[key] = value;
+            }
+            catch (e) {
+                throw SyntaxError(errorMsg);
+            }
         }
     }
     return record;

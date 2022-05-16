@@ -19,6 +19,11 @@ function shouldNotThrow(t) {
         expect(err).toBeUndefined();
     });
 }
+function shouldThrow(t) {
+    it('should throw an error', function () {
+        expect(function () { return (0, unpackTags_1.unpackTags)(t.input); }).toThrow(SyntaxError);
+    });
+}
 var testCases = [
     {
         description: 'when the input is a JSON string with a single tag',
@@ -41,43 +46,53 @@ var testCases = [
         ],
         tests: [checkResult, shouldNotThrow],
     },
+    {
+        description: 'when the input is multiple shorthand tags',
+        input: ['Key=foo1,Value=bar1', 'Key=foo2,Value=bar2'],
+        result: [
+            { key: 'foo1', value: 'bar1' },
+            { key: 'foo2', value: 'bar2' },
+        ],
+        tests: [checkResult, shouldNotThrow],
+    },
+    {
+        description: 'when the input is not valid json ',
+        input: [
+            '[{"Key":"foo1", "Value":"bar1"}}, {"Key":"foo2", "Value":"bar2"}]',
+        ],
+        result: [],
+        tests: [shouldThrow],
+    },
+    {
+        description: 'when the input includes multiple JSON options ',
+        input: ['{"Key":"foo1", "Value":"bar1"}', '{"Key":"foo2", "Value":"bar2"}'],
+        result: [],
+        tests: [shouldThrow],
+    },
+    {
+        description: 'when the input is a JSON string with a single tag that has multiple comma seperated values',
+        input: ['{"Key":"foo", "Value":"bar,bar2,bar3"}'],
+        result: [{ key: 'foo', value: 'bar,bar2,bar3' }],
+        tests: [checkResult, shouldNotThrow],
+    },
+    {
+        description: 'when the input is the wrong shorthand syntax',
+        input: ['foo=bar'],
+        result: [],
+        tests: [shouldThrow],
+    },
     // {
-    //   description:
-    //     'when the input is a JSON string with a single tag array value',
-    //   input: ['{"Key":"foo", "Value":["bar", "bardot"]}'],
-    //   result: {
-    //     Key: 'foo',
-    //     Value: ['bar', 'bardot'],
-    //   },
-    //   tests: [checkResult, shouldNotThrow],
+    //   description: 'when the input is a variation of the wrong shorthand syntax',
+    //   input: ['Key=key1,=Valueval1'],
+    //   result: [],
+    //   tests: [shouldThrow],
     // },
-    //   {
-    //     description:
-    //       'when the input is multiple key=value items in the same string',
-    //     input: ['alpha=beta,gamma=delta'],
-    //     result: {
-    //       alpha: 'beta',
-    //       gamma: 'delta',
-    //     },
-    //     tests: [checkResult, shouldNotThrow],
-    //   },
-    //   {
-    //     description: 'when the input is a single JSON style item',
-    //     input: ['{"alpha":"beta"}'],
-    //     result: {
-    //       alpha: 'beta',
-    //     },
-    //     tests: [checkResult, shouldNotThrow],
-    //   },
-    //   {
-    //     description: 'when the input is a JSON object with multiple items',
-    //     input: ['{"alpha":"beta","gamma":"delta"}'],
-    //     result: {
-    //       alpha: 'beta',
-    //       gamma: 'delta',
-    //     },
-    //     tests: [checkResult, shouldNotThrow],
-    //   },
+    {
+        description: 'when the input is multiple options with the wrong shorthand syntax',
+        input: ['foo=bar', 'Key=foo1,Value=bar1'],
+        result: [],
+        tests: [shouldThrow],
+    },
     //   {
     //     description: 'when the input is multiple JSON items',
     //     input: ['{"alpha":"beta"}', '{"gamma":"delta"}'],
