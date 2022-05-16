@@ -23,21 +23,34 @@ var testCases = [
     {
         description: 'when the input is a JSON string with a single tag',
         input: ['{"Key":"foo", "Value":"bar"}'],
-        result: {
-            Key: 'foo',
-            Value: 'bar',
-        },
+        result: [{ key: 'foo', value: 'bar' }],
         tests: [checkResult, shouldNotThrow],
     },
     {
-        description: 'when the input is a JSON string with a single tag array value',
-        input: ['{"Key":"foo", "Value":["bar", "bardot"]}'],
-        result: {
-            Key: 'foo',
-            Value: ['bar', 'bardot'],
-        },
+        description: 'when the input is a single shorthand tag',
+        input: ['Key=foo,Value=bar'],
+        result: [{ key: 'foo', value: 'bar' }],
         tests: [checkResult, shouldNotThrow],
     },
+    {
+        description: 'when the input is JSON string with multiple tags',
+        input: ['[{"Key":"foo1", "Value":"bar1"}, {"Key":"foo2", "Value":"bar2"}]'],
+        result: [
+            { key: 'foo1', value: 'bar1' },
+            { key: 'foo2', value: 'bar2' },
+        ],
+        tests: [checkResult, shouldNotThrow],
+    },
+    // {
+    //   description:
+    //     'when the input is a JSON string with a single tag array value',
+    //   input: ['{"Key":"foo", "Value":["bar", "bardot"]}'],
+    //   result: {
+    //     Key: 'foo',
+    //     Value: ['bar', 'bardot'],
+    //   },
+    //   tests: [checkResult, shouldNotThrow],
+    // },
     //   {
     //     description:
     //       'when the input is multiple key=value items in the same string',

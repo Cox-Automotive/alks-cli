@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.unpackTags = void 0;
 /**
  * Parse tags as key-value pairs. Similar to parseKeyValuePairs but with a different interface
  *
@@ -11,35 +13,49 @@
  * @example
  * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.unpackTags = void 0;
 function unpackTags(inputs) {
-    // var record: Record<string, string | string[]> = {};
-    // First, attempt a JSON parse
-    // Should fail fast if a parsing error is encountered
-    if (inputs.length === 1) {
-        var record = JSON.parse(inputs[0], function (_, value) {
+    var record = parseShorthand(inputs);
+    if (typeof record == 'undefined') {
+        // Should fail fast if a parsing error is encountered
+        var obj = JSON.parse(inputs[0], function (_, value) {
             return typeof value !== 'object' ? String(value) : value;
         });
+        record = {};
+        if (!obj.length) {
+            obj = [obj];
+        }
+        for (var _i = 0, obj_1 = obj; _i < obj_1.length; _i++) {
+            var entry = obj_1[_i];
+            record[entry.Key] = entry.Value;
+        }
     }
-    console.log(record);
-    // } else {
-    //   for (const input of inputs) {
-    //     // Otherwise parse as comma-separated key=value pairs
-    //     const pairs = input.split(',');
-    //     const record = pairs.reduce((acc, pair) => {
-    //       const [key, value] = pair.split('=');
-    //       if (key && value) {
-    //         acc[key] = value;
-    //       }
-    //       return acc;
-    //     }, {} as Record<string, string>);
-    //     for (const [key, value] of Object.entries(record)) {
-    //       options[key] = value;
-    //     }
-    //   }
-    // }
-    return record;
+    var tags = [];
+    for (var _a = 0, _b = Object.entries(record); _a < _b.length; _a++) {
+        var _c = _b[_a], key = _c[0], value = _c[1];
+        var t = {
+            key: key,
+            value: value,
+        };
+        tags.push(t);
+    }
+    return tags;
 }
 exports.unpackTags = unpackTags;
+function parseShorthand(inputs) {
+    var record = {};
+    try {
+        JSON.parse(inputs[0]);
+        return;
+    }
+    catch (e) {
+        for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
+            var input = inputs_1[_i];
+            var pair = input.split(',');
+            var key = pair[0].split('=')[1];
+            var value = pair[1].split('=')[1];
+            record[key] = value;
+        }
+    }
+    return record;
+}
 //# sourceMappingURL=unpackTags.js.map

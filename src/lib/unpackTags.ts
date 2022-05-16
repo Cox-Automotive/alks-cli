@@ -1,3 +1,4 @@
+import { Tag } from 'alks.js';
 /**
  * Parse tags as key-value pairs. Similar to parseKeyValuePairs but with a different interface
  *
@@ -11,36 +12,48 @@
  * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
  */
 
-export function unpackTags(
-  inputs: string[]
-): Record<string, string | string[]> {
-  // var record: Record<string, string | string[]> = {};
-
-  // First, attempt a JSON parse
-  // Should fail fast if a parsing error is encountered
-  if (inputs.length === 1) {
-    var record = JSON.parse(inputs[0], (_, value) =>
+export function unpackTags(inputs: string[]): Tag[] {
+  let record: Record<string, string> | undefined = parseShorthand(inputs);
+  if (typeof record == 'undefined') {
+    // Should fail fast if a parsing error is encountered
+    let obj = JSON.parse(inputs[0], (_, value) =>
       typeof value !== 'object' ? String(value) : value
     );
+
+    record = {} as Record<string, string>;
+
+    if (!obj.length) {
+      obj = [obj];
+    }
+    for (const entry of obj) {
+      record[entry.Key] = entry.Value;
+    }
   }
-  console.log(record);
-  // } else {
-  //   for (const input of inputs) {
 
-  //     // Otherwise parse as comma-separated key=value pairs
-  //     const pairs = input.split(',');
-  //     const record = pairs.reduce((acc, pair) => {
-  //       const [key, value] = pair.split('=');
-  //       if (key && value) {
-  //         acc[key] = value;
-  //       }
-  //       return acc;
-  //     }, {} as Record<string, string>);
+  let tags: Tag[] = [];
 
-  //     for (const [key, value] of Object.entries(record)) {
-  //       options[key] = value;
-  //     }
-  //   }
-  // }
+  for (const [key, value] of Object.entries(record)) {
+    const t: Tag = {
+      key,
+      value,
+    };
+    tags.push(t);
+  }
+  return tags;
+}
+
+function parseShorthand(inputs: string[]): Record<string, string> | undefined {
+  let record: Record<string, string> = {};
+  try {
+    JSON.parse(inputs[0]);
+    return;
+  } catch (e) {
+    for (const input of inputs) {
+      const pair = input.split(',');
+      const key = pair[0].split('=')[1];
+      const value = pair[1].split('=')[1];
+      record[key] = value;
+    }
+  }
   return record;
 }
