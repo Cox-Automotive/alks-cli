@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unpackTags = void 0;
 /**
- * Parse tags as key-value pairs. Similar to parseKeyValuePairs but with a different interface
+ * Parse tags into a Tags object from either JSON or the AWS defined shorthand for tag options
  *
- * @param inputs - a string containing key-value pairs in one of two forms consistent with the AWS CLI
+ * @param inputs - a list of strings containing key-value pairs in one of two forms consistent with the AWS CLI
  * @see https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-shorthand.html
  *
  * @example
- * parseKeyValuePairs('key1=value1,key2=value2')
+ * parseKeyValuePairs(['Key=key1,Value=val1'])
  *
  * @example
- * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
+ * parseKeyValuePairs(['{"Key":"key1","Value":"value1"}'])
  */
 function unpackTags(inputs) {
     var tags = [];
@@ -22,10 +22,8 @@ function unpackTags(inputs) {
             var obj = JSON.parse(input, function (_, value) {
                 return typeof value !== 'object' ? String(value) : value;
             });
-            // iterable object must be a list
-            if (!obj.length) {
-                obj = [obj];
-            }
+            // iterable object must be a list otherwise the length returns undefined
+            obj = obj.length ? obj : [obj];
             record = {};
             for (var _a = 0, obj_1 = obj; _a < obj_1.length; _a++) {
                 var entry = obj_1[_a];

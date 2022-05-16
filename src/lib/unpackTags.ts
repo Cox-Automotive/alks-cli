@@ -1,15 +1,15 @@
 import { Tag } from 'alks.js';
 /**
- * Parse tags as key-value pairs. Similar to parseKeyValuePairs but with a different interface
+ * Parse tags into a Tags object from either JSON or the AWS defined shorthand for tag options
  *
- * @param inputs - a string containing key-value pairs in one of two forms consistent with the AWS CLI
+ * @param inputs - a list of strings containing key-value pairs in one of two forms consistent with the AWS CLI
  * @see https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-shorthand.html
  *
  * @example
- * parseKeyValuePairs('key1=value1,key2=value2')
+ * parseKeyValuePairs(['Key=key1,Value=val1'])
  *
  * @example
- * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
+ * parseKeyValuePairs(['{"Key":"key1","Value":"value1"}'])
  */
 
 export function unpackTags(inputs: string[]): Tag[] {
@@ -21,10 +21,8 @@ export function unpackTags(inputs: string[]): Tag[] {
       let obj = JSON.parse(input, (_, value) =>
         typeof value !== 'object' ? String(value) : value
       );
-      // iterable object must be a list
-      if (!obj.length) {
-        obj = [obj];
-      }
+      // iterable object must be a list otherwise the length returns undefined
+      obj = obj.length ? obj : [obj];
 
       record = {} as Record<string, string>;
       for (const entry of obj) {
@@ -43,7 +41,7 @@ export function unpackTags(inputs: string[]): Tag[] {
 }
 
 function parseShorthand(input: string): Record<string, string> | undefined {
-  let record: Record<string, string> = {};
+  const record: Record<string, string> = {};
   try {
     JSON.parse(input);
     return;
