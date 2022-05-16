@@ -1,10 +1,9 @@
-★ Release Notes: 2021-10-29 ★
+★ Release Notes: 2022-05-16 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes a bug where `alks developer configure` wouldn't prompt for a default output format
-
+* Adds a tags flag to the `createrole` option. Input format is of JSON or a shorthand syntax (Ex. 'Key=string,Value=string')
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
