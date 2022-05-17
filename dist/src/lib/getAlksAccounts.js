@@ -12,17 +12,17 @@ function getAlksAccounts(options) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('retreiving alks account');
-                    return [4 /*yield*/, getAuth_1.getAuth()];
+                    (0, log_1.log)('retreiving alks account');
+                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 1:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 2:
                     alks = _a.sent();
                     return [4 /*yield*/, alks.getAccounts()];
                 case 3:
                     alksAccounts = _a.sent();
-                    log_1.log("All accounts: " + alksAccounts.map(function (alksAccount) { return alksAccount.account; }));
+                    (0, log_1.log)("All accounts: ".concat(alksAccounts.map(function (alksAccount) { return alksAccount.account; })));
                     filteredAlksAccounts = alksAccounts.filter(function (alksAccount) { return !options.iamOnly || alksAccount.iamKeyActive; });
                     return [2 /*return*/, filteredAlksAccounts];
             }

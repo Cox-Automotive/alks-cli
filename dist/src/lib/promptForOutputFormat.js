@@ -10,7 +10,7 @@ function promptForOutputFormat() {
         var outputFormat, promptData, answers;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, outputFormat_1.getOutputFormat()];
+                case 0: return [4 /*yield*/, (0, outputFormat_1.getOutputFormat)()];
                 case 1:
                     outputFormat = _a.sent();
                     promptData = {
@@ -18,10 +18,10 @@ function promptForOutputFormat() {
                         name: 'outputFormat',
                         default: outputFormat,
                         message: 'Please select your default output format',
-                        choices: getOutputValues_1.getOutputValues(),
+                        choices: (0, getOutputValues_1.getOutputValues)(),
                         pageSize: 10,
                     };
-                    return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([promptData])];
+                    return [4 /*yield*/, (0, getStdErrPrompt_1.getStdErrPrompt)()([promptData])];
                 case 2:
                     answers = _a.sent();
                     return [2 /*return*/, answers.outputFormat];

@@ -12,23 +12,23 @@ function getPasswordFromPrompt(text, currentPassword) {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    log_1.log('getting password from prompt');
-                    return [4 /*yield*/, getStdErrPrompt_1.getStdErrPrompt()([
+                    (0, log_1.log)('getting password from prompt');
+                    return [4 /*yield*/, (0, getStdErrPrompt_1.getStdErrPrompt)()([
                             {
                                 type: 'password',
                                 name: 'password',
                                 message: text ? text : 'Password',
                                 default: function () {
-                                    return underscore_1.isEmpty(currentPassword) ? '' : currentPassword;
+                                    return (0, underscore_1.isEmpty)(currentPassword) ? '' : currentPassword;
                                 },
                                 validate: function (val) {
-                                    return !underscore_1.isEmpty(val) ? true : 'Please enter a value for password.';
+                                    return !(0, underscore_1.isEmpty)(val) ? true : 'Please enter a value for password.';
                                 },
                             },
                         ])];
                 case 1:
                     answers = _a.sent();
-                    return [2 /*return*/, trim_1.trim(answers.password)];
+                    return [2 /*return*/, (0, trim_1.trim)(answers.password)];
             }
         });
     });

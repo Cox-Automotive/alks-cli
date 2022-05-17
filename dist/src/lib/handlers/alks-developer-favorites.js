@@ -19,31 +19,31 @@ function handleAlksDeveloperFavorites(_options) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 8, , 9]);
-                    log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth()];
+                    (0, log_1.log)('getting auth');
+                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 1:
                     auth = _a.sent();
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 2:
                     alks = _a.sent();
-                    log_1.log('getting alks accounts');
+                    (0, log_1.log)('getting alks accounts');
                     return [4 /*yield*/, alks.getAccounts()];
                 case 3:
                     alksAccounts = _a.sent();
-                    log_1.log('getting favorite accounts');
-                    return [4 /*yield*/, getFavorites_1.getFavorites()];
+                    (0, log_1.log)('getting favorite accounts');
+                    return [4 /*yield*/, (0, getFavorites_1.getFavorites)()];
                 case 4:
                     favorites_1 = _a.sent();
                     choices_1 = [];
                     deferred_1 = [];
-                    log_1.log('rendering favorite accounts');
+                    (0, log_1.log)('rendering favorite accounts');
                     choices_1.push(new inquirer_1.default.Separator(' = Standard = '));
                     alksAccounts.forEach(function (alksAccount) {
                         if (!alksAccount.iamKeyActive) {
-                            var name = [alksAccount.account, alksAccount.role].join(getAccountDelim_1.getAccountDelim());
+                            var name = [alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)());
                             choices_1.push({
                                 name: name,
-                                checked: underscore_1.contains(favorites_1, name),
+                                checked: (0, underscore_1.contains)(favorites_1, name),
                             });
                         }
                         else {
@@ -52,10 +52,10 @@ function handleAlksDeveloperFavorites(_options) {
                     });
                     choices_1.push(new inquirer_1.default.Separator(' = IAM = '));
                     deferred_1.forEach(function (val) {
-                        var name = [val.account, val.role].join(getAccountDelim_1.getAccountDelim());
+                        var name = [val.account, val.role].join((0, getAccountDelim_1.getAccountDelim)());
                         choices_1.push({
                             name: name,
-                            checked: underscore_1.contains(favorites_1, name),
+                            checked: (0, underscore_1.contains)(favorites_1, name),
                         });
                     });
                     return [4 /*yield*/, inquirer_1.default.prompt([
@@ -69,17 +69,17 @@ function handleAlksDeveloperFavorites(_options) {
                         ])];
                 case 5:
                     faves = _a.sent();
-                    return [4 /*yield*/, saveFavorites_1.saveFavorites({ accounts: faves })];
+                    return [4 /*yield*/, (0, saveFavorites_1.saveFavorites)({ accounts: faves })];
                 case 6:
                     _a.sent();
                     console.log('Favorites have been saved!');
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 7:
                     _a.sent();
                     return [3 /*break*/, 9];
                 case 8:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
                     return [3 /*break*/, 9];
                 case 9: return [2 /*return*/];
             }

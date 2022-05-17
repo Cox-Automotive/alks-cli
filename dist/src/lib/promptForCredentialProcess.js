@@ -10,11 +10,11 @@ function promptForCredentialProcess() {
         var credentialProcess;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, credentialProcess_1.getCredentialProcess()];
+                case 0: return [4 /*yield*/, (0, credentialProcess_1.getCredentialProcess)()];
                 case 1:
                     credentialProcess = _a.sent();
-                    console.log(cli_color_1.white('For information on using credential_process scripts, see https://github.com/Cox-Automotive/alks-cli/wiki/Credential-Process-Scripts'));
-                    return [2 /*return*/, getPrompt_1.getPrompt('scriptPath', credentialProcess, 'Path to your script', null)];
+                    console.log((0, cli_color_1.white)('For information on using credential_process scripts, see https://github.com/Cox-Automotive/alks-cli/wiki/Credential-Process-Scripts'));
+                    return [2 /*return*/, (0, getPrompt_1.getPrompt)('scriptPath', credentialProcess, 'Path to your script', null)];
             }
         });
     });

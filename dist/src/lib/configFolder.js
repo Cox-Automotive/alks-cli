@@ -8,7 +8,7 @@ var path_1 = require("path");
 var log_1 = require("./log");
 var mkdir = fs_1.promises.mkdir;
 function getAlksConfigFolder() {
-    return path_1.join(os_1.homedir(), '.alks-cli');
+    return (0, path_1.join)((0, os_1.homedir)(), '.alks-cli');
 }
 exports.getAlksConfigFolder = getAlksConfigFolder;
 function ensureConfigFolderExists() {
@@ -19,7 +19,7 @@ function ensureConfigFolderExists() {
                 // ensure the alks config folder exists
                 return [4 /*yield*/, mkdir(getAlksConfigFolder()).catch(function (err) {
                         if (err.message.includes('EEXIST')) {
-                            log_1.log('config folder already exists');
+                            (0, log_1.log)('config folder already exists');
                         }
                         else {
                             throw err;

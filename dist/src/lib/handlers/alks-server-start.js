@@ -30,27 +30,27 @@ function runServerDaemon() {
 }
 function handleAlksServerStart(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var servicePath, err_1;
+        var servicePath, er_1, e;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    if (!isOsx_1.isOsx()) {
-                        errorAndExit_1.errorAndExit('The metadata server is only supported on OSX.');
+                    if (!(0, isOsx_1.isOsx)()) {
+                        (0, errorAndExit_1.errorAndExit)('The metadata server is only supported on OSX.');
                     }
-                    log_1.log('Checking if forwarding daemon is already installed..');
+                    (0, log_1.log)('Checking if forwarding daemon is already installed..');
                     if (!!fs_1.default.existsSync('/etc/pf.anchors/com.coxautodev.alks')) return [3 /*break*/, 2];
                     console.error(cli_color_1.default.white('Installing metadata daemon rules. You may be prompted for your system password since this requires escalated privileges.'));
                     servicePath = path_1.default.join(__dirname, '../service');
                     try {
-                        log_1.log('Adding pf.anchor');
-                        child_process_1.execSync('sudo cp ' + servicePath + '/com.coxautodev.alks /etc/pf.anchors/');
-                        log_1.log('Adding launch daemon');
-                        child_process_1.execSync('sudo cp ' +
+                        (0, log_1.log)('Adding pf.anchor');
+                        (0, child_process_1.execSync)('sudo cp ' + servicePath + '/com.coxautodev.alks /etc/pf.anchors/');
+                        (0, log_1.log)('Adding launch daemon');
+                        (0, child_process_1.execSync)('sudo cp ' +
                             servicePath +
                             '/com.coxautodev.alks.Ec2MetaDataFirewall.plist /Library/LaunchDaemons/');
-                        log_1.log('Loading launch daemon');
-                        child_process_1.execSync('sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist');
+                        (0, log_1.log)('Loading launch daemon');
+                        (0, child_process_1.execSync)('sudo launchctl load -w /Library/LaunchDaemons/com.coxautodev.alks.Ec2MetaDataFirewall.plist');
                     }
                     catch (err) {
                         console.log(cli_color_1.default.red('Error installing metadata daemon.'), err);
@@ -61,15 +61,16 @@ function handleAlksServerStart(_options) {
                     _a.sent();
                     return [3 /*break*/, 4];
                 case 2:
-                    log_1.log('Daemon is already installed..');
+                    (0, log_1.log)('Daemon is already installed..');
                     return [4 /*yield*/, runServerDaemon()];
                 case 3:
                     _a.sent();
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1.message, err_1);
+                    er_1 = _a.sent();
+                    e = er_1;
+                    (0, errorAndExit_1.errorAndExit)(e.message, e);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }

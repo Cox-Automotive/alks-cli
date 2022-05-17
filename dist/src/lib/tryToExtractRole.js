@@ -4,7 +4,7 @@ exports.tryToExtractRole = void 0;
 var getAccountRegex_1 = require("./getAccountRegex");
 function tryToExtractRole(account) {
     var match;
-    while ((match = getAccountRegex_1.getAccountRegex().exec(account))) {
+    while ((match = (0, getAccountRegex_1.getAccountRegex)().exec(account))) {
         if (match && account.indexOf('ALKS_') === -1) {
             // ignore legacy accounts
             return match[4];

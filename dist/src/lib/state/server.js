@@ -13,15 +13,15 @@ function getServer() {
             switch (_a.label) {
                 case 0:
                     serverFromEnv = process.env[SERVER_ENV_VAR_NAME];
-                    if (!underscore_1.isEmpty(serverFromEnv)) {
-                        log_1.log('using server url from environment variable');
+                    if (!(0, underscore_1.isEmpty)(serverFromEnv)) {
+                        (0, log_1.log)('using server url from environment variable');
                         return [2 /*return*/, serverFromEnv];
                     }
-                    return [4 /*yield*/, developer_1.getDeveloper()];
+                    return [4 /*yield*/, (0, developer_1.getDeveloper)()];
                 case 1:
                     developer = _a.sent();
                     if (developer.server) {
-                        log_1.log('using stored server url');
+                        (0, log_1.log)('using stored server url');
                         return [2 /*return*/, developer.server];
                     }
                     return [2 /*return*/, undefined];
@@ -34,7 +34,7 @@ function setServer(server) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, developer_1.updateDeveloper({ server: server })];
+                case 0: return [4 /*yield*/, (0, developer_1.updateDeveloper)({ server: server })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];

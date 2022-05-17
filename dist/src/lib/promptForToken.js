@@ -10,12 +10,12 @@ var log_1 = require("./log");
 var server_1 = require("./state/server");
 function promptForToken() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var server, url, err_1, refreshToken, alks, err_2;
+        var server, url, err_1, refreshToken, alks, err_2, e;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!process.stdin.isTTY) return [3 /*break*/, 6];
-                    return [4 /*yield*/, server_1.getServer()];
+                    return [4 /*yield*/, (0, server_1.getServer)()];
                 case 1:
                     server = _a.sent();
                     if (!server) {
@@ -23,12 +23,12 @@ function promptForToken() {
                     }
                     console.error('Opening ALKS 2FA Page.. Be sure to login using Okta..');
                     url = server.replace(/rest/, 'token-management');
-                    console.error("If the 2FA page does not open, please visit " + cli_color_1.default.underline(url));
+                    console.error("If the 2FA page does not open, please visit ".concat(cli_color_1.default.underline(url)));
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 4, , 5]);
                     return [4 /*yield*/, Promise.race([
-                            open_1.default(url, {
+                            (0, open_1.default)(url, {
                                 newInstance: true,
                             }),
                             new Promise(function (_, rej) {
@@ -40,17 +40,17 @@ function promptForToken() {
                     return [3 /*break*/, 5];
                 case 4:
                     err_1 = _a.sent();
-                    console.error("Failed to open " + url);
+                    console.error("Failed to open ".concat(url));
                     console.error('Please open the url in the browser of your choice');
                     return [3 /*break*/, 5];
                 case 5:
                     console.error('Please copy your refresh token from ALKS and paste below..');
                     _a.label = 6;
-                case 6: return [4 /*yield*/, getPasswordFromPrompt_1.getPasswordFromPrompt('Refresh Token')];
+                case 6: return [4 /*yield*/, (0, getPasswordFromPrompt_1.getPasswordFromPrompt)('Refresh Token')];
                 case 7:
                     refreshToken = _a.sent();
-                    log_1.log('exchanging refresh token for access token');
-                    return [4 /*yield*/, getAlks_1.getAlks({})];
+                    (0, log_1.log)('exchanging refresh token for access token');
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)({})];
                 case 8:
                     alks = _a.sent();
                     _a.label = 9;
@@ -64,7 +64,8 @@ function promptForToken() {
                     return [3 /*break*/, 12];
                 case 11:
                     err_2 = _a.sent();
-                    err_2.message = 'Error validating refresh token. ' + err_2.message;
+                    e = err_2;
+                    e.message = 'Error validating refresh token. ' + e.message;
                     throw err_2;
                 case 12:
                     console.error(cli_color_1.default.white('Refresh token validated!'));

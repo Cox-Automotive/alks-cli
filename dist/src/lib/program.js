@@ -24,7 +24,7 @@ var alks_developer_login2fa_1 = require("../lib/handlers/alks-developer-login2fa
 var alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
 var alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
 var alks_completion_1 = require("./handlers/alks-completion");
-var outputValues = getOutputValues_1.getOutputValues();
+var outputValues = (0, getOutputValues_1.getOutputValues)();
 var nameDesc = 'alphanumeric including @+=._-';
 var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
 var program = new commander_1.Command();
@@ -117,6 +117,7 @@ iam
     .option('-a, --account <alksAccount>', 'alks account to use')
     .option('-r, --role <alksRole>', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
+    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
     .option('-T, --template-fields <templateFields...>', "key-value pairs used to populate template fields in the trust policy document of the role. Can either be a JSON string like '{\"key1\":\"value1\",\"key2\":\"value2\"}' or a list of pairs like key1=value1,key2=value2")
     .action(alks_iam_createrole_1.handleAlksIamCreateRole);
 iam

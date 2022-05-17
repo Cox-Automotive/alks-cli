@@ -22,20 +22,20 @@ function handleAlksIamDeleteRole(options) {
                     alksAccount = options.account;
                     alksRole = options.role;
                     filterFavorites = options.favorites || false;
-                    log_1.log('validating role name: ' + roleName);
-                    if (underscore_1.isEmpty(roleName)) {
-                        errorAndExit_1.errorAndExit('The role name must be provided.');
+                    (0, log_1.log)('validating role name: ' + roleName);
+                    if ((0, underscore_1.isEmpty)(roleName)) {
+                        (0, errorAndExit_1.errorAndExit)('The role name must be provided.');
                     }
-                    if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log('trying to extract role from account');
-                        alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
+                    if (!(0, underscore_1.isUndefined)(alksAccount) && (0, underscore_1.isUndefined)(alksRole)) {
+                        (0, log_1.log)('trying to extract role from account');
+                        alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
                     }
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 12, , 13]);
-                    if (!(underscore_1.isEmpty(alksAccount) || underscore_1.isEmpty(alksRole))) return [3 /*break*/, 3];
-                    log_1.log('getting accounts');
-                    return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
+                    if (!((0, underscore_1.isEmpty)(alksAccount) || (0, underscore_1.isEmpty)(alksRole))) return [3 /*break*/, 3];
+                    (0, log_1.log)('getting accounts');
+                    return [4 /*yield*/, (0, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole)({
                             iamOnly: true,
                             filterFavorites: filterFavorites,
                         })];
@@ -43,13 +43,13 @@ function handleAlksIamDeleteRole(options) {
                     (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
                     return [3 /*break*/, 4];
                 case 3:
-                    log_1.log('using provided account/role');
+                    (0, log_1.log)('using provided account/role');
                     _b.label = 4;
-                case 4: return [4 /*yield*/, getAuth_1.getAuth()];
+                case 4: return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 5:
                     auth = _b.sent();
-                    log_1.log('calling api to delete role: ' + roleName);
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                    (0, log_1.log)('calling api to delete role: ' + roleName);
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 6:
                     alks = _b.sent();
                     _b.label = 7;
@@ -65,17 +65,17 @@ function handleAlksIamDeleteRole(options) {
                     return [3 /*break*/, 10];
                 case 9:
                     err_1 = _b.sent();
-                    errorAndExit_1.errorAndExit(err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1);
                     return [3 /*break*/, 10];
                 case 10:
                     console.log(cli_color_1.default.white(['The role ', roleName, ' was deleted'].join('')));
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 11:
                     _b.sent();
                     return [3 /*break*/, 13];
                 case 12:
                     err_2 = _b.sent();
-                    errorAndExit_1.errorAndExit(err_2.message, err_2);
+                    (0, errorAndExit_1.errorAndExit)(err_2.message, err_2);
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }

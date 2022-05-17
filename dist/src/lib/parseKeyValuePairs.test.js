@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var parseKeyValuePairs_1 = require("./parseKeyValuePairs");
 function checkResult(t) {
     it('should return the expected result', function () {
-        var result = parseKeyValuePairs_1.parseKeyValuePairs(t.input);
+        var result = (0, parseKeyValuePairs_1.parseKeyValuePairs)(t.input);
         expect(result).toEqual(t.result);
     });
 }
@@ -11,7 +11,7 @@ function shouldNotThrow(t) {
     it('should not throw an error', function () {
         var err;
         try {
-            parseKeyValuePairs_1.parseKeyValuePairs(t.input);
+            (0, parseKeyValuePairs_1.parseKeyValuePairs)(t.input);
         }
         catch (e) {
             err = e;

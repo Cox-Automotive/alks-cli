@@ -30,10 +30,10 @@ function errorAndExit(message, error) {
         error = new Error(message);
     }
     if (program_1.default.opts().verbose) {
-        console.error(cli_color_1.red(error.stack));
+        console.error((0, cli_color_1.red)(error.stack));
     }
     else {
-        console.error(cli_color_1.red(message));
+        console.error((0, cli_color_1.red)(message));
     }
     process.exit(1);
 }

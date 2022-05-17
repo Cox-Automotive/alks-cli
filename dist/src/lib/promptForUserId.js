@@ -9,10 +9,10 @@ function promptForUserId() {
         var userId;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, userId_1.getUserId()];
+                case 0: return [4 /*yield*/, (0, userId_1.getUserId)()];
                 case 1:
                     userId = _a.sent();
-                    return [2 /*return*/, getPrompt_1.getPrompt('userid', userId, 'Network Username', null)];
+                    return [2 /*return*/, (0, getPrompt_1.getPrompt)('userid', userId, 'Network Username', null)];
             }
         });
     });

@@ -9,7 +9,7 @@ function confirm(message, defaultAnswer) {
         var answers;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, inquirer_1.prompt([
+                case 0: return [4 /*yield*/, (0, inquirer_1.prompt)([
                         {
                             type: 'confirm',
                             name: 'confirmation',

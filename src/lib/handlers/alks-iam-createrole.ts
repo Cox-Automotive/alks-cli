@@ -9,6 +9,7 @@ import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { parseKeyValuePairs } from '../parseKeyValuePairs';
+import { unpackTags } from '../unpackTags';
 
 export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   const roleNameDesc = 'alphanumeric including @+=._-';
@@ -20,6 +21,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   let alksAccount = options.account;
   let alksRole = options.role;
   const filterFavorites = options.favorites || false;
+  const tags = options.tags ? unpackTags(options.tags) : undefined;
   const templateFields = options.templateFields
     ? parseKeyValuePairs(options.templateFields)
     : undefined;
@@ -70,6 +72,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
         roleType,
         includeDefaultPolicy: incDefPolicies ? 1 : 0,
         enableAlksAccess,
+        tags,
         templateFields,
       });
     } catch (err) {

@@ -33,7 +33,7 @@ describe('trim', function () {
         describe(t.description, function () {
             var result;
             beforeEach(function () {
-                result = trim_1.trim(t.input);
+                result = (0, trim_1.trim)(t.input);
             });
             it('returns the correct result', function () {
                 expect(result).toEqual(t.result);

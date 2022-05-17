@@ -15,16 +15,16 @@ function getPasswordFromKeystore() {
             switch (_c.label) {
                 case 0:
                     _c.trys.push([0, 3, , 5]);
-                    return [4 /*yield*/, getKeytar_1.getKeytar()];
+                    return [4 /*yield*/, (0, getKeytar_1.getKeytar)()];
                 case 1:
                     keytar = _c.sent();
                     return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_PASSWORD)];
                 case 2: return [2 /*return*/, (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined];
                 case 3:
                     e_1 = _c.sent();
-                    log_1.log(e_1.message);
-                    log_1.log('Failed to use keychain. Checking for plaintext file');
-                    return [4 /*yield*/, credentials_1.getCredentials()];
+                    (0, log_1.log)(e_1.message);
+                    (0, log_1.log)('Failed to use keychain. Checking for plaintext file');
+                    return [4 /*yield*/, (0, credentials_1.getCredentials)()];
                 case 4:
                     credentials = _c.sent();
                     return [2 /*return*/, (_b = credentials.password) !== null && _b !== void 0 ? _b : undefined];

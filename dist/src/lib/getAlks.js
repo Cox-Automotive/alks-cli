@@ -16,7 +16,7 @@ function getAlks(props) {
         var server, params, alks, result;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, server_1.getServer()];
+                case 0: return [4 /*yield*/, (0, server_1.getServer)()];
                 case 1:
                     server = _a.sent();
                     if (!server) {
@@ -24,10 +24,10 @@ function getAlks(props) {
                     }
                     params = {
                         baseUrl: server,
-                        userAgent: getUserAgentString_1.getUserAgentString(),
+                        userAgent: (0, getUserAgentString_1.getUserAgentString)(),
                     };
                     if (!isTokenProps(props)) return [3 /*break*/, 3];
-                    alks = alks_js_1.create(params);
+                    alks = (0, alks_js_1.create)(params);
                     return [4 /*yield*/, alks.getAccessToken({
                             refreshToken: props.token,
                         })];
@@ -37,7 +37,7 @@ function getAlks(props) {
                     return [3 /*break*/, 4];
                 case 3:
                     // According to typescript, alks.js doesn't officially support username & password
-                    alks = alks_js_1.create(tslib_1.__assign(tslib_1.__assign({}, params), { userid: props.userid, password: props.password }));
+                    alks = (0, alks_js_1.create)(tslib_1.__assign(tslib_1.__assign({}, params), { userid: props.userid, password: props.password }));
                     _a.label = 4;
                 case 4: return [2 /*return*/, alks];
             }

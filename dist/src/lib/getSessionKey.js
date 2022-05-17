@@ -19,16 +19,16 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, ensureConfigured_1.ensureConfigured()];
+                case 0: return [4 /*yield*/, (0, ensureConfigured_1.ensureConfigured)()];
                 case 1:
                     _b.sent();
-                    log_1.log('getting auth');
-                    return [4 /*yield*/, getAuth_1.getAuth()];
+                    (0, log_1.log)('getting auth');
+                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 2:
                     auth = _b.sent();
                     if (!(!alksAccount || !alksRole)) return [3 /*break*/, 4];
-                    log_1.log('getting accounts');
-                    return [4 /*yield*/, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole({
+                    (0, log_1.log)('getting accounts');
+                    return [4 /*yield*/, (0, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole)({
                             iamOnly: iamOnly,
                             filterFavorites: filterFavorites,
                         })];
@@ -36,28 +36,28 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
                     (_a = _b.sent(), alksAccount = _a.alksAccount, alksRole = _a.alksRole);
                     return [3 /*break*/, 5];
                 case 4:
-                    log_1.log('using provided account/role');
+                    (0, log_1.log)('using provided account/role');
                     _b.label = 5;
                 case 5:
-                    log_1.log('getting existing keys');
-                    return [4 /*yield*/, getKeys_1.getKeys(auth, false)];
+                    (0, log_1.log)('getting existing keys');
+                    return [4 /*yield*/, (0, getKeys_1.getKeys)(auth, false)];
                 case 6:
                     existingKeys = _b.sent();
                     if (existingKeys.length && !forceNewSession) {
-                        log_1.log('filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
+                        (0, log_1.log)('filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
                         keyCriteria = { alksAccount: alksAccount, alksRole: alksRole };
-                        selectedKey = underscore_1.last(underscore_1.sortBy(underscore_1.where(existingKeys, keyCriteria), 'expires'));
+                        selectedKey = (0, underscore_1.last)((0, underscore_1.sortBy)((0, underscore_1.where)(existingKeys, keyCriteria), 'expires'));
                         if (selectedKey) {
-                            log_1.log('found existing valid key');
+                            (0, log_1.log)('found existing valid key');
                             console.error(cli_color_1.white.underline(['Resuming existing session in', alksAccount, alksRole].join(' ')));
                             return [2 /*return*/, selectedKey];
                         }
                     }
                     // generate a new key/session
                     if (forceNewSession) {
-                        log_1.log('forcing a new session');
+                        (0, log_1.log)('forcing a new session');
                     }
-                    return [4 /*yield*/, getAlks_1.getAlks(tslib_1.__assign({}, auth))];
+                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 7:
                     alks = _b.sent();
                     return [4 /*yield*/, alks.getLoginRole({
@@ -67,7 +67,7 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
                 case 8:
                     loginRole = _b.sent();
                     duration = Math.min(loginRole.maxKeyDuration, 12);
-                    log_1.log('calling api to generate new keys/session for ' + duration + ' hours');
+                    (0, log_1.log)('calling api to generate new keys/session for ' + duration + ' hours');
                     console.error(cli_color_1.white.underline(['Creating new session in', alksAccount, alksRole].join(' ')));
                     _b.label = 9;
                 case 9:
@@ -82,12 +82,11 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
                     return [3 /*break*/, 12];
                 case 11:
                     e_1 = _b.sent();
-                    throw new Error(getBadAccountMessage_1.getBadAccountMessage());
+                    throw new Error((0, getBadAccountMessage_1.getBadAccountMessage)());
                 case 12:
-                    key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: moment_1.default().add(duration, 'hours').toDate(), alksAccount: alksAccount,
-                        alksRole: alksRole, isIAM: true });
-                    log_1.log('storing key: ' + JSON.stringify(key));
-                    return [4 /*yield*/, addKey_1.addKey(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
+                    key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: (0, moment_1.default)().add(duration, 'hours').toDate(), alksAccount: alksAccount, alksRole: alksRole, isIAM: true });
+                    (0, log_1.log)('storing key: ' + JSON.stringify(key));
+                    return [4 /*yield*/, (0, addKey_1.addKey)(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
                 case 13:
                     _b.sent();
                     return [2 /*return*/, key];

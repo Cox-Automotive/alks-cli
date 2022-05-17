@@ -16,22 +16,22 @@ function getCredentialsFromProcess() {
                     if (cachedResult) {
                         return [2 /*return*/, cachedResult];
                     }
-                    return [4 /*yield*/, credentialProcess_1.getCredentialProcess()];
+                    return [4 /*yield*/, (0, credentialProcess_1.getCredentialProcess)()];
                 case 1:
                     credentialProcess = _a.sent();
                     if (credentialProcess) {
-                        output = child_process_1.spawnSync(credentialProcess);
+                        output = (0, child_process_1.spawnSync)(credentialProcess);
                         if (output.error) {
-                            log_1.log('error encountered when executing credential process: ' + output.error);
+                            (0, log_1.log)('error encountered when executing credential process: ' + output.error);
                             throw output.error;
                         }
                         if (String(output.stderr).trim().length > 0) {
-                            log_1.log('credential_process stderr: ' + output.stderr);
+                            (0, log_1.log)('credential_process stderr: ' + output.stderr);
                         }
                         result = JSON.parse(String(output.stdout));
                     }
                     else {
-                        log_1.log('no credential_process found');
+                        (0, log_1.log)('no credential_process found');
                     }
                     cachedResult = result;
                     return [2 /*return*/, result];

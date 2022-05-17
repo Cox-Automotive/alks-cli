@@ -21,9 +21,9 @@ function handleAlksServerConfigure(options) {
                     alksRole = options.role;
                     forceNewSession = options.newSession;
                     filterFaves = options.favorites || false;
-                    if (!underscore_1.isUndefined(alksAccount) && underscore_1.isUndefined(alksRole)) {
-                        log_1.log('trying to extract role from account');
-                        alksRole = tryToExtractRole_1.tryToExtractRole(alksAccount);
+                    if (!(0, underscore_1.isUndefined)(alksAccount) && (0, underscore_1.isUndefined)(alksRole)) {
+                        (0, log_1.log)('trying to extract role from account');
+                        alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
                     }
                     _a.label = 1;
                 case 1:
@@ -32,19 +32,19 @@ function handleAlksServerConfigure(options) {
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 7, , 8]);
-                    if (!underscore_1.isUndefined(options.iam)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, getSessionKey_1.getSessionKey(alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    if (!(0, underscore_1.isUndefined)(options.iam)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, (0, getSessionKey_1.getSessionKey)(alksAccount, alksRole, false, forceNewSession, filterFaves)];
                 case 3:
                     key = _a.sent();
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, getIamKey_1.getIamKey(alksAccount, alksRole, forceNewSession, filterFaves)];
+                case 4: return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, forceNewSession, filterFaves)];
                 case 5:
                     key = _a.sent();
                     _a.label = 6;
                 case 6: return [3 /*break*/, 8];
                 case 7:
                     err_1 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_1);
+                    (0, errorAndExit_1.errorAndExit)(err_1);
                     return [3 /*break*/, 8];
                 case 8: return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 1000); })];
                 case 9:
@@ -52,7 +52,7 @@ function handleAlksServerConfigure(options) {
                     _a.label = 10;
                 case 10:
                     _a.trys.push([10, 12, , 13]);
-                    return [4 /*yield*/, saveMetadata_1.saveMetadata({
+                    return [4 /*yield*/, (0, saveMetadata_1.saveMetadata)({
                             alksAccount: key.alksAccount,
                             alksRole: key.alksRole,
                             isIam: key.isIAM,
@@ -62,17 +62,17 @@ function handleAlksServerConfigure(options) {
                     return [3 /*break*/, 13];
                 case 12:
                     err_2 = _a.sent();
-                    errorAndExit_1.errorAndExit('Unable to save metadata!', err_2);
+                    (0, errorAndExit_1.errorAndExit)('Unable to save metadata!', err_2);
                     return [3 /*break*/, 13];
                 case 13:
                     console.error(cli_color_1.default.white('Metadata has been saved!'));
-                    return [4 /*yield*/, checkForUpdate_1.checkForUpdate()];
+                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
                 case 14:
                     _a.sent();
                     return [3 /*break*/, 16];
                 case 15:
                     err_3 = _a.sent();
-                    errorAndExit_1.errorAndExit(err_3.message, err_3);
+                    (0, errorAndExit_1.errorAndExit)(err_3.message, err_3);
                     return [3 /*break*/, 16];
                 case 16: return [2 /*return*/];
             }

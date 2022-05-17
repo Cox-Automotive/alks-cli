@@ -8,7 +8,7 @@ function getCredentialProcess() {
         var credentials;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, credentials_1.getCredentials()];
+                case 0: return [4 /*yield*/, (0, credentials_1.getCredentials)()];
                 case 1:
                     credentials = _a.sent();
                     return [2 /*return*/, credentials.credential_process];
@@ -22,11 +22,11 @@ function setCredentialProcess(credential_process) {
         var credentials;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, credentials_1.getCredentials()];
+                case 0: return [4 /*yield*/, (0, credentials_1.getCredentials)()];
                 case 1:
                     credentials = _a.sent();
                     credentials.credential_process = credential_process;
-                    return [4 /*yield*/, credentials_1.setCredentials(credentials)];
+                    return [4 /*yield*/, (0, credentials_1.setCredentials)(credentials)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
