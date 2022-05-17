@@ -172,8 +172,8 @@ iam
   .option('-r, --role <alksRole>', 'alks role to use')
   .option('-F, --favorites', 'filters favorite accounts')
   .option(
-    '--tags <tags...>',
-    `A list of resource tags. Keys are uniquely identifiable and values can contain a comma separated list . Can either be a JSON representation '[{"Key":"key1","Value":"value1"},{"Key":"key2","Value":"value2,value3"}]' or in shorthand Key=key1,Value=value1 Key=key2,Value=value2,value3`
+    '-k, --tags <tags...>',
+    `A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string`
   )
   .option(
     '-T, --template-fields <templateFields...>',
