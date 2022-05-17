@@ -18,7 +18,10 @@ import program from './program';
  * @example
  * errorAndExit(new Error(), new Error()) // ignores the second error, only uses the first
  */
-export function errorAndExit(message: string | Error, error?: Error): never {
+export function errorAndExit(
+  message: string | Error,
+  error?: Error | undefined
+): never {
   if (typeof message !== 'string') {
     error = message;
     message = error.message;

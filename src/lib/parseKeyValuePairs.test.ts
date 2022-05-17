@@ -23,7 +23,7 @@ function shouldNotThrow(t: TestCase) {
     try {
       parseKeyValuePairs(t.input);
     } catch (e) {
-      err = e;
+      err = e as Error;
     }
 
     expect(err).toBeUndefined();
