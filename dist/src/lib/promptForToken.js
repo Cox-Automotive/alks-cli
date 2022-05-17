@@ -10,7 +10,7 @@ var log_1 = require("./log");
 var server_1 = require("./state/server");
 function promptForToken() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var server, url, err_1, refreshToken, alks, err_2;
+        var server, url, err_1, refreshToken, alks, err_2, e;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -64,7 +64,8 @@ function promptForToken() {
                     return [3 /*break*/, 12];
                 case 11:
                     err_2 = _a.sent();
-                    err_2.message = 'Error validating refresh token. ' + err_2.message;
+                    e = err_2;
+                    e.message = 'Error validating refresh token. ' + e.message;
                     throw err_2;
                 case 12:
                     console.error(cli_color_1.default.white('Refresh token validated!'));

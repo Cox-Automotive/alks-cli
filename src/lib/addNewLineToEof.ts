@@ -9,6 +9,6 @@ export function addNewLineToEof(file: string) {
   try {
     appendFileSync(file, EOL);
   } catch (err) {
-    errorAndExit('Error adding new line!', err);
+    errorAndExit('Error adding new line!', err as Error);
   }
 }

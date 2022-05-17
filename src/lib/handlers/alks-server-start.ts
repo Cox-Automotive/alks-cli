@@ -64,7 +64,8 @@ export async function handleAlksServerStart(_options: commander.OptionValues) {
       log('Daemon is already installed..');
       await runServerDaemon();
     }
-  } catch (err) {
-    errorAndExit(err.message, err);
+  } catch (er) {
+    const e = er as Error;
+    errorAndExit(e.message, e);
   }
 }
