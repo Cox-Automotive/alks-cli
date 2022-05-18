@@ -106,6 +106,7 @@ iam
     .option('-a, --account <alksAccount>', 'alks account to use')
     .option('-r, --role <alksRole>', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
+    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
     .action(alks_iam_createtrustrole_1.handleAlksIamCreateTrustRole);
 iam
     .command('createrole')

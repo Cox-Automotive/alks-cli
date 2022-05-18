@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds a tags flag to the `createrole` option. Input format is of JSON or a shorthand syntax (Ex. 'Key=string,Value=string')
+* Adds a tags flag to the `createtrustrole` option. Input format is of JSON or a shorthand syntax (Ex. 'Key=string,Value=string')
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
  
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
