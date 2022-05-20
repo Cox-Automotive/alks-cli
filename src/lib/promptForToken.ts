@@ -47,7 +47,8 @@ export async function promptForToken() {
       refreshToken,
     });
   } catch (err) {
-    err.message = 'Error validating refresh token. ' + err.message;
+    const e = err as Error;
+    e.message = 'Error validating refresh token. ' + e.message;
     throw err;
   }
 

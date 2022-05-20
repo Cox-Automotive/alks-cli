@@ -9,6 +9,7 @@ import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
+import { unpackTags } from '../unpackTags';
 
 export async function handleAlksIamCreateTrustRole(
   options: commander.OptionValues
@@ -16,13 +17,15 @@ export async function handleAlksIamCreateTrustRole(
   const roleNameDesc = 'alphanumeric including @+=._-';
   const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-  const TRUST_ARN_REGEX = /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
+  const TRUST_ARN_REGEX =
+    /arn:(aws|aws-us-gov):iam::\d{12}:role\/?[a-zA-Z_0-9+=,.@-_/]+/g;
   const roleName = options.rolename;
   const roleType = options.roletype;
   const trustArn = options.trustarn;
   const enableAlksAccess = options.enableAlksAccess;
   let alksAccount = options.account;
   let alksRole = options.role;
+  const tags = options.tags ? unpackTags(options.tags) : undefined;
   const filterFavorites = options.favorites || false;
 
   log('validating role name: ' + roleName);
@@ -83,6 +86,7 @@ export async function handleAlksIamCreateTrustRole(
         trustArn,
         enableAlksAccess,
         includeDefaultPolicy: ALKS.PseudoBoolean.False,
+        tags,
       });
     } catch (err) {
       errorAndExit(err as Error);

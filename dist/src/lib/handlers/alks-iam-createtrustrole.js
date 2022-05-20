@@ -12,9 +12,10 @@ var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var tryToExtractRole_1 = require("../tryToExtractRole");
+var unpackTags_1 = require("../unpackTags");
 function handleAlksIamCreateTrustRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, trustArnDesc, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, filterFavorites, auth, alks, role, err_1, err_2;
+        var roleNameDesc, trustArnDesc, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, tags, filterFavorites, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -29,6 +30,7 @@ function handleAlksIamCreateTrustRole(options) {
                     enableAlksAccess = options.enableAlksAccess;
                     alksAccount = options.account;
                     alksRole = options.role;
+                    tags = options.tags ? (0, unpackTags_1.unpackTags)(options.tags) : undefined;
                     filterFavorites = options.favorites || false;
                     (0, log_1.log)('validating role name: ' + roleName);
                     if ((0, underscore_1.isEmpty)(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
@@ -83,6 +85,7 @@ function handleAlksIamCreateTrustRole(options) {
                             trustArn: trustArn,
                             enableAlksAccess: enableAlksAccess,
                             includeDefaultPolicy: alks_js_1.default.PseudoBoolean.False,
+                            tags: tags,
                         })];
                 case 8:
                     role = _b.sent();

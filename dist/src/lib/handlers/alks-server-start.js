@@ -30,7 +30,7 @@ function runServerDaemon() {
 }
 function handleAlksServerStart(_options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var servicePath, err_1;
+        var servicePath, er_1, e;
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -68,8 +68,9 @@ function handleAlksServerStart(_options) {
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    err_1 = _a.sent();
-                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
+                    er_1 = _a.sent();
+                    e = er_1;
+                    (0, errorAndExit_1.errorAndExit)(e.message, e);
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
             }
