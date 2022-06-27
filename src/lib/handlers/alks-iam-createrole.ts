@@ -15,7 +15,10 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   const roleNameDesc = 'alphanumeric including @+=._-';
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const roleName = options.rolename;
-  const roleType = options.roletype;
+  const roleType = options.roletype ? options.roletype : undefined;
+  const trustPolicy = options.trustPolicy
+    ? JSON.parse(options.trustPolicy)
+    : undefined;
   const incDefPolicies = options.defaultPolicies;
   const enableAlksAccess = options.enableAlksAccess;
   let alksAccount = options.account;
@@ -34,9 +37,11 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
     );
   }
 
-  log('validating role type: ' + roleType);
-  if (isEmpty(roleType)) {
-    errorAndExit('The role type is required');
+  log('validating role type or trust policy');
+  const roleTypeExists = isEmpty(roleType);
+  const trustPolicyExists = isEmpty(trustPolicy);
+  if (roleTypeExists === trustPolicyExists) {
+    errorAndExit('Must provide role type or trust policy but not both.');
   }
 
   if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
@@ -70,6 +75,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
         role: alksRole,
         roleName,
         roleType,
+        trustPolicy,
         includeDefaultPolicy: incDefPolicies ? 1 : 0,
         enableAlksAccess,
         tags,

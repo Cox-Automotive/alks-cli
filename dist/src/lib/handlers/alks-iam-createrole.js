@@ -15,7 +15,7 @@ var parseKeyValuePairs_1 = require("../parseKeyValuePairs");
 var unpackTags_1 = require("../unpackTags");
 function handleAlksIamCreateRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, tags, templateFields, auth, alks, role, err_1, err_2;
+        var roleNameDesc, ROLE_NAME_REGEX, roleName, roleType, trustPolicy, incDefPolicies, enableAlksAccess, alksAccount, alksRole, filterFavorites, tags, templateFields, roleTypeExists, trustPolicyExists, auth, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -23,7 +23,10 @@ function handleAlksIamCreateRole(options) {
                     roleNameDesc = 'alphanumeric including @+=._-';
                     ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     roleName = options.rolename;
-                    roleType = options.roletype;
+                    roleType = options.roletype ? options.roletype : undefined;
+                    trustPolicy = options.trustPolicy
+                        ? JSON.parse(options.trustPolicy)
+                        : undefined;
                     incDefPolicies = options.defaultPolicies;
                     enableAlksAccess = options.enableAlksAccess;
                     alksAccount = options.account;
@@ -38,9 +41,11 @@ function handleAlksIamCreateRole(options) {
                         (0, errorAndExit_1.errorAndExit)('The role name provided contains illegal characters. It must be ' +
                             roleNameDesc);
                     }
-                    (0, log_1.log)('validating role type: ' + roleType);
-                    if ((0, underscore_1.isEmpty)(roleType)) {
-                        (0, errorAndExit_1.errorAndExit)('The role type is required');
+                    (0, log_1.log)('validating role type or trust policy');
+                    roleTypeExists = (0, underscore_1.isEmpty)(roleType);
+                    trustPolicyExists = (0, underscore_1.isEmpty)(trustPolicy);
+                    if (roleTypeExists === trustPolicyExists) {
+                        (0, errorAndExit_1.errorAndExit)('Must provide role type or trust policy but not both.');
                     }
                     if (!(0, underscore_1.isUndefined)(alksAccount) && (0, underscore_1.isUndefined)(alksRole)) {
                         (0, log_1.log)('trying to extract role from account');
@@ -77,6 +82,7 @@ function handleAlksIamCreateRole(options) {
                             role: alksRole,
                             roleName: roleName,
                             roleType: roleType,
+                            trustPolicy: trustPolicy,
                             includeDefaultPolicy: incDefPolicies ? 1 : 0,
                             enableAlksAccess: enableAlksAccess,
                             tags: tags,

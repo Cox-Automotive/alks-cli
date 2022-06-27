@@ -160,7 +160,11 @@ iam
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
     '-t, --roletype <roletype>',
-    'the role type, to see available roles: alks iam roletypes'
+    'the role type, to see available roles: alks iam roletypes. Must provide role type or trust policy'
+  )
+  .option(
+    '-p,  --trustPolicy <trustPolicy>',
+    'the trust policy as JSON string, must provide trust policy or role type'
   )
   .option(
     '-d, --defaultPolicies',
