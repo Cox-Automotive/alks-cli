@@ -24,9 +24,14 @@ function handleAlksIamCreateRole(options) {
                     ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
                     roleName = options.rolename;
                     roleType = options.roletype ? options.roletype : undefined;
-                    trustPolicy = options.trustPolicy
-                        ? JSON.parse(options.trustPolicy)
-                        : undefined;
+                    try {
+                        trustPolicy = options.trustPolicy
+                            ? JSON.parse(options.trustPolicy)
+                            : undefined;
+                    }
+                    catch (_c) {
+                        (0, errorAndExit_1.errorAndExit)('Error parsing trust policy.  Must be valid JSON string');
+                    }
                     incDefPolicies = options.defaultPolicies;
                     enableAlksAccess = options.enableAlksAccess;
                     alksAccount = options.account;

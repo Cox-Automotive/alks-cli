@@ -16,9 +16,15 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const roleName = options.rolename;
   const roleType = options.roletype ? options.roletype : undefined;
-  const trustPolicy = options.trustPolicy
-    ? JSON.parse(options.trustPolicy)
-    : undefined;
+  let trustPolicy;
+  try {
+    trustPolicy = options.trustPolicy
+      ? JSON.parse(options.trustPolicy)
+      : undefined;
+  } catch {
+    errorAndExit('Error parsing trust policy.  Must be valid JSON string');
+  }
+
   const incDefPolicies = options.defaultPolicies;
   const enableAlksAccess = options.enableAlksAccess;
   let alksAccount = options.account;
