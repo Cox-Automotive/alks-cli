@@ -41,6 +41,7 @@ function getAlks(props) {
                 case 4:
                     e_1 = _a.sent();
                     throw new Error("".concat(e_1.message, ". You can get a new refresh token by running 'alks developer login2fa'"), 
+                    // This is valid JS, but typescript doesn't seem to think so yet. We should remove this once typescript supports the new Error constructors
                     // @ts-ignore
                     { cause: e_1 });
                 case 5:
