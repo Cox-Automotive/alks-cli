@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds a trust policy flag to the `createtrustrole` option. Input format is of JSON String
+* Adds an instruction for resolving refresh token expiration errors
+
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
- 
+
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
