@@ -21,9 +21,10 @@ function getCredentials() {
                 case 0: return [4 /*yield*/, readFile(getCredentialsFilePath(), 'utf-8').catch(function () { return ''; })];
                 case 1:
                     credentialsFile = _b.sent();
-                    (0, log_1.log)('contents: ' + credentialsFile, {
+                    (0, log_1.log)('contents:\n' + credentialsFile, {
                         unsafe: true,
-                        alt: credentialsFile.replace(/([^=]+)=.+/g, '[REDACTED]'),
+                        alt: 'contents:\n' +
+                            credentialsFile.replace(/([^=\s\n]+)=.+\n/g, '$1=[REDACTED]\n'),
                     });
                     credentials = (0, ini_1.parse)(credentialsFile);
                     (_a = credentials.default) !== null && _a !== void 0 ? _a : (credentials.default = {});

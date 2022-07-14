@@ -39,11 +39,13 @@ program.configureOutput({
   },
 });
 
+program.command('thing').action(async () => {
+  console.log('thing happened');
+});
+
 program
-  .version(version)
-  .option('-v, --verbose', "be verbose, but don't print secrets");
-program
-  .version(version)
+  .version(version, '--version')
+  .option('-v, --verbose', "be verbose, but don't print secrets")
   .option(
     '-V, --unsafe-verbose',
     'be verbose, including secrets (be careful where you share this output)'

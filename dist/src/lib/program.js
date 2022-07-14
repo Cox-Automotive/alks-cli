@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var commander_1 = require("commander");
 var package_json_1 = require("../../package.json");
 var getOutputValues_1 = require("../lib/getOutputValues");
@@ -36,11 +37,15 @@ program.configureOutput({
         }
     },
 });
+program.command('thing').action(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+    return tslib_1.__generator(this, function (_a) {
+        console.log('thing happened');
+        return [2 /*return*/];
+    });
+}); });
 program
-    .version(package_json_1.version)
-    .option('-v, --verbose', "be verbose, but don't print secrets");
-program
-    .version(package_json_1.version)
+    .version(package_json_1.version, '--version')
+    .option('-v, --verbose', "be verbose, but don't print secrets")
     .option('-V, --unsafe-verbose', 'be verbose, including secrets (be careful where you share this output)');
 program.command('completion').action(alks_completion_1.handleCompletion);
 var sessions = program.command('sessions').description('manage aws sessions');
