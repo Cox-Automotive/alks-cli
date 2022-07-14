@@ -20,7 +20,10 @@ export async function getCredentials(): Promise<Credentials> {
     getCredentialsFilePath(),
     'utf-8'
   ).catch(() => '');
-  log('contents: ' + credentialsFile);
+  log('contents: ' + credentialsFile, {
+    unsafe: true,
+    alt: credentialsFile.replace(/([^=]+)=.+/g, '[REDACTED]'),
+  });
   const credentials = parse(credentialsFile);
   credentials.default ??= {};
   return credentials.default;

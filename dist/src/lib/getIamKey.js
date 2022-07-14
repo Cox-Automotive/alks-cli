@@ -95,7 +95,10 @@ function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
                         alksRole: alksRole,
                         isIAM: true,
                     };
-                    (0, log_1.log)('storing key: ' + JSON.stringify(key), { unsafe: true, alt: 'storing key' });
+                    (0, log_1.log)('storing key: ' + JSON.stringify(key), {
+                        unsafe: true,
+                        alt: 'storing key',
+                    });
                     return [4 /*yield*/, (0, addKey_1.addKey)(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
                 case 13:
                     _b.sent();
