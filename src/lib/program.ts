@@ -39,7 +39,15 @@ program.configureOutput({
   },
 });
 
-program.version(version).option('-v, --verbose', 'be verbose');
+program
+  .version(version)
+  .option('-v, --verbose', "be verbose, but don't print secrets");
+program
+  .version(version)
+  .option(
+    '-V, --unsafe-verbose',
+    'be verbose, including secrets (be careful where you share this output)'
+  );
 
 program.command('completion').action(handleCompletion);
 
