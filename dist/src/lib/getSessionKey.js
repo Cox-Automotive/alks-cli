@@ -85,7 +85,10 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
                     throw new Error((0, getBadAccountMessage_1.getBadAccountMessage)());
                 case 12:
                     key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: (0, moment_1.default)().add(duration, 'hours').toDate(), alksAccount: alksAccount, alksRole: alksRole, isIAM: true });
-                    (0, log_1.log)('storing key: ' + JSON.stringify(key));
+                    (0, log_1.log)('storing key: ' + JSON.stringify(key), {
+                        unsafe: true,
+                        alt: 'storing key',
+                    });
                     return [4 /*yield*/, (0, addKey_1.addKey)(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
                 case 13:
                     _b.sent();

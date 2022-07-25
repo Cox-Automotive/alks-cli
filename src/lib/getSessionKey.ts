@@ -100,7 +100,10 @@ export async function getSessionKey(
     isIAM: true,
   };
 
-  log('storing key: ' + JSON.stringify(key));
+  log('storing key: ' + JSON.stringify(key), {
+    unsafe: true,
+    alt: 'storing key',
+  });
   await addKey(
     key.accessKey,
     key.secretKey,

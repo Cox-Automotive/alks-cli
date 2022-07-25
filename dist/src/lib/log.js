@@ -12,7 +12,18 @@ function log(msg, opts) {
         var caller = (0, getCallerInfo_1.getCallerInfo)();
         prefix = "".concat(caller.fileName, ":").concat(caller.line, ":").concat(caller.char);
     }
-    var verbose = opts.verbose === undefined ? program_1.default.opts().verbose : opts.verbose;
+    var verbose = opts.verbose === undefined
+        ? program_1.default.opts().verbose || program_1.default.opts().unsafeVerbose
+        : opts.verbose;
+    if (opts.unsafe && !program_1.default.opts().unsafeVerbose) {
+        if (opts.alt) {
+            msg = opts.alt;
+        }
+        else {
+            // Don't log anything
+            return;
+        }
+    }
     if (verbose) {
         console.error((0, cli_color_1.yellow)("[".concat(prefix, "]: ").concat(msg)));
     }

@@ -36,7 +36,10 @@ program.configureOutput({
         }
     },
 });
-program.version(package_json_1.version).option('-v, --verbose', 'be verbose');
+program
+    .version(package_json_1.version, '--version')
+    .option('-v, --verbose', "be verbose, but don't print secrets")
+    .option('-V, --unsafe-verbose', 'be verbose, including secrets (be careful where you share this output)');
 program.command('completion').action(alks_completion_1.handleCompletion);
 var sessions = program.command('sessions').description('manage aws sessions');
 sessions

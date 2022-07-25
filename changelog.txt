@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds an instruction for resolving refresh token expiration errors
+* Adds -V/--unsafe-verbose flag for logging everything (including secrets)
+* Modifies behavior of -v/--verbose flag to redact secrets so that the output is safe to share with others
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
