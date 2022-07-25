@@ -39,10 +39,6 @@ program.configureOutput({
   },
 });
 
-program.command('thing').action(async () => {
-  console.log('thing happened');
-});
-
 program
   .version(version, '--version')
   .option('-v, --verbose', "be verbose, but don't print secrets")
