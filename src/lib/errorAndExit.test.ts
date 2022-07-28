@@ -19,7 +19,7 @@ describe('errorAndExit', () => {
     description: string;
     message: string | Error;
     error?: Error;
-    opts: typeof program.opts;
+    opts: () => ReturnType<typeof program.opts>;
     result: string;
     code: number;
   }
@@ -105,20 +105,20 @@ describe('errorAndExit', () => {
   for (const t of testCases) {
     describe(t.description, () => {
       beforeEach(() => {
-        ((red as unknown) as jest.Mock).mockImplementation((str) => str);
-        ((program.opts as unknown) as jest.Mock).mockImplementation(t.opts);
+        (red as unknown as jest.Mock).mockImplementation((str) => str);
+        (program.opts as unknown as jest.Mock).mockImplementation(t.opts);
         (global.console.error as jest.Mock).mockImplementation(() => {});
-        ((global.process.exit as unknown) as jest.Mock).mockImplementation(
+        (global.process.exit as unknown as jest.Mock).mockImplementation(
           () => undefined
         );
         errorAndExit(t.message, t.error);
       });
 
       afterEach(() => {
-        ((red as unknown) as jest.Mock).mockReset();
-        ((program.opts as unknown) as jest.Mock).mockReset();
+        (red as unknown as jest.Mock).mockReset();
+        (program.opts as unknown as jest.Mock).mockReset();
         (global.console.error as jest.Mock).mockReset();
-        ((global.process.exit as unknown) as jest.Mock).mockReset();
+        (global.process.exit as unknown as jest.Mock).mockReset();
       });
 
       it('prints the correct error text', () => {
