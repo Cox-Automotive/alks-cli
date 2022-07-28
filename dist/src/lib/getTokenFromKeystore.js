@@ -10,7 +10,7 @@ var ALKS_TOKEN = 'alkstoken';
 function getTokenFromKeystore() {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var keytar, e_1, credentials;
+        var keytar, token, e_1, credentials;
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -19,7 +19,15 @@ function getTokenFromKeystore() {
                 case 1:
                     keytar = _c.sent();
                     return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_TOKEN)];
-                case 2: return [2 /*return*/, (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined];
+                case 2:
+                    token = (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined;
+                    (0, log_1.log)("found token \"".concat(token, "\" in keystore"), {
+                        unsafe: true,
+                        alt: "found token of ".concat(token
+                            ? "".concat(token.length, " characters starting with \"").concat(token.substring(0, 1), "\"")
+                            : "undefined", " in keystore"),
+                    });
+                    return [2 /*return*/, token];
                 case 3:
                     e_1 = _c.sent();
                     (0, log_1.log)(e_1.message);
