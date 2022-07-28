@@ -10,7 +10,7 @@ var ALKS_PASSWORD = 'alkspassword';
 function getPasswordFromKeystore() {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var keytar, e_1, credentials;
+        var keytar, password, e_1, credentials;
         return tslib_1.__generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -19,7 +19,15 @@ function getPasswordFromKeystore() {
                 case 1:
                     keytar = _c.sent();
                     return [4 /*yield*/, keytar.getPassword(SERVICE, ALKS_PASSWORD)];
-                case 2: return [2 /*return*/, (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined];
+                case 2:
+                    password = (_a = (_c.sent())) !== null && _a !== void 0 ? _a : undefined;
+                    (0, log_1.log)("found password \"".concat(password, "\" in keystore"), {
+                        unsafe: true,
+                        alt: "found password of ".concat(password
+                            ? "".concat(password.length, " characters starting with \"").concat(password.substring(0, 1), "\"")
+                            : "undefined", " in keystore"),
+                    });
+                    return [2 /*return*/, password];
                 case 3:
                     e_1 = _c.sent();
                     (0, log_1.log)(e_1.message);
