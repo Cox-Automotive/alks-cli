@@ -22,5 +22,12 @@ export async function getPasswordFromPrompt(
     },
   ]);
 
+  log(`received "${answers.password}"`, {
+    unsafe: true,
+    alt: `received input of ${
+      answers.password.length
+    } characters starting with "${answers.password.substring(0, 1)}"`,
+  });
+
   return trim(answers.password);
 }

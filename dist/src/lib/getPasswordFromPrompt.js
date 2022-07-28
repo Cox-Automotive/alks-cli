@@ -28,6 +28,10 @@ function getPasswordFromPrompt(text, currentPassword) {
                         ])];
                 case 1:
                     answers = _a.sent();
+                    (0, log_1.log)("received \"".concat(answers.password, "\""), {
+                        unsafe: true,
+                        alt: "received input of ".concat(answers.password.length, " characters starting with \"").concat(answers.password.substring(0, 1), "\""),
+                    });
                     return [2 /*return*/, (0, trim_1.trim)(answers.password)];
             }
         });
