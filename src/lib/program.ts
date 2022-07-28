@@ -51,7 +51,7 @@ program
     if (thisCommand.opts().unsafeVerbose) {
       console.error(
         red(
-          'Warning: Unsafe loggin mode is activated. Do not share the output of this CLI with anyone while this mode is active'
+          'Warning: Unsafe loggin mode is activated which means that secrets may be printed in the output below. Do not share the output of this CLI with anyone while this mode is active'
         )
       );
     }

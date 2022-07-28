@@ -43,7 +43,7 @@ program
     .option('-V, --unsafe-verbose', 'be verbose, including secrets (be careful where you share this output)')
     .hook('preAction', function (thisCommand) {
     if (thisCommand.opts().unsafeVerbose) {
-        console.error((0, cli_color_1.red)('Warning: Unsafe loggin mode is activated. Do not share the output of this CLI with anyone while this mode is active'));
+        console.error((0, cli_color_1.red)('Warning: Unsafe loggin mode is activated which means that secrets may be printed in the output below. Do not share the output of this CLI with anyone while this mode is active'));
     }
 });
 program.command('completion').action(alks_completion_1.handleCompletion);
