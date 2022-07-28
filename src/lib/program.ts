@@ -22,6 +22,7 @@ import { handleAlksDeveloperLogin2fa } from '../lib/handlers/alks-developer-logi
 import { handleAlksDeveloperLogout } from '../lib/handlers/alks-developer-logout';
 import { handleAlksDeveloperLogout2fa } from '../lib/handlers/alks-developer-logout2fa';
 import { handleCompletion } from './handlers/alks-completion';
+import { red } from 'cli-color';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -45,7 +46,16 @@ program
   .option(
     '-V, --unsafe-verbose',
     'be verbose, including secrets (be careful where you share this output)'
-  );
+  )
+  .hook('preAction', (thisCommand) => {
+    if (thisCommand.opts().unsafeVerbose) {
+      console.error(
+        red(
+          'Warning: Unsafe loggin mode is activated. Do not share the output of this CLI with anyone while this mode is active'
+        )
+      );
+    }
+  });
 
 program.command('completion').action(handleCompletion);
 
