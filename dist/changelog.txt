@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds logs for debugging secret values obtained from prompts and keystores (only prints length unless --unsafe-verbose flag is passed)
+* Updates dependency versions for jest and related dependencies
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
