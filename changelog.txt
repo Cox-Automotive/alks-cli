@@ -3,8 +3,4 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Updates dependency versions for jest and related dependencies
-
-Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
-
-☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
+* Adds ability to tag ltk's upon creation or to update existing iamUsers
