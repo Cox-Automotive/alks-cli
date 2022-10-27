@@ -8,6 +8,7 @@ import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { tryToExtractRole } from '../tryToExtractRole';
+import { unpackTags } from '../unpackTags';
 
 export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
   const nameDesc = 'alphanumeric including @+=._-';
@@ -17,23 +18,24 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
   let alksRole: string | undefined = options.role;
   const filterFaves = options.favorites || false;
   const output = options.output || 'text';
-
-  log('validating iam user name: ' + iamUsername);
-  if (isEmpty(iamUsername)) {
-    errorAndExit('Please provide a username (-n)');
-  } else if (!NAME_REGEX.test(iamUsername)) {
-    errorAndExit(
-      'The username provided contains illegal characters. It must be ' +
-        nameDesc
-    );
-  }
-
-  if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
-    log('trying to extract role from account');
-    alksRole = tryToExtractRole(alksAccount);
-  }
+  const tags = options.tags ? unpackTags(options.tags) : undefined;
 
   try {
+    log('validating iam user name: ' + iamUsername);
+    if (isEmpty(iamUsername)) {
+      errorAndExit('Please provide a username (-n)');
+    } else if (!NAME_REGEX.test(iamUsername)) {
+      errorAndExit(
+        'The username provided contains illegal characters. It must be ' +
+          nameDesc
+      );
+    }
+
+    if (!isUndefined(alksAccount) && isUndefined(alksRole)) {
+      log('trying to extract role from account');
+      alksRole = tryToExtractRole(alksAccount);
+    }
+
     if (isEmpty(alksAccount) || isEmpty(alksRole)) {
       ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
@@ -49,13 +51,15 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
 
     log('calling api to create ltk: ' + iamUsername);
 
-    if (!alksAccount || !alksRole) {
+    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
       throw new Error('Must specifify ALKS Account and Role');
     }
+
     const ltk = await alks.createAccessKeys({
-      account: alksAccount,
-      role: alksRole,
+      account: alksAccount as string,
+      role: alksRole as string,
       iamUserName: iamUsername,
+      tags,
     });
 
     if (output === 'json') {

@@ -11,9 +11,10 @@ var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var tryToExtractRole_1 = require("../tryToExtractRole");
+var unpackTags_1 = require("../unpackTags");
 function handleAlksIamCreateLtk(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, auth, alks, ltk, ltkData, ltkData, err_1;
+        var nameDesc, NAME_REGEX, iamUsername, alksAccount, alksRole, filterFaves, output, tags, auth, alks, ltk, ltkData, ltkData, err_1;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -25,6 +26,10 @@ function handleAlksIamCreateLtk(options) {
                     alksRole = options.role;
                     filterFaves = options.favorites || false;
                     output = options.output || 'text';
+                    tags = options.tags ? (0, unpackTags_1.unpackTags)(options.tags) : undefined;
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 8, , 9]);
                     (0, log_1.log)('validating iam user name: ' + iamUsername);
                     if ((0, underscore_1.isEmpty)(iamUsername)) {
                         (0, errorAndExit_1.errorAndExit)('Please provide a username (-n)');
@@ -37,9 +42,6 @@ function handleAlksIamCreateLtk(options) {
                         (0, log_1.log)('trying to extract role from account');
                         alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
                     }
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 8, , 9]);
                     if (!((0, underscore_1.isEmpty)(alksAccount) || (0, underscore_1.isEmpty)(alksRole))) return [3 /*break*/, 3];
                     return [4 /*yield*/, (0, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole)({
                             iamOnly: true,
@@ -55,13 +57,14 @@ function handleAlksIamCreateLtk(options) {
                 case 5:
                     alks = _b.sent();
                     (0, log_1.log)('calling api to create ltk: ' + iamUsername);
-                    if (!alksAccount || !alksRole) {
+                    if ((0, underscore_1.isEmpty)(alksAccount) || (0, underscore_1.isEmpty)(alksRole)) {
                         throw new Error('Must specifify ALKS Account and Role');
                     }
                     return [4 /*yield*/, alks.createAccessKeys({
                             account: alksAccount,
                             role: alksRole,
                             iamUserName: iamUsername,
+                            tags: tags,
                         })];
                 case 6:
                     ltk = _b.sent();

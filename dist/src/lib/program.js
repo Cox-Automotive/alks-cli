@@ -16,6 +16,7 @@ var alks_iam_deleteltk_1 = require("../lib/handlers/alks-iam-deleteltk");
 var alks_iam_createtrustrole_1 = require("../lib/handlers/alks-iam-createtrustrole");
 var alks_iam_createrole_1 = require("../lib/handlers/alks-iam-createrole");
 var alks_iam_createltk_1 = require("../lib/handlers/alks-iam-createltk");
+var alks_iam_updateiamuser_1 = require("./handlers/alks-iam-updateiamuser");
 var alks_developer_accounts_1 = require("../lib/handlers/alks-developer-accounts");
 var alks_developer_favorites_1 = require("../lib/handlers/alks-developer-favorites");
 var alks_developer_info_1 = require("../lib/handlers/alks-developer-info");
@@ -139,7 +140,16 @@ iam
     .option('-r, --role <alksRole>', 'alks role to use')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
+    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation ['{\"Key\":\"key1\", \"Value\":\"val1\"}', '{\"Key\":\"key2\", \"Value\":\"val2\"}'] or shorthand Key=string,Value=string Key=string,Value=string")
     .action(alks_iam_createltk_1.handleAlksIamCreateLtk);
+iam
+    .command('updateIamUser')
+    .description('Updates the tags on an IAM User')
+    .option('-n, --iamusername <iamUsername>', 'the name of the iam user to update, ' + nameDesc)
+    .option('-a, --account <alksAccount>', 'alks account to use')
+    .option('-o, --output <format>', 'output format (text, json)', 'text')
+    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation ['{\"Key\":\"key1\", \"Value\":\"val1\"}', '{\"Key\":\"key2\", \"Value\":\"val2\"}'] or shorthand Key=string,Value=string Key=string,Value=string")
+    .action(alks_iam_updateiamuser_1.handleAlksIamUpdateIamUser);
 var developer = program
     .command('developer')
     .description('developer & account commands');
