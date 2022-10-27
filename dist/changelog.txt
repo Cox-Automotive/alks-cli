@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds ability to tag ltk's upon creation or to update tags on existing iamUsers
+* Updates Readme
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
