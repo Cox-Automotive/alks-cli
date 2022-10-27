@@ -183,9 +183,11 @@ Arguments:
 
 * `-p [password]` Your password
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
-* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes.  Must include roleType or trust policy, but not both
+* `-p [trustPolicy]` A trust policy as a JSON string.  Must include trustPolicy or roleType, but not both
 * `-d`: Include default policies, defaults to false
 * `-F` Filters favorite accounts
+* `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
 
 Outputs the created role's ARN.
 
@@ -200,6 +202,7 @@ Arguments:
 * `-t [roleType]` The role type `Cross Account` or `Inner Account`, be sure to wrap in quotes
 * `-a [alksAccount]`: ALKS account to use
 * `-r [alksRole]`: ALKS role to use
+* `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
 * `-F` Filters favorite accounts
 
 Outputs the created role's ARN.
@@ -236,6 +239,23 @@ Arguments:
     * `-o [output]` Output format. Supports: `text`, `json`. Default: `text`
     * `-r [role]` The ALKS role to use, be sure to wrap in quotes
     * `-F` Filters favorite accounts
+    * `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
+
+Outputs the created user's ARN along with the long term access key and long term secret key.
+
+### `iam updateIamUser`
+
+`alks iam updateIamUser` Updates Tags on IamUser (ltk) with give iamusername.
+
+Arguments:
+
+* Required
+    * `-a [account]` The ALKS account to use, be sure to wrap in quotes
+    * `-n [iamusername]` The name of the IAM user associated with the LTK, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+    * `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
+* Optional
+    * `-o [output]` Output format. Supports: `text`, `json`. Default: `text`
+    
 
 Outputs the created user's ARN along with the long term access key and long term secret key.
 
