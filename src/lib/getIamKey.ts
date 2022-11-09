@@ -61,7 +61,9 @@ export async function getIamKey(
       log('found existing valid key');
       console.error(
         white.underline(
-          ['Resuming existing session in', awsAccount.id, alksRole].join(' ')
+          `Resuming existing session in "${
+            awsAccount.label ?? awsAccount.alias
+          }" (id=${awsAccount.id} alias=${awsAccount.alias}) for ${alksRole}`
         )
       );
       return selectedKey;
@@ -86,7 +88,9 @@ export async function getIamKey(
 
   console.error(
     white.underline(
-      ['Creating new session in', awsAccount.id, alksRole].join(' ')
+      `Creating new session in "${awsAccount.label ?? awsAccount.alias}" (id=${
+        awsAccount.id
+      } alias=${awsAccount.alias}) for ${alksRole}`
     )
   );
 
