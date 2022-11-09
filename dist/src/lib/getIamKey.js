@@ -7,17 +7,18 @@ var underscore_1 = require("underscore");
 var getAlks_1 = require("./getAlks");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 var log_1 = require("./log");
-var getBadAccountMessage_1 = require("./getBadAccountMessage");
+var badAccountMessage_1 = require("./badAccountMessage");
 var ensureConfigured_1 = require("./ensureConfigured");
 var getAuth_1 = require("./getAuth");
 var promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 var getKeys_1 = require("./getKeys");
 var addKey_1 = require("./addKey");
+var getAwsAccountFromString_1 = require("./getAwsAccountFromString");
 function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
     if (forceNewSession === void 0) { forceNewSession = false; }
     if (filterFavorites === void 0) { filterFavorites = false; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var auth, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, alksKey, e_1, key;
+        var auth, awsAccount, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, alksKey, e_1, key;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -40,19 +41,24 @@ function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
                 case 4:
                     (0, log_1.log)('using provided account/role');
                     _b.label = 5;
-                case 5:
+                case 5: return [4 /*yield*/, (0, getAwsAccountFromString_1.getAwsAccountFromString)(alksAccount)];
+                case 6:
+                    awsAccount = _b.sent();
+                    if (!awsAccount) {
+                        throw new Error(badAccountMessage_1.badAccountMessage);
+                    }
                     (0, log_1.log)('getting existing keys');
                     return [4 /*yield*/, (0, getKeys_1.getKeys)(auth, true)];
-                case 6:
+                case 7:
                     existingKeys = _b.sent();
                     (0, log_1.log)('got existing keys');
                     if (existingKeys.length && !forceNewSession) {
-                        (0, log_1.log)('filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
-                        keyCriteria = { alksAccount: alksAccount, alksRole: alksRole };
+                        (0, log_1.log)("filtering keys by ".concat(awsAccount.id, "(").concat(awsAccount === null || awsAccount === void 0 ? void 0 : awsAccount.alias, ") with role ").concat(alksRole));
+                        keyCriteria = { alksAccount: awsAccount.id, alksRole: alksRole };
                         selectedKey = (0, underscore_1.last)((0, underscore_1.sortBy)((0, underscore_1.where)(existingKeys, keyCriteria), 'expires'));
                         if (selectedKey) {
                             (0, log_1.log)('found existing valid key');
-                            console.error(cli_color_1.white.underline(['Resuming existing session in', alksAccount, alksRole].join(' ')));
+                            console.error(cli_color_1.white.underline(['Resuming existing session in', awsAccount.id, alksRole].join(' ')));
                             return [2 /*return*/, selectedKey];
                         }
                     }
@@ -61,37 +67,37 @@ function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
                         (0, log_1.log)('forcing a new session');
                     }
                     return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
-                case 7:
+                case 8:
                     alks = _b.sent();
                     return [4 /*yield*/, alks.getLoginRole({
-                            accountId: alksAccount.slice(0, 12),
+                            accountId: awsAccount.id,
                             role: alksRole,
                         })];
-                case 8:
+                case 9:
                     loginRole = _b.sent();
                     duration = Math.min(loginRole.maxKeyDuration, 12);
-                    console.error(cli_color_1.white.underline(['Creating new session in', alksAccount, alksRole].join(' ')));
-                    _b.label = 9;
-                case 9:
-                    _b.trys.push([9, 11, , 12]);
+                    console.error(cli_color_1.white.underline(['Creating new session in', awsAccount.id, alksRole].join(' ')));
+                    _b.label = 10;
+                case 10:
+                    _b.trys.push([10, 12, , 13]);
                     return [4 /*yield*/, alks.getIAMKeys({
-                            account: alksAccount,
+                            account: awsAccount.id,
                             role: alksRole,
                             sessionTime: duration,
                         })];
-                case 10:
-                    alksKey = _b.sent();
-                    return [3 /*break*/, 12];
                 case 11:
-                    e_1 = _b.sent();
-                    throw new Error((0, getBadAccountMessage_1.getBadAccountMessage)());
+                    alksKey = _b.sent();
+                    return [3 /*break*/, 13];
                 case 12:
+                    e_1 = _b.sent();
+                    throw new Error(badAccountMessage_1.badAccountMessage);
+                case 13:
                     key = {
                         accessKey: alksKey.accessKey,
                         secretKey: alksKey.secretKey,
                         sessionToken: alksKey.sessionToken,
                         expires: (0, moment_1.default)().add(duration, 'hours').toDate(),
-                        alksAccount: alksAccount,
+                        alksAccount: awsAccount.id,
                         alksRole: alksRole,
                         isIAM: true,
                     };
@@ -99,8 +105,8 @@ function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
                         unsafe: true,
                         alt: 'storing key',
                     });
-                    return [4 /*yield*/, (0, addKey_1.addKey)(key.accessKey, key.secretKey, key.sessionToken, alksAccount, alksRole, key.expires, auth, true)];
-                case 13:
+                    return [4 /*yield*/, (0, addKey_1.addKey)(key.accessKey, key.secretKey, key.sessionToken, awsAccount.id, alksRole, key.expires, auth, true)];
+                case 14:
                     _b.sent();
                     return [2 /*return*/, key];
             }

@@ -7,7 +7,7 @@ import { getAuth } from './getAuth';
 import { getIamKey } from './getIamKey';
 import { getKeys } from './getKeys';
 import { log } from './log';
-import { getBadAccountMessage } from './getBadAccountMessage';
+import { getBadAccountMessage } from './badAccountMessage';
 import { addKey } from './addKey';
 import ALKS from 'alks.js';
 import moment from 'moment';
@@ -84,7 +84,7 @@ describe('getIamKey', () => {
     log: async () => {},
     getKeys: async () => [],
     getAlks: async () =>
-      (({
+      ({
         getLoginRole: async ({ accountId, role }: ALKS.GetLoginRoleProps) => ({
           account: `${accountId}/ALKS${role}`,
           role,
@@ -98,7 +98,7 @@ describe('getIamKey', () => {
           sessionToken: 'ijkl',
           consoleURL: 'https://login.aws.com/my-account',
         }),
-      } as unknown) as ALKS.Alks),
+      } as unknown as ALKS.Alks),
     getBadAccountMessage: () => 'Bad Account',
     addKey: async () => {},
   };
@@ -269,7 +269,7 @@ describe('getIamKey', () => {
       ...defaultTestCase,
       description: 'when alks.getLoginRole fails',
       getAlks: async () =>
-        (({
+        ({
           getLoginRole: async () => {
             throw new Error();
           },
@@ -278,14 +278,14 @@ describe('getIamKey', () => {
               {} as any
             );
           },
-        } as unknown) as ALKS.Alks),
+        } as unknown as ALKS.Alks),
       shouldThrow: true,
     },
     {
       ...defaultTestCase,
       description: 'when alks.getIAMKeys fails',
       getAlks: async () =>
-        (({
+        ({
           getLoginRole: async (props: ALKS.GetLoginRoleProps) => {
             return (await defaultTestCase.getAlks({} as any)).getLoginRole(
               props
@@ -294,7 +294,7 @@ describe('getIamKey', () => {
           getIAMKeys: async () => {
             throw new Error();
           },
-        } as unknown) as ALKS.Alks),
+        } as unknown as ALKS.Alks),
       shouldThrow: true,
     },
     {
@@ -326,7 +326,7 @@ describe('getIamKey', () => {
           t.getBadAccountMessage
         );
         (addKey as jest.Mock).mockImplementation(t.addKey);
-        ((moment as unknown) as jest.Mock).mockImplementation(() => {
+        (moment as unknown as jest.Mock).mockImplementation(() => {
           const moment = {} as any;
           moment.add = () => moment;
           moment.toDate = () => date;

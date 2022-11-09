@@ -7,7 +7,7 @@ var underscore_1 = require("underscore");
 var getAlks_1 = require("./getAlks");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 var log_1 = require("./log");
-var getBadAccountMessage_1 = require("./getBadAccountMessage");
+var badAccountMessage_1 = require("./badAccountMessage");
 var ensureConfigured_1 = require("./ensureConfigured");
 var getAuth_1 = require("./getAuth");
 var promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
@@ -82,7 +82,7 @@ function getSessionKey(alksAccount, alksRole, iamOnly, forceNewSession, filterFa
                     return [3 /*break*/, 12];
                 case 11:
                     e_1 = _b.sent();
-                    throw new Error((0, getBadAccountMessage_1.getBadAccountMessage)());
+                    throw new Error((0, badAccountMessage_1.getBadAccountMessage)());
                 case 12:
                     key = tslib_1.__assign(tslib_1.__assign({}, alksKey), { expires: (0, moment_1.default)().add(duration, 'hours').toDate(), alksAccount: alksAccount, alksRole: alksRole, isIAM: true });
                     (0, log_1.log)('storing key: ' + JSON.stringify(key), {

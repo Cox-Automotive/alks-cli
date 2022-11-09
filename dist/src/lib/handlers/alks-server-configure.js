@@ -7,7 +7,6 @@ var underscore_1 = require("underscore");
 var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getIamKey_1 = require("../getIamKey");
-var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
 var saveMetadata_1 = require("../saveMetadata");
 var tryToExtractRole_1 = require("../tryToExtractRole");
@@ -33,7 +32,7 @@ function handleAlksServerConfigure(options) {
                 case 2:
                     _a.trys.push([2, 7, , 8]);
                     if (!(0, underscore_1.isUndefined)(options.iam)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, (0, getSessionKey_1.getSessionKey)(alksAccount, alksRole, false, forceNewSession, filterFaves)];
+                    return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, forceNewSession, filterFaves, false)];
                 case 3:
                     key = _a.sent();
                     return [3 /*break*/, 6];

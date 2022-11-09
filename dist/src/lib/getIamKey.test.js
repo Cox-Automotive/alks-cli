@@ -8,7 +8,7 @@ var getAuth_1 = require("./getAuth");
 var getIamKey_1 = require("./getIamKey");
 var getKeys_1 = require("./getKeys");
 var log_1 = require("./log");
-var getBadAccountMessage_1 = require("./getBadAccountMessage");
+var badAccountMessage_1 = require("./badAccountMessage");
 var addKey_1 = require("./addKey");
 var moment_1 = tslib_1.__importDefault(require("moment"));
 jest.mock('./ensureConfigured');
@@ -284,7 +284,7 @@ describe('getIamKey', function () {
                             log_1.log.mockImplementation(t.log);
                             getKeys_1.getKeys.mockImplementation(t.getKeys);
                             getAlks_1.getAlks.mockImplementation(t.getAlks);
-                            getBadAccountMessage_1.getBadAccountMessage.mockImplementation(t.getBadAccountMessage);
+                            badAccountMessage_1.getBadAccountMessage.mockImplementation(t.getBadAccountMessage);
                             addKey_1.addKey.mockImplementation(t.addKey);
                             moment_1.default.mockImplementation(function () {
                                 var moment = {};

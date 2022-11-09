@@ -4,13 +4,14 @@ import { getAlks } from './getAlks';
 import moment from 'moment';
 import ALKS from 'alks.js';
 import { log } from './log';
-import { getBadAccountMessage } from './getBadAccountMessage';
+import { badAccountMessage } from './badAccountMessage';
 import { Key } from '../model/keys';
 import { ensureConfigured } from './ensureConfigured';
 import { getAuth } from './getAuth';
 import { promptForAlksAccountAndRole } from './promptForAlksAccountAndRole';
 import { getKeys } from './getKeys';
 import { addKey } from './addKey';
+import { getAwsAccountFromString } from './getAwsAccountFromString';
 
 export async function getIamKey(
   alksAccount: string | undefined,
@@ -34,15 +35,22 @@ export async function getIamKey(
     log('using provided account/role');
   }
 
+  const awsAccount = await getAwsAccountFromString(alksAccount);
+  if (!awsAccount) {
+    throw new Error(badAccountMessage);
+  }
+
   log('getting existing keys');
   const existingKeys: Key[] = await getKeys(auth, true);
   log('got existing keys');
 
   if (existingKeys.length && !forceNewSession) {
-    log('filtering keys by account/role - ' + alksAccount + ' - ' + alksRole);
+    log(
+      `filtering keys by ${awsAccount.id}(${awsAccount?.alias}) with role ${alksRole}`
+    );
 
     // filter keys for the selected alks account/role
-    const keyCriteria = { alksAccount, alksRole };
+    const keyCriteria = { alksAccount: awsAccount.id, alksRole };
     // filter, sort by expiration, grab last key to expire
     const selectedKey = last(
       sortBy(where(existingKeys, keyCriteria), 'expires')
@@ -52,7 +60,7 @@ export async function getIamKey(
       log('found existing valid key');
       console.error(
         white.underline(
-          ['Resuming existing session in', alksAccount, alksRole].join(' ')
+          ['Resuming existing session in', awsAccount.id, alksRole].join(' ')
         )
       );
       return selectedKey;
@@ -69,7 +77,7 @@ export async function getIamKey(
   });
 
   const loginRole = await alks.getLoginRole({
-    accountId: alksAccount.slice(0, 12),
+    accountId: awsAccount.id,
     role: alksRole,
   });
 
@@ -77,26 +85,26 @@ export async function getIamKey(
 
   console.error(
     white.underline(
-      ['Creating new session in', alksAccount, alksRole].join(' ')
+      ['Creating new session in', awsAccount.id, alksRole].join(' ')
     )
   );
 
   let alksKey: ALKS.Key;
   try {
     alksKey = await alks.getIAMKeys({
-      account: alksAccount,
+      account: awsAccount.id,
       role: alksRole,
       sessionTime: duration,
     });
   } catch (e) {
-    throw new Error(getBadAccountMessage());
+    throw new Error(badAccountMessage);
   }
   const key: Key = {
     accessKey: alksKey.accessKey,
     secretKey: alksKey.secretKey,
     sessionToken: alksKey.sessionToken,
     expires: moment().add(duration, 'hours').toDate(),
-    alksAccount,
+    alksAccount: awsAccount.id,
     alksRole,
     isIAM: true,
   };
@@ -109,7 +117,7 @@ export async function getIamKey(
     key.accessKey,
     key.secretKey,
     key.sessionToken,
-    alksAccount,
+    awsAccount.id,
     alksRole,
     key.expires,
     auth,
