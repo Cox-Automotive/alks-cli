@@ -7,10 +7,10 @@ import { getAuth } from './getAuth';
 import { getIamKey } from './getIamKey';
 import { getKeys } from './getKeys';
 import { log } from './log';
-import { getBadAccountMessage } from './badAccountMessage';
 import { addKey } from './addKey';
 import ALKS from 'alks.js';
 import moment from 'moment';
+import { getAwsAccountFromString } from './getAwsAccountFromString';
 
 jest.mock('./ensureConfigured');
 jest.mock('./getAuth');
@@ -18,19 +18,23 @@ jest.mock('./promptForAlksAccountAndRole');
 jest.mock('./log');
 jest.mock('./getKeys');
 jest.mock('./getAlks');
-jest.mock('./getBadAccountMessage');
 jest.mock('./addKey');
 jest.mock('moment');
+jest.mock('./getAwsAccountFromString');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
 const date = new Date();
-const defaultAccount = '012345678910/ALKSAdmin - awstest';
+const defaultAccountId = '012345678910';
 const defaultRole = 'Admin';
-const passedAccount = '999888777666/ALKSReadOnly - awsother';
+const passedAccountId = '999888777666';
+const passedAccountAlias = 'awsother';
+const passedAccount = `${passedAccountId}/ALKSReadOnly - ${passedAccountAlias}`;
 const passedRole = 'ReadOnly';
-const selectedAccount = '444455556666/ALKSPowerUser - awsthing';
+const selectedAccountId = '444455556666';
+const selectedAccountAlias = 'awsthing';
+const selectedAccount = `${selectedAccountId}/ALKSPowerUser - ${selectedAccountAlias}`;
 const selectedRole = 'PowerUser';
 
 describe('getIamKey', () => {
@@ -47,12 +51,12 @@ describe('getIamKey', () => {
     shouldSaveKey: boolean;
     ensureConfigured: typeof ensureConfigured;
     getAuth: typeof getAuth;
-    getAlksAccount: typeof promptForAlksAccountAndRole;
+    promptForAlksAccountAndRole: typeof promptForAlksAccountAndRole;
     log: typeof log;
     getKeys: typeof getKeys;
     getAlks: typeof getAlks;
-    getBadAccountMessage: typeof getBadAccountMessage;
     addKey: typeof addKey;
+    getAwsAccountFromString: typeof getAwsAccountFromString;
   }
 
   const defaultTestCase: Omit<TestCase, 'description'> = {
@@ -62,7 +66,7 @@ describe('getIamKey', () => {
     forceNewSession: false,
     filterFavorites: false,
     result: {
-      alksAccount: passedAccount,
+      alksAccount: passedAccountId,
       alksRole: passedRole,
       isIAM: true,
       accessKey: 'abcd',
@@ -77,7 +81,7 @@ describe('getIamKey', () => {
     getAuth: async () => ({
       token: 'thisisatoken',
     }),
-    getAlksAccount: async () => ({
+    promptForAlksAccountAndRole: async () => ({
       alksAccount: selectedAccount,
       alksRole: selectedRole,
     }),
@@ -99,8 +103,12 @@ describe('getIamKey', () => {
           consoleURL: 'https://login.aws.com/my-account',
         }),
       } as unknown as ALKS.Alks),
-    getBadAccountMessage: () => 'Bad Account',
     addKey: async () => {},
+    getAwsAccountFromString: async () => ({
+      id: passedAccountId,
+      alias: passedAccountAlias,
+      label: 'Some Account Label',
+    }),
   };
 
   const testCases: TestCase[] = [
@@ -128,7 +136,7 @@ describe('getIamKey', () => {
       description: 'when an existing session exists',
       getKeys: async () => [
         {
-          alksAccount: passedAccount,
+          alksAccount: passedAccountId,
           alksRole: passedRole,
           isIAM: true,
           expires: date,
@@ -159,7 +167,7 @@ describe('getIamKey', () => {
       shouldSaveKey: true,
       getKeys: async () => [
         {
-          alksAccount: passedAccount,
+          alksAccount: passedAccountId,
           alksRole: passedRole,
           isIAM: true,
           expires: date,
@@ -182,7 +190,7 @@ describe('getIamKey', () => {
       shouldSaveKey: true,
       getKeys: async () => [
         {
-          alksAccount: defaultAccount,
+          alksAccount: defaultAccountId,
           alksRole: defaultRole,
           isIAM: true,
           expires: date,
@@ -204,7 +212,7 @@ describe('getIamKey', () => {
       description: 'when multiple existing sessions exist',
       getKeys: async () => [
         {
-          alksAccount: passedAccount,
+          alksAccount: passedAccountId,
           alksRole: passedRole,
           isIAM: true,
           expires: date,
@@ -220,7 +228,7 @@ describe('getIamKey', () => {
           },
         },
         {
-          alksAccount: passedAccount,
+          alksAccount: passedAccountId,
           alksRole: passedRole,
           isIAM: true,
           expires: new Date(date.getTime() + 1),
@@ -253,9 +261,14 @@ describe('getIamKey', () => {
       alksRole: undefined,
       result: {
         ...defaultTestCase.result,
-        alksAccount: selectedAccount,
+        alksAccount: selectedAccountId,
         alksRole: selectedRole,
       },
+      getAwsAccountFromString: async () => ({
+        id: selectedAccountId,
+        alias: selectedAccountAlias,
+        label: 'Some Selected Account',
+      }),
     },
     {
       ...defaultTestCase,
@@ -306,6 +319,12 @@ describe('getIamKey', () => {
       shouldSaveKey: true,
       shouldThrow: true,
     },
+    {
+      ...defaultTestCase,
+      description: 'when no matching aws account is found',
+      shouldThrow: true,
+      getAwsAccountFromString: async () => undefined,
+    },
   ];
 
   for (const t of testCases) {
@@ -317,14 +336,11 @@ describe('getIamKey', () => {
         (ensureConfigured as jest.Mock).mockImplementation(t.ensureConfigured);
         (getAuth as jest.Mock).mockImplementation(t.getAuth);
         (promptForAlksAccountAndRole as jest.Mock).mockImplementation(
-          t.getAlksAccount
+          t.promptForAlksAccountAndRole
         );
         (log as jest.Mock).mockImplementation(t.log);
         (getKeys as jest.Mock).mockImplementation(t.getKeys);
         (getAlks as jest.Mock).mockImplementation(t.getAlks);
-        (getBadAccountMessage as jest.Mock).mockImplementation(
-          t.getBadAccountMessage
-        );
         (addKey as jest.Mock).mockImplementation(t.addKey);
         (moment as unknown as jest.Mock).mockImplementation(() => {
           const moment = {} as any;
@@ -332,6 +348,9 @@ describe('getIamKey', () => {
           moment.toDate = () => date;
           return moment;
         });
+        (getAwsAccountFromString as jest.Mock).mockImplementation(
+          t.getAwsAccountFromString
+        );
 
         try {
           result = await getIamKey(

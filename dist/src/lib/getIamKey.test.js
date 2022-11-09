@@ -23,7 +23,7 @@ jest.mock('./getAwsAccountFromString');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 var date = new Date();
-var defaultAccount = '012345678910/ALKSAdmin - awstest';
+var defaultAccountId = '012345678910';
 var defaultRole = 'Admin';
 var passedAccountId = '999888777666';
 var passedAccountAlias = 'awsother';
@@ -41,7 +41,7 @@ describe('getIamKey', function () {
         forceNewSession: false,
         filterFavorites: false,
         result: {
-            alksAccount: passedAccount,
+            alksAccount: passedAccountId,
             alksRole: passedRole,
             isIAM: true,
             accessKey: 'abcd',
@@ -62,7 +62,7 @@ describe('getIamKey', function () {
                     })];
             });
         }); },
-        getAlksAccount: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+        promptForAlksAccountAndRole: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
             return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, ({
                         alksAccount: selectedAccount,
@@ -131,7 +131,7 @@ describe('getIamKey', function () {
                 return tslib_1.__generator(this, function (_a) {
                     return [2 /*return*/, [
                             {
-                                alksAccount: passedAccount,
+                                alksAccount: passedAccountId,
                                 alksRole: passedRole,
                                 isIAM: true,
                                 expires: date,
@@ -153,7 +153,7 @@ describe('getIamKey', function () {
                 return tslib_1.__generator(this, function (_a) {
                     return [2 /*return*/, [
                             {
-                                alksAccount: passedAccount,
+                                alksAccount: passedAccountId,
                                 alksRole: passedRole,
                                 isIAM: true,
                                 expires: date,
@@ -175,7 +175,7 @@ describe('getIamKey', function () {
                 return tslib_1.__generator(this, function (_a) {
                     return [2 /*return*/, [
                             {
-                                alksAccount: defaultAccount,
+                                alksAccount: defaultAccountId,
                                 alksRole: defaultRole,
                                 isIAM: true,
                                 expires: date,
@@ -197,7 +197,7 @@ describe('getIamKey', function () {
                 return tslib_1.__generator(this, function (_a) {
                     return [2 /*return*/, [
                             {
-                                alksAccount: passedAccount,
+                                alksAccount: passedAccountId,
                                 alksRole: passedRole,
                                 isIAM: true,
                                 expires: date,
@@ -213,7 +213,7 @@ describe('getIamKey', function () {
                                 },
                             },
                             {
-                                alksAccount: passedAccount,
+                                alksAccount: passedAccountId,
                                 alksRole: passedRole,
                                 isIAM: true,
                                 expires: new Date(date.getTime() + 1),
@@ -231,7 +231,7 @@ describe('getIamKey', function () {
                         ]];
                 });
             }); }, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { accessKey: 'zoo', secretKey: 'zaz', sessionToken: 'zba', expires: new Date(date.getTime() + 1) }) }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed', shouldSaveKey: true, shouldGetAlksAccount: true, alksAccount: undefined, alksRole: undefined, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { alksAccount: selectedAccount, alksRole: selectedRole }), getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed', shouldSaveKey: true, shouldGetAlksAccount: true, alksAccount: undefined, alksRole: undefined, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { alksAccount: selectedAccountId, alksRole: selectedRole }), getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
                     return [2 /*return*/, ({
                             id: selectedAccountId,
@@ -303,7 +303,7 @@ describe('getIamKey', function () {
                         case 0:
                             ensureConfigured_1.ensureConfigured.mockImplementation(t.ensureConfigured);
                             getAuth_1.getAuth.mockImplementation(t.getAuth);
-                            promptForAlksAccountAndRole_1.promptForAlksAccountAndRole.mockImplementation(t.getAlksAccount);
+                            promptForAlksAccountAndRole_1.promptForAlksAccountAndRole.mockImplementation(t.promptForAlksAccountAndRole);
                             log_1.log.mockImplementation(t.log);
                             getKeys_1.getKeys.mockImplementation(t.getKeys);
                             getAlks_1.getAlks.mockImplementation(t.getAlks);
