@@ -2,6 +2,10 @@ import { getAlksAccounts } from './getAlksAccounts';
 import { AwsAccount } from '../model/awsAccount';
 import ALKS from 'alks.js';
 
+const accountIdRegex = /^[0-9]{12}/;
+// This alias regex was sourced from AWS's docs here -> https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
+const aliasRegex = /^[a-z0-9](([a-z0-9]|-(?!-))*[a-z0-9])?$/;
+
 /**
  * Gets an ALKS Account object from a user-provided account string. The user must have access to the account for it to be resolved
  *
@@ -12,12 +16,8 @@ export async function getAwsAccountFromString(
 ): Promise<AwsAccount | undefined> {
   const accounts = await getAlksAccounts();
 
-  const accountId = (accountString.match(/^[0-9]{12}/) ?? [undefined])[0];
-
-  // This alias regex was sourced from AWS's docs here -> https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
-  const alias = (accountString.match(
-    /^[a-z0-9](([a-z0-9]|-(?!-))*[a-z0-9])?$/
-  ) ?? [undefined])[0];
+  const accountId = (accountString.match(accountIdRegex) ?? [undefined])[0];
+  const alias = (accountString.match(aliasRegex) ?? [undefined])[0];
 
   let alksAccount: ALKS.Account | undefined;
   if (accountId) {

@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAwsAccountFromString = void 0;
 var tslib_1 = require("tslib");
 var getAlksAccounts_1 = require("./getAlksAccounts");
+var accountIdRegex = /^[0-9]{12}/;
+// This alias regex was sourced from AWS's docs here -> https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html
+var aliasRegex = /^[a-z0-9](([a-z0-9]|-(?!-))*[a-z0-9])?$/;
 /**
  * Gets an ALKS Account object from a user-provided account string. The user must have access to the account for it to be resolved
  *
@@ -17,8 +20,8 @@ function getAwsAccountFromString(accountString) {
                 case 0: return [4 /*yield*/, (0, getAlksAccounts_1.getAlksAccounts)()];
                 case 1:
                     accounts = _d.sent();
-                    accountId = ((_a = accountString.match(/^[0-9]{12}/)) !== null && _a !== void 0 ? _a : [undefined])[0];
-                    alias = ((_b = accountString.match(/^[a-z0-9](([a-z0-9]|-(?!-))*[a-z0-9])?$/)) !== null && _b !== void 0 ? _b : [undefined])[0];
+                    accountId = ((_a = accountString.match(accountIdRegex)) !== null && _a !== void 0 ? _a : [undefined])[0];
+                    alias = ((_b = accountString.match(aliasRegex)) !== null && _b !== void 0 ? _b : [undefined])[0];
                     if (accountId) {
                         matchingAccounts = accounts.filter(function (account) { return accountId === account.account.substring(0, 12); });
                         if (matchingAccounts.length > 0) {
