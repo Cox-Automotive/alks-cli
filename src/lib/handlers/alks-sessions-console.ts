@@ -4,7 +4,6 @@ import { Key } from '../../model/keys';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getIamKey } from '../getIamKey';
-import { getSessionKey } from '../getSessionKey';
 import { getUserAgentString } from '../getUserAgentString';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
@@ -39,22 +38,13 @@ export async function handleAlksSessionsConsole(
 
     let key: Key;
     try {
-      if (isUndefined(options.iam)) {
-        key = await getSessionKey(
-          alksAccount,
-          alksRole,
-          false,
-          forceNewSession,
-          filterFaves
-        );
-      } else {
-        key = await getIamKey(
-          alksAccount,
-          alksRole,
-          forceNewSession,
-          filterFaves
-        );
-      }
+      key = await getIamKey(
+        alksAccount,
+        alksRole,
+        forceNewSession,
+        filterFaves,
+        isUndefined(options.iam) ? false : true
+      );
     } catch (err) {
       errorAndExit(err as Error);
     }

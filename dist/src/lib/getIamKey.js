@@ -14,9 +14,10 @@ var promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 var getKeys_1 = require("./getKeys");
 var addKey_1 = require("./addKey");
 var getAwsAccountFromString_1 = require("./getAwsAccountFromString");
-function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
+function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites, iamOnly) {
     if (forceNewSession === void 0) { forceNewSession = false; }
     if (filterFavorites === void 0) { filterFavorites = false; }
+    if (iamOnly === void 0) { iamOnly = true; }
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         var auth, awsAccount, existingKeys, keyCriteria, selectedKey, alks, loginRole, duration, alksKey, e_1, key;
         var _a;
@@ -32,7 +33,7 @@ function getIamKey(alksAccount, alksRole, forceNewSession, filterFavorites) {
                     if (!(!alksAccount || !alksRole)) return [3 /*break*/, 4];
                     (0, log_1.log)('getting accounts');
                     return [4 /*yield*/, (0, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole)({
-                            iamOnly: true,
+                            iamOnly: iamOnly,
                             filterFavorites: filterFavorites,
                         })];
                 case 3:

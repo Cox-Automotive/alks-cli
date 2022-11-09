@@ -17,7 +17,8 @@ export async function getIamKey(
   alksAccount: string | undefined,
   alksRole: string | undefined,
   forceNewSession: boolean = false,
-  filterFavorites: boolean = false
+  filterFavorites: boolean = false,
+  iamOnly: boolean = true
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -28,7 +29,7 @@ export async function getIamKey(
   if (!alksAccount || !alksRole) {
     log('getting accounts');
     ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
-      iamOnly: true,
+      iamOnly,
       filterFavorites,
     }));
   } else {

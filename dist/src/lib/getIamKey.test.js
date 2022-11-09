@@ -8,26 +8,30 @@ var getAuth_1 = require("./getAuth");
 var getIamKey_1 = require("./getIamKey");
 var getKeys_1 = require("./getKeys");
 var log_1 = require("./log");
-var badAccountMessage_1 = require("./badAccountMessage");
 var addKey_1 = require("./addKey");
 var moment_1 = tslib_1.__importDefault(require("moment"));
+var getAwsAccountFromString_1 = require("./getAwsAccountFromString");
 jest.mock('./ensureConfigured');
 jest.mock('./getAuth');
 jest.mock('./promptForAlksAccountAndRole');
 jest.mock('./log');
 jest.mock('./getKeys');
 jest.mock('./getAlks');
-jest.mock('./getBadAccountMessage');
 jest.mock('./addKey');
 jest.mock('moment');
+jest.mock('./getAwsAccountFromString');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 var date = new Date();
 var defaultAccount = '012345678910/ALKSAdmin - awstest';
 var defaultRole = 'Admin';
-var passedAccount = '999888777666/ALKSReadOnly - awsother';
+var passedAccountId = '999888777666';
+var passedAccountAlias = 'awsother';
+var passedAccount = "".concat(passedAccountId, "/ALKSReadOnly - ").concat(passedAccountAlias);
 var passedRole = 'ReadOnly';
-var selectedAccount = '444455556666/ALKSPowerUser - awsthing';
+var selectedAccountId = '444455556666';
+var selectedAccountAlias = 'awsthing';
+var selectedAccount = "".concat(selectedAccountId, "/ALKSPowerUser - ").concat(selectedAccountAlias);
 var selectedRole = 'PowerUser';
 describe('getIamKey', function () {
     var defaultTestCase = {
@@ -102,10 +106,18 @@ describe('getIamKey', function () {
                     })];
             });
         }); },
-        getBadAccountMessage: function () { return 'Bad Account'; },
         addKey: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
             return [2 /*return*/];
         }); }); },
+        getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({
+                        id: passedAccountId,
+                        alias: passedAccountAlias,
+                        label: 'Some Account Label',
+                    })];
+            });
+        }); },
     };
     var testCases = [
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when not configured', shouldThrow: true, ensureConfigured: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
@@ -219,7 +231,15 @@ describe('getIamKey', function () {
                         ]];
                 });
             }); }, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { accessKey: 'zoo', secretKey: 'zaz', sessionToken: 'zba', expires: new Date(date.getTime() + 1) }) }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed', shouldSaveKey: true, shouldGetAlksAccount: true, alksAccount: undefined, alksRole: undefined, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { alksAccount: selectedAccount, alksRole: selectedRole }) }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no account or role is passed', shouldSaveKey: true, shouldGetAlksAccount: true, alksAccount: undefined, alksRole: undefined, result: tslib_1.__assign(tslib_1.__assign({}, defaultTestCase.result), { alksAccount: selectedAccount, alksRole: selectedRole }), getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: selectedAccountId,
+                            alias: selectedAccountAlias,
+                            label: 'Some Selected Account',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when getting existing keys fails', getKeys: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
                     throw new Error();
@@ -268,6 +288,9 @@ describe('getIamKey', function () {
                     throw new Error();
                 });
             }); }, shouldSaveKey: true, shouldThrow: true }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no matching aws account is found', shouldThrow: true, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, undefined];
+            }); }); } }),
     ];
     var _loop_1 = function (t) {
         describe(t.description, function () {
@@ -284,7 +307,6 @@ describe('getIamKey', function () {
                             log_1.log.mockImplementation(t.log);
                             getKeys_1.getKeys.mockImplementation(t.getKeys);
                             getAlks_1.getAlks.mockImplementation(t.getAlks);
-                            badAccountMessage_1.getBadAccountMessage.mockImplementation(t.getBadAccountMessage);
                             addKey_1.addKey.mockImplementation(t.addKey);
                             moment_1.default.mockImplementation(function () {
                                 var moment = {};
@@ -292,6 +314,7 @@ describe('getIamKey', function () {
                                 moment.toDate = function () { return date; };
                                 return moment;
                             });
+                            getAwsAccountFromString_1.getAwsAccountFromString.mockImplementation(t.getAwsAccountFromString);
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);

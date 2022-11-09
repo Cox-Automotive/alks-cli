@@ -1,5 +1,4 @@
 import express from 'express';
-import { getSessionKey } from './getSessionKey.js';
 import listEnds from 'express-list-endpoints';
 import { Key } from '../model/keys';
 import { getMetadata } from './getMetadata.js';
@@ -44,24 +43,14 @@ app.get(
 
 app.get('/latest/meta-data/iam/security-credentials/*', async (_req, resp) => {
   const metadata = await getMetadata();
-  if (metadata.isIam) {
-    const key = await getIamKey(
-      metadata.alksAccount,
-      metadata.alksRole,
-      false,
-      false
-    );
-    resp.json(generateResponse(key));
-  } else {
-    const key = await getSessionKey(
-      metadata.alksAccount,
-      metadata.alksRole,
-      false,
-      false,
-      false
-    );
-    resp.json(generateResponse(key));
-  }
+  const key = await getIamKey(
+    metadata.alksAccount,
+    metadata.alksRole,
+    false,
+    false,
+    metadata.isIam
+  );
+  resp.json(generateResponse(key));
 });
 
 app.listen(45000, '127.0.0.1', () => {
