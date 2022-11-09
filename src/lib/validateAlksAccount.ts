@@ -1,4 +1,5 @@
 import { getAlksAccounts } from './getAlksAccounts';
+import { getAwsAccountFromString } from './getAwsAccountFromString';
 
 export async function validateAlksAccount(
   account: string,
@@ -6,8 +7,16 @@ export async function validateAlksAccount(
 ): Promise<void> {
   const alksAccounts = await getAlksAccounts();
 
+  const awsAccount = await getAwsAccountFromString(account);
+  if (!awsAccount) {
+    throw new Error(
+      `account: "${account}" could not be resolved to a valid AWS account`
+    );
+  }
+
   const matchingAccount = alksAccounts.find(
-    (alksAccount) => alksAccount.account == account && alksAccount.role == role
+    (alksAccount) =>
+      alksAccount.account.startsWith(awsAccount?.id) && alksAccount.role == role
   );
 
   if (!matchingAccount) {
