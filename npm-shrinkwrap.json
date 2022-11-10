@@ -6,7 +6,7 @@
   "packages": {
     "": {
       "name": "alks",
-      "version": "3.12.1",
+      "version": "3.13.0",
       "license": "MIT",
       "dependencies": {
         "alks-node": "^0.12.1",
@@ -19,6 +19,7 @@
         "ini": "^2.0.0",
         "inquirer": "^6.5.2",
         "lokijs": "^1.5.1",
+        "memoizee": "^0.4.15",
         "moment": "^2.13.0",
         "node-netrc": "^0.1.0",
         "npm-registry-client": "^7.1.2",
@@ -45,6 +46,7 @@
         "@types/inquirer": "^7.3.1",
         "@types/jest": "^26.0.24",
         "@types/lokijs": "^1.5.4",
+        "@types/memoizee": "^0.4.8",
         "@types/node": "^15.0.0",
         "@types/semver": "^7.3.5",
         "@types/tabtab": "^3.0.1",
@@ -2833,6 +2835,12 @@
       "version": "1.5.7",
       "resolved": "https://registry.npmjs.org/@types/lokijs/-/lokijs-1.5.7.tgz",
       "integrity": "sha512-WEFQLgO3u2Wa7yFybqkTZYumqF1GcHvUwx8Tv2SUHy2qpnIainMMoLmEUGdjhPNp/v5pyC9e91fSMC3mkxBIDw==",
+      "dev": true
+    },
+    "node_modules/@types/memoizee": {
+      "version": "0.4.8",
+      "resolved": "https://registry.npmjs.org/@types/memoizee/-/memoizee-0.4.8.tgz",
+      "integrity": "sha512-qDpXKGgwKywnQt/64fH1O0LiPA++QGIYeykEUiZ51HymKVRLnUSGcRuF60IfpPeeXiuRwiR/W4y7S5VzbrgLCA==",
       "dev": true
     },
     "node_modules/@types/mime": {
@@ -16536,6 +16544,12 @@
       "version": "1.5.7",
       "resolved": "https://registry.npmjs.org/@types/lokijs/-/lokijs-1.5.7.tgz",
       "integrity": "sha512-WEFQLgO3u2Wa7yFybqkTZYumqF1GcHvUwx8Tv2SUHy2qpnIainMMoLmEUGdjhPNp/v5pyC9e91fSMC3mkxBIDw==",
+      "dev": true
+    },
+    "@types/memoizee": {
+      "version": "0.4.8",
+      "resolved": "https://registry.npmjs.org/@types/memoizee/-/memoizee-0.4.8.tgz",
+      "integrity": "sha512-qDpXKGgwKywnQt/64fH1O0LiPA++QGIYeykEUiZ51HymKVRLnUSGcRuF60IfpPeeXiuRwiR/W4y7S5VzbrgLCA==",
       "dev": true
     },
     "@types/mime": {
