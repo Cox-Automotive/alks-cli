@@ -10,12 +10,14 @@ import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { parseKeyValuePairs } from '../parseKeyValuePairs';
 import { unpackTags } from '../unpackTags';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
+import { badAccountMessage } from '../badAccountMessage';
 
 export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   const roleNameDesc = 'alphanumeric including @+=._-';
   const ROLE_NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
-  const roleName = options.rolename;
-  const roleType = options.roletype ? options.roletype : undefined;
+  const roleName: string | undefined = options.rolename;
+  const roleType = options.roletype ? (options.roletype as string) : undefined;
   let trustPolicy;
   try {
     trustPolicy = options.trustPolicy
@@ -36,7 +38,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
     : undefined;
 
   log('validating role name: ' + roleName);
-  if (isEmpty(roleName) || !ROLE_NAME_REGEX.test(roleName)) {
+  if (!roleName || !ROLE_NAME_REGEX.test(roleName)) {
     errorAndExit(
       'The role name provided contains illegal characters. It must be ' +
         roleNameDesc
@@ -56,7 +58,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
   }
 
   try {
-    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+    if (!alksAccount || !alksRole) {
       log('getting accounts');
       ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
@@ -68,6 +70,11 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
 
     const auth = await getAuth();
 
+    const awsAccount = await getAwsAccountFromString(alksAccount);
+    if (!awsAccount) {
+      throw new Error(badAccountMessage);
+    }
+
     log('calling api to create role: ' + roleName);
 
     const alks = await getAlks({
@@ -77,7 +84,7 @@ export async function handleAlksIamCreateRole(options: commander.OptionValues) {
     let role;
     try {
       role = await alks.createRole({
-        account: alksAccount,
+        account: awsAccount.id,
         role: alksRole,
         roleName,
         roleType,

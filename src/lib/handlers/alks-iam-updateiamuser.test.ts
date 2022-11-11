@@ -4,6 +4,7 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
 import { handleAlksIamUpdateIamUser } from './alks-iam-updateiamuser';
 
 jest.mock('../errorAndExit');
@@ -11,6 +12,7 @@ jest.mock('../checkForUpdate');
 jest.mock('../getAlks');
 jest.mock('../getAuth');
 jest.mock('alks.js');
+jest.mock('../getAwsAccountFromString');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
@@ -37,6 +39,7 @@ describe('handleAlksIamUpdateIamUser', () => {
       iamUserArn: string | undefined;
       tags: ALKS.Tag[] | undefined;
     };
+    getAwsAccountFromString: typeof getAwsAccountFromString;
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
@@ -55,6 +58,7 @@ describe('handleAlksIamUpdateIamUser', () => {
       iamUserArn: '',
       tags: undefined,
     },
+    getAwsAccountFromString: async () => undefined,
   };
   const testCases: TestCase[] = [
     {
@@ -80,6 +84,11 @@ describe('handleAlksIamUpdateIamUser', () => {
         account: '111111111111',
         iamusername: 'goodIamUserName',
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -95,6 +104,11 @@ describe('handleAlksIamUpdateIamUser', () => {
         iamUserName: 'goodIamUserName',
         tags: [],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -105,6 +119,11 @@ describe('handleAlksIamUpdateIamUser', () => {
         account: '111111111111',
         tags: [],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -132,6 +151,11 @@ describe('handleAlksIamUpdateIamUser', () => {
           },
         ],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -159,6 +183,11 @@ describe('handleAlksIamUpdateIamUser', () => {
           },
         ],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
   ];
 

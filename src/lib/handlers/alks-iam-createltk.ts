@@ -1,10 +1,12 @@
 import clc from 'cli-color';
 import commander from 'commander';
 import { isEmpty, isUndefined } from 'underscore';
+import { badAccountMessage } from '../badAccountMessage';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
 import { log } from '../log';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { tryToExtractRole } from '../tryToExtractRole';
@@ -36,7 +38,7 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
       alksRole = tryToExtractRole(alksAccount);
     }
 
-    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+    if (!alksAccount || !alksRole) {
       ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
         filterFavorites: filterFaves,
@@ -49,15 +51,16 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
       ...auth,
     });
 
-    log('calling api to create ltk: ' + iamUsername);
-
-    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
-      throw new Error('Must specifify ALKS Account and Role');
+    const awsAccount = await getAwsAccountFromString(alksAccount);
+    if (!awsAccount) {
+      throw new Error(badAccountMessage);
     }
 
+    log('calling api to create ltk: ' + iamUsername);
+
     const ltk = await alks.createAccessKeys({
-      account: alksAccount as string,
-      role: alksRole as string,
+      account: awsAccount.id,
+      role: alksRole,
       iamUserName: iamUsername,
       tags,
     });
@@ -76,7 +79,7 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
         secretKey: ltk.secretKey,
         iamUserName: iamUsername,
         iamUserArn: ltk.iamUserArn,
-        alksAccount,
+        alksAccount: awsAccount.id,
         alksRole,
       };
       console.log(

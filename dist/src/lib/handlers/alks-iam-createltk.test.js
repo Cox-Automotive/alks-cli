@@ -8,6 +8,7 @@ var getAuth_1 = require("../getAuth");
 var promptForAlksAccountAndRole_1 = require("../promptForAlksAccountAndRole");
 var alks_iam_createltk_1 = require("./alks-iam-createltk");
 var tryToExtractRole_1 = require("../tryToExtractRole");
+var getAwsAccountFromString_1 = require("../getAwsAccountFromString");
 jest.mock('../errorAndExit');
 jest.mock('../checkForUpdate');
 jest.mock('../getAlks');
@@ -15,6 +16,7 @@ jest.mock('../getAuth');
 jest.mock('alks.js');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../tryToExtractRole');
+jest.mock('../getAwsAccountFromString');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 // Silence console.log
@@ -40,6 +42,9 @@ describe('handleAlksIamCreateLtk', function () {
             iamUserName: 'defaultIamUserName',
             iamUserArn: 'defaultIamUserArn',
         },
+        getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+            return [2 /*return*/, undefined];
+        }); }); },
     };
     var testCases = [
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no tags nor empty list is provided', shouldErr: false, shouldCreateLTK: true, options: {
@@ -50,7 +55,15 @@ describe('handleAlksIamCreateLtk', function () {
                 account: '111111111111',
                 role: 'Role',
                 iamUserName: 'goodIamUserName',
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when empty list of tags is supplied', shouldErr: false, options: {
                 account: '111111111111',
                 role: 'Role',
@@ -61,12 +74,28 @@ describe('handleAlksIamCreateLtk', function () {
                 role: 'Role',
                 iamUserName: 'goodIamUserName',
                 tags: [],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no username is supplied', shouldErr: true, shouldCreateLTK: false, options: {
                 account: '111111111111',
                 role: 'AlksRole',
                 tags: [],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When good data is supplied', shouldErr: false, options: {
                 account: '111111111111',
                 role: 'Role',
@@ -89,7 +118,15 @@ describe('handleAlksIamCreateLtk', function () {
                         value: 'val2',
                     },
                 ],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When Account has role and no role supplied', shouldErr: false, alksAccount: '111111111111/ALKSRole', alksRole: 'Role', options: {
                 account: '111111111111/AlksRole',
                 iamusername: 'goodIamUserName',
@@ -98,7 +135,7 @@ describe('handleAlksIamCreateLtk', function () {
                     '{"Key":"key2", "Value":"val2"}',
                 ],
             }, createLTKParams: {
-                account: '111111111111/ALKSRole',
+                account: '111111111111',
                 role: 'Role',
                 iamUserName: 'goodIamUserName',
                 tags: [
@@ -111,7 +148,15 @@ describe('handleAlksIamCreateLtk', function () {
                         value: 'val2',
                     },
                 ],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When account is supplied with accountID and roleName', shouldErr: false, extractedRole: 'Role', options: {
                 account: '111111111112/ALKSRole',
                 iamusername: 'goodIamUserName',
@@ -120,7 +165,7 @@ describe('handleAlksIamCreateLtk', function () {
                     '{"Key":"key2", "Value":"val2"}',
                 ],
             }, createLTKParams: {
-                account: '111111111112/ALKSRole',
+                account: '111111111112',
                 role: 'Role',
                 iamUserName: 'goodIamUserName',
                 tags: [
@@ -133,7 +178,31 @@ describe('handleAlksIamCreateLtk', function () {
                         value: 'val2',
                     },
                 ],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111112',
+                            alias: 'awstwo',
+                            label: 'Two - Prod',
+                        })];
+                });
+            }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When no matching account is found', shouldErr: true, extractedRole: 'Role', options: {
+                account: '111111111112/ALKSRole',
+                iamusername: 'goodIamUserName',
+                tags: [
+                    '{"Key":"key1", "Value":"val1"}',
+                    '{"Key":"key2", "Value":"val2"}',
+                ],
+            }, shouldCreateLTK: false, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
     ];
     var fakeErrorSymbol = Symbol();
     var mockAlks = {
@@ -178,6 +247,7 @@ describe('handleAlksIamCreateLtk', function () {
                             mockAlks.createAccessKeys.mockImplementation(function () {
                                 return t.createLTKOutputParams;
                             });
+                            getAwsAccountFromString_1.getAwsAccountFromString.mockImplementation(t.getAwsAccountFromString);
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);
@@ -204,6 +274,7 @@ describe('handleAlksIamCreateLtk', function () {
                     getAlks_1.getAlks.mockReset();
                     mockAlks.createAccessKeys.mockReset();
                     tryToExtractRole_1.tryToExtractRole.mockReset();
+                    getAwsAccountFromString_1.getAwsAccountFromString.mockReset();
                     return [2 /*return*/];
                 });
             }); });

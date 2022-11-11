@@ -7,6 +7,7 @@ import { getAuth } from '../getAuth';
 import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { handleAlksIamCreateLtk } from './alks-iam-createltk';
 import { tryToExtractRole } from '../tryToExtractRole';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
 
 jest.mock('../errorAndExit');
 jest.mock('../checkForUpdate');
@@ -15,6 +16,7 @@ jest.mock('../getAuth');
 jest.mock('alks.js');
 jest.mock('../promptForAlksAccountAndRole');
 jest.mock('../tryToExtractRole');
+jest.mock('../getAwsAccountFromString');
 
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
@@ -44,6 +46,7 @@ describe('handleAlksIamCreateLtk', () => {
       iamUserName: string | undefined;
       iamUserArn: string | undefined;
     };
+    getAwsAccountFromString: typeof getAwsAccountFromString;
   }
   const defaultTestCase: Omit<TestCase, 'description'> = {
     options: {} as commander.OptionValues,
@@ -65,6 +68,7 @@ describe('handleAlksIamCreateLtk', () => {
       iamUserName: 'defaultIamUserName',
       iamUserArn: 'defaultIamUserArn',
     },
+    getAwsAccountFromString: async () => undefined,
   };
   const testCases: TestCase[] = [
     {
@@ -82,6 +86,11 @@ describe('handleAlksIamCreateLtk', () => {
         role: 'Role',
         iamUserName: 'goodIamUserName',
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -99,6 +108,11 @@ describe('handleAlksIamCreateLtk', () => {
         iamUserName: 'goodIamUserName',
         tags: [],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -110,6 +124,11 @@ describe('handleAlksIamCreateLtk', () => {
         role: 'AlksRole',
         tags: [],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -139,6 +158,11 @@ describe('handleAlksIamCreateLtk', () => {
           },
         ],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -155,7 +179,7 @@ describe('handleAlksIamCreateLtk', () => {
         ],
       },
       createLTKParams: {
-        account: '111111111111/ALKSRole',
+        account: '111111111111',
         role: 'Role',
         iamUserName: 'goodIamUserName',
         tags: [
@@ -169,6 +193,11 @@ describe('handleAlksIamCreateLtk', () => {
           },
         ],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
     {
       ...defaultTestCase,
@@ -184,7 +213,7 @@ describe('handleAlksIamCreateLtk', () => {
         ],
       },
       createLTKParams: {
-        account: '111111111112/ALKSRole',
+        account: '111111111112',
         role: 'Role',
         iamUserName: 'goodIamUserName',
         tags: [
@@ -198,6 +227,31 @@ describe('handleAlksIamCreateLtk', () => {
           },
         ],
       },
+      getAwsAccountFromString: async () => ({
+        id: '111111111112',
+        alias: 'awstwo',
+        label: 'Two - Prod',
+      }),
+    },
+    {
+      ...defaultTestCase,
+      description: 'When no matching account is found',
+      shouldErr: true,
+      extractedRole: 'Role',
+      options: {
+        account: '111111111112/ALKSRole',
+        iamusername: 'goodIamUserName',
+        tags: [
+          '{"Key":"key1", "Value":"val1"}',
+          '{"Key":"key2", "Value":"val2"}',
+        ],
+      },
+      shouldCreateLTK: false,
+      getAwsAccountFromString: async () => ({
+        id: '111111111111',
+        alias: 'awsone',
+        label: 'One - Prod',
+      }),
     },
   ];
 
@@ -240,6 +294,9 @@ describe('handleAlksIamCreateLtk', () => {
         (mockAlks.createAccessKeys as jest.Mock).mockImplementation(() => {
           return t.createLTKOutputParams;
         });
+        (getAwsAccountFromString as jest.Mock).mockImplementation(
+          t.getAwsAccountFromString
+        );
 
         try {
           await handleAlksIamCreateLtk(t.options);
@@ -257,6 +314,7 @@ describe('handleAlksIamCreateLtk', () => {
         (getAlks as jest.Mock).mockReset();
         (mockAlks.createAccessKeys as jest.Mock).mockReset();
         (tryToExtractRole as jest.Mock).mockReset();
+        (getAwsAccountFromString as jest.Mock).mockReset();
       });
 
       if (t.shouldErr) {

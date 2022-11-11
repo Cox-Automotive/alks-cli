@@ -11,6 +11,7 @@ jest.mock('../checkForUpdate');
 jest.mock('../getAlks');
 jest.mock('../getAuth');
 jest.mock('alks.js');
+jest.mock('../getAwsAccountFromString');
 // Silence console.error
 jest.spyOn(global.console, 'error').mockImplementation(function () { });
 // Silence console.log
@@ -33,6 +34,9 @@ describe('handleAlksIamUpdateIamUser', function () {
             iamUserArn: '',
             tags: undefined,
         },
+        getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+            return [2 /*return*/, undefined];
+        }); }); },
     };
     var testCases = [
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when bad accountId is supplied', shouldErr: true, shouldUpdateIamUser: false, options: {
@@ -46,7 +50,15 @@ describe('handleAlksIamUpdateIamUser', function () {
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no tags nor empty list is provided', shouldErr: true, shouldUpdateIamUser: false, options: {
                 account: '111111111111',
                 iamusername: 'goodIamUserName',
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when empty list of tags is supplied', shouldErr: false, options: {
                 account: '111111111111',
                 iamusername: 'goodIamUserName',
@@ -55,11 +67,27 @@ describe('handleAlksIamUpdateIamUser', function () {
                 account: '111111111111',
                 iamUserName: 'goodIamUserName',
                 tags: [],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when no username is supplied', shouldErr: true, shouldUpdateIamUser: false, options: {
                 account: '111111111111',
                 tags: [],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When good data is supplied', shouldErr: false, options: {
                 account: '111111111111',
                 iamusername: 'goodIamUserName',
@@ -80,7 +108,15 @@ describe('handleAlksIamUpdateIamUser', function () {
                         value: 'val2',
                     },
                 ],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
         tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When account is supplied with accountID and roleName', shouldErr: false, options: {
                 account: '111111111111/ALKSRole',
                 iamusername: 'goodIamUserName',
@@ -101,7 +137,15 @@ describe('handleAlksIamUpdateIamUser', function () {
                         value: 'val2',
                     },
                 ],
-            } }),
+            }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '111111111111',
+                            alias: 'awsone',
+                            label: 'One - Prod',
+                        })];
+                });
+            }); } }),
     ];
     var fakeErrorSymbol = Symbol();
     var mockAlks = {

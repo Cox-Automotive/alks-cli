@@ -1,11 +1,12 @@
 import clc from 'cli-color';
 import commander from 'commander';
 import { isEmpty, isUndefined } from 'underscore';
+import { badAccountMessage } from '../badAccountMessage';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { extractAccountId } from '../extractAccountId';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
 import { log } from '../log';
 import { unpackTags } from '../unpackTags';
 
@@ -15,7 +16,7 @@ export async function handleAlksIamUpdateIamUser(
   const nameDesc = 'alphanumeric including @+=._-';
   const NAME_REGEX = /^[a-zA-Z0-9!@+=._-]+$/g;
   const iamUsername = options.iamusername;
-  const alksAccount = extractAccountId(options.account);
+  const alksAccount = options.account as string | undefined;
   const output = options.output || 'text';
   const tags = options.tags ? unpackTags(options.tags) : undefined;
   if (isUndefined(tags)) {
@@ -45,11 +46,16 @@ export async function handleAlksIamUpdateIamUser(
       ...auth,
     });
 
+    const awsAccount = await getAwsAccountFromString(alksAccount);
+    if (!awsAccount) {
+      throw new Error(badAccountMessage);
+    }
+
     log('calling api to update iamUser: ' + iamUsername);
     let iamUser;
     try {
       iamUser = await alks.updateIamUser({
-        account: alksAccount,
+        account: awsAccount.id,
         iamUserName: iamUsername,
         tags,
       });

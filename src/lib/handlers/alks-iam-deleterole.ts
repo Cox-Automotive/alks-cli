@@ -8,11 +8,13 @@ import { promptForAlksAccountAndRole } from '../promptForAlksAccountAndRole';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
+import { badAccountMessage } from '../badAccountMessage';
 
 export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
   const roleName = options.rolename;
-  let alksAccount = options.account;
-  let alksRole = options.role;
+  let alksAccount = options.account as string | undefined;
+  let alksRole = options.role as string | undefined;
   const filterFavorites = options.favorites || false;
 
   log('validating role name: ' + roleName);
@@ -26,7 +28,7 @@ export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
   }
 
   try {
-    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+    if (!alksAccount || !alksRole) {
       log('getting accounts');
       ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
@@ -38,6 +40,11 @@ export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
 
     const auth = await getAuth();
 
+    const awsAccount = await getAwsAccountFromString(alksAccount);
+    if (!awsAccount) {
+      throw new Error(badAccountMessage);
+    }
+
     log('calling api to delete role: ' + roleName);
 
     const alks = await getAlks({
@@ -46,7 +53,7 @@ export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
 
     try {
       await alks.deleteRole({
-        account: alksAccount,
+        account: awsAccount.id,
         role: alksRole,
         roleName,
       });

@@ -10,6 +10,8 @@ import { getAuth } from '../getAuth';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { unpackTags } from '../unpackTags';
+import { getAwsAccountFromString } from '../getAwsAccountFromString';
+import { badAccountMessage } from '../badAccountMessage';
 
 export async function handleAlksIamCreateTrustRole(
   options: commander.OptionValues
@@ -23,8 +25,8 @@ export async function handleAlksIamCreateTrustRole(
   const roleType = options.roletype;
   const trustArn = options.trustarn;
   const enableAlksAccess = options.enableAlksAccess;
-  let alksAccount = options.account;
-  let alksRole = options.role;
+  let alksAccount = options.account as string | undefined;
+  let alksRole = options.role as string | undefined;
   const tags = options.tags ? unpackTags(options.tags) : undefined;
   const filterFavorites = options.favorites || false;
 
@@ -58,7 +60,7 @@ export async function handleAlksIamCreateTrustRole(
   }
 
   try {
-    if (isEmpty(alksAccount) || isEmpty(alksRole)) {
+    if (!alksAccount || !alksRole) {
       log('getting accounts');
       ({ alksAccount, alksRole } = await promptForAlksAccountAndRole({
         iamOnly: true,
@@ -70,6 +72,11 @@ export async function handleAlksIamCreateTrustRole(
 
     const auth = await getAuth();
 
+    const awsAccount = await getAwsAccountFromString(alksAccount);
+    if (!awsAccount) {
+      throw new Error(badAccountMessage);
+    }
+
     log('calling api to create trust role: ' + roleName);
 
     const alks = await getAlks({
@@ -79,7 +86,7 @@ export async function handleAlksIamCreateTrustRole(
     let role;
     try {
       role = await alks.createNonServiceRole({
-        account: alksAccount,
+        account: awsAccount.id,
         role: alksRole,
         roleName,
         roleType,
