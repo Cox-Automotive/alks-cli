@@ -41,7 +41,7 @@ function getAwsAccountFromString(accountString) {
                                 label: (_c = alksAccount.skypieaAccount) === null || _c === void 0 ? void 0 : _c.label,
                             }];
                     }
-                    // if no matches or too many matches were found
+                    // if no matches were found
                     return [2 /*return*/, undefined];
             }
         });

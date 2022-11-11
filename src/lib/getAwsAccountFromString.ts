@@ -21,7 +21,7 @@ export async function getAwsAccountFromString(
 
   let alksAccount: ALKS.Account | undefined;
   if (accountId) {
-    // Get a list of accounts whose account string (e.g. "012345678910/ALKSAdmin - awstest123") starts with an account ID that matches the provided account ID
+    // Get a list of account/role pairs whose account string (e.g. "012345678910/ALKSAdmin - awstest123") starts with an account ID that matches the provided account ID
     const matchingAccounts = accounts.filter(
       (account) => accountId === account.account.substring(0, 12)
     );
@@ -30,7 +30,7 @@ export async function getAwsAccountFromString(
       alksAccount = matchingAccounts[0];
     }
   } else if (alias) {
-    // Get a list of accounts whose account string (e.g. "012345678910/ALKSAdmin - awstest123") contains an alias that matches the provided alias
+    // Get a list of account/role pairs whose account string (e.g. "012345678910/ALKSAdmin - awstest123") contains an alias that matches the provided alias
     const matchingAccounts = accounts.filter(
       (account) =>
         account.account.match(new RegExp(` - ${alias}$`))?.length === 1
@@ -49,6 +49,6 @@ export async function getAwsAccountFromString(
     };
   }
 
-  // if no matches or too many matches were found
+  // if no matches were found
   return undefined;
 }
