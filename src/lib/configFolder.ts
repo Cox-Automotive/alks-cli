@@ -9,6 +9,7 @@ export function getAlksConfigFolder() {
 }
 
 export async function ensureConfigFolderExists(): Promise<void> {
+  log('ensuring config folder exists');
   // ensure the alks config folder exists
   await mkdir(getAlksConfigFolder()).catch((err: Error) => {
     if (err.message.includes('EEXIST')) {

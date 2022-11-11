@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Updates Readme
+* Adds more logging when debugging
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

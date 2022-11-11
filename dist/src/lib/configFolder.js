@@ -15,16 +15,17 @@ function ensureConfigFolderExists() {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
         return tslib_1.__generator(this, function (_a) {
             switch (_a.label) {
-                case 0: 
-                // ensure the alks config folder exists
-                return [4 /*yield*/, mkdir(getAlksConfigFolder()).catch(function (err) {
-                        if (err.message.includes('EEXIST')) {
-                            (0, log_1.log)('config folder already exists');
-                        }
-                        else {
-                            throw err;
-                        }
-                    })];
+                case 0:
+                    (0, log_1.log)('ensuring config folder exists');
+                    // ensure the alks config folder exists
+                    return [4 /*yield*/, mkdir(getAlksConfigFolder()).catch(function (err) {
+                            if (err.message.includes('EEXIST')) {
+                                (0, log_1.log)('config folder already exists');
+                            }
+                            else {
+                                throw err;
+                            }
+                        })];
                 case 1:
                     // ensure the alks config folder exists
                     _a.sent();
