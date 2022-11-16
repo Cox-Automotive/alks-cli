@@ -65,8 +65,14 @@ const sessions = program.command('sessions').description('manage aws sessions');
 sessions
   .command('open')
   .description('creates or resumes a session')
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-i, --iam', 'create an IAM session')
   .option(
     '-d, --default',
@@ -98,8 +104,14 @@ sessions
 sessions
   .command('console')
   .description('open an AWS console in your browser')
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-i, --iam', 'create an IAM session')
   .option(
     '-d, --default',
@@ -131,8 +143,14 @@ iam
   .command('deleterole')
   .description('remove an IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role to delete')
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamDeleteRole);
 
@@ -143,8 +161,14 @@ iam
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK'
   )
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksIamDeleteLtk);
 
@@ -162,8 +186,14 @@ iam
     'enable alks access (MI), default: false',
     false
   )
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-F, --favorites', 'filters favorite accounts')
   .option(
     '-k, --tags <tags...>',
@@ -193,8 +223,14 @@ iam
     'enable alks access (MI), default: false',
     false
   )
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-F, --favorites', 'filters favorite accounts')
   .option(
     '-k, --tags <tags...>',
@@ -213,8 +249,14 @@ iam
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK, ' + nameDesc
   )
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-F, --favorites', 'filters favorite accounts')
   .option('-o, --output <format>', 'output format (text, json)', 'text')
   .option(
@@ -230,7 +272,10 @@ iam
     '-n, --iamusername <iamUsername>',
     'the name of the iam user to update, ' + nameDesc
   )
-  .option('-a, --account <alksAccount>', 'alks account to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
   .option('-o, --output <format>', 'output format (text, json)', 'text')
   .option(
     '-k, --tags <tags...>',
@@ -246,10 +291,13 @@ developer
   .command('configure')
   .description('configures developer')
   .option(
-    '-a, --account <alksAccount>',
-    'alks account to use as the default account'
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account to use as a default account'
   )
-  .option('-r, --role <alksRole>', 'alks role to use as the default role')
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use as the default role for carrying out requests'
+  )
   .option('-o, --output <format>', 'output format')
   .option('-u, --username <username>', 'your username')
   .option('-s, --server <server>', 'alks server')
@@ -321,8 +369,14 @@ server
 
 server
   .command('configure')
-  .option('-a, --account <alksAccount>', 'alks account to use')
-  .option('-r, --role <alksRole>', 'alks role to use')
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
   .option('-i, --iam', 'create an IAM session')
   .option('-p, --password <password>', 'my password')
   .option('-F, --favorites', 'filters favorite accounts')

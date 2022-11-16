@@ -3,10 +3,8 @@ import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getIamKey } from '../getIamKey';
 import { getKeyOutput } from '../getKeyOutput';
-import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
-import { Key } from '../../model/keys';
 import { getAlksAccount } from '../state/alksAccount';
 import { getAlksRole } from '../state/alksRole';
 import { getOutputFormat } from '../state/outputFormat';
@@ -30,23 +28,13 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       }
     }
 
-    let key: Key;
-    if (options.iam) {
-      key = await getIamKey(
-        alksAccount,
-        alksRole,
-        options.newSession,
-        options.favorites
-      );
-    } else {
-      key = await getSessionKey(
-        alksAccount,
-        alksRole,
-        false,
-        options.newSession,
-        options.favorites
-      );
-    }
+    const key = await getIamKey(
+      alksAccount,
+      alksRole,
+      options.newSession,
+      options.favorites,
+      !!options.iam
+    );
 
     console.log(
       getKeyOutput(

@@ -4,7 +4,6 @@ import { checkForUpdate } from '../checkForUpdate';
 import { tryToExtractRole } from '../tryToExtractRole';
 import { getKeyOutput } from '../getKeyOutput';
 import { getIamKey } from '../getIamKey';
-import { getSessionKey } from '../getSessionKey';
 import { handleAlksSessionsOpen } from './alks-sessions-open';
 import { Key } from '../../model/keys';
 import { getAlksAccount } from '../state/alksAccount';
@@ -19,7 +18,6 @@ jest.mock('../state/alksRole');
 jest.mock('../state/outputFormat');
 jest.mock('../getIamKey');
 jest.mock('../getKeyOutput');
-jest.mock('../getSessionKey');
 jest.mock('../log');
 
 // Silence console.error
@@ -50,16 +48,8 @@ describe('handleAlksSessionsOpen', () => {
       alksRole: string | undefined;
       newSession: boolean | undefined;
       favorites: boolean | undefined;
-    };
-    getSessionKeyParams: {
-      alksAccount: string | undefined;
-      alksRole: string | undefined;
       iamOnly: boolean;
-      newSession: boolean | undefined;
-      favorites: boolean | undefined;
     };
-    shouldGetSessionKey: boolean;
-    getSessionKeyFails: boolean;
     key: Key;
     getKeyOutputFails: boolean;
     shouldGetKeyOutput: boolean;
@@ -90,16 +80,8 @@ describe('handleAlksSessionsOpen', () => {
       alksRole: '',
       newSession: undefined,
       favorites: undefined,
+      iamOnly: true,
     },
-    getSessionKeyParams: {
-      alksAccount: '',
-      alksRole: '',
-      iamOnly: false,
-      newSession: undefined,
-      favorites: undefined,
-    },
-    shouldGetSessionKey: false,
-    getSessionKeyFails: false,
     key: {} as Key,
     getKeyOutputFails: false,
     shouldGetKeyOutput: false,
@@ -147,6 +129,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       getIamKeyFails: true,
     },
@@ -160,15 +143,15 @@ describe('handleAlksSessionsOpen', () => {
       },
       alksAccount: '444455556666/ALKSPowerUser - awsthing',
       alksRole: 'PowerUser',
-      shouldGetSessionKey: true,
-      getSessionKeyParams: {
+      shouldGetIamKey: true,
+      getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
         alksRole: 'Admin',
-        iamOnly: false,
         newSession: undefined,
         favorites: undefined,
+        iamOnly: false,
       },
-      getSessionKeyFails: true,
+      getIamKeyFails: true,
     },
     {
       ...defaultTestCase,
@@ -188,6 +171,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -217,6 +201,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -253,6 +238,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -289,6 +275,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -317,13 +304,13 @@ describe('handleAlksSessionsOpen', () => {
       alksAccount: '444455556666/ALKSPowerUser - awsthing',
       alksRole: 'PowerUser',
       outputFormat: 'env',
-      shouldGetSessionKey: true,
-      getSessionKeyParams: {
+      shouldGetIamKey: true,
+      getIamKeyParams: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
         alksRole: 'Admin',
-        iamOnly: false,
         newSession: undefined,
         favorites: undefined,
+        iamOnly: false,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -360,6 +347,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -396,6 +384,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -432,6 +421,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'Admin',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '012345678910/ALKSAdmin - awstest',
@@ -468,6 +458,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: undefined,
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '998877665544/ALKSReadOnly - awsother',
@@ -506,6 +497,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'PowerUser',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '444455556666/ALKSPowerUser - awsthing',
@@ -539,6 +531,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: undefined,
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '998877665544/ALKSReadOnly - awsother',
@@ -574,6 +567,7 @@ describe('handleAlksSessionsOpen', () => {
         alksRole: 'PowerUser',
         newSession: undefined,
         favorites: undefined,
+        iamOnly: true,
       },
       key: {
         alksAccount: '444455556666/ALKSPowerUser - awsthing',
@@ -605,7 +599,7 @@ describe('handleAlksSessionsOpen', () => {
             throw new Error();
           }
         });
-        ((errorAndExit as unknown) as jest.Mock).mockImplementation(() => {
+        (errorAndExit as unknown as jest.Mock).mockImplementation(() => {
           errorThrown = true;
 
           // We have to throw an error to get execution to stop
@@ -641,13 +635,6 @@ describe('handleAlksSessionsOpen', () => {
         });
         (getIamKey as jest.Mock).mockImplementation(async () => {
           if (t.getIamKeyFails) {
-            throw new Error();
-          } else {
-            return t.key;
-          }
-        });
-        (getSessionKey as jest.Mock).mockImplementation(async () => {
-          if (t.getSessionKeyFails) {
             throw new Error();
           } else {
             return t.key;
@@ -696,28 +683,13 @@ describe('handleAlksSessionsOpen', () => {
             t.getIamKeyParams.alksAccount,
             t.getIamKeyParams.alksRole,
             t.getIamKeyParams.newSession,
-            t.getIamKeyParams.favorites
+            t.getIamKeyParams.favorites,
+            t.getIamKeyParams.iamOnly
           );
         });
       } else {
         it('does not attempt to fetch an IAM key', () => {
           expect(getIamKey).not.toHaveBeenCalled();
-        });
-      }
-
-      if (t.shouldGetSessionKey) {
-        it('attempts to fetch a session key', () => {
-          expect(getSessionKey).toHaveBeenCalledWith(
-            t.getSessionKeyParams.alksAccount,
-            t.getSessionKeyParams.alksRole,
-            t.getSessionKeyParams.iamOnly,
-            t.getSessionKeyParams.newSession,
-            t.getSessionKeyParams.favorites
-          );
-        });
-      } else {
-        it('does not attempt to fetch a session key', () => {
-          expect(getSessionKey).not.toHaveBeenCalled();
         });
       }
 

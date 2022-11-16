@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds more logging when debugging
+* Adds support for providing an account alias instead of an account ID when generating keys
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

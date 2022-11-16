@@ -6,7 +6,6 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getIamKey_1 = require("../getIamKey");
 var getKeyOutput_1 = require("../getKeyOutput");
-var getSessionKey_1 = require("../getSessionKey");
 var log_1 = require("../log");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var alksAccount_1 = require("../state/alksAccount");
@@ -27,7 +26,7 @@ function handleAlksSessionsOpen(options) {
                     }
                     _e.label = 1;
                 case 1:
-                    _e.trys.push([1, 12, , 13]);
+                    _e.trys.push([1, 9, , 10]);
                     if (!options.default) return [3 /*break*/, 4];
                     return [4 /*yield*/, (0, alksAccount_1.getAlksAccount)()];
                 case 2:
@@ -39,39 +38,30 @@ function handleAlksSessionsOpen(options) {
                         (0, errorAndExit_1.errorAndExit)('Unable to load default account!');
                     }
                     _e.label = 4;
-                case 4:
-                    key = void 0;
-                    if (!options.iam) return [3 /*break*/, 6];
-                    return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites)];
+                case 4: return [4 /*yield*/, (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam)];
                 case 5:
                     key = _e.sent();
-                    return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, (0, getSessionKey_1.getSessionKey)(alksAccount, alksRole, false, options.newSession, options.favorites)];
-                case 7:
-                    key = _e.sent();
-                    _e.label = 8;
-                case 8:
                     _b = (_a = console).log;
                     _c = getKeyOutput_1.getKeyOutput;
                     _d = options.output;
-                    if (_d) return [3 /*break*/, 10];
+                    if (_d) return [3 /*break*/, 7];
                     return [4 /*yield*/, (0, outputFormat_1.getOutputFormat)()];
-                case 9:
+                case 6:
                     _d = (_e.sent());
-                    _e.label = 10;
-                case 10:
+                    _e.label = 7;
+                case 7:
                     _b.apply(_a, [_c.apply(void 0, [_d, key,
                             options.namedProfile,
                             options.force])]);
                     return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
-                case 11:
+                case 8:
                     _e.sent();
-                    return [3 /*break*/, 13];
-                case 12:
+                    return [3 /*break*/, 10];
+                case 9:
                     err_1 = _e.sent();
                     (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 10];
+                case 10: return [2 /*return*/];
             }
         });
     });

@@ -13,9 +13,11 @@ var getAuth_1 = require("../getAuth");
 var log_1 = require("../log");
 var tryToExtractRole_1 = require("../tryToExtractRole");
 var unpackTags_1 = require("../unpackTags");
+var getAwsAccountFromString_1 = require("../getAwsAccountFromString");
+var badAccountMessage_1 = require("../badAccountMessage");
 function handleAlksIamCreateTrustRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var roleNameDesc, trustArnDesc, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, tags, filterFavorites, auth, alks, role, err_1, err_2;
+        var roleNameDesc, trustArnDesc, ROLE_NAME_REGEX, TRUST_ARN_REGEX, roleName, roleType, trustArn, enableAlksAccess, alksAccount, alksRole, tags, filterFavorites, auth, awsAccount, alks, role, err_1, err_2;
         var _a;
         return tslib_1.__generator(this, function (_b) {
             switch (_b.label) {
@@ -53,8 +55,8 @@ function handleAlksIamCreateTrustRole(options) {
                     }
                     _b.label = 1;
                 case 1:
-                    _b.trys.push([1, 12, , 13]);
-                    if (!((0, underscore_1.isEmpty)(alksAccount) || (0, underscore_1.isEmpty)(alksRole))) return [3 /*break*/, 3];
+                    _b.trys.push([1, 13, , 14]);
+                    if (!(!alksAccount || !alksRole)) return [3 /*break*/, 3];
                     (0, log_1.log)('getting accounts');
                     return [4 /*yield*/, (0, promptForAlksAccountAndRole_1.promptForAlksAccountAndRole)({
                             iamOnly: true,
@@ -69,16 +71,22 @@ function handleAlksIamCreateTrustRole(options) {
                 case 4: return [4 /*yield*/, (0, getAuth_1.getAuth)()];
                 case 5:
                     auth = _b.sent();
+                    return [4 /*yield*/, (0, getAwsAccountFromString_1.getAwsAccountFromString)(alksAccount)];
+                case 6:
+                    awsAccount = _b.sent();
+                    if (!awsAccount) {
+                        throw new Error(badAccountMessage_1.badAccountMessage);
+                    }
                     (0, log_1.log)('calling api to create trust role: ' + roleName);
                     return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
-                case 6:
+                case 7:
                     alks = _b.sent();
                     role = void 0;
-                    _b.label = 7;
-                case 7:
-                    _b.trys.push([7, 9, , 10]);
+                    _b.label = 8;
+                case 8:
+                    _b.trys.push([8, 10, , 11]);
                     return [4 /*yield*/, alks.createNonServiceRole({
-                            account: alksAccount,
+                            account: awsAccount.id,
                             role: alksRole,
                             roleName: roleName,
                             roleType: roleType,
@@ -87,27 +95,27 @@ function handleAlksIamCreateTrustRole(options) {
                             includeDefaultPolicy: alks_js_1.default.PseudoBoolean.False,
                             tags: tags,
                         })];
-                case 8:
-                    role = _b.sent();
-                    return [3 /*break*/, 10];
                 case 9:
+                    role = _b.sent();
+                    return [3 /*break*/, 11];
+                case 10:
                     err_1 = _b.sent();
                     (0, errorAndExit_1.errorAndExit)(err_1);
-                    return [3 /*break*/, 10];
-                case 10:
+                    return [3 /*break*/, 11];
+                case 11:
                     console.log(cli_color_1.default.white(['The role: ', roleName, ' was created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.roleArn));
                     if (role.instanceProfileArn) {
                         console.log(cli_color_1.default.white(['An instance profile was also created with the ARN: '].join('')) + cli_color_1.default.white.underline(role.instanceProfileArn));
                     }
                     return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
-                case 11:
-                    _b.sent();
-                    return [3 /*break*/, 13];
                 case 12:
+                    _b.sent();
+                    return [3 /*break*/, 14];
+                case 13:
                     err_2 = _b.sent();
                     (0, errorAndExit_1.errorAndExit)(err_2.message, err_2);
-                    return [3 /*break*/, 13];
-                case 13: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });

@@ -1,15 +1,14 @@
 import { getAlks } from './getAlks';
 import { getAuth } from './getAuth';
 import { log } from './log';
+import memoize from 'memoizee';
 
 export interface GetAlksAccountRolePairsOptions {
   iamOnly?: boolean;
 }
 
-export async function getAlksAccounts(
-  options: GetAlksAccountRolePairsOptions = {}
-) {
-  log('retreiving alks account');
+async function _getAlksAccounts(options: GetAlksAccountRolePairsOptions = {}) {
+  log('refreshing alks accounts list');
 
   const auth = await getAuth();
 
@@ -29,4 +28,16 @@ export async function getAlksAccounts(
   );
 
   return filteredAlksAccounts;
+}
+
+const memoized = memoize(_getAlksAccounts, {
+  maxAge: 5000,
+});
+
+export async function getAlksAccounts(
+  options: GetAlksAccountRolePairsOptions = {}
+) {
+  log('retreiving alks accounts');
+
+  return memoized(options) as ReturnType<typeof _getAlksAccounts>;
 }

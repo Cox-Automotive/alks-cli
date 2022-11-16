@@ -4,7 +4,6 @@ import { isUndefined } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getIamKey } from '../getIamKey';
-import { getSessionKey } from '../getSessionKey';
 import { log } from '../log';
 import { saveMetadata } from '../saveMetadata';
 import { tryToExtractRole } from '../tryToExtractRole';
@@ -25,22 +24,13 @@ export async function handleAlksServerConfigure(
   try {
     let key;
     try {
-      if (isUndefined(options.iam)) {
-        key = await getSessionKey(
-          alksAccount,
-          alksRole,
-          false,
-          forceNewSession,
-          filterFaves
-        );
-      } else {
-        key = await getIamKey(
-          alksAccount,
-          alksRole,
-          forceNewSession,
-          filterFaves
-        );
-      }
+      key = await getIamKey(
+        alksAccount,
+        alksRole,
+        forceNewSession,
+        filterFaves,
+        isUndefined(options.iam) ? false : true
+      );
     } catch (err) {
       errorAndExit(err as Error);
     }
