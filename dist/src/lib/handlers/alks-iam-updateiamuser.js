@@ -24,14 +24,18 @@ function handleAlksIamUpdateIamUser(options) {
                     alksAccount = options.account;
                     output = options.output || 'text';
                     tags = options.tags ? (0, unpackTags_1.unpackTags)(options.tags) : undefined;
+                    console.log("tags: ".concat(tags === null || tags === void 0 ? void 0 : tags.length));
                     if ((0, underscore_1.isUndefined)(tags)) {
+                        console.log("error");
                         (0, errorAndExit_1.errorAndExit)('Tags must be provided in update request.  Provide empty list to remove all non-protected tags');
                     }
                     (0, log_1.log)('validating iam user name: ' + iamUsername);
                     if ((0, underscore_1.isEmpty)(iamUsername)) {
+                        console.log("empty username");
                         (0, errorAndExit_1.errorAndExit)('Please provide a username (-n)');
                     }
                     else if (!NAME_REGEX.test(iamUsername)) {
+                        console.log("bad username");
                         (0, errorAndExit_1.errorAndExit)('The username provided contains illegal characters. It must be ' +
                             nameDesc);
                     }
@@ -39,6 +43,7 @@ function handleAlksIamUpdateIamUser(options) {
                 case 1:
                     _a.trys.push([1, 10, , 11]);
                     if ((0, underscore_1.isUndefined)(alksAccount)) {
+                        console.log("undefined alks account");
                         (0, errorAndExit_1.errorAndExit)('Must specifify ALKS Account Id');
                     }
                     return [4 /*yield*/, (0, getAuth_1.getAuth)()];
@@ -47,10 +52,12 @@ function handleAlksIamUpdateIamUser(options) {
                     return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
                 case 3:
                     alks = _a.sent();
+                    console.log("about to fetch aws account");
                     return [4 /*yield*/, (0, getAwsAccountFromString_1.getAwsAccountFromString)(alksAccount)];
                 case 4:
                     awsAccount = _a.sent();
                     if (!awsAccount) {
+                        console.log("no aws account found");
                         throw new Error(badAccountMessage_1.badAccountMessage);
                     }
                     (0, log_1.log)('calling api to update iamUser: ' + iamUsername);

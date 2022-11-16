@@ -5,6 +5,7 @@ var checkForUpdate_1 = require("../checkForUpdate");
 var errorAndExit_1 = require("../errorAndExit");
 var getAlks_1 = require("../getAlks");
 var getAuth_1 = require("../getAuth");
+var getAwsAccountFromString_1 = require("../getAwsAccountFromString");
 var alks_iam_updateiamuser_1 = require("./alks-iam-updateiamuser");
 jest.mock('../errorAndExit');
 jest.mock('../checkForUpdate');
@@ -180,6 +181,7 @@ describe('handleAlksIamUpdateIamUser', function () {
                             mockAlks.updateIamUser.mockImplementation(function () {
                                 return t.updateIamUserOutputParams;
                             });
+                            getAwsAccountFromString_1.getAwsAccountFromString.mockImplementation(t.getAwsAccountFromString);
                             _a.label = 1;
                         case 1:
                             _a.trys.push([1, 3, , 4]);

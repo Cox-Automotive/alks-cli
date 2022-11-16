@@ -194,15 +194,9 @@ describe('handleAlksIamCreateLtk', function () {
                     '{"Key":"key1", "Value":"val1"}',
                     '{"Key":"key2", "Value":"val2"}',
                 ],
-            }, shouldCreateLTK: false, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-                return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, ({
-                            id: '111111111111',
-                            alias: 'awsone',
-                            label: 'One - Prod',
-                        })];
-                });
-            }); } }),
+            }, shouldCreateLTK: false, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, undefined];
+            }); }); } }),
     ];
     var fakeErrorSymbol = Symbol();
     var mockAlks = {

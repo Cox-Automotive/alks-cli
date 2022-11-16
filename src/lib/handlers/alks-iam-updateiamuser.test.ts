@@ -220,6 +220,9 @@ describe('handleAlksIamUpdateIamUser', () => {
         (mockAlks.updateIamUser as jest.Mock).mockImplementation(() => {
           return t.updateIamUserOutputParams;
         });
+        (getAwsAccountFromString as jest.Mock).mockImplementation(
+          t.getAwsAccountFromString
+        );
 
         try {
           await handleAlksIamUpdateIamUser(t.options);

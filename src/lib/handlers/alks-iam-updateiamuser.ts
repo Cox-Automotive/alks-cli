@@ -19,7 +19,9 @@ export async function handleAlksIamUpdateIamUser(
   const alksAccount = options.account as string | undefined;
   const output = options.output || 'text';
   const tags = options.tags ? unpackTags(options.tags) : undefined;
+  console.log(`tags: ${tags?.length}`);
   if (isUndefined(tags)) {
+    console.log(`error`);
     errorAndExit(
       'Tags must be provided in update request.  Provide empty list to remove all non-protected tags'
     );
@@ -27,8 +29,10 @@ export async function handleAlksIamUpdateIamUser(
 
   log('validating iam user name: ' + iamUsername);
   if (isEmpty(iamUsername)) {
+    console.log(`empty username`);
     errorAndExit('Please provide a username (-n)');
   } else if (!NAME_REGEX.test(iamUsername)) {
+    console.log(`bad username`);
     errorAndExit(
       'The username provided contains illegal characters. It must be ' +
         nameDesc
@@ -37,6 +41,7 @@ export async function handleAlksIamUpdateIamUser(
 
   try {
     if (isUndefined(alksAccount)) {
+      console.log(`undefined alks account`);
       errorAndExit('Must specifify ALKS Account Id');
     }
 
@@ -46,8 +51,12 @@ export async function handleAlksIamUpdateIamUser(
       ...auth,
     });
 
+    console.log(`about to fetch aws account`);
+
     const awsAccount = await getAwsAccountFromString(alksAccount);
     if (!awsAccount) {
+      console.log(`no aws account found`);
+
       throw new Error(badAccountMessage);
     }
 

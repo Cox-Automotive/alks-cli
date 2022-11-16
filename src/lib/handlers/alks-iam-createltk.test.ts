@@ -247,11 +247,7 @@ describe('handleAlksIamCreateLtk', () => {
         ],
       },
       shouldCreateLTK: false,
-      getAwsAccountFromString: async () => ({
-        id: '111111111111',
-        alias: 'awsone',
-        label: 'One - Prod',
-      }),
+      getAwsAccountFromString: async () => undefined,
     },
   ];
 
