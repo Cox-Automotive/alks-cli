@@ -1,4 +1,4 @@
-★ Release Notes: 2022-11-11 ★
+★ Release Notes: 2022-11-16 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
