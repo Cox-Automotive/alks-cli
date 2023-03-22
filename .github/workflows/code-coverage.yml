@@ -1,0 +1,29 @@
+name: Code Coverage
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize]
+
+jobs:
+  test-coverage:
+    name: Upload Coverage to Sonarqube
+    runs-on: CAI-Enterprise
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Checkout alks cli
+        run: git clone https://github.com/Cox-Automotive/alks-cli.git
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run coverage
+        env:
+          CI: true
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
