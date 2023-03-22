@@ -8,7 +8,8 @@
     "prettier": "prettier --write",
     "tslint": "tslint --fix --force",
     "prepare": "husky install",
-    "build": "[ -d dist/ ] && rm -r dist/ ; tsc ; cp changelog.txt dist/"
+    "build": "[ -d dist/ ] && rm -r dist/ ; tsc ; cp changelog.txt dist/",
+    "coverage": "react-scripts test --resetMocks=false --env=jsdom --transformIgnorePatterns 'node_modules/(?!(react-syntax-highlighter)/)' --coverage"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -56,6 +57,7 @@
     "npm-registry-client": "^7.1.2",
     "open": "^8.2.0",
     "prop-ini": "0.0.2",
+    "react-scripts": "^5.0.1",
     "request": "^2.72.0",
     "semver": "^5.3.0",
     "tabtab": "^3.0.2",
