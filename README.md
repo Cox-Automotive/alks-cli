@@ -292,7 +292,7 @@ Arguments:
 
 `alks server stop` - Stop the metadata server.
 
-# Output Formats
+# Output Formats trigger
 
 ALKS CLI will output in a variety of formats, it uses the developer default (set with `alks developer configure`) and can be overridden by passing a value via `-o`.
 

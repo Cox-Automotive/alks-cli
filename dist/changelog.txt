@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds support for providing an account alias instead of an account ID when generating keys
+* Sends code coverage data to sonaraqube
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

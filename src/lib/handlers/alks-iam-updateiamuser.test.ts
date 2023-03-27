@@ -94,6 +94,7 @@ describe('handleAlksIamUpdateIamUser', () => {
       ...defaultTestCase,
       description: 'when empty list of tags is supplied',
       shouldErr: false,
+      shouldUpdateIamUser: true,
       options: {
         account: '111111111111',
         iamusername: 'goodIamUserName',
@@ -129,6 +130,7 @@ describe('handleAlksIamUpdateIamUser', () => {
       ...defaultTestCase,
       description: 'When good data is supplied',
       shouldErr: false,
+      shouldUpdateIamUser: true,
       options: {
         account: '111111111111',
         iamusername: 'goodIamUserName',
@@ -161,6 +163,7 @@ describe('handleAlksIamUpdateIamUser', () => {
       ...defaultTestCase,
       description: 'When account is supplied with accountID and roleName',
       shouldErr: false,
+      shouldUpdateIamUser: true,
       options: {
         account: '111111111111/ALKSRole',
         iamusername: 'goodIamUserName',

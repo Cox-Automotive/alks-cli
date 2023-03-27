@@ -60,7 +60,7 @@ describe('handleAlksIamUpdateIamUser', function () {
                         })];
                 });
             }); } }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when empty list of tags is supplied', shouldErr: false, options: {
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'when empty list of tags is supplied', shouldErr: false, shouldUpdateIamUser: true, options: {
                 account: '111111111111',
                 iamusername: 'goodIamUserName',
                 tags: [],
@@ -89,7 +89,7 @@ describe('handleAlksIamUpdateIamUser', function () {
                         })];
                 });
             }); } }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When good data is supplied', shouldErr: false, options: {
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When good data is supplied', shouldErr: false, shouldUpdateIamUser: true, options: {
                 account: '111111111111',
                 iamusername: 'goodIamUserName',
                 tags: [
@@ -118,7 +118,7 @@ describe('handleAlksIamUpdateIamUser', function () {
                         })];
                 });
             }); } }),
-        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When account is supplied with accountID and roleName', shouldErr: false, options: {
+        tslib_1.__assign(tslib_1.__assign({}, defaultTestCase), { description: 'When account is supplied with accountID and roleName', shouldErr: false, shouldUpdateIamUser: true, options: {
                 account: '111111111111/ALKSRole',
                 iamusername: 'goodIamUserName',
                 tags: [
