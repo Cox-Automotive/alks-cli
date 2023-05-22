@@ -1,0 +1,13 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "End-to-end testing the CLI",
+  "scripts": {
+    "test": "make test"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "bats": "^1.9.0",
+    "bats-assert": "^2.0.0"
+  }
+}
