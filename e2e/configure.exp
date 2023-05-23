@@ -1,0 +1,41 @@
+#!/usr/bin/expect -f
+
+# variables
+set version v3\.14\.0
+set server "http://alks.coxautoinc.com/rest/"
+set username "$env(USERNAME)"
+set refreshToken "$env(REFRESH_TOKEN)"
+
+# Config values
+set timeout 5
+## variable key entry speed to simulate human input
+set send_slow {1 .1}
+set send_human {.1 .3 1 .05 2}
+match_max 100000
+
+# spawning program
+spawn alks developer configure
+expect_after eof {exit 0}
+
+sleep 1
+
+expect "ALKS server*rest" {send -h "$server\r"}
+sleep 1
+
+expect "Network Username" {send -h "$username\r"}
+sleep 1
+
+## send enter to choose refresh token auth flow
+expect "OAuth2 refresh token" {send -h "\r"}
+sleep 1
+ 
+## send saved refreshToken
+expect "Refresh Token" {send -h "$refreshToken\r"}
+sleep 1
+
+## storing refresh token in plaintext because no keychain exists in the container
+expect "plaintext file" {send -h "y\r"}
+sleep 1
+
+## skipping the other configuration options
+expect eof
