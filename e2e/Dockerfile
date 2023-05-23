@@ -29,6 +29,3 @@ RUN chmod +x configure.exp
 RUN ./configure.exp
 
 ENTRYPOINT [ "./test.bats" ]
-
-
-
