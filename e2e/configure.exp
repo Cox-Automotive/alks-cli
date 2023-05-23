@@ -19,20 +19,25 @@ expect_after eof {exit 0}
 
 sleep 1
 
+# input alks server from envvar on system
 expect "ALKS server*rest" {send -h "$server\r"}
 sleep 1
 
+# input alks network username from envvar on system
 expect "Network Username" {send -h "$username\r"}
 sleep 1
 
+# choose refresh token auth flow by returning on first option
 ## send enter to choose refresh token auth flow
 expect "OAuth2 refresh token" {send -h "\r"}
 sleep 1
  
+# input refresh token from envvar on system
 ## send saved refreshToken
 expect "Refresh Token" {send -h "$refreshToken\r"}
 sleep 1
 
+# input yes when asked to store refresh token in plaintext
 ## storing refresh token in plaintext because no keychain exists in the container
 expect "plaintext file" {send -h "y\r"}
 sleep 1
