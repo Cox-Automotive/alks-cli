@@ -39,7 +39,6 @@
         "@babel/core": "^7.14.0",
         "@babel/preset-env": "^7.14.0",
         "@babel/preset-typescript": "^7.13.0",
-        "@jsdevtools/chai-exec": "^2.1.1",
         "@types/cli-color": "^2.0.0",
         "@types/express": "^4.17.11",
         "@types/express-list-endpoints": "^4.0.1",
@@ -2629,42 +2628,6 @@
         "@jridgewell/sourcemap-codec": "1.4.14"
       }
     },
-    "node_modules/@jsdevtools/chai-exec": {
-      "version": "2.1.1",
-      "resolved": "https://registry.npmjs.org/@jsdevtools/chai-exec/-/chai-exec-2.1.1.tgz",
-      "integrity": "sha512-EhLHKeucYbbbWHDhExi0fqDSI9noxYUdzy1LLaAdkHLaIJjd8gv5bCOqEsuVh6EJF3ZspUSpLJjytxnOPahRig==",
-      "dev": true,
-      "dependencies": {
-        "@jsdevtools/ez-spawn": "^3.0.3"
-      },
-      "engines": {
-        "node": ">=10"
-      }
-    },
-    "node_modules/@jsdevtools/ez-spawn": {
-      "version": "3.0.4",
-      "resolved": "https://registry.npmjs.org/@jsdevtools/ez-spawn/-/ez-spawn-3.0.4.tgz",
-      "integrity": "sha512-f5DRIOZf7wxogefH03RjMPMdBF7ADTWUMoOs9kaJo06EfwF+aFhMZMDZxHg/Xe12hptN9xoZjGso2fdjapBRIA==",
-      "dev": true,
-      "dependencies": {
-        "call-me-maybe": "^1.0.1",
-        "cross-spawn": "^7.0.3",
-        "string-argv": "^0.3.1",
-        "type-detect": "^4.0.8"
-      },
-      "engines": {
-        "node": ">=10"
-      }
-    },
-    "node_modules/@jsdevtools/ez-spawn/node_modules/type-detect": {
-      "version": "4.0.8",
-      "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
-      "integrity": "sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==",
-      "dev": true,
-      "engines": {
-        "node": ">=4"
-      }
-    },
     "node_modules/@sinclair/typebox": {
       "version": "0.24.51",
       "resolved": "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.24.51.tgz",
@@ -4005,12 +3968,6 @@
       "funding": {
         "url": "https://github.com/sponsors/ljharb"
       }
-    },
-    "node_modules/call-me-maybe": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/call-me-maybe/-/call-me-maybe-1.0.2.tgz",
-      "integrity": "sha512-HpX65o1Hnr9HH25ojC1YGs7HCQLq0GCOibSaWER0eNpgJ/Z1MZv2mTc7+xh6WOPxbRVcmgbv4hGU+uSQ/2xFZQ==",
-      "dev": true
     },
     "node_modules/caller": {
       "version": "1.0.1",
@@ -16210,35 +16167,6 @@
         "@jridgewell/sourcemap-codec": "1.4.14"
       }
     },
-    "@jsdevtools/chai-exec": {
-      "version": "2.1.1",
-      "resolved": "https://registry.npmjs.org/@jsdevtools/chai-exec/-/chai-exec-2.1.1.tgz",
-      "integrity": "sha512-EhLHKeucYbbbWHDhExi0fqDSI9noxYUdzy1LLaAdkHLaIJjd8gv5bCOqEsuVh6EJF3ZspUSpLJjytxnOPahRig==",
-      "dev": true,
-      "requires": {
-        "@jsdevtools/ez-spawn": "^3.0.3"
-      }
-    },
-    "@jsdevtools/ez-spawn": {
-      "version": "3.0.4",
-      "resolved": "https://registry.npmjs.org/@jsdevtools/ez-spawn/-/ez-spawn-3.0.4.tgz",
-      "integrity": "sha512-f5DRIOZf7wxogefH03RjMPMdBF7ADTWUMoOs9kaJo06EfwF+aFhMZMDZxHg/Xe12hptN9xoZjGso2fdjapBRIA==",
-      "dev": true,
-      "requires": {
-        "call-me-maybe": "^1.0.1",
-        "cross-spawn": "^7.0.3",
-        "string-argv": "^0.3.1",
-        "type-detect": "^4.0.8"
-      },
-      "dependencies": {
-        "type-detect": {
-          "version": "4.0.8",
-          "resolved": "https://registry.npmjs.org/type-detect/-/type-detect-4.0.8.tgz",
-          "integrity": "sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==",
-          "dev": true
-        }
-      }
-    },
     "@sinclair/typebox": {
       "version": "0.24.51",
       "resolved": "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.24.51.tgz",
@@ -17343,12 +17271,6 @@
         "function-bind": "^1.1.1",
         "get-intrinsic": "^1.0.2"
       }
-    },
-    "call-me-maybe": {
-      "version": "1.0.2",
-      "resolved": "https://registry.npmjs.org/call-me-maybe/-/call-me-maybe-1.0.2.tgz",
-      "integrity": "sha512-HpX65o1Hnr9HH25ojC1YGs7HCQLq0GCOibSaWER0eNpgJ/Z1MZv2mTc7+xh6WOPxbRVcmgbv4hGU+uSQ/2xFZQ==",
-      "dev": true
     },
     "caller": {
       "version": "1.0.1",
