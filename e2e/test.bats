@@ -7,7 +7,15 @@
 # BATS documentation: https://bats-core.readthedocs.io/en/v1.9.0
 # bats-assert Github: https://github.com/bats-core/bats-assert
 
+# each test is tagged with it's subcommand and first subcommand argument
+#
+# to execute all iam tests run: 
+#    $ ./test.bats --filter-tags iam
+#
+# to execute only the test for iam deleterole, with verbose output, run: 
+#    $ ./test.bats --filter-tags deleterole -x --trace
 
+# alks-cli arguments
 ROLE="LabAdmin"
 ACCOUNT=805619180788 # awscoxautolabs95
 AWS_CREDENTIALS_FILE=~/.aws/credentials
@@ -19,7 +27,7 @@ ROLE_WITH_TRUST_POLICY="alks-cli-e2e-test-role-with-trustpolicy"
 BATS_TEST_TIMEOUT=30
 
 teardown_file() {
-    # deleting all created roles no matter what
+    # deleting roles after all tests complete no matter what 
     roles=(${ROLE_WITH_ROLE_TYPE} ${ROLE_WITH_TRUST_POLICY})
     for name in ${roles[@]}; do
         alks iam deleterole -a ${ACCOUNT} -r LabAdmin -n ${name} 2&1 > /dev/null
@@ -127,7 +135,7 @@ setup() {
 
 # bats test_tags=iam,deleterole
 @test "alks iam deleterole" {
-    # skip -- uncommenting would skip this test
+    # skip # uncommenting would skip this test
     echo "# should delete a role" >&3
 
     echo "# deleting ${ROLE_WITH_ROLE_TYPE}" >&3
