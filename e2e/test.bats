@@ -3,24 +3,38 @@
 # if developing in VScode, install Bats (Bash Automated Testing System)
 # VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=jetmartin.bats
 
+setup_file() {
+    BATS_TEST_TIMEOUT=10 
+}
+
+teardown_file() {
+    # deleting all created roles no matter what
+    roles=("alks-cli-e2e-test-role-with-roletype" "alks-cli-e2e-test-role-with-trustpolicy")
+    for name in ${roles[@]}; do
+        # hardcoding the account and role for now because setup_file and
+        # teardow_file are tricky
+        alks iam deleterole -a 805619180788 -r LabAdmin -n ${name} 2&1 > /dev/null
+    done
+
+    # removing .alks credentials file because plain text creds are bad
+    local alks_credentials_file=~/.alks-cli/credentials
+    test -f ${alks_credentials_file} \
+      && rm ${alks_credentials_file} \
+      || true
+}
+
 setup() {
     load 'node_modules/bats-assert/load'
     load 'node_modules/bats-support/load'
 
-    BATS_TEST_TIMEOUT=10 
     ACCOUNT=805619180788 # awscoxautolabs95
     ROLE="LabAdmin"
     AWS_CREDENTIALS_FILE=~/.aws/credentials
-}
-
-teardown() {
-    test -f ${CREDENTIALS_FILE} \
-        && rm ${CREDENTIALS_FILE} \
-        || true
+    BASE_ROLE_NAME="alks-cli-e2e-test-role"
 }
 
 
-# bats test_tags=config
+# bats test_tags=developer,info
 @test "alks developer info" {
     # fd 3 for printing always visible output (whether test passes or fails)
     echo "# should return output with username and 2FA token visible" >&3
@@ -48,7 +62,7 @@ teardown() {
     assert_output --partial "${REFRESH_TOKEN:0:4}****"
 }
 
-# bats test_tags=sessions_open
+# bats test_tags=sessions,open
 @test "alks sessions open" {
 
     local output_types=(env creds json docker)
@@ -87,4 +101,42 @@ teardown() {
         esac
     done
 
+}
+
+# bats test_tags=iam,createrole
+@test "alks iam createrole" {
+    echo "# should create a role and output the created role's ARN" >&3
+
+    local trust_policy="{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\"\
+:{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+
+    name=${BASE_ROLE_NAME}-with-roletype
+    echo "# should create ${name} given a role type" >&3
+    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${name}  -t S3 Key=daft,Value=punk
+    [ "$status" -eq 0 ]
+    assert_output --partial "The role: ${name} was created"
+
+    name=${BASE_ROLE_NAME}-with-trustpolicy 
+    echo "# should create ${name} given a trust policy" >&3
+    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${name} -p ${trust_policy} Key=daft,Value=punk
+    [ "$status" -eq 0 ]
+    assert_output --partial "The role: ${name} was created"
+}
+
+# bats test_tags=iam,deleterole
+@test "alks iam deleterole" {
+    # skip -- uncommenting would skip this test
+    echo "# should delete a role" >&3
+
+    name=${BASE_ROLE_NAME}-with-roletype
+    echo "# deleting ${name}" >&3
+    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${name}
+    [ "$status" -eq 0 ]
+    assert_output --partial "The role ${name} was deleted"
+
+    name=${BASE_ROLE_NAME}-with-trustpolicy
+    echo "# deleting ${name}" >&3
+    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${name}
+    [ "$status" -eq 0 ]
+    assert_output --partial "The role ${name} was deleted"
 }
