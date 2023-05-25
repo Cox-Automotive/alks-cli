@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
+  USERNAME: ${{ secrets.ALKS_USER }}
+
 jobs:
   build_and_test:
 
@@ -33,7 +37,5 @@ jobs:
     
     - name: Run end-2-end tests
       run: |
-        echo "REFRESH_TOKEN=${{ secrets.ALKS_REFRESH_TOKEN }}" >> $GITHUB_ENV
-        echo "USERNAME=${{ secrets.ALKS_USER }}" >> $GITHUB_ENV
         make test CI_MODE=true 
       working-directory: ./e2e
