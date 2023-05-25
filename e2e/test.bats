@@ -1,25 +1,33 @@
 #!/usr/bin/env bats
 
+
 # if developing in VScode, install Bats (Bash Automated Testing System)
 # VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=jetmartin.bats
 
-setup_file() {
-    BATS_TEST_TIMEOUT=10 
-}
+# BATS documentation: https://bats-core.readthedocs.io/en/v1.9.0
+# bats-assert Github: https://github.com/bats-core/bats-assert
+
+
+ROLE="LabAdmin"
+ACCOUNT=805619180788 # awscoxautolabs95
+AWS_CREDENTIALS_FILE=~/.aws/credentials
+ALKS_CREDENTIALS_FILE=~/.alks-cli/credentials
+ROLE_WITH_ROLE_TYPE="alks-cli-e2e-test-role-with-roletype"
+ROLE_WITH_TRUST_POLICY="alks-cli-e2e-test-role-with-trustpolicy"
+
+# continue to next test if time exceeds 30 seconds
+BATS_TEST_TIMEOUT=30
 
 teardown_file() {
     # deleting all created roles no matter what
-    roles=("alks-cli-e2e-test-role-with-roletype" "alks-cli-e2e-test-role-with-trustpolicy")
+    roles=(${ROLE_WITH_ROLE_TYPE} ${ROLE_WITH_TRUST_POLICY})
     for name in ${roles[@]}; do
-        # hardcoding the account and role for now because setup_file and
-        # teardow_file are tricky
-        alks iam deleterole -a 805619180788 -r LabAdmin -n ${name} 2&1 > /dev/null
+        alks iam deleterole -a ${ACCOUNT} -r LabAdmin -n ${name} 2&1 > /dev/null
     done
 
     # removing .alks credentials file because plain text creds are bad
-    local alks_credentials_file=~/.alks-cli/credentials
-    test -f ${alks_credentials_file} \
-      && rm ${alks_credentials_file} \
+    test -f ${ALKS_CREDENTIALS_FILE} \
+      && rm ${ALKS_CREDENTIALS_FILE} \
       || true
 }
 
@@ -27,11 +35,6 @@ setup() {
     # setup runs after every test
     load 'node_modules/bats-assert/load'
     load 'node_modules/bats-support/load'
-
-    ACCOUNT=805619180788 # awscoxautolabs95
-    ROLE="LabAdmin"
-    AWS_CREDENTIALS_FILE=~/.aws/credentials
-    BASE_ROLE_NAME="alks-cli-e2e-test-role"
 }
 
 
@@ -111,17 +114,15 @@ setup() {
     local trust_policy="{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\"\
 :{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
 
-    name=${BASE_ROLE_NAME}-with-roletype
-    echo "# should create ${name} given a role type" >&3
-    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${name}  -t S3 Key=daft,Value=punk
+    echo "# should create ${ROLE_WITH_ROLE_TYPE} given a role type" >&3
+    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_ROLE_TYPE}  -t S3 Key=daft,Value=punk
     [ "$status" -eq 0 ]
-    assert_output --partial "The role: ${name} was created"
+    assert_output --partial "The role: ${ROLE_WITH_ROLE_TYPE} was created"
 
-    name=${BASE_ROLE_NAME}-with-trustpolicy 
-    echo "# should create ${name} given a trust policy" >&3
-    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${name} -p ${trust_policy} Key=daft,Value=punk
+    echo "# should create ${ROLE_WITH_TRUST_POLICY} given a trust policy" >&3
+    run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY} -p ${trust_policy} Key=daft,Value=punk
     [ "$status" -eq 0 ]
-    assert_output --partial "The role: ${name} was created"
+    assert_output --partial "The role: ${ROLE_WITH_TRUST_POLICY} was created"
 }
 
 # bats test_tags=iam,deleterole
@@ -129,17 +130,15 @@ setup() {
     # skip -- uncommenting would skip this test
     echo "# should delete a role" >&3
 
-    name=${BASE_ROLE_NAME}-with-roletype
-    echo "# deleting ${name}" >&3
-    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${name}
+    echo "# deleting ${ROLE_WITH_ROLE_TYPE}" >&3
+    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_ROLE_TYPE}
     [ "$status" -eq 0 ]
-    assert_output --partial "The role ${name} was deleted"
+    assert_output --partial "The role ${ROLE_WITH_ROLE_TYPE} was deleted"
 
-    name=${BASE_ROLE_NAME}-with-trustpolicy
-    echo "# deleting ${name}" >&3
-    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${name}
+    echo "# deleting ${ROLE_WITH_TRUST_POLICY}" >&3
+    run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY}
     [ "$status" -eq 0 ]
-    assert_output --partial "The role ${name} was deleted"
+    assert_output --partial "The role ${ROLE_WITH_TRUST_POLICY} was deleted"
 }
 
 # bats test_tags=developer,login2fa
