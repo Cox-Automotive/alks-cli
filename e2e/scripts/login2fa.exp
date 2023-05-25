@@ -1,0 +1,24 @@
+#!/usr/bin/expect -f
+
+# debug execution with -d
+
+# variables
+set refreshToken "$env(REFRESH_TOKEN)"
+
+# Config values
+set timeout 5
+## variable key entry speed to simulate human input
+set send_slow {1 .1}
+set send_human {.1 .3 1 .05 2}
+match_max 100000
+
+# spawning program
+spawn alks developer login2fa
+expect_after eof {exit 0}
+
+# input alks server from envvar on system
+expect "Refresh Token" {send -h "$refreshToken\r"}
+sleep .1
+
+## skipping the other configuration options
+expect eof

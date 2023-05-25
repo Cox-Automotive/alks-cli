@@ -24,6 +24,7 @@ teardown_file() {
 }
 
 setup() {
+    # setup runs after every test
     load 'node_modules/bats-assert/load'
     load 'node_modules/bats-support/load'
 
@@ -139,4 +140,14 @@ setup() {
     run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${name}
     [ "$status" -eq 0 ]
     assert_output --partial "The role ${name} was deleted"
+}
+
+# bats test_tags=developer,login2fa
+@test "alks developer login2fa" {
+    echo "# should save a refresh token" >&3
+
+    run expect scripts/login2fa.exp
+    [ "$status" -eq 0 ]
+    assert_output --partial "Refresh token validated!"
+    assert_output --partial "Refresh token saved!"
 }

@@ -25,6 +25,6 @@ ENV USERNAME=${USERNAME}
 
 RUN chmod +x configure.exp
 # automated run of alks developer configure
-RUN ./configure.exp
+RUN ./scripts/configure.exp
 
 ENTRYPOINT [ "./test.bats" ]
