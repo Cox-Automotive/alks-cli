@@ -35,5 +35,5 @@ jobs:
       run: |
         echo "REFRESH_TOKEN=${{ secrets.ALKS_REFRESH_TOKEN }}" >> $GITHUB_ENV
         echo "USERNAME=${{ secrets.ALKS_USER }}" >> $GITHUB_ENV
-        make test  
+        make test CI_MOE=true 
       working-directory: ./e2e

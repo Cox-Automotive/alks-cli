@@ -14,8 +14,8 @@ build:
 
 test: build
 	@echo "running intg tests..."
-	docker run $(CI_MODE) --rm alks-cli-test
+	docker run $(IT_FLAGS) --rm alks-cli-test
 
 test-shell: build
 	@echo "running intg tests...currently opening an interactive shell"
-	docker run -it --rm --entrypoint /bin/bash --rm alks-cli-test
+	docker run $(IT_FLAGS) --rm --entrypoint /bin/bash --rm alks-cli-test
