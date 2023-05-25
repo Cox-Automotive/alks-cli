@@ -30,3 +30,7 @@ jobs:
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
+    
+    - name: Run end-2-end tests
+      run: make test
+      working-directory: ./e2e
