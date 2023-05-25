@@ -1,6 +1,12 @@
 #!/usr/bin/expect -f
 
-# debug execution with -d
+
+# expect script for automating alks developer login2fa
+# used to collect output for a BATS test of the same command
+
+# a valid alks refresh token set in the environment is the only requirement for
+# successful execution
+
 
 # variables
 set refreshToken "$env(REFRESH_TOKEN)"
