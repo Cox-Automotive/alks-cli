@@ -1,5 +1,5 @@
 TOKEN = --build-arg REFRESH_TOKEN
-USER = --build-arg USERNAME=shfinkel
+USER = --build-arg USERNAME
 
 CI_MODE = false
 ifeq ($(CI_MODE),true)
