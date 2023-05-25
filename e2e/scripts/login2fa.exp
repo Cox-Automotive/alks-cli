@@ -26,5 +26,9 @@ expect_after eof {exit 0}
 expect "Refresh Token" {send -h "$refreshToken\r"}
 sleep .1
 
+# input yes when asked to store refresh token in plaintext
+expect "plaintext file" {send -h "y\r"}
+sleep .1
+
 ## skipping the other configuration options
 expect eof

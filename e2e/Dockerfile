@@ -23,8 +23,9 @@ ENV REFRESH_TOKEN=${REFRESH_TOKEN}
 ARG USERNAME
 ENV USERNAME=${USERNAME}
 
-RUN chmod +x configure.exp
+ARG DEVELOPER_CONFIGURE=scripts/configure.exp
+RUN chmod +x ${DEVELOPER_CONFIGURE}
 # automated run of alks developer configure
-RUN ./scripts/configure.exp
+RUN ./${DEVELOPER_CONFIGURE}
 
 ENTRYPOINT [ "./test.bats" ]
