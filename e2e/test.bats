@@ -15,16 +15,19 @@
 # to execute only the test for iam deleterole, with verbose output, run: 
 #    $ ./test.bats --filter-tags deleterole -x --trace
 
-# alks-cli arguments
-ROLE="LabAdmin"
-ACCOUNT=805619180788 # awscoxautolabs95
-AWS_CREDENTIALS_FILE=~/.aws/credentials
-ALKS_CREDENTIALS_FILE=~/.alks-cli/credentials
-ROLE_WITH_ROLE_TYPE="alks-cli-e2e-test-role-with-roletype"
-ROLE_WITH_TRUST_POLICY="alks-cli-e2e-test-role-with-trustpolicy"
+setup_file() {
+    # alks-cli arguments
+    export ROLE="LabAdmin"
+    export ACCOUNT=805619180788 # awscoxautolabs95
+    export TIMESTAMP=$(date +%s%N)
+    export AWS_CREDENTIALS_FILE=~/.aws/credentials
+    export ALKS_CREDENTIALS_FILE=~/.alks-cli/credentials
+    export ROLE_WITH_ROLE_TYPE="alks-cli-e2e-test-role-with-roletype-${TIMESTAMP}"
+    export ROLE_WITH_TRUST_POLICY="alks-cli-e2e-test-role-with-trustpolicy-${TIMESTAMP}"
 
-# continue to next test if time exceeds 30 seconds
-BATS_TEST_TIMEOUT=30
+    # continue to next test if time exceeds 30 seconds
+    export BATS_TEST_TIMEOUT=30
+}
 
 teardown_file() {
     # deleting roles after all tests complete no matter what 
