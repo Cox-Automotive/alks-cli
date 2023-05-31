@@ -1,0 +1,34 @@
+#!/usr/bin/expect -f
+
+
+# expect script for automating alks developer login2fa
+# used to collect output for a BATS test of the same command
+
+# a valid alks refresh token set in the environment is the only requirement for
+# successful execution
+
+
+# variables
+set refreshToken "$env(REFRESH_TOKEN)"
+
+# Config values
+set timeout 5
+## variable key entry speed to simulate human input
+set send_slow {1 .1}
+set send_human {.1 .3 1 .05 2}
+match_max 100000
+
+# spawning program
+spawn alks developer login2fa
+expect_after eof {exit 0}
+
+# input alks server from envvar on system
+expect "Refresh Token" {send -h "$refreshToken\r"}
+sleep .1
+
+# input yes when asked to store refresh token in plaintext
+expect "plaintext file" {send -h "y\r"}
+sleep .1
+
+## skipping the other configuration options
+expect eof

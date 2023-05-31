@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
+  USERNAME: ${{ secrets.ALKS_USER }}
+
 jobs:
   build_and_test:
 
@@ -30,3 +34,8 @@ jobs:
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
+    
+    - name: Run end-2-end tests
+      run: |
+        make test CI_MODE=true 
+      working-directory: ./e2e
