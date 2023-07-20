@@ -1,6 +1,7 @@
+import { Auth } from '../model/auth';
+import { getAuth } from './getAuth';
 import { getDeveloper } from './state/developer';
 import { getServer } from './state/server';
-import { getUserId } from './state/userId';
 
 export async function ensureConfigured(): Promise<void> {
   // validate we have a valid configuration
@@ -11,9 +12,18 @@ export async function ensureConfigured(): Promise<void> {
   }
 
   // If developer is not configured, ensure we at least have required variables configured
-  if (!(await getUserId()) || !(await getServer())) {
+  if (!(await getAuthButDontThrow()) || !(await getServer())) {
     throw new Error(
       'ALKS CLI is not configured. Please run: `alks developer configure` or set the environment variables ALKS_USERID and ALKS_SERVER'
     );
+  }
+}
+
+// TODO: make getAuth simply return Auth or undefined so we don't have to do this
+async function getAuthButDontThrow(): Promise<Auth | undefined> {
+  try {
+    return await getAuth();
+  } catch {
+    return undefined;
   }
 }
