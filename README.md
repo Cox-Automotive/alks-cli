@@ -26,7 +26,7 @@ The ALKS CLI requires some basic environment information to get started. Simply 
     alks developer configure
 
 * ALKS Server: The full URL to your ALKS server (ex: `https://alks.company.com/rest`)
-* Network Username: Your network username
+* Network Username: Your network username. Note: This is not your email prefix
 * Network Password: Your network password (needed for loading list of accounts/roles)
 * Save Network Password: Whether or not to save your network password, we suggest saving your password for ease of use
 * Default Account/Role: Select the default ALKS account/role to use
