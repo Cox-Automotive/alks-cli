@@ -299,7 +299,10 @@ developer
     'the ALKS IAM role to use as the default role for carrying out requests'
   )
   .option('-o, --output <format>', 'output format')
-  .option('-u, --username <username>', 'your username')
+  .option(
+    '-u, --username <username>',
+    'your network username. NOTE: this is not your email prefix'
+  )
   .option('-s, --server <server>', 'alks server')
   .option(
     '-A, --auth-type <authType>',
