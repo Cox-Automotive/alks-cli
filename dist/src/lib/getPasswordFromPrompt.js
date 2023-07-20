@@ -22,7 +22,7 @@ function getPasswordFromPrompt(text, currentPassword) {
                                     return (0, underscore_1.isEmpty)(currentPassword) ? '' : currentPassword;
                                 },
                                 validate: function (val) {
-                                    return !(0, underscore_1.isEmpty)(val) ? true : 'Please enter a value for password.';
+                                    return !(0, underscore_1.isEmpty)(val) ? true : 'Please enter a value.';
                                 },
                             },
                         ])];

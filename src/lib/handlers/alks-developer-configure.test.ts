@@ -146,7 +146,7 @@ describe('handleAlksDeveloperConfigure', () => {
       authType: REFRESH_TOKEN_AUTH_CHOICE,
       promptForTokenFails: true,
       shouldSaveServer: true,
-      shouldSaveUserId: true,
+      shouldSaveUserId: false,
     },
     {
       ...defaultTestCase,
@@ -156,7 +156,7 @@ describe('handleAlksDeveloperConfigure', () => {
       userId: 'bobby',
       authType: 'just let me in',
       shouldSaveServer: true,
-      shouldSaveUserId: true,
+      shouldSaveUserId: false,
     },
     {
       ...defaultTestCase,
@@ -361,7 +361,7 @@ describe('handleAlksDeveloperConfigure', () => {
           }
         });
 
-        ((errorAndExit as unknown) as jest.Mock).mockImplementation(() => {
+        (errorAndExit as unknown as jest.Mock).mockImplementation(() => {
           errorThrown = true;
         });
 

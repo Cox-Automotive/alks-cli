@@ -17,7 +17,7 @@ export async function getPasswordFromPrompt(
         return isEmpty(currentPassword) ? '' : currentPassword;
       },
       validate(val) {
-        return !isEmpty(val) ? true : 'Please enter a value for password.';
+        return !isEmpty(val) ? true : 'Please enter a value.';
       },
     },
   ]);
