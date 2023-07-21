@@ -26,6 +26,7 @@ var alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
 var alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
 var alks_completion_1 = require("./handlers/alks-completion");
 var cli_color_1 = require("cli-color");
+var alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
 var outputValues = (0, getOutputValues_1.getOutputValues)();
 var nameDesc = 'alphanumeric including @+=._-';
 var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -142,6 +143,21 @@ iam
     .option('-o, --output <format>', 'output format (text, json)', 'text')
     .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation ['{\"Key\":\"key1\", \"Value\":\"val1\"}', '{\"Key\":\"key2\", \"Value\":\"val2\"}'] or shorthand Key=string,Value=string Key=string,Value=string")
     .action(alks_iam_createltk_1.handleAlksIamCreateLtk);
+iam
+    .command('updaterole')
+    .description('creates a new IAM role')
+    .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
+    .option('-p,  --trustPolicy <trustPolicy>', 'the trust policy as JSON string')
+    // .option(
+    //   '-e, --enableAlksAccess',
+    //   'enable alks access (MI), default: false',
+    //   false
+    // )
+    .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
+    .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
+    .option('-F, --favorites', 'filters favorite accounts')
+    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
+    .action(alks_iam_updaterole_1.handleAlksIamUpdateRole);
 iam
     .command('updateIamUser')
     .description('Updates the tags on an IAM User')

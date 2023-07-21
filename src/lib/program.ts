@@ -24,6 +24,7 @@ import { handleAlksDeveloperLogout } from '../lib/handlers/alks-developer-logout
 import { handleAlksDeveloperLogout2fa } from '../lib/handlers/alks-developer-logout2fa';
 import { handleCompletion } from './handlers/alks-completion';
 import { red } from 'cli-color';
+import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -264,6 +265,31 @@ iam
     `A list of resource tags. Can either be a JSON representation ['{"Key":"key1", "Value":"val1"}', '{"Key":"key2", "Value":"val2"}'] or shorthand Key=string,Value=string Key=string,Value=string`
   )
   .action(handleAlksIamCreateLtk);
+
+iam
+  .command('updaterole')
+  .description('creates a new IAM role')
+  .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
+  .option('-p,  --trustPolicy <trustPolicy>', 'the trust policy as JSON string')
+  // .option(
+  //   '-e, --enableAlksAccess',
+  //   'enable alks access (MI), default: false',
+  //   false
+  // )
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use to perform the request'
+  )
+  .option('-F, --favorites', 'filters favorite accounts')
+  .option(
+    '-k, --tags <tags...>',
+    `A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string`
+  )
+  .action(handleAlksIamUpdateRole);
 
 iam
   .command('updateIamUser')
