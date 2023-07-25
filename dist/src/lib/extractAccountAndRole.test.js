@@ -38,13 +38,16 @@ describe('extractAccountAndRole', function () {
                 id: '012345678910',
                 alias: 'awstest123',
                 label: 'Test 123 - Prod',
-            }, resultRole: 'Admin', getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+            }, resultRole: 'Admin', getAwsAccountFromString: function (account) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, ({
-                            id: '012345678910',
-                            alias: 'awstest123',
-                            label: 'Test 123 - Prod',
-                        })];
+                    if (account === '012345678910') {
+                        return [2 /*return*/, {
+                                id: '012345678910',
+                                alias: 'awstest123',
+                                label: 'Test 123 - Prod',
+                            }];
+                    }
+                    throw new Error('no account found');
                 });
             }); } }),
         tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when an account and role are provided but no matching account is found', options: {
@@ -65,13 +68,21 @@ describe('extractAccountAndRole', function () {
                 id: '012345678910',
                 alias: 'awstest123',
                 label: 'Test 123 - Prod',
-            }, resultRole: 'Admin', tryToExtractRole: function () { return 'Admin'; }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+            }, resultRole: 'Admin', tryToExtractRole: function (account) {
+                if (account === '012345678910/ALKSAdmin') {
+                    return 'Admin';
+                }
+                throw new Error('no role found');
+            }, getAwsAccountFromString: function (account) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, ({
-                            id: '012345678910',
-                            alias: 'awstest123',
-                            label: 'Test 123 - Prod',
-                        })];
+                    if (account === '012345678910/ALKSAdmin') {
+                        return [2 /*return*/, {
+                                id: '012345678910',
+                                alias: 'awstest123',
+                                label: 'Test 123 - Prod',
+                            }];
+                    }
+                    throw new Error('no account found');
                 });
             }); } }),
         tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when only an account id is provided', options: {
@@ -87,13 +98,16 @@ describe('extractAccountAndRole', function () {
                             alksRole: 'Admin',
                         })];
                 });
-            }); }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+            }); }, getAwsAccountFromString: function (account) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, ({
-                            id: '012345678910',
-                            alias: 'awstest123',
-                            label: 'Test 123 - Prod',
-                        })];
+                    if (account === '012345678910') {
+                        return [2 /*return*/, {
+                                id: '012345678910',
+                                alias: 'awstest123',
+                                label: 'Test 123 - Prod',
+                            }];
+                    }
+                    throw new Error('no account found');
                 });
             }); } }),
         tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when no account or role are provided', options: {}, resultAccount: {
@@ -107,13 +121,16 @@ describe('extractAccountAndRole', function () {
                             alksRole: 'Admin',
                         })];
                 });
-            }); }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+            }); }, getAwsAccountFromString: function (account) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
                 return tslib_1.__generator(this, function (_a) {
-                    return [2 /*return*/, ({
-                            id: '012345678910',
-                            alias: 'awstest123',
-                            label: 'Test 123 - Prod',
-                        })];
+                    if (account === '012345678910') {
+                        return [2 /*return*/, {
+                                id: '012345678910',
+                                alias: 'awstest123',
+                                label: 'Test 123 - Prod',
+                            }];
+                    }
+                    throw new Error('no account found');
                 });
             }); } }),
     ];

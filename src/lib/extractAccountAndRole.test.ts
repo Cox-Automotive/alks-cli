@@ -61,11 +61,16 @@ describe('extractAccountAndRole', () => {
         label: 'Test 123 - Prod',
       },
       resultRole: 'Admin',
-      getAwsAccountFromString: async () => ({
-        id: '012345678910',
-        alias: 'awstest123',
-        label: 'Test 123 - Prod',
-      }),
+      getAwsAccountFromString: async (account) => {
+        if (account === '012345678910') {
+          return {
+            id: '012345678910',
+            alias: 'awstest123',
+            label: 'Test 123 - Prod',
+          };
+        }
+        throw new Error('no account found');
+      },
     },
     {
       ...testCaseDefaults,
@@ -99,12 +104,22 @@ describe('extractAccountAndRole', () => {
         label: 'Test 123 - Prod',
       },
       resultRole: 'Admin',
-      tryToExtractRole: () => 'Admin',
-      getAwsAccountFromString: async () => ({
-        id: '012345678910',
-        alias: 'awstest123',
-        label: 'Test 123 - Prod',
-      }),
+      tryToExtractRole: (account) => {
+        if (account === '012345678910/ALKSAdmin') {
+          return 'Admin';
+        }
+        throw new Error('no role found');
+      },
+      getAwsAccountFromString: async (account) => {
+        if (account === '012345678910/ALKSAdmin') {
+          return {
+            id: '012345678910',
+            alias: 'awstest123',
+            label: 'Test 123 - Prod',
+          };
+        }
+        throw new Error('no account found');
+      },
     },
     {
       ...testCaseDefaults,
@@ -123,11 +138,16 @@ describe('extractAccountAndRole', () => {
         alksAccount: '012345678910',
         alksRole: 'Admin',
       }),
-      getAwsAccountFromString: async () => ({
-        id: '012345678910',
-        alias: 'awstest123',
-        label: 'Test 123 - Prod',
-      }),
+      getAwsAccountFromString: async (account) => {
+        if (account === '012345678910') {
+          return {
+            id: '012345678910',
+            alias: 'awstest123',
+            label: 'Test 123 - Prod',
+          };
+        }
+        throw new Error('no account found');
+      },
     },
     {
       ...testCaseDefaults,
@@ -143,11 +163,16 @@ describe('extractAccountAndRole', () => {
         alksAccount: '012345678910',
         alksRole: 'Admin',
       }),
-      getAwsAccountFromString: async () => ({
-        id: '012345678910',
-        alias: 'awstest123',
-        label: 'Test 123 - Prod',
-      }),
+      getAwsAccountFromString: async (account) => {
+        if (account === '012345678910') {
+          return {
+            id: '012345678910',
+            alias: 'awstest123',
+            label: 'Test 123 - Prod',
+          };
+        }
+        throw new Error('no account found');
+      },
     },
   ];
 
