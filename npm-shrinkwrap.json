@@ -9,6 +9,7 @@
       "version": "3.14.0",
       "license": "MIT",
       "dependencies": {
+        "alks-node": "^0.12.1",
         "alks.js": "2.5.0",
         "cli-color": "^2.0.0",
         "cli-table3": "^0.5.0",
@@ -3014,6 +3015,19 @@
       "funding": {
         "type": "github",
         "url": "https://github.com/sponsors/epoberezkin"
+      }
+    },
+    "node_modules/alks-node": {
+      "version": "0.12.1",
+      "resolved": "https://registry.npmjs.org/alks-node/-/alks-node-0.12.1.tgz",
+      "integrity": "sha512-Ff5CT7Ob9oDoR6bZg2MiTHJZnVvnf7ld8C5BzORIW9A/i717CKeFPli7lYgVVexWCAoDRzz9+jw4nkzlf1eteQ==",
+      "dependencies": {
+        "moment": "^2.15.2",
+        "request": "^2.72.0",
+        "underscore": "^1.8.3"
+      },
+      "engines": {
+        "node": ">=10.0.0"
       }
     },
     "node_modules/alks.js": {
