@@ -12,7 +12,7 @@
         "coverage": "CI=true npm test -- a --no-watch --coverageDirectory=../coverage"
     },
     "engines": {
-        "node": ">=10.0.0"
+        "node": ">=16.0.0"
     },
     "repository": {
         "type": "git",
