@@ -179,7 +179,7 @@ describe('extractAccountAndRole', () => {
   for (const t of testCases) {
     describe(t.description, () => {
       let result: Awaited<ReturnType<typeof extractAccountAndRole>>;
-      let exception: Error;
+      let exception: unknown;
 
       beforeEach(async () => {
         (log as jest.Mock).mockImplementation(t.log);
@@ -194,7 +194,7 @@ describe('extractAccountAndRole', () => {
         try {
           result = await extractAccountAndRole(t.options);
         } catch (e) {
-          exception = e as Error;
+          exception = e;
         }
       });
 
@@ -207,7 +207,7 @@ describe('extractAccountAndRole', () => {
 
       if (t.shouldThrow) {
         it('throws an exception', () => {
-          expect(exception).not.toEqual(undefined);
+          expect(exception).toBeInstanceOf(Error);
         });
       } else {
         it('returns the correct result', () => {

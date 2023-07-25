@@ -170,7 +170,7 @@ describe('extractAccountAndRole', function () {
             });
             if (t.shouldThrow) {
                 it('throws an exception', function () {
-                    expect(exception).not.toEqual(undefined);
+                    expect(exception).toBeInstanceOf(Error);
                 });
             }
             else {
