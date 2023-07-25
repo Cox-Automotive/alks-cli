@@ -86,6 +86,69 @@ describe('extractAccountAndRole', () => {
         throw new Error('invalid account');
       },
     },
+    {
+      ...testCaseDefaults,
+      description:
+        'when only an account string is provided containing the role in the string',
+      options: {
+        account: '012345678910/ALKSAdmin',
+      },
+      resultAccount: {
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      },
+      resultRole: 'Admin',
+      tryToExtractRole: () => 'Admin',
+      getAwsAccountFromString: async () => ({
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      }),
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when only an account id is provided',
+      options: {
+        account: '012345678910',
+      },
+      resultAccount: {
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      },
+      resultRole: 'Admin',
+      tryToExtractRole: () => undefined,
+      promptForAlksAccountAndRole: async () => ({
+        alksAccount: '012345678910',
+        alksRole: 'Admin',
+      }),
+      getAwsAccountFromString: async () => ({
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      }),
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when no account or role are provided',
+      options: {},
+      resultAccount: {
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      },
+      resultRole: 'Admin',
+      promptForAlksAccountAndRole: async () => ({
+        alksAccount: '012345678910',
+        alksRole: 'Admin',
+      }),
+      getAwsAccountFromString: async () => ({
+        id: '012345678910',
+        alias: 'awstest123',
+        label: 'Test 123 - Prod',
+      }),
+    },
   ];
 
   for (const t of testCases) {

@@ -59,6 +59,63 @@ describe('extractAccountAndRole', function () {
                     throw new Error('invalid account');
                 });
             }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when only an account string is provided containing the role in the string', options: {
+                account: '012345678910/ALKSAdmin',
+            }, resultAccount: {
+                id: '012345678910',
+                alias: 'awstest123',
+                label: 'Test 123 - Prod',
+            }, resultRole: 'Admin', tryToExtractRole: function () { return 'Admin'; }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '012345678910',
+                            alias: 'awstest123',
+                            label: 'Test 123 - Prod',
+                        })];
+                });
+            }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when only an account id is provided', options: {
+                account: '012345678910',
+            }, resultAccount: {
+                id: '012345678910',
+                alias: 'awstest123',
+                label: 'Test 123 - Prod',
+            }, resultRole: 'Admin', tryToExtractRole: function () { return undefined; }, promptForAlksAccountAndRole: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            alksAccount: '012345678910',
+                            alksRole: 'Admin',
+                        })];
+                });
+            }); }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '012345678910',
+                            alias: 'awstest123',
+                            label: 'Test 123 - Prod',
+                        })];
+                });
+            }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when no account or role are provided', options: {}, resultAccount: {
+                id: '012345678910',
+                alias: 'awstest123',
+                label: 'Test 123 - Prod',
+            }, resultRole: 'Admin', promptForAlksAccountAndRole: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            alksAccount: '012345678910',
+                            alksRole: 'Admin',
+                        })];
+                });
+            }); }, getAwsAccountFromString: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    return [2 /*return*/, ({
+                            id: '012345678910',
+                            alias: 'awstest123',
+                            label: 'Test 123 - Prod',
+                        })];
+                });
+            }); } }),
     ];
     var _loop_1 = function (t) {
         describe(t.description, function () {
