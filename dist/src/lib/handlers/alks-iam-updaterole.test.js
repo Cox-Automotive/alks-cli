@@ -49,9 +49,7 @@ describe('handleAlksIamUpdateRole', function () {
         unpackTags: jest.fn(),
         extractAccountAndRole: jest.fn(),
         getAuth: jest.fn(),
-        getAlks: jest.fn(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
-            return [2 /*return*/, mockAlks];
-        }); }); }),
+        updateRole: jest.fn(),
         log: jest.fn(),
         checkForUpdate: jest.fn(),
     };
@@ -74,7 +72,7 @@ describe('handleAlksIamUpdateRole', function () {
                     },
                 ],
             }, unpackTags: function (tags) {
-                if (Array.isArray(tags) && tags.length > 0 && tags[0] === 'key=value') {
+                if (tags.length > 0 && tags[0] === 'key=value') {
                     return [
                         {
                             key: 'key',
@@ -103,6 +101,246 @@ describe('handleAlksIamUpdateRole', function () {
             }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, ({})];
             }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when all necessary fields and a trust policy but no tags are provided', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+                trustPolicy: '{}',
+            }, updateRoleParameters: {
+                account: '012345678910',
+                role: 'Admin',
+                roleName: 'myTestRole',
+                trustPolicy: {},
+            }, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when all necessary fields as well as tags but no trust policy is provided', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+                tags: ['key=value'],
+            }, updateRoleParameters: {
+                account: '012345678910',
+                role: 'Admin',
+                roleName: 'myTestRole',
+                tags: [
+                    {
+                        key: 'key',
+                        value: 'value',
+                    },
+                ],
+            }, unpackTags: function (tags) {
+                if (tags.length > 0 && tags[0] === 'key=value') {
+                    return [
+                        {
+                            key: 'key',
+                            value: 'value',
+                        },
+                    ];
+                }
+                throw new Error('incorrect tags');
+            }, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when all necessary fields but no trust policy or tags are provided', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+            }, updateRoleParameters: {
+                account: '012345678910',
+                role: 'Admin',
+                roleName: 'myTestRole',
+            }, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when no role name is provided', options: {
+                account: '012345678910',
+                role: 'Admin',
+            }, shouldExitWithFailure: true, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when an invalid trust policy is provided', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+                trustPolicy: '{thisisnotvalidJSON',
+            }, shouldExitWithFailure: true, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when no auth is found', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+                trustPolicy: '{}',
+                tags: ['key=value'],
+            }, shouldExitWithFailure: true, unpackTags: function (tags) {
+                if (tags.length > 0 && tags[0] === 'key=value') {
+                    return [
+                        {
+                            key: 'key',
+                            value: 'value',
+                        },
+                    ];
+                }
+                throw new Error('incorrect tags');
+            }, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    throw new Error('no auth');
+                });
+            }); } }),
+        tslib_1.__assign(tslib_1.__assign({}, testCaseDefaults), { description: 'when the alks sdk fails to update the role', options: {
+                account: '012345678910',
+                role: 'Admin',
+                rolename: 'myTestRole',
+                trustPolicy: '{}',
+                tags: ['key=value'],
+            }, updateRoleParameters: {
+                account: '012345678910',
+                role: 'Admin',
+                roleName: 'myTestRole',
+                trustPolicy: {},
+                tags: [
+                    {
+                        key: 'key',
+                        value: 'value',
+                    },
+                ],
+            }, shouldExitWithFailure: true, unpackTags: function (tags) {
+                if (tags.length > 0 && tags[0] === 'key=value') {
+                    return [
+                        {
+                            key: 'key',
+                            value: 'value',
+                        },
+                    ];
+                }
+                throw new Error('incorrect tags');
+            }, extractAccountAndRole: function (_a) {
+                var account = _a.account, role = _a.role;
+                return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                    return tslib_1.__generator(this, function (_b) {
+                        if (account === '012345678910' && role === 'Admin') {
+                            return [2 /*return*/, {
+                                    awsAccount: {
+                                        id: '012345678910',
+                                        alias: 'awstest123',
+                                        label: 'Test 123 - Prod',
+                                    },
+                                    role: 'Admin',
+                                }];
+                        }
+                        throw new Error('failed to extract account and role');
+                    });
+                });
+            }, getAuth: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                return [2 /*return*/, ({})];
+            }); }); }, updateRole: function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+                return tslib_1.__generator(this, function (_a) {
+                    throw new Error('error updating role');
+                });
+            }); } }),
     ];
     var _loop_1 = function (t) {
         describe(t.description, function () {
@@ -115,7 +353,10 @@ describe('handleAlksIamUpdateRole', function () {
                             unpackTags_1.unpackTags.mockImplementation(t.unpackTags);
                             extractAccountAndRole_1.extractAccountAndRole.mockImplementation(t.extractAccountAndRole);
                             getAuth_1.getAuth.mockImplementation(t.getAuth);
-                            getAlks_1.getAlks.mockImplementation(t.getAlks);
+                            getAlks_1.getAlks.mockImplementation(function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () { return tslib_1.__generator(this, function (_a) {
+                                return [2 /*return*/, mockAlks];
+                            }); }); });
+                            mockAlks.updateRole.mockImplementation(t.updateRole);
                             log_1.log.mockImplementation(t.log);
                             checkForUpdate_1.checkForUpdate.mockImplementation(t.checkForUpdate);
                             _b.label = 1;
@@ -152,6 +393,9 @@ describe('handleAlksIamUpdateRole', function () {
                 });
                 it('should call alks.updateRole with the correct parameters', function () {
                     expect(mockAlks.updateRole).toHaveBeenCalledWith(t.updateRoleParameters);
+                });
+                it('should check for updates', function () {
+                    expect(checkForUpdate_1.checkForUpdate).toHaveBeenCalled();
                 });
             }
         });

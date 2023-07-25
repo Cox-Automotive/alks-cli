@@ -55,7 +55,7 @@ describe('handleAlksIamUpdateRole', () => {
     unpackTags: typeof unpackTags;
     extractAccountAndRole: typeof extractAccountAndRole;
     getAuth: typeof getAuth;
-    getAlks: typeof getAlks;
+    updateRole: typeof mockAlks.updateRole;
     log: typeof log;
     checkForUpdate: typeof checkForUpdate;
   }
@@ -72,7 +72,7 @@ describe('handleAlksIamUpdateRole', () => {
     unpackTags: jest.fn(),
     extractAccountAndRole: jest.fn(),
     getAuth: jest.fn(),
-    getAlks: jest.fn(async () => mockAlks as ALKS.Alks),
+    updateRole: jest.fn(),
     log: jest.fn(),
     checkForUpdate: jest.fn(),
   };
@@ -102,7 +102,7 @@ describe('handleAlksIamUpdateRole', () => {
         ],
       },
       unpackTags: (tags) => {
-        if (Array.isArray(tags) && tags.length > 0 && tags[0] === 'key=value') {
+        if (tags.length > 0 && tags[0] === 'key=value') {
           return [
             {
               key: 'key',
@@ -127,6 +127,252 @@ describe('handleAlksIamUpdateRole', () => {
       },
       getAuth: async () => ({} as Auth),
     },
+    {
+      ...testCaseDefaults,
+      description:
+        'when all necessary fields and a trust policy but no tags are provided',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+        trustPolicy: '{}',
+      },
+      updateRoleParameters: {
+        account: '012345678910',
+        role: 'Admin',
+        roleName: 'myTestRole',
+        trustPolicy: {},
+      },
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+    },
+    {
+      ...testCaseDefaults,
+      description:
+        'when all necessary fields as well as tags but no trust policy is provided',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+        tags: ['key=value'],
+      },
+      updateRoleParameters: {
+        account: '012345678910',
+        role: 'Admin',
+        roleName: 'myTestRole',
+        tags: [
+          {
+            key: 'key',
+            value: 'value',
+          },
+        ],
+      },
+      unpackTags: (tags) => {
+        if (tags.length > 0 && tags[0] === 'key=value') {
+          return [
+            {
+              key: 'key',
+              value: 'value',
+            },
+          ];
+        }
+        throw new Error('incorrect tags');
+      },
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+    },
+    {
+      ...testCaseDefaults,
+      description:
+        'when all necessary fields but no trust policy or tags are provided',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+      },
+      updateRoleParameters: {
+        account: '012345678910',
+        role: 'Admin',
+        roleName: 'myTestRole',
+      },
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when no role name is provided',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+      },
+      shouldExitWithFailure: true,
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when an invalid trust policy is provided',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+        trustPolicy: '{thisisnotvalidJSON',
+      },
+      shouldExitWithFailure: true,
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when no auth is found',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+        trustPolicy: '{}',
+        tags: ['key=value'],
+      },
+      shouldExitWithFailure: true,
+      unpackTags: (tags) => {
+        if (tags.length > 0 && tags[0] === 'key=value') {
+          return [
+            {
+              key: 'key',
+              value: 'value',
+            },
+          ];
+        }
+        throw new Error('incorrect tags');
+      },
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => {
+        throw new Error('no auth');
+      },
+    },
+    {
+      ...testCaseDefaults,
+      description: 'when the alks sdk fails to update the role',
+      options: {
+        account: '012345678910',
+        role: 'Admin',
+        rolename: 'myTestRole',
+        trustPolicy: '{}',
+        tags: ['key=value'],
+      },
+      updateRoleParameters: {
+        account: '012345678910',
+        role: 'Admin',
+        roleName: 'myTestRole',
+        trustPolicy: {},
+        tags: [
+          {
+            key: 'key',
+            value: 'value',
+          },
+        ],
+      },
+      shouldExitWithFailure: true,
+      unpackTags: (tags) => {
+        if (tags.length > 0 && tags[0] === 'key=value') {
+          return [
+            {
+              key: 'key',
+              value: 'value',
+            },
+          ];
+        }
+        throw new Error('incorrect tags');
+      },
+      extractAccountAndRole: async ({ account, role }) => {
+        if (account === '012345678910' && role === 'Admin') {
+          return {
+            awsAccount: {
+              id: '012345678910',
+              alias: 'awstest123',
+              label: 'Test 123 - Prod',
+            },
+            role: 'Admin',
+          };
+        }
+        throw new Error('failed to extract account and role');
+      },
+      getAuth: async () => ({} as Auth),
+      updateRole: async () => {
+        throw new Error('error updating role');
+      },
+    },
   ];
 
   for (const t of testCases) {
@@ -140,7 +386,12 @@ describe('handleAlksIamUpdateRole', () => {
           t.extractAccountAndRole
         );
         (getAuth as unknown as jest.Mock).mockImplementation(t.getAuth);
-        (getAlks as unknown as jest.Mock).mockImplementation(t.getAlks);
+        (getAlks as unknown as jest.Mock).mockImplementation(
+          async () => mockAlks
+        );
+        (mockAlks.updateRole as unknown as jest.Mock).mockImplementation(
+          t.updateRole
+        );
         (log as jest.Mock).mockImplementation(t.log);
         (checkForUpdate as unknown as jest.Mock).mockImplementation(
           t.checkForUpdate
@@ -174,6 +425,10 @@ describe('handleAlksIamUpdateRole', () => {
           expect(mockAlks.updateRole).toHaveBeenCalledWith(
             t.updateRoleParameters
           );
+        });
+
+        it('should check for updates', () => {
+          expect(checkForUpdate).toHaveBeenCalled();
         });
       }
     });

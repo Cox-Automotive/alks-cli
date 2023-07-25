@@ -36,17 +36,13 @@ export async function handleAlksIamUpdateRole(options: commander.OptionValues) {
       ...auth,
     });
 
-    try {
-      await alks.updateRole({
-        account: awsAccount.id,
-        role,
-        roleName,
-        trustPolicy,
-        tags,
-      });
-    } catch (err) {
-      errorAndExit(err as Error);
-    }
+    await alks.updateRole({
+      account: awsAccount.id,
+      role,
+      roleName,
+      trustPolicy,
+      tags,
+    });
 
     console.log(
       clc.white(['The role: ', roleName, ' was updated successfully'])
