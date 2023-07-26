@@ -1,5 +1,6 @@
 import { getAwsAccountFromString } from './getAwsAccountFromString';
 import { getAlksAccounts } from './getAlksAccounts';
+import ALKS from 'alks.js';
 
 jest.mock('./getAlksAccounts');
 
@@ -41,7 +42,7 @@ function fakeAlksAccount(
       accountOwners: [],
       cloudsploitTrend: [],
     },
-  };
+  } as unknown as ALKS.Account;
 }
 
 const testCases: TestCase[] = [
