@@ -7,6 +7,7 @@ const promptForPassword_1 = require("./promptForPassword");
 const password_1 = require("./state/password");
 const token_1 = require("./state/token");
 const userId_1 = require("./state/userId");
+// TODO: refactor all calls to this function to do their own error handling so that we can just return Auth or undefined
 function getAuth() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('checking for refresh token');
@@ -19,7 +20,7 @@ function getAuth() {
             (0, log_1.log)('no refresh token found, falling back to password');
             const userid = yield (0, userId_1.getUserId)();
             if (!userid) {
-                throw new Error('No userid was configured');
+                throw new Error('No authentication information was found. Please run `alks developer configure`');
             }
             // If password is not set, ask for a password
             const password = (yield (0, password_1.getPassword)()) || (yield (0, promptForPassword_1.promptForPassword)());

@@ -37,9 +37,6 @@ function handleAlksDeveloperConfigure(options) {
             if (options.server || shouldPrompt) {
                 yield (0, server_1.setServer)((_a = options.server) !== null && _a !== void 0 ? _a : (yield (0, promptForServer_1.promptForServer)()));
             }
-            if (options.username || shouldPrompt) {
-                yield (0, userId_1.setUserId)((_b = options.username) !== null && _b !== void 0 ? _b : (yield (0, promptForUserId_1.promptForUserId)()));
-            }
             // Override authType flag if a credential process was provided
             let authTypeFlag = options.authType;
             if (options.credentialProcess) {
@@ -53,6 +50,9 @@ function handleAlksDeveloperConfigure(options) {
                         break;
                     }
                     case promptForAuthType_1.PASSWORD_AUTH_CHOICE: {
+                        if (options.username || shouldPrompt) {
+                            yield (0, userId_1.setUserId)((_b = options.username) !== null && _b !== void 0 ? _b : (yield (0, promptForUserId_1.promptForUserId)()));
+                        }
                         const password = yield (0, promptForPassword_1.promptForPassword)();
                         const savePasswordAnswer = yield (0, confirm_1.confirm)('Save password');
                         if (savePasswordAnswer) {
