@@ -12,10 +12,13 @@ function promptForUserId() {
                 case 0: return [4 /*yield*/, (0, userId_1.getUserId)()];
                 case 1:
                     userId = _a.sent();
-                    return [2 /*return*/, (0, getPrompt_1.getPrompt)('userid', userId, 'Network Username', null)];
+                    return [2 /*return*/, (0, getPrompt_1.getPrompt)('userid', userId, 'Active Directory Username (this is not part of your email)', null)];
             }
         });
     });
 }
 exports.promptForUserId = promptForUserId;
+// userid.ts change getUserID prompt
+// getAuth(): get auth could have returned auth or null. Then whatever calls this would handle the null response.
+// Looks at alks developer configure.ts and move the get username field.
 //# sourceMappingURL=promptForUserId.js.map

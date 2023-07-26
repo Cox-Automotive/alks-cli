@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Sends code coverage data to sonaraqube
+* Removes userID from token based alks developer configure command
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

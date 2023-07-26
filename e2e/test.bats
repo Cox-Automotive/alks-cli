@@ -73,7 +73,6 @@ setup() {
     run alks developer info
     [ "$status" -eq 0 ]
     assert_output --partial "Developer Configuration"
-    assert_output --partial "${USERNAME}"
     assert_output --partial "${REFRESH_TOKEN:0:4}****"
 }
 

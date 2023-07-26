@@ -44,10 +44,6 @@ export async function handleAlksDeveloperConfigure(
       await setServer(options.server ?? (await promptForServer()));
     }
 
-    if (options.username || shouldPrompt) {
-      await setUserId(options.username ?? (await promptForUserId()));
-    }
-
     // Override authType flag if a credential process was provided
     let authTypeFlag = options.authType;
     if (options.credentialProcess) {
@@ -63,6 +59,10 @@ export async function handleAlksDeveloperConfigure(
           break;
         }
         case PASSWORD_AUTH_CHOICE: {
+          if (options.username || shouldPrompt) {
+            await setUserId(options.username ?? (await promptForUserId()));
+          }
+
           const password = await promptForPassword();
           const savePasswordAnswer = await confirm('Save password');
           if (savePasswordAnswer) {

@@ -29,7 +29,7 @@ var promptForCredentialProcess_1 = require("../promptForCredentialProcess");
 function handleAlksDeveloperConfigure(options) {
     var _a, _b, _c, _d;
     return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var shouldPrompt, _e, _f, _g, _h, authTypeFlag, authType, _j, _k, _l, password, savePasswordAnswer, _m, _o, _p, alksAccount, alksRole, _q, _r, err_1;
+        var shouldPrompt, _e, _f, authTypeFlag, authType, _g, _h, _j, _k, _l, password, savePasswordAnswer, _m, _o, _p, alksAccount, alksRole, _q, _r, err_1;
         return tslib_1.__generator(this, function (_s) {
             switch (_s.label) {
                 case 0:
@@ -52,49 +52,49 @@ function handleAlksDeveloperConfigure(options) {
                     _s.sent();
                     _s.label = 5;
                 case 5:
-                    if (!(options.username || shouldPrompt)) return [3 /*break*/, 10];
-                    _g = userId_1.setUserId;
-                    if (!((_b = options.username) !== null && _b !== void 0)) return [3 /*break*/, 6];
-                    _h = _b;
-                    return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, (0, promptForUserId_1.promptForUserId)()];
-                case 7:
-                    _h = (_s.sent());
-                    _s.label = 8;
-                case 8: return [4 /*yield*/, _g.apply(void 0, [_h])];
-                case 9:
-                    _s.sent();
-                    _s.label = 10;
-                case 10:
                     authTypeFlag = options.authType;
                     if (options.credentialProcess) {
                         authTypeFlag = promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE;
                     }
                     if (!(authTypeFlag || shouldPrompt)) return [3 /*break*/, 29];
-                    if (!(authTypeFlag !== null && authTypeFlag !== void 0)) return [3 /*break*/, 11];
-                    _j = authTypeFlag;
-                    return [3 /*break*/, 13];
-                case 11: return [4 /*yield*/, (0, promptForAuthType_1.promptForAuthType)()];
-                case 12:
-                    _j = (_s.sent());
-                    _s.label = 13;
-                case 13:
-                    authType = _j;
-                    _k = authType;
-                    switch (_k) {
-                        case promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE: return [3 /*break*/, 14];
-                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 17];
+                    if (!(authTypeFlag !== null && authTypeFlag !== void 0)) return [3 /*break*/, 6];
+                    _g = authTypeFlag;
+                    return [3 /*break*/, 8];
+                case 6: return [4 /*yield*/, (0, promptForAuthType_1.promptForAuthType)()];
+                case 7:
+                    _g = (_s.sent());
+                    _s.label = 8;
+                case 8:
+                    authType = _g;
+                    _h = authType;
+                    switch (_h) {
+                        case promptForAuthType_1.REFRESH_TOKEN_AUTH_CHOICE: return [3 /*break*/, 9];
+                        case promptForAuthType_1.PASSWORD_AUTH_CHOICE: return [3 /*break*/, 12];
                         case promptForAuthType_2.CREDENTIAL_PROCESS_AUTH_CHOICE: return [3 /*break*/, 22];
                         case promptForAuthType_1.ALWAYS_ASK_AUTH_CHOICE: return [3 /*break*/, 27];
                     }
                     return [3 /*break*/, 28];
-                case 14:
-                    _l = token_1.setToken;
+                case 9:
+                    _j = token_1.setToken;
                     return [4 /*yield*/, (0, promptForToken_1.promptForToken)()];
-                case 15: return [4 /*yield*/, _l.apply(void 0, [_s.sent()])];
-                case 16:
+                case 10: return [4 /*yield*/, _j.apply(void 0, [_s.sent()])];
+                case 11:
                     _s.sent();
                     return [3 /*break*/, 29];
+                case 12:
+                    if (!(options.username || shouldPrompt)) return [3 /*break*/, 17];
+                    _k = userId_1.setUserId;
+                    if (!((_b = options.username) !== null && _b !== void 0)) return [3 /*break*/, 13];
+                    _l = _b;
+                    return [3 /*break*/, 15];
+                case 13: return [4 /*yield*/, (0, promptForUserId_1.promptForUserId)()];
+                case 14:
+                    _l = (_s.sent());
+                    _s.label = 15;
+                case 15: return [4 /*yield*/, _k.apply(void 0, [_l])];
+                case 16:
+                    _s.sent();
+                    _s.label = 17;
                 case 17: return [4 /*yield*/, (0, promptForPassword_1.promptForPassword)()];
                 case 18:
                     password = _s.sent();
