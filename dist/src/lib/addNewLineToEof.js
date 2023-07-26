@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addNewLineToEof = void 0;
-var fs_1 = require("fs");
-var os_1 = require("os");
-var errorAndExit_1 = require("./errorAndExit");
+const fs_1 = require("fs");
+const os_1 = require("os");
+const errorAndExit_1 = require("./errorAndExit");
 /**
  * Adds an EOL character to the end of a file
  */

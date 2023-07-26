@@ -1,6 +1,6 @@
 import clc from 'cli-color';
 import commander from 'commander';
-import { contains, each } from 'underscore';
+import { contains } from 'underscore';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
@@ -44,13 +44,13 @@ export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
     console.error(clc.white.underline.bold('\nAvailable IAM Role Types'));
 
     if (output === 'list') {
-      each(roleTypes, (roleType, i) => {
+      for (const [index, roleType] of roleTypes.entries()) {
         console.log(
           clc.white(
-            [i < 9 ? ' ' : '', i + 1, ') ', roleType.roleTypeName].join('')
+            `${String(index).padStart(2, ' ')}) ${roleType.roleTypeName}`
           )
         );
-      });
+      }
     } else {
       console.log(
         JSON.stringify(roleTypes.map((roleType) => roleType.roleTypeName))

@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var parseKeyValuePairs_1 = require("./parseKeyValuePairs");
+const parseKeyValuePairs_1 = require("./parseKeyValuePairs");
 function checkResult(t) {
-    it('should return the expected result', function () {
-        var result = (0, parseKeyValuePairs_1.parseKeyValuePairs)(t.input);
+    it('should return the expected result', () => {
+        const result = (0, parseKeyValuePairs_1.parseKeyValuePairs)(t.input);
         expect(result).toEqual(t.result);
     });
 }
 function shouldNotThrow(t) {
-    it('should not throw an error', function () {
-        var err;
+    it('should not throw an error', () => {
+        let err;
         try {
             (0, parseKeyValuePairs_1.parseKeyValuePairs)(t.input);
         }
@@ -19,7 +19,7 @@ function shouldNotThrow(t) {
         expect(err).toBeUndefined();
     });
 }
-var testCases = [
+const testCases = [
     {
         description: 'when the input is a single key=value item',
         input: ['alpha=beta'],
@@ -91,18 +91,13 @@ var testCases = [
         tests: [checkResult, shouldNotThrow],
     },
 ];
-describe('parseKeyValuePairs', function () {
-    var _loop_1 = function (t) {
-        describe(t.description, function () {
-            for (var _i = 0, _a = t.tests; _i < _a.length; _i++) {
-                var test_1 = _a[_i];
-                test_1(t);
+describe('parseKeyValuePairs', () => {
+    for (const t of testCases) {
+        describe(t.description, () => {
+            for (const test of t.tests) {
+                test(t);
             }
         });
-    };
-    for (var _i = 0, testCases_1 = testCases; _i < testCases_1.length; _i++) {
-        var t = testCases_1[_i];
-        _loop_1(t);
     }
 });
 //# sourceMappingURL=parseKeyValuePairs.test.js.map

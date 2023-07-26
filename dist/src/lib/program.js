@@ -1,39 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var commander_1 = require("commander");
-var package_json_1 = require("../../package.json");
-var getOutputValues_1 = require("../lib/getOutputValues");
-var alks_sessions_open_1 = require("../lib/handlers/alks-sessions-open");
-var alks_developer_configure_1 = require("../lib/handlers/alks-developer-configure");
-var alks_sessions_list_1 = require("../lib/handlers/alks-sessions-list");
-var alks_sessions_console_1 = require("../lib/handlers/alks-sessions-console");
-var alks_server_stop_1 = require("../lib/handlers/alks-server-stop");
-var alks_server_start_1 = require("../lib/handlers/alks-server-start");
-var alks_server_configure_1 = require("../lib/handlers/alks-server-configure");
-var alks_iam_roletypes_1 = require("../lib/handlers/alks-iam-roletypes");
-var alks_iam_deleterole_1 = require("../lib/handlers/alks-iam-deleterole");
-var alks_iam_deleteltk_1 = require("../lib/handlers/alks-iam-deleteltk");
-var alks_iam_createtrustrole_1 = require("../lib/handlers/alks-iam-createtrustrole");
-var alks_iam_createrole_1 = require("../lib/handlers/alks-iam-createrole");
-var alks_iam_createltk_1 = require("../lib/handlers/alks-iam-createltk");
-var alks_iam_updateiamuser_1 = require("./handlers/alks-iam-updateiamuser");
-var alks_developer_accounts_1 = require("../lib/handlers/alks-developer-accounts");
-var alks_developer_favorites_1 = require("../lib/handlers/alks-developer-favorites");
-var alks_developer_info_1 = require("../lib/handlers/alks-developer-info");
-var alks_developer_login_1 = require("../lib/handlers/alks-developer-login");
-var alks_developer_login2fa_1 = require("../lib/handlers/alks-developer-login2fa");
-var alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
-var alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
-var alks_completion_1 = require("./handlers/alks-completion");
-var cli_color_1 = require("cli-color");
-var alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
-var outputValues = (0, getOutputValues_1.getOutputValues)();
-var nameDesc = 'alphanumeric including @+=._-';
-var trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
-var program = new commander_1.Command();
+const commander_1 = require("commander");
+const package_json_1 = require("../../package.json");
+const getOutputValues_1 = require("../lib/getOutputValues");
+const alks_sessions_open_1 = require("../lib/handlers/alks-sessions-open");
+const alks_developer_configure_1 = require("../lib/handlers/alks-developer-configure");
+const alks_sessions_list_1 = require("../lib/handlers/alks-sessions-list");
+const alks_sessions_console_1 = require("../lib/handlers/alks-sessions-console");
+const alks_server_stop_1 = require("../lib/handlers/alks-server-stop");
+const alks_server_start_1 = require("../lib/handlers/alks-server-start");
+const alks_server_configure_1 = require("../lib/handlers/alks-server-configure");
+const alks_iam_roletypes_1 = require("../lib/handlers/alks-iam-roletypes");
+const alks_iam_deleterole_1 = require("../lib/handlers/alks-iam-deleterole");
+const alks_iam_deleteltk_1 = require("../lib/handlers/alks-iam-deleteltk");
+const alks_iam_createtrustrole_1 = require("../lib/handlers/alks-iam-createtrustrole");
+const alks_iam_createrole_1 = require("../lib/handlers/alks-iam-createrole");
+const alks_iam_createltk_1 = require("../lib/handlers/alks-iam-createltk");
+const alks_iam_updateiamuser_1 = require("./handlers/alks-iam-updateiamuser");
+const alks_developer_accounts_1 = require("../lib/handlers/alks-developer-accounts");
+const alks_developer_favorites_1 = require("../lib/handlers/alks-developer-favorites");
+const alks_developer_info_1 = require("../lib/handlers/alks-developer-info");
+const alks_developer_login_1 = require("../lib/handlers/alks-developer-login");
+const alks_developer_login2fa_1 = require("../lib/handlers/alks-developer-login2fa");
+const alks_developer_logout_1 = require("../lib/handlers/alks-developer-logout");
+const alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logout2fa");
+const alks_completion_1 = require("./handlers/alks-completion");
+const cli_color_1 = require("cli-color");
+const alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
+const outputValues = (0, getOutputValues_1.getOutputValues)();
+const nameDesc = 'alphanumeric including @+=._-';
+const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
+const program = new commander_1.Command();
 program.exitOverride();
 program.configureOutput({
-    writeErr: function (str) {
+    writeErr: (str) => {
         if (!str.startsWith('error: unknown command')) {
             process.stderr.write(str);
         }
@@ -43,13 +43,13 @@ program
     .version(package_json_1.version, '--version')
     .option('-v, --verbose', "be verbose, but don't print secrets")
     .option('-V, --unsafe-verbose', 'be verbose, including secrets (be careful where you share this output)')
-    .hook('preAction', function (thisCommand) {
+    .hook('preAction', (thisCommand) => {
     if (thisCommand.opts().unsafeVerbose) {
         console.error((0, cli_color_1.red)('Warning: Unsafe loggin mode is activated which means that secrets may be printed in the output below. Do not share the output of this CLI with anyone while this mode is active'));
     }
 });
 program.command('completion').action(alks_completion_1.handleCompletion);
-var sessions = program.command('sessions').description('manage aws sessions');
+const sessions = program.command('sessions').description('manage aws sessions');
 sessions
     .command('open')
     .description('creates or resumes a session')
@@ -82,7 +82,7 @@ sessions
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-p, --password <password>', 'my password')
     .action(alks_sessions_console_1.handleAlksSessionsConsole);
-var iam = program.command('iam').description('manage iam resources');
+const iam = program.command('iam').description('manage iam resources');
 iam
     .command('roletypes')
     .description('list the available iam role types')
@@ -117,7 +117,7 @@ iam
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
     .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
     .option('-F, --favorites', 'filters favorite accounts')
-    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
+    .option('-k, --tags <tags...>', `A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string`)
     .action(alks_iam_createtrustrole_1.handleAlksIamCreateTrustRole);
 iam
     .command('createrole')
@@ -130,8 +130,8 @@ iam
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
     .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
     .option('-F, --favorites', 'filters favorite accounts')
-    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
-    .option('-T, --template-fields <templateFields...>', "key-value pairs used to populate template fields in the trust policy document of the role. Can either be a JSON string like '{\"key1\":\"value1\",\"key2\":\"value2\"}' or a list of pairs like key1=value1,key2=value2")
+    .option('-k, --tags <tags...>', `A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string`)
+    .option('-T, --template-fields <templateFields...>', `key-value pairs used to populate template fields in the trust policy document of the role. Can either be a JSON string like '{"key1":"value1","key2":"value2"}' or a list of pairs like key1=value1,key2=value2`)
     .action(alks_iam_createrole_1.handleAlksIamCreateRole);
 iam
     .command('createltk')
@@ -141,7 +141,7 @@ iam
     .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
-    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation ['{\"Key\":\"key1\", \"Value\":\"val1\"}', '{\"Key\":\"key2\", \"Value\":\"val2\"}'] or shorthand Key=string,Value=string Key=string,Value=string")
+    .option('-k, --tags <tags...>', `A list of resource tags. Can either be a JSON representation ['{"Key":"key1", "Value":"val1"}', '{"Key":"key2", "Value":"val2"}'] or shorthand Key=string,Value=string Key=string,Value=string`)
     .action(alks_iam_createltk_1.handleAlksIamCreateLtk);
 iam
     .command('updaterole')
@@ -156,7 +156,7 @@ iam
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
     .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
     .option('-F, --favorites', 'filters favorite accounts')
-    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation '[{\"Key\":\"string\",\"Value\":\"string\"},{\"Key\":\"string\",\"Value\":\"string\"}]' or shorthand Key=string,Value=string Key=string,Value=string")
+    .option('-k, --tags <tags...>', `A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string`)
     .action(alks_iam_updaterole_1.handleAlksIamUpdateRole);
 iam
     .command('updateIamUser')
@@ -164,9 +164,9 @@ iam
     .option('-n, --iamusername <iamUsername>', 'the name of the iam user to update, ' + nameDesc)
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
-    .option('-k, --tags <tags...>', "A list of resource tags. Can either be a JSON representation ['{\"Key\":\"key1\", \"Value\":\"val1\"}', '{\"Key\":\"key2\", \"Value\":\"val2\"}'] or shorthand Key=string,Value=string Key=string,Value=string")
+    .option('-k, --tags <tags...>', `A list of resource tags. Can either be a JSON representation ['{"Key":"key1", "Value":"val1"}', '{"Key":"key2", "Value":"val2"}'] or shorthand Key=string,Value=string Key=string,Value=string`)
     .action(alks_iam_updateiamuser_1.handleAlksIamUpdateIamUser);
-var developer = program
+const developer = program
     .command('developer')
     .description('developer & account commands');
 developer
@@ -211,7 +211,7 @@ developer
     .command('logout2fa')
     .description('removes alks refresh token')
     .action(alks_developer_logout2fa_1.handleAlksDeveloperLogout2fa);
-var server = program
+const server = program
     .command('server')
     .name('server')
     .description('ec23 metadata server');

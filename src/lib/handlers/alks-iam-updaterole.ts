@@ -44,9 +44,7 @@ export async function handleAlksIamUpdateRole(options: commander.OptionValues) {
       tags,
     });
 
-    console.log(
-      clc.white(['The role: ', roleName, ' was updated successfully'])
-    );
+    console.log(clc.white(`The role "${roleName}" was updated successfully`));
     await checkForUpdate();
   } catch (err) {
     errorAndExit((err as Error).message, err as Error);

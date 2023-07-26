@@ -84,20 +84,14 @@ export async function handleAlksIamCreateLtk(options: commander.OptionValues) {
       };
       console.log(
         clc.white(
-          [
-            'LTK created for IAM User: ',
-            iamUsername,
-            ' was created with the ARN: ',
-          ].join('')
+          `LTK created for IAM User "${iamUsername}" was created with the ARN: `
         ) + clc.white.underline(ltkData.iamUserArn)
       );
       console.log(
-        clc.white(['LTK Access Key: '].join('')) +
-          clc.white.underline(ltkData.accessKey)
+        clc.white('LTK Access Key: ') + clc.white.underline(ltkData.accessKey)
       );
       console.log(
-        clc.white(['LTK Secret Key: '].join('')) +
-          clc.white.underline(ltkData.secretKey)
+        clc.white('LTK Secret Key: ') + clc.white.underline(ltkData.secretKey)
       );
     }
 

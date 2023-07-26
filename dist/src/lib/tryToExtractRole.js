@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tryToExtractRole = void 0;
-var getAccountRegex_1 = require("./getAccountRegex");
+const getAccountRegex_1 = require("./getAccountRegex");
 function tryToExtractRole(account) {
-    var match;
+    let match;
     while ((match = (0, getAccountRegex_1.getAccountRegex)().exec(account))) {
         if (match && account.indexOf('ALKS_') === -1) {
             // ignore legacy accounts

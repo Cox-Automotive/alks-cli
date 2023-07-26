@@ -1,24 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.promptForPassword = void 0;
-var tslib_1 = require("tslib");
-var getPasswordFromPrompt_1 = require("./getPasswordFromPrompt");
-var password_1 = require("./state/password");
+const tslib_1 = require("tslib");
+const getPasswordFromPrompt_1 = require("./getPasswordFromPrompt");
+const password_1 = require("./state/password");
 function promptForPassword() {
-    return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var password, answer;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, (0, password_1.getPassword)()];
-                case 1:
-                    password = _a.sent();
-                    return [4 /*yield*/, (0, getPasswordFromPrompt_1.getPasswordFromPrompt)('Network Password', password)];
-                case 2:
-                    answer = _a.sent();
-                    (0, password_1.cachePassword)(answer);
-                    return [2 /*return*/, answer];
-            }
-        });
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        const password = yield (0, password_1.getPassword)();
+        const answer = yield (0, getPasswordFromPrompt_1.getPasswordFromPrompt)('Network Password', password);
+        (0, password_1.cachePassword)(answer);
+        return answer;
     });
 }
 exports.promptForPassword = promptForPassword;
