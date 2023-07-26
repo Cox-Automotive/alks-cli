@@ -129,12 +129,12 @@ setup() {
     echo "# should create ${ROLE_WITH_ROLE_TYPE} given a role type" >&3
     run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_ROLE_TYPE}  -t S3 Key=daft,Value=punk
     [ "$status" -eq 0 ]
-    assert_output --partial "The role: ${ROLE_WITH_ROLE_TYPE} was created"
+    assert_output --partial "The role: \"${ROLE_WITH_ROLE_TYPE}\" was created"
 
     echo "# should create ${ROLE_WITH_TRUST_POLICY} given a trust policy" >&3
     run alks iam createrole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY} -p ${trust_policy} Key=daft,Value=punk
     [ "$status" -eq 0 ]
-    assert_output --partial "The role: ${ROLE_WITH_TRUST_POLICY} was created"
+    assert_output --partial "The role: \"${ROLE_WITH_TRUST_POLICY}\" was created"
 }
 
 # bats test_tags=iam,updaterole
@@ -145,7 +145,7 @@ setup() {
     echo "# updating ${ROLE_WITH_TRUST_POLICY}" >&3
     run alks iam updaterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY} -p ${NEW_TRUST_POLICY} -k alks-cli-e2e-test-key=some-value
     [ "$status" -eq 0 ]
-    assert_output --partial "The role ${ROLE_WITH_TRUST_POLICY} was updated"
+    assert_output --partial "The role \"${ROLE_WITH_TRUST_POLICY}\" was updated"
 }
 
 # bats test_tags=iam,deleterole
@@ -156,12 +156,12 @@ setup() {
     echo "# deleting ${ROLE_WITH_ROLE_TYPE}" >&3
     run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_ROLE_TYPE}
     [ "$status" -eq 0 ]
-    assert_output --partial "The role ${ROLE_WITH_ROLE_TYPE} was deleted"
+    assert_output --partial "The role \"${ROLE_WITH_ROLE_TYPE}\" was deleted"
 
     echo "# deleting ${ROLE_WITH_TRUST_POLICY}" >&3
     run alks iam deleterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY}
     [ "$status" -eq 0 ]
-    assert_output --partial "The role ${ROLE_WITH_TRUST_POLICY} was deleted"
+    assert_output --partial "The role \"${ROLE_WITH_TRUST_POLICY}\" was deleted"
 }
 
 # bats test_tags=developer,login2fa
