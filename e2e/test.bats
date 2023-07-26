@@ -143,7 +143,7 @@ setup() {
     echo "# should update a role" >&3
 
     echo "# updating ${ROLE_WITH_TRUST_POLICY}" >&3
-    run alks iam updaterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY} -p "${NEW_TRUST_POLICY}" -k "Key=alks-cli-e2e-test-key,Value=some-value"
+    run alks iam updaterole -a ${ACCOUNT} -r ${ROLE} -n ${ROLE_WITH_TRUST_POLICY} -p "${NEW_TRUST_POLICY}" -k "Key=alks-cli-e2e-test-key,Value=some-value" >&3 2>&3
     [ "$status" -eq 0 ]
     assert_output --partial "The role \"${ROLE_WITH_TRUST_POLICY}\" was updated"
 }
