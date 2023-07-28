@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorAndExit = void 0;
-var tslib_1 = require("tslib");
-var cli_color_1 = require("cli-color");
-var program_1 = tslib_1.__importDefault(require("./program"));
+const tslib_1 = require("tslib");
+const cli_color_1 = require("cli-color");
+const program_1 = tslib_1.__importDefault(require("./program"));
 /**
  * Print an error and exit.
  *

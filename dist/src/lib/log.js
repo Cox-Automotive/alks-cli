@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = void 0;
-var tslib_1 = require("tslib");
-var cli_color_1 = require("cli-color");
-var getCallerInfo_1 = require("./getCallerInfo");
-var program_1 = tslib_1.__importDefault(require("./program"));
-function log(msg, opts) {
-    if (opts === void 0) { opts = {}; }
-    var prefix = opts.prefix;
+const tslib_1 = require("tslib");
+const cli_color_1 = require("cli-color");
+const getCallerInfo_1 = require("./getCallerInfo");
+const program_1 = tslib_1.__importDefault(require("./program"));
+function log(msg, opts = {}) {
+    let prefix = opts.prefix;
     if (!prefix) {
-        var caller = (0, getCallerInfo_1.getCallerInfo)();
-        prefix = "".concat(caller.fileName, ":").concat(caller.line, ":").concat(caller.char);
+        const caller = (0, getCallerInfo_1.getCallerInfo)();
+        prefix = `${caller.fileName}:${caller.line}:${caller.char}`;
     }
-    var verbose = opts.verbose === undefined
+    const verbose = opts.verbose === undefined
         ? program_1.default.opts().verbose || program_1.default.opts().unsafeVerbose
         : opts.verbose;
     if (opts.unsafe && !program_1.default.opts().unsafeVerbose) {
@@ -25,7 +24,7 @@ function log(msg, opts) {
         }
     }
     if (verbose) {
-        console.error((0, cli_color_1.yellow)("[".concat(prefix, "]: ").concat(msg)));
+        console.error((0, cli_color_1.yellow)(`[${prefix}]: ${msg}`));
     }
 }
 exports.log = log;

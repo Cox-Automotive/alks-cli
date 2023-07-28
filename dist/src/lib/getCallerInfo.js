@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCallerInfo = void 0;
-var tslib_1 = require("tslib");
 function getCallerInfo() {
-    var error = new Error();
-    var stack = error.stack.split('\n');
-    var stackLine = stack.length < 4 ? stack.pop() : stack[3];
-    var parts = stackLine.trim().slice(3).split(' ');
-    var info = tslib_1.__spreadArray([
-        parts[0]
-    ], parts[parts.length - 1].replace(/\(|\)/g, '').split(':'), true);
-    var fileComponents = info[1].split('/');
+    const error = new Error();
+    const stack = error.stack.split('\n');
+    const stackLine = stack.length < 4 ? stack.pop() : stack[3];
+    const parts = stackLine.trim().slice(3).split(' ');
+    const info = [
+        parts[0],
+        ...parts[parts.length - 1].replace(/\(|\)/g, '').split(':'),
+    ];
+    const fileComponents = info[1].split('/');
     return {
         func: info[0],
         fileName: fileComponents[fileComponents.length - 1],

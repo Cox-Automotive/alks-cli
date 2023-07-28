@@ -91,11 +91,7 @@ export async function handleAlksIamUpdateIamUser(
       };
       console.log(
         clc.white(
-          [
-            'Iam User with username: ',
-            iamUsername,
-            ' was updated with tags: ',
-          ].join('')
+          `Iam User with username "${iamUsername}" was updated with tags: `
         ) + clc.white.underline(iamUserData.tags)
       );
     }

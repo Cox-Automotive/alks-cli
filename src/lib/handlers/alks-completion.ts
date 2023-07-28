@@ -21,7 +21,7 @@ export async function handleCompletion(_options: commander.OptionValues) {
         suggestions.push(...subcommands.map((c) => c.name()));
       } else {
         for (const subcommand of subcommands) {
-          // Use regex to ensure subcommand is surrounded by spaces (ie. don't match "session" against "sessions") 
+          // Use regex to ensure subcommand is surrounded by spaces (ie. don't match "session" against "sessions")
           const subcommandRegex = new RegExp(`\\s${subcommand.name()}\\s`);
           if (subcommandRegex.test(env.line)) {
             // tabtab doesn't include this in their typings but the field does exist

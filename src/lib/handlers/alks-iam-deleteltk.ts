@@ -58,9 +58,7 @@ export async function handleAlksIamDeleteLtk(options: commander.OptionValues) {
       errorAndExit(err as Error);
     }
 
-    console.log(
-      clc.white(['LTK deleted for IAM User: ', iamUsername].join(''))
-    );
+    console.log(clc.white(`LTK deleted for IAM User: ${iamUsername}`));
 
     await checkForUpdate();
   } catch (err) {

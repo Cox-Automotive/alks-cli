@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractAccountId = void 0;
 function extractAccountId(account) {
-    var match;
-    var accountIdRegex = /^\d{12}$/g; // If the account is just a 12 digit number
-    var accountIdPlusRoleRegex = /(^\d{12})(\/)/g; // If the account is 12 digit number followed by slash
+    let match;
+    const accountIdRegex = /^\d{12}$/g; // If the account is just a 12 digit number
+    const accountIdPlusRoleRegex = /(^\d{12})(\/)/g; // If the account is 12 digit number followed by slash
     if (accountIdRegex.exec(account)) {
         return account;
     }

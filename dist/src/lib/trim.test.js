@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var trim_1 = require("./trim");
-describe('trim', function () {
-    var testCases = [
+const trim_1 = require("./trim");
+describe('trim', () => {
+    const testCases = [
         {
             description: 'when the input has no padding',
             input: 'hello',
@@ -29,20 +29,16 @@ describe('trim', function () {
             result: 'what',
         },
     ];
-    var _loop_1 = function (t) {
-        describe(t.description, function () {
-            var result;
-            beforeEach(function () {
+    for (const t of testCases) {
+        describe(t.description, () => {
+            let result;
+            beforeEach(() => {
                 result = (0, trim_1.trim)(t.input);
             });
-            it('returns the correct result', function () {
+            it('returns the correct result', () => {
                 expect(result).toEqual(t.result);
             });
         });
-    };
-    for (var _i = 0, testCases_1 = testCases; _i < testCases_1.length; _i++) {
-        var t = testCases_1[_i];
-        _loop_1(t);
     }
 });
 //# sourceMappingURL=trim.test.js.map

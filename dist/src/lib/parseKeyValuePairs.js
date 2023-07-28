@@ -14,15 +14,13 @@ exports.parseKeyValuePairs = void 0;
  * parseKeyValuePairs('{"key1":"value1","key2":"value2"}')
  */
 function parseKeyValuePairs(inputs) {
-    var options = {};
-    for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
-        var input = inputs_1[_i];
+    const options = {};
+    for (const input of inputs) {
         try {
             // First attempt a JSON parse
-            var record = JSON.parse(input);
+            const record = JSON.parse(input);
             // Force all values to be strings (by definition, all keys already have to be strings so we don't need to check that)
-            for (var _a = 0, _b = Object.entries(record); _a < _b.length; _a++) {
-                var _c = _b[_a], key = _c[0], value = _c[1];
+            for (const [key, value] of Object.entries(record)) {
                 if (typeof value !== 'string') {
                     options[key] = String(value);
                 }
@@ -33,16 +31,15 @@ function parseKeyValuePairs(inputs) {
         }
         catch (e) {
             // Otherwise parse as comma-separated key=value pairs
-            var pairs = input.split(',');
-            var record = pairs.reduce(function (acc, pair) {
-                var _a = pair.split('='), key = _a[0], value = _a[1];
+            const pairs = input.split(',');
+            const record = pairs.reduce((acc, pair) => {
+                const [key, value] = pair.split('=');
                 if (key && value) {
                     acc[key] = value;
                 }
                 return acc;
             }, {});
-            for (var _d = 0, _e = Object.entries(record); _d < _e.length; _d++) {
-                var _f = _e[_d], key = _f[0], value = _f[1];
+            for (const [key, value] of Object.entries(record)) {
                 options[key] = value;
             }
         }

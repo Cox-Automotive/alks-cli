@@ -1,89 +1,67 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleAlksDeveloperFavorites = void 0;
-var tslib_1 = require("tslib");
-var inquirer_1 = tslib_1.__importDefault(require("inquirer"));
-var underscore_1 = require("underscore");
-var checkForUpdate_1 = require("../checkForUpdate");
-var errorAndExit_1 = require("../errorAndExit");
-var getAccountDelim_1 = require("../getAccountDelim");
-var getAlks_1 = require("../getAlks");
-var getAuth_1 = require("../getAuth");
-var getFavorites_1 = require("../getFavorites");
-var log_1 = require("../log");
-var saveFavorites_1 = require("../saveFavorites");
+const tslib_1 = require("tslib");
+const inquirer_1 = tslib_1.__importDefault(require("inquirer"));
+const underscore_1 = require("underscore");
+const checkForUpdate_1 = require("../checkForUpdate");
+const errorAndExit_1 = require("../errorAndExit");
+const getAccountDelim_1 = require("../getAccountDelim");
+const getAlks_1 = require("../getAlks");
+const getAuth_1 = require("../getAuth");
+const getFavorites_1 = require("../getFavorites");
+const log_1 = require("../log");
+const saveFavorites_1 = require("../saveFavorites");
 function handleAlksDeveloperFavorites(_options) {
-    return tslib_1.__awaiter(this, void 0, void 0, function () {
-        var auth, alks, alksAccounts, favorites_1, choices_1, deferred_1, faves, err_1;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 8, , 9]);
-                    (0, log_1.log)('getting auth');
-                    return [4 /*yield*/, (0, getAuth_1.getAuth)()];
-                case 1:
-                    auth = _a.sent();
-                    return [4 /*yield*/, (0, getAlks_1.getAlks)(tslib_1.__assign({}, auth))];
-                case 2:
-                    alks = _a.sent();
-                    (0, log_1.log)('getting alks accounts');
-                    return [4 /*yield*/, alks.getAccounts()];
-                case 3:
-                    alksAccounts = _a.sent();
-                    (0, log_1.log)('getting favorite accounts');
-                    return [4 /*yield*/, (0, getFavorites_1.getFavorites)()];
-                case 4:
-                    favorites_1 = _a.sent();
-                    choices_1 = [];
-                    deferred_1 = [];
-                    (0, log_1.log)('rendering favorite accounts');
-                    choices_1.push(new inquirer_1.default.Separator(' = Standard = '));
-                    alksAccounts.forEach(function (alksAccount) {
-                        if (!alksAccount.iamKeyActive) {
-                            var name = [alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)());
-                            choices_1.push({
-                                name: name,
-                                checked: (0, underscore_1.contains)(favorites_1, name),
-                            });
-                        }
-                        else {
-                            deferred_1.push(alksAccount);
-                        }
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        try {
+            (0, log_1.log)('getting auth');
+            const auth = yield (0, getAuth_1.getAuth)();
+            const alks = yield (0, getAlks_1.getAlks)(Object.assign({}, auth));
+            (0, log_1.log)('getting alks accounts');
+            const alksAccounts = yield alks.getAccounts();
+            (0, log_1.log)('getting favorite accounts');
+            const favorites = yield (0, getFavorites_1.getFavorites)();
+            const choices = [];
+            const deferred = [];
+            (0, log_1.log)('rendering favorite accounts');
+            choices.push(new inquirer_1.default.Separator(' = Standard = '));
+            alksAccounts.forEach((alksAccount) => {
+                if (!alksAccount.iamKeyActive) {
+                    const name = [alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)());
+                    choices.push({
+                        name,
+                        checked: (0, underscore_1.contains)(favorites, name),
                     });
-                    choices_1.push(new inquirer_1.default.Separator(' = IAM = '));
-                    deferred_1.forEach(function (val) {
-                        var name = [val.account, val.role].join((0, getAccountDelim_1.getAccountDelim)());
-                        choices_1.push({
-                            name: name,
-                            checked: (0, underscore_1.contains)(favorites_1, name),
-                        });
-                    });
-                    return [4 /*yield*/, inquirer_1.default.prompt([
-                            {
-                                type: 'checkbox',
-                                message: 'Select favorites',
-                                name: 'favorites',
-                                choices: choices_1,
-                                pageSize: 25,
-                            },
-                        ])];
-                case 5:
-                    faves = _a.sent();
-                    return [4 /*yield*/, (0, saveFavorites_1.saveFavorites)({ accounts: faves })];
-                case 6:
-                    _a.sent();
-                    console.log('Favorites have been saved!');
-                    return [4 /*yield*/, (0, checkForUpdate_1.checkForUpdate)()];
-                case 7:
-                    _a.sent();
-                    return [3 /*break*/, 9];
-                case 8:
-                    err_1 = _a.sent();
-                    (0, errorAndExit_1.errorAndExit)(err_1.message, err_1);
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
-            }
-        });
+                }
+                else {
+                    deferred.push(alksAccount);
+                }
+            });
+            choices.push(new inquirer_1.default.Separator(' = IAM = '));
+            deferred.forEach((val) => {
+                const name = [val.account, val.role].join((0, getAccountDelim_1.getAccountDelim)());
+                choices.push({
+                    name,
+                    checked: (0, underscore_1.contains)(favorites, name),
+                });
+            });
+            const faves = yield inquirer_1.default.prompt([
+                {
+                    type: 'checkbox',
+                    message: 'Select favorites',
+                    name: 'favorites',
+                    choices,
+                    pageSize: 25,
+                },
+            ]);
+            yield (0, saveFavorites_1.saveFavorites)({ accounts: faves });
+            console.log('Favorites have been saved!');
+            yield (0, checkForUpdate_1.checkForUpdate)();
+        }
+        catch (err) {
+            (0, errorAndExit_1.errorAndExit)(err.message, err);
+        }
     });
 }
 exports.handleAlksDeveloperFavorites = handleAlksDeveloperFavorites;

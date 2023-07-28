@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var unpackTags_1 = require("./unpackTags");
+const unpackTags_1 = require("./unpackTags");
 function checkResult(t) {
-    it('should return the expected result', function () {
-        var result = (0, unpackTags_1.unpackTags)(t.input);
+    it('should return the expected result', () => {
+        const result = (0, unpackTags_1.unpackTags)(t.input);
         expect(result).toEqual(t.result);
     });
 }
 function shouldNotThrow(t) {
-    it('should not throw an error', function () {
-        var err;
+    it('should not throw an error', () => {
+        let err;
         try {
             (0, unpackTags_1.unpackTags)(t.input);
         }
@@ -20,11 +20,11 @@ function shouldNotThrow(t) {
     });
 }
 function shouldThrow(t) {
-    it('should throw an error', function () {
-        expect(function () { return (0, unpackTags_1.unpackTags)(t.input); }).toThrow(SyntaxError);
+    it('should throw an error', () => {
+        expect(() => (0, unpackTags_1.unpackTags)(t.input)).toThrow(SyntaxError);
     });
 }
-var testCases = [
+const testCases = [
     {
         description: 'when the input is a JSON string with a single tag',
         input: ['{"Key":"foo", "Value":"bar"}'],
@@ -112,18 +112,13 @@ var testCases = [
         tests: [shouldThrow],
     },
 ];
-describe('unpackTags', function () {
-    var _loop_1 = function (t) {
-        describe(t.description, function () {
-            for (var _i = 0, _a = t.tests; _i < _a.length; _i++) {
-                var test_1 = _a[_i];
-                test_1(t);
+describe('unpackTags', () => {
+    for (const t of testCases) {
+        describe(t.description, () => {
+            for (const test of t.tests) {
+                test(t);
             }
         });
-    };
-    for (var _i = 0, testCases_1 = testCases; _i < testCases_1.length; _i++) {
-        var t = testCases_1[_i];
-        _loop_1(t);
     }
 });
 //# sourceMappingURL=unpackTags.test.js.map

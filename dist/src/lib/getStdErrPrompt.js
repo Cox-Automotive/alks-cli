@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getStdErrPrompt = void 0;
-var inquirer_1 = require("inquirer");
+const inquirer_1 = require("inquirer");
 function getStdErrPrompt() {
     return (0, inquirer_1.createPromptModule)({ output: process.stderr });
 }

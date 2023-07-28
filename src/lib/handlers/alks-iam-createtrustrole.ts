@@ -100,15 +100,13 @@ export async function handleAlksIamCreateTrustRole(
     }
 
     console.log(
-      clc.white(
-        ['The role: ', roleName, ' was created with the ARN: '].join('')
-      ) + clc.white.underline(role.roleArn)
+      clc.white(`The role "${roleName}" was created with the ARN: `) +
+        clc.white.underline(role.roleArn)
     );
     if (role.instanceProfileArn) {
       console.log(
-        clc.white(
-          ['An instance profile was also created with the ARN: '].join('')
-        ) + clc.white.underline(role.instanceProfileArn)
+        clc.white('An instance profile was also created with the ARN: ') +
+          clc.white.underline(role.instanceProfileArn)
       );
     }
     await checkForUpdate();

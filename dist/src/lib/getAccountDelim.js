@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAccountDelim = void 0;
-var delim = ' :: ';
+const delim = ' :: ';
 function getAccountDelim() {
     return delim;
 }

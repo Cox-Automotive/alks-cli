@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Removes userID from token based alks developer configure command
+* Adds `alks iam updaterole` function
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

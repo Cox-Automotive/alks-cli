@@ -61,7 +61,7 @@ export async function handleAlksIamDeleteRole(options: commander.OptionValues) {
       errorAndExit(err as Error);
     }
 
-    console.log(clc.white(['The role ', roleName, ' was deleted'].join('')));
+    console.log(clc.white(`The role "${roleName}" was deleted`));
     await checkForUpdate();
   } catch (err) {
     errorAndExit((err as Error).message, err as Error);
