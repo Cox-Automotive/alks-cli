@@ -91,6 +91,10 @@ sessions
   )
   .option(
     '-n, --namedProfile <profile>',
+    'alias for --profile, if output is set to creds, use this profile, default: default'
+  )
+  .option(
+    '-P, --profile <profile>',
     'if output is set to creds, use this profile, default: default'
   )
   .option(
@@ -422,8 +426,30 @@ const profiles = program
 
 profiles
   .command('generate')
-  .description(
-    'generate an aws profile for each account/role pair you have access to'
+  .description('generate aws profiles')
+  .option(
+    '-A, --all',
+    'generate profiles for all accounts/roles that you have access to'
+  )
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account to use as a default account'
+  )
+  .option(
+    '-r, --role <authRole>',
+    'the ALKS IAM role to use as the default role for carrying out requests'
+  )
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option(
+    '-f, --force',
+    'if output is set to creds, force overwriting of AWS credentials'
   )
   .action(handleAlksProfilesGenerate);
 

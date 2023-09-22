@@ -1,10 +1,27 @@
 import commander from 'commander';
-import { getAlksAccounts } from '../getAlksAccounts';
+import { generateProfile } from '../generateProfile';
 
 export async function handleAlksProfilesGenerate(
-  _options: commander.OptionValues
+  options: commander.OptionValues
 ) {
-  const accounts = getAlksAccounts();
+  if (options.all) {
+    // Generate profiles for all account/role pairs
 
-  throw new Error('Not implemented');
+    throw new Error('Not implemented');
+  } else if (options.account) {
+    // Generate a single profile
+
+    if (!options.role) {
+      throw new Error('role is required');
+    }
+
+    generateProfile(
+      options.account,
+      options.role,
+      options.profile ?? options.namedProfile,
+      options.force
+    );
+  } else {
+    throw new Error('Either --all or --account is required at a minimum');
+  }
 }
