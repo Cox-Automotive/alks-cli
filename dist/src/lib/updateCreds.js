@@ -17,10 +17,10 @@ function updateCreds(key, profile, force) {
     if ((0, underscore_1.has)(awsCreds.sections, section)) {
         if (force) {
             // overwrite only the relevant keys and leave the rest of the section untouched
+            propIni.removeData(section, credentialProcess);
             propIni.addData(key.accessKey, section, accessKey);
             propIni.addData(key.secretKey, section, secretKey);
             propIni.addData(key.sessionToken, section, sessionToken);
-            propIni.removeData(credentialProcess, section);
         }
         else {
             return false;

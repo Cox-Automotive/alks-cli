@@ -1,5 +1,7 @@
 import commander from 'commander';
 import { generateProfile } from '../generateProfile';
+import { getAlksAccounts } from '../getAlksAccounts';
+import { red } from 'cli-color';
 
 export async function handleAlksProfilesGenerate(
   options: commander.OptionValues
@@ -7,7 +9,34 @@ export async function handleAlksProfilesGenerate(
   if (options.all) {
     // Generate profiles for all account/role pairs
 
-    throw new Error('Not implemented');
+    const accounts = await getAlksAccounts();
+
+    let profilesGenerated = 0;
+    for (const account of accounts) {
+      const accountName =
+        account.skypieaAccount?.alias ?? account.account.substring(0, 12);
+      try {
+        generateProfile(
+          accountName,
+          account.role,
+          `${accountName}-${account.role}`,
+          options.force
+        );
+        profilesGenerated++;
+      } catch (err) {
+        console.error(
+          red(
+            `Error generating profile for ${accountName}-${account.role}: ${err}`
+          )
+        );
+      }
+    }
+
+    console.error(
+      `${profilesGenerated} profile${
+        profilesGenerated == 1 ? '' : 's'
+      } generated`
+    );
   } else if (options.account) {
     // Generate a single profile
 
