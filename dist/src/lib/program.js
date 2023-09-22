@@ -27,6 +27,7 @@ const alks_developer_logout2fa_1 = require("../lib/handlers/alks-developer-logou
 const alks_completion_1 = require("./handlers/alks-completion");
 const cli_color_1 = require("cli-color");
 const alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
+const alks_profiles_generate_1 = require("./handlers/alks-profiles-generate");
 const outputValues = (0, getOutputValues_1.getOutputValues)();
 const nameDesc = 'alphanumeric including @+=._-';
 const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -48,7 +49,10 @@ program
         console.error((0, cli_color_1.red)('Warning: Unsafe loggin mode is activated which means that secrets may be printed in the output below. Do not share the output of this CLI with anyone while this mode is active'));
     }
 });
-program.command('completion').action(alks_completion_1.handleCompletion);
+program
+    .command('completion')
+    .description('shell completer for cli commands')
+    .action(alks_completion_1.handleCompletion);
 const sessions = program.command('sessions').description('manage aws sessions');
 sessions
     .command('open')
@@ -231,5 +235,13 @@ server
     .option('-p, --password <password>', 'my password')
     .option('-F, --favorites', 'filters favorite accounts')
     .action(alks_server_configure_1.handleAlksServerConfigure);
+const profiles = program
+    .command('profiles')
+    .name('profiles')
+    .description('manage aws profiles');
+profiles
+    .command('generate')
+    .description('generate an aws profile for each account/role pair you have access to')
+    .action(alks_profiles_generate_1.handleAlksProfilesGenerate);
 exports.default = program;
 //# sourceMappingURL=program.js.map

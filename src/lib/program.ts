@@ -25,6 +25,7 @@ import { handleAlksDeveloperLogout2fa } from '../lib/handlers/alks-developer-log
 import { handleCompletion } from './handlers/alks-completion';
 import { red } from 'cli-color';
 import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
+import { handleAlksProfilesGenerate } from './handlers/alks-profiles-generate';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -59,7 +60,10 @@ program
     }
   });
 
-program.command('completion').action(handleCompletion);
+program
+  .command('completion')
+  .description('shell completer for cli commands')
+  .action(handleCompletion);
 
 const sessions = program.command('sessions').description('manage aws sessions');
 
@@ -410,5 +414,17 @@ server
   .option('-p, --password <password>', 'my password')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksServerConfigure);
+
+const profiles = program
+  .command('profiles')
+  .name('profiles')
+  .description('manage aws profiles');
+
+profiles
+  .command('generate')
+  .description(
+    'generate an aws profile for each account/role pair you have access to'
+  )
+  .action(handleAlksProfilesGenerate);
 
 export default program;
