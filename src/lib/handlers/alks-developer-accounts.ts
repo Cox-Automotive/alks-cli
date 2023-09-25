@@ -13,14 +13,28 @@ import Table from 'cli-table3';
 export async function handleAlksDeveloperAccounts(
   options: commander.OptionValues
 ) {
-  const table = new Table({
-    head: [
-      clc.white.bold('Account'),
-      clc.white.bold('Role'),
-      clc.white.bold('Type'),
-    ],
-    colWidths: [50, 50, 25],
-  });
+  const outputVals = ['table', 'json'];
+  const output = options.output;
+
+  if (!contains(outputVals, output)) {
+    errorAndExit(
+      'The output provided (' +
+        output +
+        ') is not in the allowed values: ' +
+        outputVals.join(', ')
+    );
+  }
+  const fmtStructure = output == 'json'
+    ? []
+    : (
+    new Table({
+      head: [
+        clc.white.bold('Account'),
+        clc.white.bold('Role'),
+        clc.white.bold('Type'),
+      ],
+      colWidths: [50, 50, 25],
+    }));
 
   const doExport = options.export;
   const accountRegex = getAccountRegex();
@@ -69,13 +83,17 @@ export async function handleAlksDeveloperAccounts(
       if (doExport) {
         accountExport(data[0]);
       } else {
-        table.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
+        fmtStructure.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
       }
     });
 
     if (!doExport) {
-      console.error(clc.white.underline.bold('\nAvailable Accounts'));
-      console.log(clc.white(table.toString()));
+      if (output == 'json') {
+        console.log(JSON.stringify(fmtStructure));
+      } else {
+        console.error(clc.white.underline.bold('\nAvailable Accounts'));
+        console.log(clc.white(fmtStructure.toString()));
+      }
     }
 
     await checkForUpdate();
