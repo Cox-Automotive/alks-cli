@@ -9,11 +9,12 @@ import { getAuth } from '../getAuth';
 import { isWindows } from '../isWindows';
 import { log } from '../log';
 import Table from 'cli-table3';
+import { getOutputValuesAccounts } from '../getOutputValues';
 
 export async function handleAlksDeveloperAccounts(
   options: commander.OptionValues
 ) {
-  const outputVals = ['table', 'json'];
+  const outputVals = getOutputValuesAccounts();
   const output = options.output;
 
   if (!contains(outputVals, output)) {

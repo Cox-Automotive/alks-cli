@@ -6,10 +6,10 @@ import { errorAndExit } from '../errorAndExit';
 import { getAlks } from '../getAlks';
 import { getAuth } from '../getAuth';
 import { log } from '../log';
-import { getOutputValuesAccounts } from '../getOutputValues';
+import { getOutputValuesRoleTypes } from '../getOutputValues';
 
 export async function handleAlksIamRoleTypes(options: commander.OptionValues) {
-  const outputVals = getOutputValuesAccounts();
+  const outputVals = getOutputValuesRoleTypes();
   const output = options.output;
 
   if (!contains(outputVals, output)) {
