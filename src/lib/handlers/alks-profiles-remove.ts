@@ -1,6 +1,7 @@
 import commander from 'commander';
 import { getAllProfiles } from '../getAllProfiles';
 import { removeProfile } from '../removeProfile';
+import { confirm } from '../confirm';
 
 export async function handleAlksProfilesRemove(
   options: commander.OptionValues
@@ -20,10 +21,16 @@ export async function handleAlksProfilesRemove(
     if (!(options.profile || options.namedProfile)) {
       throw new Error('profile is required');
     }
-
     const profileName = options.profile ?? options.namedProfile;
 
-    removeProfile(profileName, options.force);
-    console.error(`Profile ${profileName} removed`);
+    if (
+      options.force ||
+      (await confirm(`Are you sure you want to remove ${profileName}?`))
+    ) {
+      removeProfile(profileName, options.force);
+      console.error(`Profile ${profileName} removed`);
+    } else {
+      throw new Error('Aborting');
+    }
   }
 }
