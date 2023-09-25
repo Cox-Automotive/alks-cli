@@ -27,6 +27,7 @@ import { red } from 'cli-color';
 import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
 import { handleAlksProfilesGenerate } from './handlers/alks-profiles-generate';
 import { handleAlksProfilesList } from './handlers/alks-profiles-list';
+import { handleAlksProfilesRemove } from './handlers/alks-profiles-remove';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -465,5 +466,27 @@ profiles
   )
   .option('-o, --output <format>', 'output format (list, json)', 'list')
   .action(handleAlksProfilesList);
+
+profiles
+  .command('remove')
+  .alias('delete')
+  .description('delete aws profiles')
+  .option(
+    '-A, --all',
+    'delete profiles for all accounts/roles that you have access to that are managed by alks'
+  )
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option(
+    '-f, --force',
+    'skip the confirmation prompt and delete the profile(s)'
+  )
+  .action(handleAlksProfilesRemove);
 
 export default program;

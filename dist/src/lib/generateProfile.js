@@ -6,7 +6,7 @@ const underscore_1 = require("underscore");
 const addNewLineToEof_1 = require("./addNewLineToEof");
 const getAwsCredentialsFile_1 = require("./getAwsCredentialsFile");
 const awsCredentialsFileContstants_1 = require("./awsCredentialsFileContstants");
-function generateProfile(accountId, role, profile, force) {
+function generateProfile(accountId, role, profile, force = false) {
     const credFile = (0, getAwsCredentialsFile_1.getAwsCredentialsFile)();
     const propIni = (0, prop_ini_1.createInstance)();
     const awsCreds = propIni.decode({ file: credFile });

@@ -14,7 +14,7 @@ import {
 export function updateCreds(
   key: AwsKey,
   profile: string | undefined,
-  force: boolean | undefined
+  force: boolean = false
 ) {
   const credFile = getAwsCredentialsFile();
 

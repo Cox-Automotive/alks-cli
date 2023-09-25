@@ -14,7 +14,7 @@ export function generateProfile(
   accountId: string,
   role: string,
   profile: string | undefined,
-  force: boolean | undefined
+  force: boolean = false
 ) {
   const credFile = getAwsCredentialsFile();
   const propIni = createInstance();
