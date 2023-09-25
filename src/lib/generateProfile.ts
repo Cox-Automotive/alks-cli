@@ -2,11 +2,13 @@ import { createInstance } from 'prop-ini';
 import { has } from 'underscore';
 import { addNewLineToEof } from './addNewLineToEof';
 import { getAwsCredentialsFile } from './getAwsCredentialsFile';
-
-const accessKey = 'aws_access_key_id';
-const secretKey = 'aws_secret_access_key';
-const sessionToken = 'aws_session_token';
-const credentialProcess = 'credential_process';
+import {
+  accessKey,
+  credentialProcess,
+  managedBy,
+  secretKey,
+  sessionToken,
+} from './awsCredentialsFileContstants';
 
 export function generateProfile(
   accountId: string,
@@ -27,6 +29,7 @@ export function generateProfile(
       propIni.removeData(section, accessKey);
       propIni.removeData(section, secretKey);
       propIni.removeData(section, sessionToken);
+      propIni.addData('alks', section, managedBy);
     } else {
       throw new Error(
         `Profile ${section} already exists. Use --force to overwrite.`
@@ -36,6 +39,7 @@ export function generateProfile(
     // add brand new section
     const data = {
       [credentialProcess]: credentialProcessCommand,
+      [managedBy]: 'alks',
     };
 
     propIni.addData(data, section);

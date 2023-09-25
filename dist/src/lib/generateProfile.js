@@ -5,10 +5,7 @@ const prop_ini_1 = require("prop-ini");
 const underscore_1 = require("underscore");
 const addNewLineToEof_1 = require("./addNewLineToEof");
 const getAwsCredentialsFile_1 = require("./getAwsCredentialsFile");
-const accessKey = 'aws_access_key_id';
-const secretKey = 'aws_secret_access_key';
-const sessionToken = 'aws_session_token';
-const credentialProcess = 'credential_process';
+const awsCredentialsFileContstants_1 = require("./awsCredentialsFileContstants");
 function generateProfile(accountId, role, profile, force) {
     const credFile = (0, getAwsCredentialsFile_1.getAwsCredentialsFile)();
     const propIni = (0, prop_ini_1.createInstance)();
@@ -18,10 +15,11 @@ function generateProfile(accountId, role, profile, force) {
     if ((0, underscore_1.has)(awsCreds.sections, section)) {
         if (force) {
             // overwrite only the relevant keys and leave the rest of the section untouched
-            propIni.addData(credentialProcessCommand, section, credentialProcess);
-            propIni.removeData(section, accessKey);
-            propIni.removeData(section, secretKey);
-            propIni.removeData(section, sessionToken);
+            propIni.addData(credentialProcessCommand, section, awsCredentialsFileContstants_1.credentialProcess);
+            propIni.removeData(section, awsCredentialsFileContstants_1.accessKey);
+            propIni.removeData(section, awsCredentialsFileContstants_1.secretKey);
+            propIni.removeData(section, awsCredentialsFileContstants_1.sessionToken);
+            propIni.addData('alks', section, awsCredentialsFileContstants_1.managedBy);
         }
         else {
             throw new Error(`Profile ${section} already exists. Use --force to overwrite.`);
@@ -30,7 +28,8 @@ function generateProfile(accountId, role, profile, force) {
     else {
         // add brand new section
         const data = {
-            [credentialProcess]: credentialProcessCommand,
+            [awsCredentialsFileContstants_1.credentialProcess]: credentialProcessCommand,
+            [awsCredentialsFileContstants_1.managedBy]: 'alks',
         };
         propIni.addData(data, section);
     }
