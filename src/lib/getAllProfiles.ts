@@ -8,6 +8,7 @@ import {
   secretKey,
   sessionToken,
 } from './awsCredentialsFileContstants';
+import { sensitive } from './sensitive';
 
 // This roughly models the result of decoding the credentials file with prop-ini
 interface AwsCredsStructure {
@@ -24,7 +25,7 @@ interface AwsCredsStructure {
 
 export function getAllProfiles(
   includeNonAlksProfiles: boolean = false,
-  hideSensitiveValues: boolean = true
+  showSensitiveValues: boolean = false
 ): Profile[] {
   const credFile = getAwsCredentialsFile();
   const propIni = createInstance();
@@ -39,12 +40,12 @@ export function getAllProfiles(
     .map(([name, section]) => ({
       name,
       [accessKey]: section[accessKey],
-      [secretKey]: hideSensitiveValues
-        ? section[secretKey]?.substring(0, 4) + '******'
-        : section[secretKey],
-      [sessionToken]: hideSensitiveValues
-        ? section[sessionToken]?.substring(0, 4) + '******'
-        : section[sessionToken],
+      [secretKey]: showSensitiveValues
+        ? section[secretKey]
+        : sensitive(section[secretKey]),
+      [sessionToken]: showSensitiveValues
+        ? section[sessionToken]
+        : sensitive(section[sessionToken]),
       [credentialProcess]: section[credentialProcess],
       [managedBy]: section[managedBy],
     }));

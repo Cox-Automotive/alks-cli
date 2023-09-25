@@ -8,10 +8,11 @@ import {
   secretKey,
   sessionToken,
 } from './awsCredentialsFileContstants';
+import { sensitive } from './sensitive';
 
 export function getProfile(
   profileName: string,
-  hideSensitiveValues: boolean = true
+  showSensitiveValues: boolean = false
 ): Profile | undefined {
   const credFile = getAwsCredentialsFile();
   const propIni = createInstance();
@@ -25,12 +26,12 @@ export function getProfile(
   return {
     name: profileName,
     [accessKey]: profile[accessKey],
-    [secretKey]: hideSensitiveValues
-      ? profile[secretKey]?.substring(0, 4) + '******'
-      : profile[secretKey],
-    [sessionToken]: hideSensitiveValues
-      ? profile[sessionToken]?.substring(0, 4) + '******'
-      : profile[sessionToken],
+    [secretKey]: showSensitiveValues
+      ? profile[secretKey]
+      : sensitive(profile[secretKey]),
+    [sessionToken]: showSensitiveValues
+      ? profile[sessionToken]
+      : sensitive(profile[sessionToken]),
     [credentialProcess]: profile[credentialProcess],
     [managedBy]: profile[managedBy],
   };
