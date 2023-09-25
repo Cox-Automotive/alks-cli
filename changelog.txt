@@ -8,3 +8,5 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
+
+* adds optional JSON output for `alks developer accounts` command
