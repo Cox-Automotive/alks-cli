@@ -51,6 +51,8 @@ export async function handleAlksProfilesGenerate(
       options.force
     );
   } else {
-    throw new Error('Either --all or --account is required at a minimum');
+    throw new Error(
+      'Either --all or --account and --role is required at a minimum'
+    );
   }
 }

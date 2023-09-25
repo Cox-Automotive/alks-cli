@@ -32,7 +32,7 @@ function handleAlksProfilesGenerate(options) {
             (0, generateProfile_1.generateProfile)(options.account, options.role, (_c = options.profile) !== null && _c !== void 0 ? _c : options.namedProfile, options.force);
         }
         else {
-            throw new Error('Either --all or --account is required at a minimum');
+            throw new Error('Either --all or --account and --role is required at a minimum');
         }
     });
 }
