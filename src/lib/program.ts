@@ -427,6 +427,7 @@ const profiles = program
 
 profiles
   .command('generate')
+  .alias('add')
   .description('generate aws profiles')
   .option(
     '-A, --all',

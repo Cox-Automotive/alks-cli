@@ -243,6 +243,7 @@ const profiles = program
     .description('manage aws profiles');
 profiles
     .command('generate')
+    .alias('add')
     .description('generate aws profiles')
     .option('-A, --all', 'generate profiles for all accounts/roles that you have access to')
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account to use as a default account')
