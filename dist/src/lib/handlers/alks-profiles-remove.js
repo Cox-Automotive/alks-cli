@@ -10,11 +10,17 @@ function handleAlksProfilesRemove(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (options.all) {
             const profiles = (0, getAllProfiles_1.getAllProfiles)();
-            for (const profile of profiles) {
-                console.error(`Removing profile: ${profile.name}`);
-                (0, removeProfile_1.removeProfile)(profile.name, options.force);
+            if (options.force ||
+                (yield (0, confirm_1.confirm)(`Are you sure you want to remove ${profiles.length} profiles?`))) {
+                for (const profile of profiles) {
+                    console.error(`Removing profile: ${profile.name}`);
+                    (0, removeProfile_1.removeProfile)(profile.name, options.force);
+                }
+                console.error(`${profiles.length} profile${profiles.length === 1 ? '' : 's'} removed`);
             }
-            console.error(`${profiles.length} profile${profiles.length === 1 ? '' : 's'} removed`);
+            else {
+                throw new Error('Aborting');
+            }
         }
         else {
             if (!(options.profile || options.namedProfile)) {
