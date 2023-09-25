@@ -9,8 +9,11 @@ function handleAlksProfilesGet(options) {
         if (!(options.profile || options.namedProfile)) {
             throw new Error('profile is required');
         }
+        if (options.showSensitiveValues) {
+            console.error('WARNING: Sensitive values will be shown in output. Do not share this output with anyone.');
+        }
         const profileName = (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile;
-        const profile = (0, getProfile_1.getProfile)(profileName);
+        const profile = (0, getProfile_1.getProfile)(profileName, options.showSensitiveValues);
         if (!profile) {
             throw new Error(`Profile ${profileName} does not exist`);
         }

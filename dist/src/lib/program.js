@@ -259,6 +259,7 @@ profiles
     .description('list aws profiles')
     .option('-a, --all', 'list all profiles including those not managed by alks', false)
     .option('-o, --output <format>', 'output format (list, json)', 'list')
+    .option('-S, --show-sensitive-values', 'show sensitive values in the output as opposed to replacing them with asterisks', false)
     .action(alks_profiles_list_1.handleAlksProfilesList);
 profiles
     .command('remove')
@@ -275,6 +276,7 @@ profiles
     .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated')
     .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
+    .option('-S, --show-sensitive-values', 'show sensitive values in the output as opposed to replacing them with asterisks', false)
     .action(alks_profiles_get_1.handleAlksProfilesGet);
 exports.default = program;
 //# sourceMappingURL=program.js.map

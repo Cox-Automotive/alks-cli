@@ -6,9 +6,13 @@ const getAllProfiles_1 = require("../getAllProfiles");
 const cli_color_1 = require("cli-color");
 function handleAlksProfilesList(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const profiles = (0, getAllProfiles_1.getAllProfiles)(options.all);
+        const profiles = (0, getAllProfiles_1.getAllProfiles)(options.all, options.showSensitiveValues);
         if (profiles.length === 0) {
             console.error((0, cli_color_1.red)('No profiles found'));
+            return;
+        }
+        if (options.showSensitiveValues) {
+            console.error('WARNING: Sensitive values will be shown in output. Do not share this output with anyone.');
         }
         switch (options.output) {
             case 'json': {

@@ -22,19 +22,29 @@ interface AwsCredsStructure {
   };
 }
 
-export function getAllProfiles(all: boolean = false): Profile[] {
+export function getAllProfiles(
+  includeNonAlksProfiles: boolean = false,
+  hideSensitiveValues: boolean = true
+): Profile[] {
   const credFile = getAwsCredentialsFile();
   const propIni = createInstance();
   const awsCreds = propIni.decode({ file: credFile }) as AwsCredsStructure;
   const sections = awsCreds.sections;
 
   const result: Profile[] = Object.entries(sections)
-    .filter(([_name, section]) => all || section[managedBy] === 'alks')
+    .filter(
+      ([_name, section]) =>
+        includeNonAlksProfiles || section[managedBy] === 'alks'
+    )
     .map(([name, section]) => ({
       name,
       [accessKey]: section[accessKey],
-      [secretKey]: section[secretKey],
-      [sessionToken]: section[sessionToken],
+      [secretKey]: hideSensitiveValues
+        ? section[secretKey]?.substring(0, 4) + '******'
+        : section[secretKey],
+      [sessionToken]: hideSensitiveValues
+        ? section[sessionToken]?.substring(0, 4) + '******'
+        : section[sessionToken],
       [credentialProcess]: section[credentialProcess],
       [managedBy]: section[managedBy],
     }));

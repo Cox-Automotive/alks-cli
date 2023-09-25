@@ -466,6 +466,11 @@ profiles
     false
   )
   .option('-o, --output <format>', 'output format (list, json)', 'list')
+  .option(
+    '-S, --show-sensitive-values',
+    'show sensitive values in the output as opposed to replacing them with asterisks',
+    false
+  )
   .action(handleAlksProfilesList);
 
 profiles
@@ -502,6 +507,11 @@ profiles
     'the name of the profile to generate. If not specified the default profile will be updated'
   )
   .option('-o, --output <format>', 'output format (text, json)', 'text')
+  .option(
+    '-S, --show-sensitive-values',
+    'show sensitive values in the output as opposed to replacing them with asterisks',
+    false
+  )
   .action(handleAlksProfilesGet);
 
 export default program;
