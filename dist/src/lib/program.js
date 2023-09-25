@@ -28,6 +28,7 @@ const alks_completion_1 = require("./handlers/alks-completion");
 const cli_color_1 = require("cli-color");
 const alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
 const alks_profiles_generate_1 = require("./handlers/alks-profiles-generate");
+const alks_profiles_list_1 = require("./handlers/alks-profiles-list");
 const outputValues = (0, getOutputValues_1.getOutputValues)();
 const nameDesc = 'alphanumeric including @+=._-';
 const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -250,5 +251,11 @@ profiles
     .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .action(alks_profiles_generate_1.handleAlksProfilesGenerate);
+profiles
+    .command('list')
+    .description('list aws profiles')
+    .option('-a, --all', 'list all profiles including those not managed by alks', false)
+    .option('-o, --output <format>', 'output format (list, json)', 'list')
+    .action(alks_profiles_list_1.handleAlksProfilesList);
 exports.default = program;
 //# sourceMappingURL=program.js.map

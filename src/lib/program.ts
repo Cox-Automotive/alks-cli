@@ -26,6 +26,7 @@ import { handleCompletion } from './handlers/alks-completion';
 import { red } from 'cli-color';
 import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
 import { handleAlksProfilesGenerate } from './handlers/alks-profiles-generate';
+import { handleAlksProfilesList } from './handlers/alks-profiles-list';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -452,5 +453,16 @@ profiles
     'if output is set to creds, force overwriting of AWS credentials'
   )
   .action(handleAlksProfilesGenerate);
+
+profiles
+  .command('list')
+  .description('list aws profiles')
+  .option(
+    '-a, --all',
+    'list all profiles including those not managed by alks',
+    false
+  )
+  .option('-o, --output <format>', 'output format (list, json)', 'list')
+  .action(handleAlksProfilesList);
 
 export default program;
