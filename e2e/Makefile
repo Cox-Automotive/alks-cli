@@ -26,4 +26,4 @@ test: build
 
 test-shell: build
 	@echo "running intg tests...currently opening an interactive shell"
-	docker run $(IT_FLAGS) --rm --entrypoint /bin/bash --rm alks-cli-test $(FILTER_TAGS) $(V_V)
+	docker run $(IT_FLAGS) --rm --entrypoint /bin/bash --rm alks-cli-test

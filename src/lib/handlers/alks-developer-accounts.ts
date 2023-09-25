@@ -24,7 +24,7 @@ export async function handleAlksDeveloperAccounts(
         outputVals.join(', ')
     );
   }
-  const fmtStructure = output == 'json'
+  const outputObj = output == 'json'
     ? []
     : (
     new Table({
@@ -83,16 +83,16 @@ export async function handleAlksDeveloperAccounts(
       if (doExport) {
         accountExport(data[0]);
       } else {
-        fmtStructure.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
+        outputObj.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
       }
     });
 
     if (!doExport) {
       if (output == 'json') {
-        console.log(JSON.stringify(fmtStructure));
+        console.log(JSON.stringify(outputObj));
       } else {
         console.error(clc.white.underline.bold('\nAvailable Accounts'));
-        console.log(clc.white(fmtStructure.toString()));
+        console.log(clc.white(outputObj.toString()));
       }
     }
 
