@@ -30,6 +30,7 @@ const alks_iam_updaterole_1 = require("./handlers/alks-iam-updaterole");
 const alks_profiles_generate_1 = require("./handlers/alks-profiles-generate");
 const alks_profiles_list_1 = require("./handlers/alks-profiles-list");
 const alks_profiles_remove_1 = require("./handlers/alks-profiles-remove");
+const alks_profiles_get_1 = require("./handlers/alks-profiles-get");
 const outputValues = (0, getOutputValues_1.getOutputValues)();
 const nameDesc = 'alphanumeric including @+=._-';
 const trustArnDesc = 'arn:aws|aws-us-gov:iam::d{12}:role/TestRole';
@@ -268,5 +269,12 @@ profiles
     .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
     .option('-f, --force', 'skip the confirmation prompt and delete the profile(s)')
     .action(alks_profiles_remove_1.handleAlksProfilesRemove);
+profiles
+    .command('get')
+    .description('get aws profile')
+    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated')
+    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
+    .option('-o, --output <format>', 'output format (text, json)', 'text')
+    .action(alks_profiles_get_1.handleAlksProfilesGet);
 exports.default = program;
 //# sourceMappingURL=program.js.map

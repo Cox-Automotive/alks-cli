@@ -20,6 +20,7 @@ function handleAlksProfilesRemove(options) {
                 throw new Error('profile is required');
             }
             const profileName = (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile;
+            // TODO prompt for confirmation
             (0, removeProfile_1.removeProfile)(profileName, options.force);
             console.error(`Profile ${profileName} removed`);
         }

@@ -28,6 +28,7 @@ import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
 import { handleAlksProfilesGenerate } from './handlers/alks-profiles-generate';
 import { handleAlksProfilesList } from './handlers/alks-profiles-list';
 import { handleAlksProfilesRemove } from './handlers/alks-profiles-remove';
+import { handleAlksProfilesGet } from './handlers/alks-profiles-get';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -488,5 +489,19 @@ profiles
     'skip the confirmation prompt and delete the profile(s)'
   )
   .action(handleAlksProfilesRemove);
+
+profiles
+  .command('get')
+  .description('get aws profile')
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the default profile will be updated'
+  )
+  .option('-o, --output <format>', 'output format (text, json)', 'text')
+  .action(handleAlksProfilesGet);
 
 export default program;
