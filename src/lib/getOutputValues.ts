@@ -15,3 +15,17 @@ export function getOutputValues() {
     'aws',
   ];
 }
+
+export function getOutputValuesRoleTypes() {
+  return [
+    'list',
+    'json',
+  ];
+}
+
+export function getOutputValuesAccounts() {
+  return [
+    'table',
+    'json',
+  ];
+}

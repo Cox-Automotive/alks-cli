@@ -1,6 +1,10 @@
 import { Command } from 'commander';
 import { version } from '../../package.json';
-import { getOutputValues } from '../lib/getOutputValues';
+import { 
+  getOutputValues, 
+  getOutputValuesAccounts, 
+  getOutputValuesRoleTypes 
+} from '../lib/getOutputValues';
 import { handleAlksSessionsOpen } from '../lib/handlers/alks-sessions-open';
 import { handleAlksDeveloperConfigure } from '../lib/handlers/alks-developer-configure';
 import { handleAlksSessionsList } from '../lib/handlers/alks-sessions-list';
@@ -132,11 +136,8 @@ iam
   .description('list the available iam role types')
   .option(
     '-o, --output <format>',
-    'output format (' +
-      outputValues.join(', ') +
-      '), default: ' +
-      outputValues[0],
-    outputValues[0]
+    'output format (' + getOutputValuesRoleTypes().join(', ') + ')', 
+    getOutputValuesRoleTypes()[0],
   )
   .action(handleAlksIamRoleTypes);
 
@@ -348,6 +349,7 @@ developer
   .command('accounts')
   .description('shows current developer configuration')
   .option('-e, --export', 'export accounts to environment variables')
+  .option('-o, --output <format>', 'output format (' + getOutputValuesAccounts().join(', ') + ')', getOutputValuesAccounts()[0],)
   .action(handleAlksDeveloperAccounts);
 
 developer

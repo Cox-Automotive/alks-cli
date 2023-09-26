@@ -172,3 +172,12 @@ setup() {
     assert_output --partial "Refresh token validated!"
     assert_output --partial "Refresh token saved!"
 }
+
+# bats test_tags=developer,accounts
+@test "alks developer accounts -o json" {
+    echo "# should output a list of AWS accounts in JSON format" >&3
+
+    run alks developer accounts -o json
+    [ "$status" -eq 0 ]
+    assert_output --partial "[["
+}
