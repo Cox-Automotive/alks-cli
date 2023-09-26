@@ -25,7 +25,7 @@ function handleAlksProfilesGet(options) {
             case 'text': {
                 console.log(`[${profile.name}]`);
                 for (const [key, value] of Object.entries(profile)) {
-                    if (key === 'name') {
+                    if (key === 'name' || value === undefined) {
                         continue;
                     }
                     console.log(`${key}=${value}`);
