@@ -10,7 +10,8 @@ function getProfile(profileName, showSensitiveValues = false) {
     const propIni = (0, prop_ini_1.createInstance)();
     propIni.decode({ file: credFile });
     const profile = propIni.getData(profileName);
-    if (!profile) {
+    // prop-ini returns an empty object if the section doesn't exist
+    if (!profile || Object.keys(profile).length === 0) {
         return undefined;
     }
     return {

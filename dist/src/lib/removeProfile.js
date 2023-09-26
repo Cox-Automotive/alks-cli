@@ -14,7 +14,10 @@ function removeProfile(profile, force = false) {
     if (!force && section[awsCredentialsFileContstants_1.managedBy] !== 'alks') {
         throw new Error('Profile is not managed by ALKS');
     }
-    propIni.removeData(section);
+    const success = propIni.removeData(profileName);
+    if (!success) {
+        throw new Error(`Failed to remove profile ${profileName}`);
+    }
     propIni.encode({ file: credFile });
     // propIni doesnt add a new line, so running aws configure will cause issues
     (0, addNewLineToEof_1.addNewLineToEof)(credFile);

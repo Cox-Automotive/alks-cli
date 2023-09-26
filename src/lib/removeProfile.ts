@@ -18,7 +18,11 @@ export function removeProfile(
     throw new Error('Profile is not managed by ALKS');
   }
 
-  propIni.removeData(section);
+  const success = propIni.removeData(profileName);
+
+  if (!success) {
+    throw new Error(`Failed to remove profile ${profileName}`);
+  }
 
   propIni.encode({ file: credFile });
 
