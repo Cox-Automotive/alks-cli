@@ -91,22 +91,22 @@ export async function handleAlksDeveloperAccounts(
     if (!doExport) {
       if (output == 'json') {
         
-        const accounts: Record<string, any> = {}
-        outputObj.forEach((account: string[]) => {
-          const accountId: string = account[0].split('/')[0] 
+        const accountsOutput: Record<string, any> = {}
+        outputObj.forEach((accountRolePair: string[]) => {
+          const accountId: string = accountRolePair[0].split('/')[0] 
 
-          if (!(accountId in accounts)) {
-            accounts[accountId] = {
-              accountAlias: account[0].split('- ')[1],
-              roles: [{role: account[1], isIamActive: account[2] == "IAM"}]
+          if (!(accountId in accountsOutput)) {
+            accountsOutput[accountId] = {
+              accountAlias: accountRolePair[0].split('- ')[1],
+              roles: [{role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM"}]
             }
           } else {
-            accounts[accountId].roles.push(
-              {role: account[1], isIamActive: account[2] == "IAM"}
+            accountsOutput[accountId].roles.push(
+              {role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM"}
             )
           }
        })
-        console.log(JSON.stringify(accounts));
+        console.log(JSON.stringify(accountsOutput));
       } else {
         console.error(clc.white.underline.bold('\nAvailable Accounts'));
         console.log(clc.white(outputObj.toString()));
