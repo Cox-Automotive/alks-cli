@@ -26,7 +26,7 @@ export async function handleAlksProfilesGet(options: commander.OptionValues) {
       break;
     }
     case 'text': {
-      console.log(profile.name);
+      console.log(`[${profile.name}]`);
       for (const [key, value] of Object.entries(profile)) {
         if (key === 'name') {
           continue;
