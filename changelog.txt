@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* adds optional JSON output for `alks developer accounts` command
+* updates JSON output of `alks developer accounts` to be an object indexed by accountId
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
