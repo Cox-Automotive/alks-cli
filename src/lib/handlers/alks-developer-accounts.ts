@@ -97,7 +97,6 @@ export async function handleAlksDeveloperAccounts(
 
           if (!(accountId in accounts)) {
             accounts[accountId] = {
-              accountId: accountId,
               accountAlias: account[0].split('- ')[1],
               roles: [{role: account[1], isIamActive: account[2] == "IAM"}]
             }
@@ -107,7 +106,7 @@ export async function handleAlksDeveloperAccounts(
             )
           }
        })
-        console.log(JSON.stringify(Object.values(accounts)));
+        console.log(JSON.stringify(accounts));
       } else {
         console.error(clc.white.underline.bold('\nAvailable Accounts'));
         console.log(clc.white(outputObj.toString()));
