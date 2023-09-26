@@ -424,6 +424,7 @@ server
 
 const profiles = program
   .command('profiles')
+  .alias('profile')
   .name('profiles')
   .description('manage aws profiles');
 
@@ -459,6 +460,7 @@ profiles
 
 profiles
   .command('list')
+  .alias('ls')
   .description('list aws profiles')
   .option(
     '-a, --all',
@@ -475,6 +477,7 @@ profiles
 
 profiles
   .command('remove')
+  .alias('rm')
   .alias('delete')
   .description('delete aws profiles')
   .option(

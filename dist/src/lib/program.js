@@ -241,6 +241,7 @@ server
     .action(alks_server_configure_1.handleAlksServerConfigure);
 const profiles = program
     .command('profiles')
+    .alias('profile')
     .name('profiles')
     .description('manage aws profiles');
 profiles
@@ -256,6 +257,7 @@ profiles
     .action(alks_profiles_generate_1.handleAlksProfilesGenerate);
 profiles
     .command('list')
+    .alias('ls')
     .description('list aws profiles')
     .option('-a, --all', 'list all profiles including those not managed by alks', false)
     .option('-o, --output <format>', 'output format (list, json)', 'list')
@@ -263,6 +265,7 @@ profiles
     .action(alks_profiles_list_1.handleAlksProfilesList);
 profiles
     .command('remove')
+    .alias('rm')
     .alias('delete')
     .description('delete aws profiles')
     .option('-A, --all', 'delete profiles for all accounts/roles that you have access to that are managed by alks')
