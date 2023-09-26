@@ -179,5 +179,5 @@ setup() {
 
     run alks developer accounts -o json
     [ "$status" -eq 0 ]
-    assert_output --partial "[["
+    assert_output --partial "]}}"
 }
