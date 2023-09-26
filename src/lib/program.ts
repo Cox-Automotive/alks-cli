@@ -474,7 +474,7 @@ profiles
   .alias('ls')
   .description('list aws profiles')
   .option(
-    '-a, --all',
+    '-A, --all',
     'list all profiles including those not managed by alks',
     false
   )
