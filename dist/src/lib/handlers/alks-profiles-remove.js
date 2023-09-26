@@ -24,7 +24,7 @@ function handleAlksProfilesRemove(options) {
         }
         else {
             if (!(options.profile || options.namedProfile)) {
-                throw new Error('profile is required');
+                throw new Error('Either --profile or --all is required');
             }
             const profileName = (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile;
             if (options.force ||

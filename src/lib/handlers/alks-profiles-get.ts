@@ -3,7 +3,7 @@ import { getProfile } from '../getProfile';
 
 export async function handleAlksProfilesGet(options: commander.OptionValues) {
   if (!(options.profile || options.namedProfile)) {
-    throw new Error('profile is required');
+    throw new Error('--profile is required');
   }
 
   if (options.showSensitiveValues) {

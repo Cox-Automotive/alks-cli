@@ -7,7 +7,7 @@ function handleAlksProfilesGet(options) {
     var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!(options.profile || options.namedProfile)) {
-            throw new Error('profile is required');
+            throw new Error('--profile is required');
         }
         if (options.showSensitiveValues) {
             console.error('WARNING: Sensitive values will be shown in output. Do not share this output with anyone.');
