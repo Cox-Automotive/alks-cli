@@ -86,10 +86,7 @@ const iam = program.command('iam').description('manage iam resources');
 iam
     .command('roletypes')
     .description('list the available iam role types')
-    .option('-o, --output <format>', 'output format (' +
-    outputValues.join(', ') +
-    '), default: ' +
-    outputValues[0], outputValues[0])
+    .option('-o, --output <format>', 'output format (' + (0, getOutputValues_1.getOutputValuesRoleTypes)().join(', ') + ')', (0, getOutputValues_1.getOutputValuesRoleTypes)()[0])
     .action(alks_iam_roletypes_1.handleAlksIamRoleTypes);
 iam
     .command('deleterole')
@@ -185,6 +182,7 @@ developer
     .command('accounts')
     .description('shows current developer configuration')
     .option('-e, --export', 'export accounts to environment variables')
+    .option('-o, --output <format>', 'output format (' + (0, getOutputValues_1.getOutputValuesAccounts)().join(', ') + ')', (0, getOutputValues_1.getOutputValuesAccounts)()[0])
     .action(alks_developer_accounts_1.handleAlksDeveloperAccounts);
 developer
     .command('favorites')

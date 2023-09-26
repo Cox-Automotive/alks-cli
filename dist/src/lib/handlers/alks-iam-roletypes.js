@@ -9,9 +9,10 @@ const errorAndExit_1 = require("../errorAndExit");
 const getAlks_1 = require("../getAlks");
 const getAuth_1 = require("../getAuth");
 const log_1 = require("../log");
+const getOutputValues_1 = require("../getOutputValues");
 function handleAlksIamRoleTypes(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const outputVals = ['list', 'json'];
+        const outputVals = (0, getOutputValues_1.getOutputValuesRoleTypes)();
         const output = options.output;
         if (!(0, underscore_1.contains)(outputVals, output)) {
             (0, errorAndExit_1.errorAndExit)('The output provided (' +
