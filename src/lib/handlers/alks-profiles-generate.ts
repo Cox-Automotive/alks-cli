@@ -50,6 +50,8 @@ export async function handleAlksProfilesGenerate(
       options.profile ?? options.namedProfile,
       options.force
     );
+
+    console.error(`Profile ${options.profile} generated`);
   } else {
     throw new Error(
       'Either --all or --account and --role is required at a minimum'
