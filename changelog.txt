@@ -3,10 +3,9 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds `alks iam updaterole` function
+* adds optional JSON output for `alks developer accounts` command
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
 ☁☁☁☁☁☁  Happy Clouding! ☁☁☁☁☁☁
 
-* adds optional JSON output for `alks developer accounts` command
