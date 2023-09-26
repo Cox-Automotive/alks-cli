@@ -68,7 +68,10 @@ program
   .description('shell completer for cli commands')
   .action(handleCompletion);
 
-const sessions = program.command('sessions').description('manage aws sessions');
+const sessions = program
+  .command('sessions')
+  .alias('session')
+  .description('manage aws sessions');
 
 sessions
   .command('open')
@@ -109,6 +112,7 @@ sessions
 
 sessions
   .command('list')
+  .alias('ls')
   .description('list active sessions')
   .option('-p, --password <password>', 'my password')
   .action(handleAlksSessionsList);
@@ -140,6 +144,8 @@ const iam = program.command('iam').description('manage iam resources');
 
 iam
   .command('roletypes')
+  .alias('role-types')
+  .alias('list-role-types')
   .description('list the available iam role types')
   .option(
     '-o, --output <format>',
@@ -153,6 +159,7 @@ iam
 
 iam
   .command('deleterole')
+  .alias('delete-role')
   .description('remove an IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role to delete')
   .option(
@@ -168,7 +175,8 @@ iam
 
 iam
   .command('deleteltk')
-  .description('deletes an IAM Longterm Key')
+  .alias('delete-ltk')
+  .description('deletes an IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK'
@@ -186,7 +194,10 @@ iam
 
 iam
   .command('createtrustrole')
-  .description('creates a new IAM Trust role')
+  .alias('create-trust-role')
+  .description(
+    '(Deprecated - use `alks iam create-role` instead) creates a new IAM Trust role'
+  )
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
     '-t, --roletype <roletype>',
@@ -215,6 +226,7 @@ iam
 
 iam
   .command('createrole')
+  .alias('create-role')
   .description('creates a new IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
@@ -256,7 +268,8 @@ iam
 
 iam
   .command('createltk')
-  .description('creates a new IAM Longterm Key')
+  .alias('create-ltk')
+  .description('creates a new IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK, ' + nameDesc
@@ -279,14 +292,10 @@ iam
 
 iam
   .command('updaterole')
-  .description('creates a new IAM role')
+  .alias('update-role')
+  .description('updates an existing IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option('-p,  --trustPolicy <trustPolicy>', 'the trust policy as JSON string')
-  // .option(
-  //   '-e, --enableAlksAccess',
-  //   'enable alks access (MI), default: false',
-  //   false
-  // )
   .option(
     '-a, --account <accountIdOrAlias>',
     'the 12-digit ID or alias for an AWS account'
@@ -304,7 +313,9 @@ iam
 
 iam
   .command('updateIamUser')
-  .description('Updates the tags on an IAM User')
+  .alias('updateltk')
+  .alias('update-ltk')
+  .description('Updates the tags on an IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user to update, ' + nameDesc
