@@ -20,22 +20,22 @@ export async function handleAlksDeveloperAccounts(
   if (!contains(outputVals, output)) {
     errorAndExit(
       'The output provided (' +
-        output +
-        ') is not in the allowed values: ' +
-        outputVals.join(', ')
+      output +
+      ') is not in the allowed values: ' +
+      outputVals.join(', ')
     );
   }
   const outputObj = output == 'json'
     ? []
     : (
-    new Table({
-      head: [
-        clc.white.bold('Account'),
-        clc.white.bold('Role'),
-        clc.white.bold('Type'),
-      ],
-      colWidths: [50, 50, 25],
-    }));
+      new Table({
+        head: [
+          clc.white.bold('Account'),
+          clc.white.bold('Role'),
+          clc.white.bold('Type'),
+        ],
+        colWidths: [50, 50, 25],
+      }));
 
   const doExport = options.export;
   const accountRegex = getAccountRegex();
@@ -90,7 +90,24 @@ export async function handleAlksDeveloperAccounts(
 
     if (!doExport) {
       if (output == 'json') {
-        console.log(JSON.stringify(outputObj));
+        
+        const accounts: Record<string, any> = {}
+        outputObj.forEach((account: string[]) => {
+          const accountId: string = account[0].split('/')[0] 
+
+          if (!(accountId in accounts)) {
+            accounts[accountId] = {
+              accountId: accountId,
+              accountAlias: account[0].split('- ')[1],
+              roles: [{role: account[1], isIamActive: account[2] == "IAM"}]
+            }
+          } else {
+            accounts[accountId].roles.push(
+              {role: account[1], isIamActive: account[2] == "IAM"}
+            )
+          }
+       })
+        console.log(JSON.stringify(Object.values(accounts)));
       } else {
         console.error(clc.white.underline.bold('\nAvailable Accounts'));
         console.log(clc.white(outputObj.toString()));
