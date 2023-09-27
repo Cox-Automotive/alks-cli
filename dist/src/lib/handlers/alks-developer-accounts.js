@@ -73,7 +73,20 @@ function handleAlksDeveloperAccounts(options) {
             });
             if (!doExport) {
                 if (output == 'json') {
-                    console.log(JSON.stringify(outputObj));
+                    const accountsOutput = {};
+                    outputObj.forEach((accountRolePair) => {
+                        const accountId = accountRolePair[0].split('/')[0];
+                        if (!(accountId in accountsOutput)) {
+                            accountsOutput[accountId] = {
+                                accountAlias: accountRolePair[0].split('- ')[1],
+                                roles: [{ role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM" }]
+                            };
+                        }
+                        else {
+                            accountsOutput[accountId].roles.push({ role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM" });
+                        }
+                    });
+                    console.log(JSON.stringify(accountsOutput));
                 }
                 else {
                     console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
