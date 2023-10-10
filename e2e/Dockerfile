@@ -12,7 +12,10 @@ RUN npm pack --pack-destination /root
 RUN npm install -g /root/alks-*.tgz
 
 # install e2e test dependencies
-RUN apt-get update && apt-get install -y expect vim
+RUN apt-get update && apt-get install -y \
+ expect \ 
+ vim \
+ jq
 
 WORKDIR /alks/e2e
 RUN npm install

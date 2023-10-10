@@ -12,16 +12,27 @@ const getAuth_1 = require("../getAuth");
 const isWindows_1 = require("../isWindows");
 const log_1 = require("../log");
 const cli_table3_1 = tslib_1.__importDefault(require("cli-table3"));
+const getOutputValues_1 = require("../getOutputValues");
 function handleAlksDeveloperAccounts(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const table = new cli_table3_1.default({
-            head: [
-                cli_color_1.default.white.bold('Account'),
-                cli_color_1.default.white.bold('Role'),
-                cli_color_1.default.white.bold('Type'),
-            ],
-            colWidths: [50, 50, 25],
-        });
+        const outputVals = (0, getOutputValues_1.getOutputValuesAccounts)();
+        const output = options.output;
+        if (!(0, underscore_1.contains)(outputVals, output)) {
+            (0, errorAndExit_1.errorAndExit)('The output provided (' +
+                output +
+                ') is not in the allowed values: ' +
+                outputVals.join(', '));
+        }
+        const outputObj = output == 'json'
+            ? []
+            : new cli_table3_1.default({
+                head: [
+                    cli_color_1.default.white.bold('Account'),
+                    cli_color_1.default.white.bold('Role'),
+                    cli_color_1.default.white.bold('Type'),
+                ],
+                colWidths: [50, 50, 25],
+            });
         const doExport = options.export;
         const accountRegex = (0, getAccountRegex_1.getAccountRegex)();
         const exportCmd = (0, isWindows_1.isWindows)() ? 'SET' : 'export';
@@ -57,12 +68,38 @@ function handleAlksDeveloperAccounts(options) {
                     accountExport(data[0]);
                 }
                 else {
-                    table.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
+                    outputObj.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
                 }
             });
             if (!doExport) {
-                console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
-                console.log(cli_color_1.default.white(table.toString()));
+                if (output == 'json') {
+                    const accountsOutput = {};
+                    outputObj.forEach((accountRolePair) => {
+                        const accountId = accountRolePair[0].split('/')[0];
+                        if (!(accountId in accountsOutput)) {
+                            accountsOutput[accountId] = {
+                                accountAlias: accountRolePair[0].split('- ')[1],
+                                roles: [
+                                    {
+                                        role: accountRolePair[1],
+                                        isIamActive: accountRolePair[2] == 'IAM',
+                                    },
+                                ],
+                            };
+                        }
+                        else {
+                            accountsOutput[accountId].roles.push({
+                                role: accountRolePair[1],
+                                isIamActive: accountRolePair[2] == 'IAM',
+                            });
+                        }
+                    });
+                    console.log(JSON.stringify(accountsOutput));
+                }
+                else {
+                    console.error(cli_color_1.default.white.underline.bold('\nAvailable Accounts'));
+                    console.log(cli_color_1.default.white(outputObj.toString()));
+                }
             }
             yield (0, checkForUpdate_1.checkForUpdate)();
         }
