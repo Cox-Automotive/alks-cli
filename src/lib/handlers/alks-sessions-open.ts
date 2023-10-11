@@ -33,7 +33,8 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       alksRole,
       options.newSession,
       options.favorites,
-      !!options.iam
+      !!options.iam,
+      options.duration
     );
 
     console.log(
