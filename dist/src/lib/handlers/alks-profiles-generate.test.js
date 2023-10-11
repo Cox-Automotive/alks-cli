@@ -1,41 +1,197 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handleAlksProfilesGenerate = void 0;
 const tslib_1 = require("tslib");
 const generateProfile_1 = require("../generateProfile");
 const getAlksAccounts_1 = require("../getAlksAccounts");
-const cli_color_1 = require("cli-color");
-function handleAlksProfilesGenerate(options) {
-    var _a, _b, _c;
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        if (options.all) {
-            // Generate profiles for all account/role pairs
-            const accounts = yield (0, getAlksAccounts_1.getAlksAccounts)();
-            let profilesGenerated = 0;
-            for (const account of accounts) {
-                const accountName = (_b = (_a = account.skypieaAccount) === null || _a === void 0 ? void 0 : _a.alias) !== null && _b !== void 0 ? _b : account.account.substring(0, 12);
-                try {
-                    (0, generateProfile_1.generateProfile)(accountName, account.role, `${accountName}-${account.role}`, options.force);
-                    profilesGenerated++;
-                }
-                catch (err) {
-                    console.error((0, cli_color_1.red)(`Error generating profile for ${accountName}-${account.role}: ${err}`));
-                }
-            }
-            console.error(`${profilesGenerated} profile${profilesGenerated == 1 ? '' : 's'} generated`);
-        }
-        else if (options.account) {
-            // Generate a single profile
-            if (!options.role) {
-                throw new Error('role is required');
-            }
-            (0, generateProfile_1.generateProfile)(options.account, options.role, (_c = options.profile) !== null && _c !== void 0 ? _c : options.namedProfile, options.force);
-            console.error(`Profile ${options.profile} generated`);
-        }
-        else {
-            throw new Error('Either --all or --account and --role is required at a minimum');
-        }
+const alks_profiles_generate_1 = require("./alks-profiles-generate");
+jest.mock('../generateProfile');
+jest.mock('../getAlksAccounts');
+describe('handleAlksProfilesGenerate', () => {
+    const fakeAccountId = '123456789012';
+    const fakeAlias = 'fakeAlias';
+    const fakeRole = 'Admin';
+    const fakeProfile = 'fakeProfile';
+    let accounts = [];
+    beforeEach(() => {
+        accounts = [];
+        console.error = jest.fn();
+        getAlksAccounts_1.getAlksAccounts.mockResolvedValue(accounts);
     });
-}
-exports.handleAlksProfilesGenerate = handleAlksProfilesGenerate;
+    it('should generate profiles for a single account when account and role are provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            account: fakeAccountId,
+            role: fakeRole,
+            profile: fakeProfile,
+        });
+        expect(generateProfile_1.generateProfile).toHaveBeenCalledWith(fakeAccountId, fakeRole, fakeProfile, undefined);
+    }));
+    it('should generate profiles for a single account when namedProfile is used instead of profile', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            account: fakeAccountId,
+            role: fakeRole,
+            namedProfile: fakeProfile,
+        });
+        expect(generateProfile_1.generateProfile).toHaveBeenCalledWith(fakeAccountId, fakeRole, fakeProfile, undefined);
+    }));
+    it('should propagate the force flag for generating a single profile when force=true', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            account: fakeAccountId,
+            role: fakeRole,
+            profile: fakeProfile,
+            force: true,
+        });
+        expect(generateProfile_1.generateProfile).toHaveBeenCalledWith(fakeAccountId, fakeRole, fakeProfile, true);
+    }));
+    it('should fail to generate a single profile when role is not provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        yield expect((0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            account: fakeAccountId,
+            profile: fakeProfile,
+        })).rejects.toThrow();
+        expect(generateProfile_1.generateProfile).not.toHaveBeenCalled();
+    }));
+    it('should generate profiles for all accounts when all=true', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        accounts.push({
+            account: fakeAccountId,
+            role: fakeRole,
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        }, {
+            account: fakeAccountId,
+            role: 'ReadOnly',
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        });
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            all: true,
+        });
+        expect(generateProfile_1.generateProfile).toHaveBeenNthCalledWith(1, fakeAlias, fakeRole, `${fakeAlias}-${fakeRole}`, undefined);
+        expect(generateProfile_1.generateProfile).toHaveBeenNthCalledWith(2, fakeAlias, 'ReadOnly', `${fakeAlias}-ReadOnly`, undefined);
+    }));
+    it('should throw an error when all=true and getAlksAccounts throws an error', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        getAlksAccounts_1.getAlksAccounts.mockRejectedValue(new Error('Fake Error'));
+        yield expect((0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            all: true,
+        })).rejects.toThrow();
+        expect(generateProfile_1.generateProfile).not.toHaveBeenCalled();
+    }));
+    it('should log an error when all=true and generateProfile throws an error', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        accounts.push({
+            account: fakeAccountId,
+            role: fakeRole,
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        }, {
+            account: fakeAccountId,
+            role: 'ReadOnly',
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        });
+        generateProfile_1.generateProfile.mockImplementationOnce(() => {
+            throw new Error('Fake Error');
+        });
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            all: true,
+        });
+        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Fake Error'));
+    }));
+    it('should log the number of profiles generated when all=true', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        accounts.push({
+            account: fakeAccountId,
+            role: fakeRole,
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        }, {
+            account: fakeAccountId,
+            role: 'ReadOnly',
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        });
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            all: true,
+        });
+        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('2 profiles generated'));
+    }));
+    it('should generate profiles for all accounts even when skypiea data is missing', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        accounts.push({
+            account: fakeAccountId,
+            role: fakeRole,
+            skypieaAccount: {
+                label: 'Fake Label',
+                alias: fakeAlias,
+                accountOwners: [],
+                cloudsploitTrend: [],
+                awsAccountId: fakeAccountId,
+            },
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        }, {
+            account: `${fakeAccountId}/ALKSReadOnly - ${fakeAlias}`,
+            role: 'ReadOnly',
+            skypieaAccount: null,
+            securityLevel: '1',
+            iamKeyActive: false,
+            maxKeyDuration: 1,
+        });
+        yield (0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            all: true,
+        });
+        expect(generateProfile_1.generateProfile).toHaveBeenNthCalledWith(1, fakeAlias, fakeRole, `${fakeAlias}-${fakeRole}`, undefined);
+        expect(generateProfile_1.generateProfile).toHaveBeenNthCalledWith(2, fakeAccountId, 'ReadOnly', `${fakeAccountId}-ReadOnly`, undefined);
+    }));
+    it('should throw an error when neither all nor account are provided', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        yield expect((0, alks_profiles_generate_1.handleAlksProfilesGenerate)({
+            profile: fakeProfile,
+        })).rejects.toThrow();
+        expect(generateProfile_1.generateProfile).not.toHaveBeenCalled();
+    }));
+});
 //# sourceMappingURL=alks-profiles-generate.test.js.map
