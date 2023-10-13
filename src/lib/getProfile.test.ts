@@ -60,7 +60,7 @@ describe('getProfile', () => {
     });
   });
 
-  it('should get return undefined if a profile does not exist', () => {
+  it('should return undefined if a profile does not exist', () => {
     (propIni.decode as jest.Mock).mockReturnValue({
       sections: {},
     });
