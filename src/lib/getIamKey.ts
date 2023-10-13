@@ -18,7 +18,8 @@ export async function getIamKey(
   alksRole: string | undefined,
   forceNewSession: boolean = false,
   filterFavorites: boolean = false,
-  iamOnly: boolean = true
+  iamOnly: boolean = true,
+  sessionDuration: number | undefined = undefined
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -84,7 +85,7 @@ export async function getIamKey(
     role: alksRole,
   });
 
-  const duration = Math.min(loginRole.maxKeyDuration, 12);
+  const duration = Math.min(loginRole.maxKeyDuration, sessionDuration ?? 12);
 
   console.error(
     white.underline(

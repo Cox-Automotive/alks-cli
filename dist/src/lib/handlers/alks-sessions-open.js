@@ -29,7 +29,7 @@ function handleAlksSessionsOpen(options) {
                     (0, errorAndExit_1.errorAndExit)('Unable to load default account!');
                 }
             }
-            const key = yield (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam);
+            const key = yield (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam, options.duration);
             console.log((0, getKeyOutput_1.getKeyOutput)(options.output || (yield (0, outputFormat_1.getOutputFormat)()), key, (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile, options.force));
             yield (0, checkForUpdate_1.checkForUpdate)();
         }

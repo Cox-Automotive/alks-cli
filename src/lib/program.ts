@@ -93,6 +93,11 @@ sessions
     '-d, --default',
     'uses your default account from "alks developer configure"'
   )
+  .option(
+    '-D, --duration',
+    'the duration of the session in hours. If the duration is over the max duration allowed for the role, the max duration will be used instead',
+    '12'
+  )
   .option('-N, --newSession', 'forces a new session to be generated')
   .option('-p, --password <password>', 'my password')
   .option(
