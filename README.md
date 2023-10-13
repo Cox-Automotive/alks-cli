@@ -292,6 +292,34 @@ Arguments:
 
 `alks server stop` - Stop the metadata server.
 
+## Profile Management
+
+### `profiles generate`
+
+`alks profiles generate` Creates an AWS profile or multiple profiles. If you pass an account, role, and profile name it will generate a single profile in your `~/.aws/credentials` file and if you instead pass the `--all` flag it will generate profiles for all the account/role pairs that you currently have access to by naming each profile `<accountAlias>-<roleName>`
+
+Try running `alks profiles generate --help` for more details on how to use this command
+
+### `profiles list`
+
+Lists the profiles that you have. By default this will only print out the profiles that were created by this tool but you can list all of your profiles by passing the `--all` flag.
+
+Try running `alks profiles list --help` for more details on how to use this command
+
+### `profiles get`
+
+Gets the details for a single AWS profile. Essentially this will show you everything in the `~/.aws/credentials` file for a single profile
+
+Try running `alks profiles get --help` for more details on how to use this command
+
+### `profiles remove`
+
+Removes an AWS profile, or multiple AWS profiles. If you specify a profile name this will remove just that single profile, or if you pass the `--all` flag this will remove all profiles that were generated with this tool
+
+Try running `alks profiles remove --help` for more details on how to use this command
+
+
+
 # Output Formats trigger
 
 ALKS CLI will output in a variety of formats, it uses the developer default (set with `alks developer configure`) and can be overridden by passing a value via `-o`.
