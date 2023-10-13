@@ -69,7 +69,7 @@ jobs:
           if [[ ! $(cmp --silent changelog.txt changelog.temp.txt ) ]]; then
             mv changelog.temp.txt changelog.txt
             git add changelog.txt
-            git commit -m 'updates changelog.txt'
+            git commit -m 'updates changelog.txt' --allow-empty
           fi
 
       - name: Bump both git-tag and package.json version
