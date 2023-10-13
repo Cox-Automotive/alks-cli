@@ -14,7 +14,7 @@ const promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 const getKeys_1 = require("./getKeys");
 const addKey_1 = require("./addKey");
 const getAwsAccountFromString_1 = require("./getAwsAccountFromString");
-function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true) {
+function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true, sessionDuration = undefined) {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield (0, ensureConfigured_1.ensureConfigured)();
@@ -59,7 +59,7 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
             accountId: awsAccount.id,
             role: alksRole,
         });
-        const duration = Math.min(loginRole.maxKeyDuration, 12);
+        const duration = Math.min(loginRole.maxKeyDuration, sessionDuration !== null && sessionDuration !== void 0 ? sessionDuration : 12);
         console.error(cli_color_1.white.underline(`Creating new session in "${(_b = awsAccount.label) !== null && _b !== void 0 ? _b : awsAccount.alias}" (id=${awsAccount.id} alias=${awsAccount.alias}) for ${alksRole}`));
         let alksKey;
         try {

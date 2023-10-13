@@ -45,6 +45,7 @@ describe('handleAlksSessionsOpen', () => {
             newSession: undefined,
             favorites: undefined,
             iamOnly: true,
+            duration: undefined,
         },
         key: {},
         getKeyOutputFails: false,
@@ -73,6 +74,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, getIamKeyFails: true }),
         Object.assign(Object.assign({}, defaultTestCase), { description: 'when getting a session key fails', shouldErr: true, options: {
                 account: '012345678910/ALKSAdmin - awstest',
@@ -83,6 +85,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: false,
+                duration: undefined,
             }, getIamKeyFails: true }),
         Object.assign(Object.assign({}, defaultTestCase), { description: 'when getOutputFormat fails', shouldErr: true, options: {
                 account: '012345678910/ALKSAdmin - awstest',
@@ -94,6 +97,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -113,6 +117,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -136,6 +141,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -159,6 +165,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -181,6 +188,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: false,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -205,6 +213,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -229,6 +238,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -251,6 +261,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '012345678910/ALKSAdmin - awstest',
                 alksRole: 'Admin',
@@ -273,6 +284,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '998877665544/ALKSReadOnly - awsother',
                 alksRole: 'ReadOnly',
@@ -296,6 +308,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '444455556666/ALKSPowerUser - awsthing',
                 alksRole: 'PowerUser',
@@ -317,6 +330,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '998877665544/ALKSReadOnly - awsother',
                 alksRole: 'ReadOnly',
@@ -339,6 +353,7 @@ describe('handleAlksSessionsOpen', () => {
                 newSession: undefined,
                 favorites: undefined,
                 iamOnly: true,
+                duration: undefined,
             }, key: {
                 alksAccount: '444455556666/ALKSPowerUser - awsthing',
                 alksRole: 'PowerUser',
@@ -447,7 +462,7 @@ describe('handleAlksSessionsOpen', () => {
             }
             if (t.shouldGetIamKey) {
                 it('attempts to fetch an IAM key', () => {
-                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites, t.getIamKeyParams.iamOnly);
+                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites, t.getIamKeyParams.iamOnly, t.getIamKeyParams.duration);
                 });
             }
             else {

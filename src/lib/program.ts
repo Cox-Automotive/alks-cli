@@ -1,9 +1,9 @@
 import { Command } from 'commander';
 import { version } from '../../package.json';
-import { 
-  getOutputValues, 
-  getOutputValuesAccounts, 
-  getOutputValuesRoleTypes 
+import {
+  getOutputValues,
+  getOutputValuesAccounts,
+  getOutputValuesRoleTypes,
 } from '../lib/getOutputValues';
 import { handleAlksSessionsOpen } from '../lib/handlers/alks-sessions-open';
 import { handleAlksDeveloperConfigure } from '../lib/handlers/alks-developer-configure';
@@ -83,6 +83,11 @@ sessions
     '-d, --default',
     'uses your default account from "alks developer configure"'
   )
+  .option(
+    '-D, --duration',
+    'the duration of the session in hours. If the duration is over the max duration allowed for the role, the max duration will be used instead',
+    '12'
+  )
   .option('-N, --newSession', 'forces a new session to be generated')
   .option('-p, --password <password>', 'my password')
   .option(
@@ -136,8 +141,8 @@ iam
   .description('list the available iam role types')
   .option(
     '-o, --output <format>',
-    'output format (' + getOutputValuesRoleTypes().join(', ') + ')', 
-    getOutputValuesRoleTypes()[0],
+    'output format (' + getOutputValuesRoleTypes().join(', ') + ')',
+    getOutputValuesRoleTypes()[0]
   )
   .action(handleAlksIamRoleTypes);
 
@@ -349,7 +354,11 @@ developer
   .command('accounts')
   .description('shows current developer configuration')
   .option('-e, --export', 'export accounts to environment variables')
-  .option('-o, --output <format>', 'output format (' + getOutputValuesAccounts().join(', ') + ')', getOutputValuesAccounts()[0],)
+  .option(
+    '-o, --output <format>',
+    'output format (' + getOutputValuesAccounts().join(', ') + ')',
+    getOutputValuesAccounts()[0]
+  )
   .action(handleAlksDeveloperAccounts);
 
 developer
