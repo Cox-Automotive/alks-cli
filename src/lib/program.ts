@@ -29,6 +29,10 @@ import { handleAlksDeveloperLogout2fa } from '../lib/handlers/alks-developer-log
 import { handleCompletion } from './handlers/alks-completion';
 import { red } from 'cli-color';
 import { handleAlksIamUpdateRole } from './handlers/alks-iam-updaterole';
+import { handleAlksProfilesGenerate } from './handlers/alks-profiles-generate';
+import { handleAlksProfilesList } from './handlers/alks-profiles-list';
+import { handleAlksProfilesRemove } from './handlers/alks-profiles-remove';
+import { handleAlksProfilesGet } from './handlers/alks-profiles-get';
 
 const outputValues = getOutputValues();
 const nameDesc = 'alphanumeric including @+=._-';
@@ -63,9 +67,15 @@ program
     }
   });
 
-program.command('completion').action(handleCompletion);
+program
+  .command('completion')
+  .description('shell completer for cli commands')
+  .action(handleCompletion);
 
-const sessions = program.command('sessions').description('manage aws sessions');
+const sessions = program
+  .command('sessions')
+  .alias('session')
+  .description('manage aws sessions');
 
 sessions
   .command('open')
@@ -96,6 +106,10 @@ sessions
   )
   .option(
     '-n, --namedProfile <profile>',
+    'alias for --profile, if output is set to creds, use this profile, default: default'
+  )
+  .option(
+    '-P, --profile <profile>',
     'if output is set to creds, use this profile, default: default'
   )
   .option(
@@ -107,6 +121,7 @@ sessions
 
 sessions
   .command('list')
+  .alias('ls')
   .description('list active sessions')
   .option('-p, --password <password>', 'my password')
   .action(handleAlksSessionsList);
@@ -138,6 +153,8 @@ const iam = program.command('iam').description('manage iam resources');
 
 iam
   .command('roletypes')
+  .alias('role-types')
+  .alias('list-role-types')
   .description('list the available iam role types')
   .option(
     '-o, --output <format>',
@@ -148,6 +165,7 @@ iam
 
 iam
   .command('deleterole')
+  .alias('delete-role')
   .description('remove an IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role to delete')
   .option(
@@ -163,7 +181,8 @@ iam
 
 iam
   .command('deleteltk')
-  .description('deletes an IAM Longterm Key')
+  .alias('delete-ltk')
+  .description('deletes an IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK'
@@ -181,7 +200,10 @@ iam
 
 iam
   .command('createtrustrole')
-  .description('creates a new IAM Trust role')
+  .alias('create-trust-role')
+  .description(
+    '(Deprecated - use `alks iam create-role` instead) creates a new IAM Trust role'
+  )
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
     '-t, --roletype <roletype>',
@@ -210,6 +232,7 @@ iam
 
 iam
   .command('createrole')
+  .alias('create-role')
   .description('creates a new IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
@@ -251,7 +274,8 @@ iam
 
 iam
   .command('createltk')
-  .description('creates a new IAM Longterm Key')
+  .alias('create-ltk')
+  .description('creates a new IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user associated with the LTK, ' + nameDesc
@@ -274,14 +298,10 @@ iam
 
 iam
   .command('updaterole')
-  .description('creates a new IAM role')
+  .alias('update-role')
+  .description('updates an existing IAM role')
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option('-p,  --trustPolicy <trustPolicy>', 'the trust policy as JSON string')
-  // .option(
-  //   '-e, --enableAlksAccess',
-  //   'enable alks access (MI), default: false',
-  //   false
-  // )
   .option(
     '-a, --account <accountIdOrAlias>',
     'the 12-digit ID or alias for an AWS account'
@@ -299,7 +319,9 @@ iam
 
 iam
   .command('updateIamUser')
-  .description('Updates the tags on an IAM User')
+  .alias('updateltk')
+  .alias('update-ltk')
+  .description('Updates the tags on an IAM long term key/IAM User')
   .option(
     '-n, --iamusername <iamUsername>',
     'the name of the iam user to update, ' + nameDesc
@@ -421,5 +443,98 @@ server
   .option('-p, --password <password>', 'my password')
   .option('-F, --favorites', 'filters favorite accounts')
   .action(handleAlksServerConfigure);
+
+const profiles = program
+  .command('profiles')
+  .alias('profile')
+  .name('profiles')
+  .description('manage aws profiles');
+
+profiles
+  .command('generate')
+  .alias('add')
+  .alias('create')
+  .description('generate aws profiles')
+  .option(
+    '-A, --all',
+    'generate profiles for all accounts/roles that you have access to'
+  )
+  .option(
+    '-a, --account <accountIdOrAlias>',
+    'the 12-digit ID or alias for an AWS account to use for the profile'
+  )
+  .option('-r, --role <authRole>', 'the ALKS IAM role to use for the profile')
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option(
+    '-f, --force',
+    'if output is set to creds, force overwriting of AWS credentials'
+  )
+  .action(handleAlksProfilesGenerate);
+
+profiles
+  .command('list')
+  .alias('ls')
+  .description('list aws profiles')
+  .option(
+    '-A, --all',
+    'list all profiles including those not managed by alks',
+    false
+  )
+  .option('-o, --output <format>', 'output format (list, json)', 'list')
+  .option(
+    '-S, --show-sensitive-values',
+    'show sensitive values in the output as opposed to replacing them with asterisks',
+    false
+  )
+  .action(handleAlksProfilesList);
+
+profiles
+  .command('remove')
+  .alias('rm')
+  .alias('delete')
+  .description('delete aws profiles')
+  .option(
+    '-A, --all',
+    'delete profiles for all accounts/roles that you have access to that are managed by alks'
+  )
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option(
+    '-f, --force',
+    'skip the confirmation prompt and delete the profile(s)'
+  )
+  .action(handleAlksProfilesRemove);
+
+profiles
+  .command('get')
+  .description('get aws profile')
+  .option(
+    '-n, --namedProfile <profile>',
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option(
+    '-P, --profile <profile>',
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
+  )
+  .option('-o, --output <format>', 'output format (text, json)', 'text')
+  .option(
+    '-S, --show-sensitive-values',
+    'show sensitive values in the output as opposed to replacing them with asterisks',
+    false
+  )
+  .action(handleAlksProfilesGet);
 
 export default program;

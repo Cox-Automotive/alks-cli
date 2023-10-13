@@ -1,39 +1,35 @@
-import { closeSync, existsSync, mkdirSync, openSync } from 'fs';
 import { AwsKey } from '../model/keys';
-import { getFilePathInHome } from './getFilePathInHome';
 import { createInstance } from 'prop-ini';
 import { has } from 'underscore';
 import { addNewLineToEof } from './addNewLineToEof';
+import { getAwsCredentialsFile } from './getAwsCredentialsFile';
+import {
+  accessKey,
+  credentialProcess,
+  managedBy,
+  secretKey,
+  sessionToken,
+} from './awsCredentialsFileContstants';
 
 export function updateCreds(
   key: AwsKey,
   profile: string | undefined,
-  force: boolean | undefined
+  force: boolean = false
 ) {
-  const credPath = getFilePathInHome('.aws');
-  const credFile = credPath + '/credentials';
-
-  // in case the user never ran `aws configure`..
-  if (!existsSync(credFile)) {
-    if (!existsSync(credPath)) {
-      mkdirSync(credPath);
-    }
-    closeSync(openSync(credFile, 'w'));
-  }
+  const credFile = getAwsCredentialsFile();
 
   const propIni = createInstance();
   const awsCreds = propIni.decode({ file: credFile });
   const section = profile || 'default';
-  const accessKey = 'aws_access_key_id';
-  const secretKey = 'aws_secret_access_key';
-  const sessToken = 'aws_session_token';
 
   if (has(awsCreds.sections, section)) {
     if (force) {
       // overwrite only the relevant keys and leave the rest of the section untouched
+      propIni.removeData(section, credentialProcess);
       propIni.addData(key.accessKey, section, accessKey);
       propIni.addData(key.secretKey, section, secretKey);
-      propIni.addData(key.sessionToken, section, sessToken);
+      propIni.addData(key.sessionToken, section, sessionToken);
+      propIni.addData('alks', section, managedBy);
     } else {
       return false;
     }
@@ -42,7 +38,8 @@ export function updateCreds(
     const data = {
       [accessKey]: key.accessKey,
       [secretKey]: key.secretKey,
-      [sessToken]: key.sessionToken,
+      [sessionToken]: key.sessionToken,
+      [managedBy]: 'alks',
     };
 
     propIni.addData(data, section);

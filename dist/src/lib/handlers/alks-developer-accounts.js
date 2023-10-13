@@ -25,14 +25,14 @@ function handleAlksDeveloperAccounts(options) {
         }
         const outputObj = output == 'json'
             ? []
-            : (new cli_table3_1.default({
+            : new cli_table3_1.default({
                 head: [
                     cli_color_1.default.white.bold('Account'),
                     cli_color_1.default.white.bold('Role'),
                     cli_color_1.default.white.bold('Type'),
                 ],
                 colWidths: [50, 50, 25],
-            }));
+            });
         const doExport = options.export;
         const accountRegex = (0, getAccountRegex_1.getAccountRegex)();
         const exportCmd = (0, isWindows_1.isWindows)() ? 'SET' : 'export';
@@ -79,11 +79,19 @@ function handleAlksDeveloperAccounts(options) {
                         if (!(accountId in accountsOutput)) {
                             accountsOutput[accountId] = {
                                 accountAlias: accountRolePair[0].split('- ')[1],
-                                roles: [{ role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM" }]
+                                roles: [
+                                    {
+                                        role: accountRolePair[1],
+                                        isIamActive: accountRolePair[2] == 'IAM',
+                                    },
+                                ],
                             };
                         }
                         else {
-                            accountsOutput[accountId].roles.push({ role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM" });
+                            accountsOutput[accountId].roles.push({
+                                role: accountRolePair[1],
+                                isIamActive: accountRolePair[2] == 'IAM',
+                            });
                         }
                     });
                     console.log(JSON.stringify(accountsOutput));

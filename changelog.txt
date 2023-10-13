@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* adds support for specifying session durations
+* Adds commands for managing AWS profiles
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

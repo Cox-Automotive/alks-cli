@@ -17,15 +17,9 @@ export function getOutputValues() {
 }
 
 export function getOutputValuesRoleTypes() {
-  return [
-    'list',
-    'json',
-  ];
+  return ['list', 'json'];
 }
 
 export function getOutputValuesAccounts() {
-  return [
-    'table',
-    'json',
-  ];
+  return ['table', 'json'];
 }

@@ -41,7 +41,7 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       getKeyOutput(
         options.output || (await getOutputFormat()),
         key,
-        options.namedProfile,
+        options.profile ?? options.namedProfile,
         options.force
       )
     );

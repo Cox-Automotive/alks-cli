@@ -20,22 +20,22 @@ export async function handleAlksDeveloperAccounts(
   if (!contains(outputVals, output)) {
     errorAndExit(
       'The output provided (' +
-      output +
-      ') is not in the allowed values: ' +
-      outputVals.join(', ')
+        output +
+        ') is not in the allowed values: ' +
+        outputVals.join(', ')
     );
   }
-  const outputObj = output == 'json'
-    ? []
-    : (
-      new Table({
-        head: [
-          clc.white.bold('Account'),
-          clc.white.bold('Role'),
-          clc.white.bold('Type'),
-        ],
-        colWidths: [50, 50, 25],
-      }));
+  const outputObj =
+    output == 'json'
+      ? []
+      : new Table({
+          head: [
+            clc.white.bold('Account'),
+            clc.white.bold('Role'),
+            clc.white.bold('Type'),
+          ],
+          colWidths: [50, 50, 25],
+        });
 
   const doExport = options.export;
   const accountRegex = getAccountRegex();
@@ -84,28 +84,35 @@ export async function handleAlksDeveloperAccounts(
       if (doExport) {
         accountExport(data[0]);
       } else {
-        outputObj.push(data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard'));
+        outputObj.push(
+          data.concat(alksAccount.iamKeyActive ? 'IAM' : 'Standard')
+        );
       }
     });
 
     if (!doExport) {
       if (output == 'json') {
-        
-        const accountsOutput: Record<string, any> = {}
+        const accountsOutput: Record<string, any> = {};
         outputObj.forEach((accountRolePair: string[]) => {
-          const accountId: string = accountRolePair[0].split('/')[0] 
+          const accountId: string = accountRolePair[0].split('/')[0];
 
           if (!(accountId in accountsOutput)) {
             accountsOutput[accountId] = {
               accountAlias: accountRolePair[0].split('- ')[1],
-              roles: [{role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM"}]
-            }
+              roles: [
+                {
+                  role: accountRolePair[1],
+                  isIamActive: accountRolePair[2] == 'IAM',
+                },
+              ],
+            };
           } else {
-            accountsOutput[accountId].roles.push(
-              {role: accountRolePair[1], isIamActive: accountRolePair[2] == "IAM"}
-            )
+            accountsOutput[accountId].roles.push({
+              role: accountRolePair[1],
+              isIamActive: accountRolePair[2] == 'IAM',
+            });
           }
-       })
+        });
         console.log(JSON.stringify(accountsOutput));
       } else {
         console.error(clc.white.underline.bold('\nAvailable Accounts'));

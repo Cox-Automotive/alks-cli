@@ -12,6 +12,7 @@ const alksAccount_1 = require("../state/alksAccount");
 const alksRole_1 = require("../state/alksRole");
 const outputFormat_1 = require("../state/outputFormat");
 function handleAlksSessionsOpen(options) {
+    var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         let alksAccount = options.account;
         let alksRole = options.role;
@@ -29,7 +30,7 @@ function handleAlksSessionsOpen(options) {
                 }
             }
             const key = yield (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam, options.duration);
-            console.log((0, getKeyOutput_1.getKeyOutput)(options.output || (yield (0, outputFormat_1.getOutputFormat)()), key, options.namedProfile, options.force));
+            console.log((0, getKeyOutput_1.getKeyOutput)(options.output || (yield (0, outputFormat_1.getOutputFormat)()), key, (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile, options.force));
             yield (0, checkForUpdate_1.checkForUpdate)();
         }
         catch (err) {

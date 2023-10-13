@@ -20,17 +20,11 @@ function getOutputValues() {
 }
 exports.getOutputValues = getOutputValues;
 function getOutputValuesRoleTypes() {
-    return [
-        'list',
-        'json',
-    ];
+    return ['list', 'json'];
 }
 exports.getOutputValuesRoleTypes = getOutputValuesRoleTypes;
 function getOutputValuesAccounts() {
-    return [
-        'table',
-        'json',
-    ];
+    return ['table', 'json'];
 }
 exports.getOutputValuesAccounts = getOutputValuesAccounts;
 //# sourceMappingURL=getOutputValues.js.map
