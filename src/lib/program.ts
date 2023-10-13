@@ -461,19 +461,16 @@ profiles
   )
   .option(
     '-a, --account <accountIdOrAlias>',
-    'the 12-digit ID or alias for an AWS account to use as a default account'
+    'the 12-digit ID or alias for an AWS account to use for the profile'
   )
-  .option(
-    '-r, --role <authRole>',
-    'the ALKS IAM role to use as the default role for carrying out requests'
-  )
+  .option('-r, --role <authRole>', 'the ALKS IAM role to use for the profile')
   .option(
     '-n, --namedProfile <profile>',
-    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option(
     '-P, --profile <profile>',
-    'the name of the profile to generate. If not specified the default profile will be updated'
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option(
     '-f, --force',
@@ -509,11 +506,11 @@ profiles
   )
   .option(
     '-n, --namedProfile <profile>',
-    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option(
     '-P, --profile <profile>',
-    'the name of the profile to generate. If not specified the default profile will be updated'
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option(
     '-f, --force',
@@ -526,11 +523,11 @@ profiles
   .description('get aws profile')
   .option(
     '-n, --namedProfile <profile>',
-    'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated'
+    'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option(
     '-P, --profile <profile>',
-    'the name of the profile to generate. If not specified the default profile will be updated'
+    'the name of the profile to generate. If not specified the "default" profile will be updated'
   )
   .option('-o, --output <format>', 'output format (text, json)', 'text')
   .option(

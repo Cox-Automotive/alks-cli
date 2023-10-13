@@ -5,6 +5,9 @@ const prop_ini_1 = require("prop-ini");
 const getAwsCredentialsFile_1 = require("./getAwsCredentialsFile");
 const awsCredentialsFileContstants_1 = require("./awsCredentialsFileContstants");
 const sensitive_1 = require("./sensitive");
+// TODO: This could be refactored to repeatedly call getProfile() instead of duplicating the
+// logic, although we would first need to break up the logic in getProfile() into smaller
+// functions so that we're not performing tons of file I/O in this function
 function getAllProfiles(includeNonAlksProfiles = false, showSensitiveValues = false) {
     const credFile = (0, getAwsCredentialsFile_1.getAwsCredentialsFile)();
     const propIni = (0, prop_ini_1.createInstance)();

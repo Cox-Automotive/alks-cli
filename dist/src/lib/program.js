@@ -258,10 +258,10 @@ profiles
     .alias('create')
     .description('generate aws profiles')
     .option('-A, --all', 'generate profiles for all accounts/roles that you have access to')
-    .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account to use as a default account')
-    .option('-r, --role <authRole>', 'the ALKS IAM role to use as the default role for carrying out requests')
-    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated')
-    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
+    .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account to use for the profile')
+    .option('-r, --role <authRole>', 'the ALKS IAM role to use for the profile')
+    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated')
+    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the "default" profile will be updated')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .action(alks_profiles_generate_1.handleAlksProfilesGenerate);
 profiles
@@ -278,15 +278,15 @@ profiles
     .alias('delete')
     .description('delete aws profiles')
     .option('-A, --all', 'delete profiles for all accounts/roles that you have access to that are managed by alks')
-    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated')
-    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
+    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated')
+    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the "default" profile will be updated')
     .option('-f, --force', 'skip the confirmation prompt and delete the profile(s)')
     .action(alks_profiles_remove_1.handleAlksProfilesRemove);
 profiles
     .command('get')
     .description('get aws profile')
-    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the default profile will be updated')
-    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the default profile will be updated')
+    .option('-n, --namedProfile <profile>', 'alias for --profile, the name of the profile to generate. If not specified the "default" profile will be updated')
+    .option('-P, --profile <profile>', 'the name of the profile to generate. If not specified the "default" profile will be updated')
     .option('-o, --output <format>', 'output format (text, json)', 'text')
     .option('-S, --show-sensitive-values', 'show sensitive values in the output as opposed to replacing them with asterisks', false)
     .action(alks_profiles_get_1.handleAlksProfilesGet);

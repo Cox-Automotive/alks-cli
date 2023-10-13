@@ -23,6 +23,10 @@ interface AwsCredsStructure {
   };
 }
 
+// TODO: This could be refactored to repeatedly call getProfile() instead of duplicating the
+// logic, although we would first need to break up the logic in getProfile() into smaller
+// functions so that we're not performing tons of file I/O in this function
+
 export function getAllProfiles(
   includeNonAlksProfiles: boolean = false,
   showSensitiveValues: boolean = false
