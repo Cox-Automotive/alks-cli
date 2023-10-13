@@ -49,7 +49,7 @@ describe('getProfile', () => {
             [awsCredentialsFileContstants_1.sessionToken]: expect.stringMatching(/.*\*\*\*\*/),
         });
     });
-    it('should get return undefined if a profile does not exist', () => {
+    it('should return undefined if a profile does not exist', () => {
         propIni.decode.mockReturnValue({
             sections: {},
         });
