@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout alks cli
         run: git clone https://github.com/Cox-Automotive/alks-cli.git
       - name: Setup node
@@ -22,8 +22,13 @@ jobs:
       - run: npm run coverage
         env:
           CI: true
+      - run: |
+          ls
+          cd ..
+          ls
+
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v1.2.0
+        uses: SonarSource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
