@@ -10,25 +10,23 @@ jobs:
     name: Upload Coverage to Sonarqube
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Checkout alks cli
-        run: git clone https://github.com/Cox-Automotive/alks-cli.git
-      - name: Setup node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run coverage
+          node-version: 20
+      - name: Install node modules
+        run: npm ci
+      - name: Build coverage report
+        run: npm run coverage
         env:
           CI: true
-      - run: |
-          ls
-          cd ..
-          ls
-
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -X
