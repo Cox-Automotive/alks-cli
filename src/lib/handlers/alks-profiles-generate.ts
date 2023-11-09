@@ -44,14 +44,11 @@ export async function handleAlksProfilesGenerate(
       throw new Error('role is required');
     }
 
-    generateProfile(
-      options.account,
-      options.role,
-      options.profile ?? options.namedProfile,
-      options.force
-    );
+    const profileName = options.profile ?? options.namedProfile;
 
-    console.error(`Profile ${options.profile} generated`);
+    generateProfile(options.account, options.role, profileName, options.force);
+
+    console.error(`Profile ${profileName} generated`);
   } else {
     throw new Error(
       'Either --all or --account and --role is required at a minimum'

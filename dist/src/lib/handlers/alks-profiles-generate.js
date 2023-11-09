@@ -29,8 +29,9 @@ function handleAlksProfilesGenerate(options) {
             if (!options.role) {
                 throw new Error('role is required');
             }
-            (0, generateProfile_1.generateProfile)(options.account, options.role, (_c = options.profile) !== null && _c !== void 0 ? _c : options.namedProfile, options.force);
-            console.error(`Profile ${options.profile} generated`);
+            const profileName = (_c = options.profile) !== null && _c !== void 0 ? _c : options.namedProfile;
+            (0, generateProfile_1.generateProfile)(options.account, options.role, profileName, options.force);
+            console.error(`Profile ${profileName} generated`);
         }
         else {
             throw new Error('Either --all or --account and --role is required at a minimum');
