@@ -3,7 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds commands for managing AWS profiles
+* Fixes the feedback message when generating a single profile
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
