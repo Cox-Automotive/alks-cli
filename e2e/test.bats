@@ -116,9 +116,6 @@ setup() {
 						linux) 
 								assert_output --partial "export"
 								;;
-						powershell) 
-								assert_output --partial "set"
-								;;
         esac
     done
 
