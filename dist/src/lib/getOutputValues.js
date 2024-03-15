@@ -12,6 +12,7 @@ function getOutputValues() {
         'export',
         'set',
         'powershell',
+        'linux',
         'fishshell',
         'terraformenv',
         'terraformarg',

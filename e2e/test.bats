@@ -113,6 +113,9 @@ setup() {
                 assert_output --partial "AWS_SECRET_ACCESS_KEY="
                 assert_output --partial "AWS_SESSION_TOKEN="
                 ;;
+						linux) 
+								assert_output --partial "export"
+								;;
         esac
     done
 
