@@ -1,12 +1,12 @@
 {
   "name": "alks",
-  "version": "3.19.1",
+  "version": "3.20.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "alks",
-      "version": "3.19.1",
+      "version": "3.20.0",
       "license": "MIT",
       "dependencies": {
         "alks-node": "^0.12.1",
