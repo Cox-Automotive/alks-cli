@@ -59,6 +59,10 @@ function getKeyOutput(format, key, profile, force) {
                 Expiration: (0, moment_1.default)(key.expires).toISOString(),
             });
         }
+        case 'linux': {
+            // forces export format
+            return `export AWS_ACCESS_KEY_ID=${key.accessKey} && export AWS_SECRET_ACCESS_KEY=${key.secretKey} && export AWS_SESSION_TOKEN=${key.sessionToken} && export AWS_SESSION_EXPIRES=${keyExpires}`;
+        }
         case 'export': // fall through to default case
         case 'set':
         default: {

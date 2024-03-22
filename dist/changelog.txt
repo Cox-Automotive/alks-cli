@@ -1,9 +1,9 @@
-★ Release Notes: 2023-11-09 ★
+★ Release Notes: 2024-03-15 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes the feedback message when generating a single profile
+* Adds an `--output linux` option to force settings keys with `export`
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
