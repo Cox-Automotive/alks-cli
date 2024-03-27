@@ -8,7 +8,10 @@
         "prettier": "prettier --write",
         "tslint": "tslint --fix --force",
         "prepare": "husky install",
-        "build": "[ -d dist/ ] && rm -r dist/ ; tsc ; cp changelog.txt dist/",
+        "clean": "rimraf dist/",
+        "prebuild": "npm run clean",
+        "build": "tsc",
+        "postbuild": "shx cp changelog.txt dist/",
         "coverage": "CI=true npm test -- a --no-watch --coverageDirectory=../coverage"
     },
     "engines": {
@@ -89,6 +92,8 @@
         "mocha": "^10.0.0",
         "nyc": "^15.1.0",
         "prettier": "^2.2.1",
+        "rimraf": "^5.0.5",
+        "shx": "^0.3.4",
         "ts-jest": "^29.0.3",
         "ts-node": "^10.8.1",
         "tslint": "^6.1.3",
