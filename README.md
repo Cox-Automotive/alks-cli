@@ -183,8 +183,8 @@ Arguments:
 
 * `-p [password]` Your password
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
-* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes.  Must include roleType or trust policy, but not both
 * `-p [trustPolicy]` A trust policy as a JSON string.  Must include trustPolicy or roleType, but not both
+* `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes.  Must include roleType or trust policy, but not both. We recommend specifying the trust policy instead since role types are a legacy feature and no new role types are being created for new AWS services
 * `-d`: Include default policies, defaults to false
 * `-F` Filters favorite accounts
 * `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
@@ -192,6 +192,8 @@ Arguments:
 Outputs the created role's ARN.
 
 ### `iam createtrustrole`
+
+DEPRECATED: we recommend using `iam createrole` instead since you can use it to create all the same types of roles as this command and more
 
 `alks iam createtrustrole` Creates a new IAM Trust role for the requested type in the specified AWS account.
 
@@ -218,7 +220,7 @@ Arguments:
 
 ### `iam roletypes`
 
-`alks iam roletypes` - List the available IAM role types.
+`alks iam roletypes` - List the available IAM role types. We recommend specifying the trust policy when creating roles instead since role types are a legacy feature and no new role types are being created for new AWS services
 
 Arguments:
 

@@ -155,7 +155,9 @@ iam
   .command('roletypes')
   .alias('role-types')
   .alias('list-role-types')
-  .description('list the available iam role types')
+  .description(
+    'list the available iam role types. We recommend specifying the trust policy when creating roles instead since role types are a legacy feature and no new role types are being created for new AWS services'
+  )
   .option(
     '-o, --output <format>',
     'output format (' + getOutputValuesRoleTypes().join(', ') + ')',
@@ -237,7 +239,7 @@ iam
   .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
   .option(
     '-t, --roletype <roletype>',
-    'the role type, to see available roles: alks iam roletypes. Must provide role type or trust policy'
+    'the role type, to see available roles: alks iam roletypes. Must provide role type or trust policy. We recommend specifying the trust policy instead since role types are a legacy feature and no new role types are being created for new AWS services'
   )
   .option(
     '-p,  --trustPolicy <trustPolicy>',
