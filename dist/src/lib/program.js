@@ -100,7 +100,7 @@ iam
     .command('roletypes')
     .alias('role-types')
     .alias('list-role-types')
-    .description('list the available iam role types')
+    .description('list the available iam role types. We recommend specifying the trust policy when creating roles instead since role types are a legacy feature and no new role types are being created for new AWS services')
     .option('-o, --output <format>', 'output format (' + (0, getOutputValues_1.getOutputValuesRoleTypes)().join(', ') + ')', (0, getOutputValues_1.getOutputValuesRoleTypes)()[0])
     .action(alks_iam_roletypes_1.handleAlksIamRoleTypes);
 iam
@@ -139,7 +139,7 @@ iam
     .alias('create-role')
     .description('creates a new IAM role')
     .option('-n, --rolename <rolename>', 'the name of the role, ' + nameDesc)
-    .option('-t, --roletype <roletype>', 'the role type, to see available roles: alks iam roletypes. Must provide role type or trust policy')
+    .option('-t, --roletype <roletype>', 'the role type, to see available roles: alks iam roletypes. Must provide role type or trust policy. We recommend specifying the trust policy instead since role types are a legacy feature and no new role types are being created for new AWS services')
     .option('-p,  --trustPolicy <trustPolicy>', 'the trust policy as JSON string, must provide trust policy or role type')
     .option('-d, --defaultPolicies', 'include default policies, default: false', false)
     .option('-e, --enableAlksAccess', 'enable alks access (MI), default: false', false)
