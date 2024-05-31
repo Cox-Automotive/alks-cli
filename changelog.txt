@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Adds an `--output linux` option to force settings keys with `export`
+* Updates readme
+* Adds deprecation warnings about role types
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
