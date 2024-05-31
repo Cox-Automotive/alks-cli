@@ -131,22 +131,34 @@ This will create your sessions with the maximum life and automatically renew the
 
 Arguments:
 
-* `-p [password]` Your password
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
-* `-i` Specifies you wish to work as an IAM/Admin user
+* `-i` Specifies you wish to work as an IAM/Admin user. This flag is deprecated since it is no longer needed and will not make a difference in the generated session credentials
 * `-o [output]` Output format. Supports: `env`, `json`, `docker`, `creds`, `idea`, `export`, `set`, `powershell`, `aws`, `fishshell`, `terraformenv`, `terraformarg`
 * `-n` If output is set to creds, use this named profile (defaults to default)
 * `-N` Forces a new session to be generated
 * `-d` Uses your default account from `alks developer configure`
 * `-f` If output is set to creds, force overwriting of AWS credentials if they already exist
 * `-F` Filters favorite accounts
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
 
 Output values:
 
 * `AWS_ACCESS_KEY_ID`
 * `AWS_SECRET_ACCESS_KEY`
 * `AWS_SESSION_TOKEN`
+
+Example:
+
+Creating a new session under the default profile in your `~/.aws/credentials` file. (Note: if you still get errors saying access is denied after generating a new session like this, you may need to clear any environment variables prefixed with `AWS_` since credentials found in those variables, even if they are expired, will take precedence over your `~/.aws/credentials` file)
+```sh
+alks sessions open -a 'awstest123' -r 'Admin' --duration 1  -o creds -f
+```
+
+Creating a new session by using environment variables (Note: due to a limitation with shell commands, the ALKS CLI is only able to output the commands used to set environment variables but it cannot set them for you. That is why you have to wrap a call like this with `eval`)
+```sh
+eval $(alks sessions open -a 'awstest123' -r 'Admin' --duration 1 -o env)
+```
 
 ### `sessions console`
 
@@ -171,7 +183,7 @@ Arguments:
 
 Arguments:
 
-* `-p [password]` Your password
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
 
 ## IAM
 
@@ -181,15 +193,23 @@ Arguments:
 
 Arguments:
 
-* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS login role to use to create your role, be sure to wrap in quotes
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
 * `-p [trustPolicy]` A trust policy as a JSON string.  Must include trustPolicy or roleType, but not both
 * `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes.  Must include roleType or trust policy, but not both. We recommend specifying the trust policy instead since role types are a legacy feature and no new role types are being created for new AWS services
 * `-d`: Include default policies, defaults to false
 * `-F` Filters favorite accounts
 * `-k [tags]` A list of resource tags. Can either be a JSON representation '[{"Key":"string","Value":"string"},{"Key":"string","Value":"string"}]' or shorthand Key=string,Value=string Key=string,Value=string
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
 
 Outputs the created role's ARN.
+
+Example:
+
+```sh
+alks iam createrole -a 'awstest123' -r 'Admin' -n 'MyRole' -p '{"Version":"2012-10-17","Statement":[{"Action":"sts:AssumeRole","Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"}}]}'
+```
 
 ### `iam createtrustrole`
 
@@ -215,8 +235,14 @@ Outputs the created role's ARN.
 
 Arguments:
 
-* `-p [password]` Your password
+* `-a [account]` The ALKS account to use, be sure to wrap in quotes
+* `-r [role]` The ALKS login role to use to create your role, be sure to wrap in quotes
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
+
+```sh
+alks iam deleterole -a 'awstest123' -r 'Admin' -n 'MyRole'
+```
 
 ### `iam roletypes`
 
@@ -267,7 +293,7 @@ Outputs the created user's ARN along with the long term access key and long term
 
 Arguments:
 
-* `-p [password]` Your password
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
 * `-n [iamusername]` The name of the IAM user, be sure to wrap in quotes, alphanumeric including: `@+=._-`
 
 ## Metadata Server
@@ -280,7 +306,7 @@ The metadata server listens on http://169.254.169.254 and mimicks the [AWS EC2 I
 
 Arguments:
 
-* `-p [password]` Your password
+* `-p [password]` Your password (only needed if not currently authenticated and using basic authentication)
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
 * `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-i` Specifies you wish to work as an IAM/Admin user

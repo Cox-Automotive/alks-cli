@@ -88,7 +88,10 @@ sessions
     '-r, --role <authRole>',
     'the ALKS IAM role to use to perform the request'
   )
-  .option('-i, --iam', 'create an IAM session')
+  .option(
+    '-i, --iam',
+    'create an IAM session. This flag is deprecated since it is no longer needed and will not make a difference in the generated session credentials'
+  )
   .option(
     '-d, --default',
     'uses your default account from "alks developer configure"'

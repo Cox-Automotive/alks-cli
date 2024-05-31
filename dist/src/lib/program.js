@@ -65,7 +65,7 @@ sessions
     .description('creates or resumes a session')
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
     .option('-r, --role <authRole>', 'the ALKS IAM role to use to perform the request')
-    .option('-i, --iam', 'create an IAM session')
+    .option('-i, --iam', 'create an IAM session. This flag is deprecated since it is no longer needed and will not make a difference in the generated session credentials')
     .option('-d, --default', 'uses your default account from "alks developer configure"')
     .option('-D, --duration', 'the duration of the session in hours. If the duration is over the max duration allowed for the role, the max duration will be used instead', '12')
     .option('-N, --newSession', 'forces a new session to be generated')
