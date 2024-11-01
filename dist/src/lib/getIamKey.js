@@ -60,7 +60,7 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
             role: alksRole,
         });
         const duration = Math.min(loginRole.maxKeyDuration, sessionDuration !== null && sessionDuration !== void 0 ? sessionDuration : 12);
-        console.error(cli_color_1.white.underline(`Creating new session in "${(_b = awsAccount.label) !== null && _b !== void 0 ? _b : awsAccount.alias}" (id=${awsAccount.id} alias=${awsAccount.alias}) for ${alksRole}`));
+        console.error(cli_color_1.white.underline(`Creating new session in "${(_b = awsAccount.label) !== null && _b !== void 0 ? _b : awsAccount.alias}" (id=${awsAccount.id} alias=${awsAccount.alias}) for ${alksRole} expiring in ${duration} hour${duration === 1 ? '' : 's'}`));
         let alksKey;
         try {
             alksKey = yield alks.getIAMKeys({
