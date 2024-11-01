@@ -91,7 +91,11 @@ export async function getIamKey(
     white.underline(
       `Creating new session in "${awsAccount.label ?? awsAccount.alias}" (id=${
         awsAccount.id
-      } alias=${awsAccount.alias}) for ${alksRole}`
+      } alias=${
+        awsAccount.alias
+      }) for ${alksRole} expiring in ${duration} hour${
+        duration === 1 ? '' : 's'
+      }`
     )
   );
 
