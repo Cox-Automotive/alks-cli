@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Updates readme
-* Adds deprecation warnings about role types
+* Fixes duration flag for alks sessions open
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
