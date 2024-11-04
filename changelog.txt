@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixes duration flag for alks sessions open
-
+* Updates dependencies to mitigate vulnerabilities
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
