@@ -103,7 +103,7 @@
     "optionalDependencies": {
         "express": "^4.17.1",
         "express-list-endpoints": "^3.0.1",
-        "forever": "^4.0.3",
+        "forever": "^1.0.1",
         "keytar": "^7.7.0"
     },
     "lint-staged": {
