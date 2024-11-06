@@ -12,7 +12,6 @@ on:
 env:
   REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
   USERNAME: ${{ secrets.ALKS_USER }}
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
   build_and_test:
@@ -30,10 +29,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        token: ${{ secrets.NPM_TOKEN }}
-        registry-url: https://registry.npmjs.org/
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --verbose
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
