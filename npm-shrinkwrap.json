@@ -15,7 +15,6 @@
         "cli-table3": "^0.5.0",
         "commander": "^9.4.0",
         "crypto": "0.0.3",
-        "forever": "^1.0.1",
         "fuzzy": "^0.1.1",
         "ini": "^2.0.0",
         "inquirer": "^6.5.2",
