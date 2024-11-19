@@ -11,7 +11,7 @@ function getKeytar() {
             return yield Promise.resolve().then(() => tslib_1.__importStar(require('keytar')));
         }
         catch (err) {
-            (0, log_1.log)('failed to import keytar');
+            (0, log_1.log)(`failed to import keytar: ${err}`);
             if (!(0, isOsx_1.isOsx)() && !(0, isWindows_1.isWindows)()) {
                 // see https://github.com/atom/node-keytar#on-linux
                 throw new Error(`Please ensure that either libsecret-1-dev, libsecret-devel, or libsecret is installed, then reinstall this tool with 'npm install -g --unsafe-perm=true alks'`);
