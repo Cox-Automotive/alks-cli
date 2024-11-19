@@ -4,7 +4,7 @@ exports.getDbFile = exports.getCustomDbFilePath = exports.getDbFileName = void 0
 const tslib_1 = require("tslib");
 const path_1 = require("path");
 const underscore_1 = require("underscore");
-const configFolder_1 = require("./configFolder");
+const folders_1 = require("./folders");
 const log_1 = require("./log");
 function getDbFileName() {
     return 'alks.db';
@@ -26,7 +26,7 @@ function getDbFile() {
             (0, log_1.log)('using alks.db file path from environment variable');
             return customDbFilePath;
         }
-        return (0, path_1.join)((0, configFolder_1.getAlksConfigFolder)(), getDbFileName());
+        return (0, path_1.join)((0, folders_1.getAlksConfigFolder)(), getDbFileName());
     });
 }
 exports.getDbFile = getDbFile;

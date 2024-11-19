@@ -13,7 +13,14 @@ function _getAlksAccounts(options = {}) {
         // load available account/roles
         const alks = yield (0, getAlks_1.getAlks)(Object.assign({}, auth));
         const alksAccounts = yield alks.getAccounts();
-        (0, log_1.log)(`All accounts: ${alksAccounts.map((alksAccount) => alksAccount.account)}`);
+        // log the accounts, but truncate to show up to the first 10 accounts
+        let accountsToLog = alksAccounts.map((alksAccount) => alksAccount.account);
+        if (accountsToLog.length > 10) {
+            accountsToLog = accountsToLog
+                .slice(0, 10)
+                .concat(`... and ${accountsToLog.length - 10} more`);
+        }
+        (0, log_1.log)(`All accounts: [${accountsToLog.join(', ')}]`);
         // Filter out non-iam-active accounts if iamOnly flag is passed
         const filteredAlksAccounts = alksAccounts.filter((alksAccount) => !options.iamOnly || alksAccount.iamKeyActive);
         return filteredAlksAccounts;

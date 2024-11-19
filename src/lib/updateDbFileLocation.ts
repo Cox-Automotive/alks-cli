@@ -4,7 +4,7 @@ import { homedir } from 'os';
 import { join } from 'path';
 import { log } from './log';
 import { getDbFileName, getCustomDbFilePath } from './getDbFile';
-import { getAlksConfigFolder } from './configFolder';
+import { getAlksConfigFolder } from './folders';
 
 const OLD_DB_FILE_PATH = join(homedir(), getDbFileName());
 const NEW_DB_FILE_PATH = join(getAlksConfigFolder(), getDbFileName());

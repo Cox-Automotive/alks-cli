@@ -7,9 +7,9 @@ const { readFile, writeFile } = fs_1.promises;
 const path_1 = require("path");
 const ini_1 = require("ini");
 const log_1 = require("../log");
-const configFolder_1 = require("../configFolder");
+const folders_1 = require("../folders");
 function getCredentialsFilePath() {
-    return (0, path_1.join)((0, configFolder_1.getAlksConfigFolder)(), 'credentials');
+    return (0, path_1.join)((0, folders_1.getAlksConfigFolder)(), 'credentials');
 }
 exports.getCredentialsFilePath = getCredentialsFilePath;
 function getCredentials() {

@@ -9,7 +9,7 @@ import { convertNetrcToIni } from '../lib/convertNetrcToIni';
 import { handleCommanderError } from '../lib/handlers/handleCommanderError';
 import program from '../lib/program';
 import { updateDbFileLocation } from '../lib/updateDbFileLocation';
-import { log } from '../lib/log';
+import { log, initLogs } from '../lib/log';
 
 if (process.stdout.isTTY) {
   console.error(clc.whiteBright.bold('ALKS v%s'), version);
@@ -20,6 +20,7 @@ if (process.stdout.isTTY) {
   let programStartTime: Date | undefined;
   try {
     await ensureConfigFolderExists();
+    await initLogs();
     await convertNetrcToIni();
     await updateDbFileLocation();
 

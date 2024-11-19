@@ -18,9 +18,15 @@ async function _getAlksAccounts(options: GetAlksAccountRolePairsOptions = {}) {
   });
 
   const alksAccounts = await alks.getAccounts();
-  log(
-    `All accounts: ${alksAccounts.map((alksAccount) => alksAccount.account)}`
-  );
+
+  // log the accounts, but truncate to show up to the first 10 accounts
+  let accountsToLog = alksAccounts.map((alksAccount) => alksAccount.account);
+  if (accountsToLog.length > 10) {
+    accountsToLog = accountsToLog
+      .slice(0, 10)
+      .concat(`... and ${accountsToLog.length - 10} more`);
+  }
+  log(`All accounts: [${accountsToLog.join(', ')}]`);
 
   // Filter out non-iam-active accounts if iamOnly flag is passed
   const filteredAlksAccounts = alksAccounts.filter(

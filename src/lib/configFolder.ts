@@ -1,12 +1,7 @@
 import { promises } from 'fs';
-import { homedir } from 'os';
-import { join } from 'path';
 import { log } from './log';
+import { getAlksConfigFolder } from './folders';
 const { mkdir } = promises;
-
-export function getAlksConfigFolder() {
-  return join(homedir(), '.alks-cli');
-}
 
 export async function ensureConfigFolderExists(): Promise<void> {
   log('ensuring config folder exists');

@@ -3,7 +3,7 @@ const { readFile, writeFile } = fsPromises;
 import { join } from 'path';
 import { parse, stringify } from 'ini';
 import { log } from '../log';
-import { getAlksConfigFolder } from '../configFolder';
+import { getAlksConfigFolder } from '../folders';
 
 export function getCredentialsFilePath() {
   return join(getAlksConfigFolder(), 'credentials');
