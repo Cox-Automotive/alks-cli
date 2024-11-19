@@ -4,7 +4,7 @@ import program from './program';
 import { promises } from 'fs';
 import { getAlksLogFolder } from './folders';
 import { join } from 'path';
-const { mkdir, appendFile } = promises;
+const { mkdir, appendFile, stat, unlink } = promises;
 
 const defaultLogFileName = 'alks.log';
 
@@ -46,6 +46,18 @@ export function log(msg: string, opts: LogOptions = {}) {
 export async function initLogs(filename?: string): Promise<void> {
   if (!filename) {
     filename = defaultLogFileName;
+  }
+
+  try {
+    const { birthtime } = await stat(join(getAlksLogFolder(), filename));
+    if (birthtime) {
+      // if the file is older than 7 days, clear the old file
+      if (Date.now() - birthtime.getTime() > 1000 * 60 * 60 * 24 * 7) {
+        await unlink(join(getAlksLogFolder(), filename));
+      }
+    }
+  } catch (err) {
+    // do nothing
   }
 
   // ensure the alks log folder exists

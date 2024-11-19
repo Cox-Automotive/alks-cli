@@ -8,7 +8,7 @@ const program_1 = tslib_1.__importDefault(require("./program"));
 const fs_1 = require("fs");
 const folders_1 = require("./folders");
 const path_1 = require("path");
-const { mkdir, appendFile } = fs_1.promises;
+const { mkdir, appendFile, stat, unlink } = fs_1.promises;
 const defaultLogFileName = 'alks.log';
 function log(msg, opts = {}) {
     let prefix = opts.prefix;
@@ -38,6 +38,18 @@ function initLogs(filename) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!filename) {
             filename = defaultLogFileName;
+        }
+        try {
+            const { birthtime } = yield stat((0, path_1.join)((0, folders_1.getAlksLogFolder)(), filename));
+            if (birthtime) {
+                // if the file is older than 7 days, clear the old file
+                if (Date.now() - birthtime.getTime() > 1000 * 60 * 60 * 24 * 7) {
+                    yield unlink((0, path_1.join)((0, folders_1.getAlksLogFolder)(), filename));
+                }
+            }
+        }
+        catch (err) {
+            // do nothing
         }
         // ensure the alks log folder exists
         yield mkdir((0, folders_1.getAlksLogFolder)()).catch((err) => {
