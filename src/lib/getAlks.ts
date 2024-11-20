@@ -1,6 +1,8 @@
 import ALKS, { AlksProps, create } from 'alks.js';
 import { getUserAgentString } from './getUserAgentString';
 import { getServer } from './state/server';
+import { log } from './log';
+import fetch from 'node-fetch-commonjs';
 
 interface TokenProps {
   token: string;
@@ -17,6 +19,21 @@ interface PasswordProps {
 
 export type Props = TokenProps | PasswordProps;
 
+interface AlksResponse {
+  statusMessage: string;
+  requestId: string;
+}
+
+const loggingFetch: typeof fetch = async (url, body) => {
+  const response = await fetch(url, body);
+  const json = (await response.json()) as AlksResponse;
+  log(
+    `alks.js call to ${url} status "${json.statusMessage}" with requestId: ${json.requestId}`
+  );
+  response.json = async () => json;
+  return response;
+};
+
 /**
  * Gets a preconfigured alks.js object
  */
@@ -31,6 +48,7 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
   const params = {
     baseUrl: server,
     userAgent: getUserAgentString(),
+    _fetch: loggingFetch,
   };
 
   let alks;

@@ -40,7 +40,7 @@ export function log(msg: string, opts: LogOptions = {}) {
     console.error(yellow(`[${prefix}]: ${msg}`));
   }
 
-  writeLogToFile(msg, { ...opts });
+  writeLogToFile(msg, { ...opts, prefix });
 }
 
 export async function initLogs(filename?: string): Promise<void> {

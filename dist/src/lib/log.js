@@ -31,7 +31,7 @@ function log(msg, opts = {}) {
     if (verbose) {
         console.error((0, cli_color_1.yellow)(`[${prefix}]: ${msg}`));
     }
-    writeLogToFile(msg, Object.assign({}, opts));
+    writeLogToFile(msg, Object.assign(Object.assign({}, opts), { prefix }));
 }
 exports.log = log;
 function initLogs(filename) {

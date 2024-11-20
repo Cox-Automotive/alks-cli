@@ -5,9 +5,18 @@ const tslib_1 = require("tslib");
 const alks_js_1 = require("alks.js");
 const getUserAgentString_1 = require("./getUserAgentString");
 const server_1 = require("./state/server");
+const log_1 = require("./log");
+const node_fetch_commonjs_1 = tslib_1.__importDefault(require("node-fetch-commonjs"));
 function isTokenProps(props) {
     return !!props.token;
 }
+const loggingFetch = (url, body) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    const response = yield (0, node_fetch_commonjs_1.default)(url, body);
+    const json = (yield response.json());
+    (0, log_1.log)(`alks.js call to ${url} status "${json.statusMessage}" with requestId: ${json.requestId}`);
+    response.json = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return json; });
+    return response;
+});
 /**
  * Gets a preconfigured alks.js object
  */
@@ -20,6 +29,7 @@ function getAlks(props) {
         const params = {
             baseUrl: server,
             userAgent: (0, getUserAgentString_1.getUserAgentString)(),
+            _fetch: loggingFetch,
         };
         let alks;
         if (isTokenProps(props)) {
