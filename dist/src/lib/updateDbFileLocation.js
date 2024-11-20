@@ -8,9 +8,9 @@ const os_1 = require("os");
 const path_1 = require("path");
 const log_1 = require("./log");
 const getDbFile_1 = require("./getDbFile");
-const configFolder_1 = require("./configFolder");
+const folders_1 = require("./folders");
 const OLD_DB_FILE_PATH = (0, path_1.join)((0, os_1.homedir)(), (0, getDbFile_1.getDbFileName)());
-const NEW_DB_FILE_PATH = (0, path_1.join)((0, configFolder_1.getAlksConfigFolder)(), (0, getDbFile_1.getDbFileName)());
+const NEW_DB_FILE_PATH = (0, path_1.join)((0, folders_1.getAlksConfigFolder)(), (0, getDbFile_1.getDbFileName)());
 function updateDbFileLocation() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const customDbFilePath = (0, getDbFile_1.getCustomDbFilePath)();

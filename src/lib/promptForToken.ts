@@ -30,7 +30,7 @@ export async function promptForToken() {
         }), // timeout after 5 seconds
       ]);
     } catch (err) {
-      console.error(`Failed to open ${url}`);
+      console.error(`Failed to open ${url}: ${err}`);
       console.error('Please open the url in the browser of your choice');
     }
 

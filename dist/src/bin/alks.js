@@ -20,6 +20,7 @@ if (process.stdout.isTTY) {
         let programStartTime;
         try {
             yield (0, configFolder_1.ensureConfigFolderExists)();
+            yield (0, log_1.initLogs)();
             yield (0, convertNetrcToIni_1.convertNetrcToIni)();
             yield (0, updateDbFileLocation_1.updateDbFileLocation)();
             programStartTime = new Date();

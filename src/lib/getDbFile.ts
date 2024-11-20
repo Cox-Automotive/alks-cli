@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { isEmpty } from 'underscore';
-import { getAlksConfigFolder } from './configFolder';
+import { getAlksConfigFolder } from './folders';
 import { log } from './log';
 
 export function getDbFileName() {

@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Updates dependencies to mitigate vulnerabilities
+* Ensures all errors are logs
+* Adds a log file for viewing debug logs of previous commands
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

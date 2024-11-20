@@ -6,7 +6,7 @@ export async function getKeytar() {
   try {
     return await import('keytar');
   } catch (err) {
-    log('failed to import keytar');
+    log(`failed to import keytar: ${err}`);
     if (!isOsx() && !isWindows()) {
       // see https://github.com/atom/node-keytar#on-linux
       throw new Error(
