@@ -109,7 +109,7 @@ export async function handleAlksDeveloperConfigure(
     if (process.stdin.isTTY && shouldPrompt) {
       await tabtab.install({
         name: 'alks',
-        completer: 'alks',
+        completer: 'alks completion',
       });
     }
 

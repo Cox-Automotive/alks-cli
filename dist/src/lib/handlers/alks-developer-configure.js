@@ -94,7 +94,7 @@ function handleAlksDeveloperConfigure(options) {
             if (process.stdin.isTTY && shouldPrompt) {
                 yield tabtab_1.default.install({
                     name: 'alks',
-                    completer: 'alks',
+                    completer: 'alks completion',
                 });
             }
             yield (0, checkForUpdate_1.checkForUpdate)();
