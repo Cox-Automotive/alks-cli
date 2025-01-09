@@ -10,6 +10,7 @@ import { handleCommanderError } from '../lib/handlers/handleCommanderError';
 import program from '../lib/program';
 import { updateDbFileLocation } from '../lib/updateDbFileLocation';
 import { log, initLogs } from '../lib/log';
+import { checkForUpdate } from '../lib/checkForUpdate';
 
 if (process.stdout.isTTY) {
   console.error(clc.whiteBright.bold('ALKS v%s'), version);
@@ -23,6 +24,8 @@ if (process.stdout.isTTY) {
     await initLogs();
     await convertNetrcToIni();
     await updateDbFileLocation();
+    // Debugging
+    await checkForUpdate();
 
     programStartTime = new Date();
     await program.parseAsync();

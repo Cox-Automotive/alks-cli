@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkForUpdate = void 0;
 const tslib_1 = require("tslib");
 const cli_color_1 = require("cli-color");
-const npm_registry_client_1 = tslib_1.__importDefault(require("npm-registry-client"));
+const npm_registry_fetch_1 = tslib_1.__importDefault(require("npm-registry-fetch"));
 const semver_1 = require("semver");
 const package_json_1 = require("../../package.json");
 const path_1 = tslib_1.__importDefault(require("path"));
@@ -11,7 +11,6 @@ const fs_1 = tslib_1.__importDefault(require("fs"));
 const log_1 = require("./log");
 const showBorderedMessage_1 = require("./showBorderedMessage");
 const lastVersion_1 = require("./state/lastVersion");
-function noop() { }
 function getChangeLog() {
     const file = path_1.default.join(__dirname, '../../', 'changelog.txt');
     return fs_1.default.readFileSync(file, 'utf8');
@@ -36,17 +35,13 @@ function checkForUpdateInternal() {
         (0, log_1.log)('checking for update...');
         const currentVersion = package_json_1.version;
         const app = package_json_1.name;
-        const client = new npm_registry_client_1.default({ log: { verbose: noop, info: noop, http: noop } });
-        const data = yield new Promise((resolve, reject) => {
-            client.get(`https://registry.npmjs.org/${app}/latest`, { timeout: 1000 }, (error, data) => {
-                if (error) {
-                    reject(error);
-                }
-                else {
-                    resolve(data);
-                }
-            });
+        const response = yield (0, npm_registry_fetch_1.default)(`https://registry.npmjs.org/${app}/latest`, {
+            timeout: 1000,
         });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = yield response.json();
         const latestVersion = data.version;
         const needsUpdate = (0, semver_1.gt)(latestVersion, currentVersion);
         (0, log_1.log)('needs update? ' + (needsUpdate ? 'yes' : 'no'));

@@ -1,5 +1,5 @@
 import { white, blue, green } from 'cli-color';
-import npm from 'npm-registry-client';
+import fetch from 'npm-registry-fetch';
 import { gt } from 'semver';
 import { version, name } from '../../package.json';
 import path from 'path';
@@ -7,8 +7,6 @@ import fs from 'fs';
 import { log } from './log';
 import { showBorderedMessage } from './showBorderedMessage';
 import { getLastVersion, setLastVersion } from './state/lastVersion';
-
-function noop() {}
 
 function getChangeLog() {
   const file = path.join(__dirname, '../../', 'changelog.txt');
@@ -34,21 +32,14 @@ async function checkForUpdateInternal() {
 
   const currentVersion = version;
   const app = name;
-  const client = new npm({ log: { verbose: noop, info: noop, http: noop } });
 
-  const data: { version: string } = await new Promise((resolve, reject) => {
-    client.get(
-      `https://registry.npmjs.org/${app}/latest`,
-      { timeout: 1000 },
-      (error: Error, data: { version: string }) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(data);
-        }
-      }
-    );
+  const response = await fetch(`https://registry.npmjs.org/${app}/latest`, {
+    timeout: 1000,
   });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
 
   const latestVersion = data.version;
   const needsUpdate = gt(latestVersion, currentVersion);
