@@ -115,7 +115,7 @@ async function generateConsoleUrl(
   const optionsLocal = _.extend(
     {
       debug: false,
-      ua: getUserAgentString ?? DEFAULT_UA,
+      ua: getUserAgentString() ?? DEFAULT_UA,
     },
     options
   );

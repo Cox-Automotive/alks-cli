@@ -90,6 +90,7 @@ function handleAlksSessionsConsole(options) {
 }
 exports.handleAlksSessionsConsole = handleAlksSessionsConsole;
 function generateConsoleUrl(key, options) {
+    var _a;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const payload = {
             sessionId: key.accessKey,
@@ -98,7 +99,7 @@ function generateConsoleUrl(key, options) {
         };
         const optionsLocal = underscore_1.default.extend({
             debug: false,
-            ua: getUserAgentString_1.getUserAgentString !== null && getUserAgentString_1.getUserAgentString !== void 0 ? getUserAgentString_1.getUserAgentString : DEFAULT_UA,
+            ua: (_a = (0, getUserAgentString_1.getUserAgentString)()) !== null && _a !== void 0 ? _a : DEFAULT_UA,
         }, options);
         const urlParms = `?Action=getSigninToken&SessionType=json&Session=${encodeURIComponent(JSON.stringify(payload))}`;
         const endpoint = AWS_SIGNIN_URL + urlParms;
