@@ -10,7 +10,7 @@
       "license": "MIT",
       "dependencies": {
         "@google-analytics/data": "^4.12.0",
-        "alks.js": "^2.8.1",
+        "alks.js": "^2.9.0",
         "axios": "^1.7.9",
         "cli-color": "^2.0.0",
         "cli-table3": "^0.5.0",
@@ -47,7 +47,8 @@
         "@types/jest": "^26.0.24",
         "@types/lokijs": "^1.5.4",
         "@types/memoizee": "^0.4.8",
-        "@types/node": "^15.0.0",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^15.14.9",
         "@types/npm-registry-fetch": "^8.0.7",
         "@types/semver": "^7.3.5",
         "@types/tabtab": "^3.0.1",
@@ -3012,7 +3013,7 @@
     },
     "node_modules/@types/jest": {
       "version": "26.0.24",
-      "resolved": "https://registry.npmjs.org/@types/jest/-/jest-26.0.24.tgz",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/@types/jest/-/jest-26.0.24.tgz",
       "integrity": "sha512-E/X5Vib8BWqZNRlDxj9vYXhsDwPYbPINqKF9BsnSoon4RQ0D9moEuLD8txgyypFLH7J4+Lho9Nr/c8H0Fi+17w==",
       "dev": true,
       "license": "MIT",
@@ -3048,9 +3049,16 @@
       "dev": true,
       "license": "MIT"
     },
+    "node_modules/@types/mocha": {
+      "version": "10.0.10",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/@types/mocha/-/mocha-10.0.10.tgz",
+      "integrity": "sha512-xPyYSz1cMPnJQhl0CLMH68j3gprKZaTjG3s5Vi+fDgx+uhG9NOXwbVt52eFS8ECyXhyKcjDLCBEqBExKuiZb7Q==",
+      "dev": true,
+      "license": "MIT"
+    },
     "node_modules/@types/node": {
       "version": "15.14.9",
-      "resolved": "https://registry.npmjs.org/@types/node/-/node-15.14.9.tgz",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/@types/node/-/node-15.14.9.tgz",
       "integrity": "sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==",
       "license": "MIT"
     },
@@ -3063,21 +3071,6 @@
       "dependencies": {
         "@types/node": "*",
         "form-data": "^4.0.0"
-      }
-    },
-    "node_modules/@types/node-fetch/node_modules/form-data": {
-      "version": "4.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/form-data/-/form-data-4.0.1.tgz",
-      "integrity": "sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==",
-      "dev": true,
-      "license": "MIT",
-      "dependencies": {
-        "asynckit": "^0.4.0",
-        "combined-stream": "^1.0.8",
-        "mime-types": "^2.1.12"
-      },
-      "engines": {
-        "node": ">= 6"
       }
     },
     "node_modules/@types/npm-package-arg": {
@@ -3339,13 +3332,12 @@
       }
     },
     "node_modules/alks.js": {
-      "version": "2.8.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/alks.js/-/alks.js-2.8.1.tgz",
-      "integrity": "sha512-ISBoU7NhlKGI0K5PMkvTRAjj7XGe1NMbNyXchZmKlXA23Uj+sfCn/+PAG07nFg2u+JrtcCmt6GIv3PH3+2CQbA==",
+      "version": "2.9.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/alks.js/-/alks.js-2.9.0.tgz",
+      "integrity": "sha512-UTi/lf2oX3FbJmaCAk04ssvxk1LOWF0L6tOi6KtDxICE6daOzAneA91Mo1DhxZE17/6lu0fS2ZMfEly3ufwErA==",
       "license": "MIT",
       "dependencies": {
         "encoding": "^0.1.13",
-        "node-fetch": "^2.6.1",
         "tslib": "^2.3.1"
       },
       "engines": {
@@ -3610,20 +3602,6 @@
         "follow-redirects": "^1.15.6",
         "form-data": "^4.0.0",
         "proxy-from-env": "^1.1.0"
-      }
-    },
-    "node_modules/axios/node_modules/form-data": {
-      "version": "4.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/form-data/-/form-data-4.0.1.tgz",
-      "integrity": "sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==",
-      "license": "MIT",
-      "dependencies": {
-        "asynckit": "^0.4.0",
-        "combined-stream": "^1.0.8",
-        "mime-types": "^2.1.12"
-      },
-      "engines": {
-        "node": ">= 6"
       }
     },
     "node_modules/babel-jest": {
@@ -6351,6 +6329,20 @@
       "optional": true,
       "engines": {
         "node": ">=0.10.0"
+      }
+    },
+    "node_modules/form-data": {
+      "version": "4.0.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/form-data/-/form-data-4.0.1.tgz",
+      "integrity": "sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==",
+      "license": "MIT",
+      "dependencies": {
+        "asynckit": "^0.4.0",
+        "combined-stream": "^1.0.8",
+        "mime-types": "^2.1.12"
+      },
+      "engines": {
+        "node": ">= 6"
       }
     },
     "node_modules/forwarded": {
