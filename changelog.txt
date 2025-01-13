@@ -1,10 +1,9 @@
-★ Release Notes: 2024-11-20 ★
+★ Release Notes: 2025-01-13 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Ensures all errors are logs
-* Adds a log file for viewing debug logs of previous commands
+* Removes node-fetch usage that resulted in punycode deprecation warnings.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
