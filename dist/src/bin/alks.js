@@ -12,8 +12,11 @@ const program_1 = tslib_1.__importDefault(require("../lib/program"));
 const updateDbFileLocation_1 = require("../lib/updateDbFileLocation");
 const log_1 = require("../lib/log");
 const checkForUpdate_1 = require("../lib/checkForUpdate");
+const alksPackage = require('alks.js/package.json');
+const alksVersion = alksPackage.version;
 if (process.stdout.isTTY) {
     console.error(cli_color_1.default.whiteBright.bold('ALKS v%s'), package_json_1.version);
+    console.error(cli_color_1.default.whiteBright.bold('ALKS.js v%s'), alksVersion);
 }
 (function main() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
