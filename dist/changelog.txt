@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Removes node-fetch usage that resulted in punycode deprecation warnings.
+* Removes node-fetch/request usage that resulted in punycode deprecation warnings.
+# Removes dependency on alks-node.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
