@@ -11,7 +11,6 @@ const handleCommanderError_1 = require("../lib/handlers/handleCommanderError");
 const program_1 = tslib_1.__importDefault(require("../lib/program"));
 const updateDbFileLocation_1 = require("../lib/updateDbFileLocation");
 const log_1 = require("../lib/log");
-const checkForUpdate_1 = require("../lib/checkForUpdate");
 if (process.stdout.isTTY) {
     console.error(cli_color_1.default.whiteBright.bold('ALKS v%s'), package_json_1.version);
 }
@@ -24,8 +23,6 @@ if (process.stdout.isTTY) {
             yield (0, log_1.initLogs)();
             yield (0, convertNetrcToIni_1.convertNetrcToIni)();
             yield (0, updateDbFileLocation_1.updateDbFileLocation)();
-            // Debugging
-            yield (0, checkForUpdate_1.checkForUpdate)();
             programStartTime = new Date();
             yield program_1.default.parseAsync();
         }
