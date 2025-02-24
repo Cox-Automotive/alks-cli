@@ -6,9 +6,11 @@ const cli_color_1 = require("cli-color");
 const moment_1 = tslib_1.__importDefault(require("moment"));
 const isWindows_1 = require("./isWindows");
 const updateCreds_1 = require("./updateCreds");
+const log_1 = require("./log");
 // if adding new output types be sure to update getOutputValues.ts
 function getKeyOutput(format, key, profile, force) {
     const keyExpires = (0, moment_1.default)(key.expires).format();
+    (0, log_1.log)(`using output format: ${format}`);
     switch (format) {
         case 'docker': {
             return `-e AWS_ACCESS_KEY_ID=${key.accessKey} -e AWS_SECRET_ACCESS_KEY=${key.secretKey} -e AWS_SESSION_TOKEN=${key.sessionToken} -e AWS_SESSION_EXPIRES=${keyExpires}`;
@@ -66,6 +68,7 @@ function getKeyOutput(format, key, profile, force) {
         case 'export': // fall through to default case
         case 'set':
         default: {
+            console.error('WARNING: Because this tool runs in a subshell, it cannot set environment variables in the parent shell. To use these keys, copy the commands printed below and run them in your current shell to have these environment variables set');
             const cmd = (0, isWindows_1.isWindows)() || format === 'set' ? 'SET' : 'export';
             return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires}`;
         }
