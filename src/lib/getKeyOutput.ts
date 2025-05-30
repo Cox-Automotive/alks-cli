@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Key } from '../model/keys';
 import { isWindows } from './isWindows';
 import { updateCreds } from './updateCreds';
+import { log } from './log';
 
 // if adding new output types be sure to update getOutputValues.ts
 export function getKeyOutput(
@@ -12,6 +13,8 @@ export function getKeyOutput(
   force: boolean | undefined
 ) {
   const keyExpires = moment(key.expires).format();
+
+  log(`using output format: ${format}`);
 
   switch (format) {
     case 'docker': {
@@ -73,6 +76,10 @@ export function getKeyOutput(
     case 'export': // fall through to default case
     case 'set':
     default: {
+      console.error(
+        'WARNING: Because this tool runs in a subshell, it cannot set environment variables in the parent shell. To use these keys, copy the commands printed below and run them in your current shell to have these environment variables set'
+      );
+
       const cmd = isWindows() || format === 'set' ? 'SET' : 'export';
 
       return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires}`;
