@@ -9,6 +9,28 @@ const getStdErrPrompt_1 = require("./getStdErrPrompt");
 const log_1 = require("./log");
 const alksAccount_1 = require("./state/alksAccount");
 const alksRole_1 = require("./state/alksRole");
+const splitAccountStr = (account) => {
+    const [accountIdAndRole, accountName] = account.split(' - ');
+    const [accountId, accountRole] = accountIdAndRole.split('/');
+    return { accountName, accountId, accountRole, accountIdAndRole };
+};
+// Output example: AccountName ..... AccountId/AccountRole    :: Role
+const formatAccountOutput = (account, role, maxAccountNameLength, maxAccountIdAndRoleLength) => {
+    const { accountName, accountIdAndRole } = splitAccountStr(account);
+    return [
+        `${accountName} .`.padEnd(maxAccountNameLength + 2, '.'),
+        accountIdAndRole.padEnd(maxAccountIdAndRoleLength, ' '),
+        (0, getAccountDelim_1.getAccountDelim)(),
+        role,
+    ].join(' ');
+};
+const sortFavorites = (favorites) => (a, b) => Number(favorites.includes(b.account)) -
+    Number(favorites.includes(a.account));
+const sortAlphabetically = () => (a, b) => {
+    const { accountName: aAccountName } = splitAccountStr(a.account);
+    const { accountName: bAccountName } = splitAccountStr(b.account);
+    return aAccountName.localeCompare(bAccountName);
+};
 function promptForAlksAccountAndRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const opts = {
@@ -19,10 +41,18 @@ function promptForAlksAccountAndRole(options) {
         const alksAccounts = yield (0, getAlksAccounts_1.getAlksAccounts)({ iamOnly: opts.iamOnly });
         const favorites = yield (0, getFavorites_1.getFavorites)();
         (0, log_1.log)(`Favorites: ${favorites.toString()}`);
+        const [maxAccountNameLength, maxAccountIdAndRoleLength] = alksAccounts.reduce((prev, alksAccount) => {
+            const { accountName, accountIdAndRole } = splitAccountStr(alksAccount.account);
+            return [
+                Math.max(prev[0], accountName.length),
+                Math.max(prev[1], accountIdAndRole.length),
+            ];
+        }, [0, 0]);
         const indexedAlksAccounts = alksAccounts
-            .map((alksAccount) => [alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)())) // Convert ALKS account object to ALKS-CLI style account string
-            .filter((accountString) => !opts.filterFavorites || favorites.includes(accountString)) // Filter out non-favorites if filterFavorites flag is passed
-            .sort((a, b) => Number(favorites.includes(b)) - Number(favorites.includes(a))); // Move favorites to the front of the list, non-favorites to the back
+            .filter((alksAccount) => !opts.filterFavorites || favorites.includes(alksAccount.account)) // Filter out non-favorites if filterFavorites flag is passed
+            .sort(sortAlphabetically()) // Sort alphabetically first
+            .sort(sortFavorites(favorites)) // Move favorites to the front of the list, non-favorites to the back
+            .map((alksAccount) => formatAccountOutput(alksAccount.account, alksAccount.role, maxAccountNameLength, maxAccountIdAndRoleLength)); // Convert ALKS account object to ALKS-CLI style account string
         if (!indexedAlksAccounts.length) {
             throw new Error('No accounts found.');
         }
@@ -37,18 +67,19 @@ function promptForAlksAccountAndRole(options) {
         const defaultAlksAccount = yield (0, alksAccount_1.getAlksAccount)();
         const defaultAlksRole = yield (0, alksRole_1.getAlksRole)();
         if (defaultAlksAccount && defaultAlksRole) {
-            promptData.default = [defaultAlksAccount, defaultAlksRole].join((0, getAccountDelim_1.getAccountDelim)());
+            promptData.default = formatAccountOutput(defaultAlksAccount, defaultAlksRole, maxAccountNameLength, maxAccountIdAndRoleLength);
         }
         // ask user which account/role
         const prompt = (0, getStdErrPrompt_1.getStdErrPrompt)();
         const answers = yield prompt([promptData]);
         const acctStr = answers.alksAccount;
-        const data = acctStr.split((0, getAccountDelim_1.getAccountDelim)());
-        const alksAccount = data[0];
-        const alksRole = data[1];
+        // rebuild the account string to get the account and role
+        const selectedAccountName = acctStr.split(' .')[0];
+        const selectedAccountIdAndRole = acctStr.split('. ')[1].split(' ')[0];
+        const selectedRole = acctStr.split((0, getAccountDelim_1.getAccountDelim)())[1].trim();
         return {
-            alksAccount,
-            alksRole,
+            alksAccount: `${selectedAccountIdAndRole} - ${selectedAccountName}`,
+            alksRole: selectedRole,
         };
     });
 }
