@@ -181,6 +181,6 @@ setup() {
     echo "# should output a list of AWS accounts in JSON format" >&3
 
     run alks developer accounts -o json
-    [ "$status" -eq 0 ]
     assert_output --partial "]}}"
+    [ "$status" -eq 0 ]
 }
