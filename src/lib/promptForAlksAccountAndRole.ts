@@ -101,10 +101,8 @@ export async function promptForAlksAccountAndRole(
   );
 
   if (!selectedAccount) {
-    console.log(
-      `Selected account not found in the list of accounts:\n${selectedString}\n${indexedAlksAccounts
-        .map((a) => a.formattedOutput)
-        .join(',\n')}`
+    log(
+      `Selected account "${selectedString}" not found in the list of accounts.`
     );
     throw new Error(
       'Account selection failed. The selected account was not found.'

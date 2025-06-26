@@ -56,9 +56,7 @@ function promptForAlksAccountAndRole(options) {
         const selectedString = answers.alksAccount;
         const selectedAccount = indexedAlksAccounts.find((account) => account.formattedOutput === selectedString);
         if (!selectedAccount) {
-            console.log(`Selected account not found in the list of accounts:\n${selectedString}\n${indexedAlksAccounts
-                .map((a) => a.formattedOutput)
-                .join(',\n')}`);
+            (0, log_1.log)(`Selected account "${selectedString}" not found in the list of accounts.`);
             throw new Error('Account selection failed. The selected account was not found.');
         }
         return {
