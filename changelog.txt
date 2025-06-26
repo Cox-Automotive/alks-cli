@@ -1,9 +1,9 @@
-★ Release Notes: 2025-02-24 ★
+★ Release Notes: 2025-06-26 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Improves logging around output formats
+* Cleans up the formatting of account strings
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
