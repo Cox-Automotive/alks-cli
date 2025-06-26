@@ -1,11 +1,13 @@
-import { Account } from 'alks.js';
-import { getAccountDelim } from './getAccountDelim';
 import { getAlksAccounts } from './getAlksAccounts';
 import { getFavorites } from './getFavorites';
 import { getStdErrPrompt } from './getStdErrPrompt';
 import { log } from './log';
 import { getAlksAccount } from './state/alksAccount';
 import { getAlksRole } from './state/alksRole';
+import { parseAlksAccount } from './parseAlksAccount';
+import { formatAccountOutput } from './formatAccountOutput';
+import { compareAliasesAlphabetically } from './compareAliasesAlphabetically';
+import { compareFavorites } from './compareFavorites';
 
 export interface GetAlksAccountOptions {
   iamOnly: boolean;
@@ -22,49 +24,6 @@ export interface AlksAccountPromptData {
   default?: string;
 }
 
-const splitAccountStr = (
-  account: string
-): {
-  accountName: string;
-  accountId: string;
-  accountRole: string;
-  accountIdAndRole: string;
-} => {
-  const [accountIdAndRole, accountName] = account.split(' - ');
-  const [accountId, accountRole] = accountIdAndRole.split('/');
-  return { accountName, accountId, accountRole, accountIdAndRole };
-};
-
-// Output example: AccountName ..... AccountId/AccountRole    :: Role
-const formatAccountOutput = (
-  account: string,
-  role: string,
-  maxAccountNameLength: number,
-  maxAccountIdAndRoleLength: number
-): string => {
-  const { accountName, accountIdAndRole } = splitAccountStr(account);
-  return [
-    `${accountName} .`.padEnd(maxAccountNameLength + 2, '.'),
-    accountIdAndRole.padEnd(maxAccountIdAndRoleLength, ' '),
-    getAccountDelim(),
-    role,
-  ].join(' ');
-};
-
-const sortFavorites =
-  (favorites: string[]) =>
-  (a: Account, b: Account): number =>
-    Number(favorites.includes(b.account)) -
-    Number(favorites.includes(a.account));
-
-const sortAlphabetically =
-  () =>
-  (a: Account, b: Account): number => {
-    const { accountName: aAccountName } = splitAccountStr(a.account);
-    const { accountName: bAccountName } = splitAccountStr(b.account);
-    return aAccountName.localeCompare(bAccountName);
-  };
-
 export async function promptForAlksAccountAndRole(
   options: Partial<GetAlksAccountOptions>
 ): Promise<{ alksAccount: string; alksRole: string }> {
@@ -74,22 +33,18 @@ export async function promptForAlksAccountAndRole(
     filterFavorites: options.filterFavorites || false,
   };
 
-  const alksAccounts = await getAlksAccounts({ iamOnly: opts.iamOnly });
+  const alksAccounts = (await getAlksAccounts({ iamOnly: opts.iamOnly })).map(
+    parseAlksAccount
+  );
 
   const favorites = await getFavorites();
   log(`Favorites: ${favorites.toString()}`);
 
-  const [maxAccountNameLength, maxAccountIdAndRoleLength] = alksAccounts.reduce(
-    (prev, alksAccount) => {
-      const { accountName, accountIdAndRole } = splitAccountStr(
-        alksAccount.account
-      );
-      return [
-        Math.max(prev[0], accountName.length),
-        Math.max(prev[1], accountIdAndRole.length),
-      ];
-    },
-    [0, 0]
+  const maxAccountAliasLength = Math.max(
+    ...alksAccounts.map((a) => a.accountAlias.length)
+  );
+  const maxAccountIdAndRoleLength = Math.max(
+    ...alksAccounts.map((a) => a.accountIdAndRole.length)
   );
 
   const indexedAlksAccounts = alksAccounts
@@ -97,16 +52,16 @@ export async function promptForAlksAccountAndRole(
       (alksAccount) =>
         !opts.filterFavorites || favorites.includes(alksAccount.account)
     ) // Filter out non-favorites if filterFavorites flag is passed
-    .sort(sortAlphabetically()) // Sort alphabetically first
-    .sort(sortFavorites(favorites)) // Move favorites to the front of the list, non-favorites to the back
-    .map((alksAccount) =>
-      formatAccountOutput(
-        alksAccount.account,
-        alksAccount.role,
-        maxAccountNameLength,
+    .sort(compareAliasesAlphabetically()) // Sort alphabetically first
+    .sort(compareFavorites(favorites)) // Move favorites to the front of the list, non-favorites to the back
+    .map((alksAccount) => ({
+      ...alksAccount,
+      formattedOutput: formatAccountOutput(
+        alksAccount,
+        maxAccountAliasLength,
         maxAccountIdAndRoleLength
-      )
-    ); // Convert ALKS account object to ALKS-CLI style account string
+      ),
+    })); // Add a field to the account object containing the formatted output string
 
   if (!indexedAlksAccounts.length) {
     throw new Error('No accounts found.');
@@ -116,7 +71,7 @@ export async function promptForAlksAccountAndRole(
     type: 'list',
     name: 'alksAccount',
     message: opts.prompt,
-    choices: indexedAlksAccounts,
+    choices: indexedAlksAccounts.map((a) => a.formattedOutput), // Use the formatted output for choices
     pageSize: 15,
   };
 
@@ -124,27 +79,40 @@ export async function promptForAlksAccountAndRole(
   const defaultAlksAccount = await getAlksAccount();
   const defaultAlksRole = await getAlksRole();
 
+  // If a default account and role are set and they match an account the user has, find the corresponding formatted output string
   if (defaultAlksAccount && defaultAlksRole) {
-    promptData.default = formatAccountOutput(
-      defaultAlksAccount,
-      defaultAlksRole,
-      maxAccountNameLength,
-      maxAccountIdAndRoleLength
+    const defaultAccount = indexedAlksAccounts.find(
+      (account) =>
+        account.account === defaultAlksAccount &&
+        account.role === defaultAlksRole
     );
+    if (defaultAccount) {
+      promptData.default = defaultAccount.formattedOutput;
+    }
   }
 
   // ask user which account/role
   const prompt = getStdErrPrompt();
   const answers = await prompt([promptData]);
 
-  const acctStr = answers.alksAccount as string;
-  // rebuild the account string to get the account and role
-  const selectedAccountName = acctStr.split(' .')[0];
-  const selectedAccountIdAndRole = acctStr.split('. ')[1].split(' ')[0];
-  const selectedRole = acctStr.split(getAccountDelim())[1].trim();
+  const selectedString = answers.alksAccount as string;
+  const selectedAccount = indexedAlksAccounts.find(
+    (account) => account.formattedOutput === selectedString
+  );
+
+  if (!selectedAccount) {
+    console.log(
+      `Selected account not found in the list of accounts:\n${selectedString}\n${indexedAlksAccounts
+        .map((a) => a.formattedOutput)
+        .join(',\n')}`
+    );
+    throw new Error(
+      'Account selection failed. The selected account was not found.'
+    );
+  }
 
   return {
-    alksAccount: `${selectedAccountIdAndRole} - ${selectedAccountName}`,
-    alksRole: selectedRole,
+    alksAccount: selectedAccount.account,
+    alksRole: selectedAccount.role,
   };
 }

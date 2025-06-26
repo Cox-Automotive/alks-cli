@@ -13,52 +13,53 @@ jest.mock('./state/alksRole');
 
 describe('promptForAlksAccountAndRole', () => {
   const mockAccounts = [
-    { account: '986533904591/ALKSReadOnly - awsbridgecp1', role: 'ReadOnly' },
+    { account: '123456789012/ALKSReadOnly - devaccount1', role: 'ReadOnly' },
     {
-      account: '640543234732/ALKSReadOnly - awsbridgedzcell2np',
+      account: '111111111111/ALKSReadOnly - testenv2',
       role: 'ReadOnly',
     },
-    { account: '550629699577/ALKSAdmin - awsbridgedzcp1np', role: 'Admin' },
+    { account: '987654321098/ALKSAdmin - prodbridge1', role: 'Admin' },
     {
-      account: '657046243912/ALKSReadOnly - awsbridgedzcell2np',
+      account: '456789012345/ALKSReadOnly - stagingcell2',
       role: 'ReadOnly',
     },
     {
-      account: '469759795247/ALKSReadOnlyPlusApproval - awsbridgeops',
+      account: '789012345678/ALKSReadOnlyPlusApproval - operations',
       role: 'ReadOnlyPlusApproval',
     },
     {
-      account: '261782789091/ALKSReadOnly - awsclntmgmntcp1',
+      account: '345678901234/ALKSReadOnly - clientmgmt1',
       role: 'ReadOnly',
     },
-    { account: '635030964719/ALKSAdmin - awsclntmgmntdzcp1np', role: 'Admin' },
+    { account: '678901234567/ALKSAdmin - clientstaging', role: 'Admin' },
     {
-      account: '137386787517/ALKSReadOnly - awscommonorgcp1',
-      role: 'ReadOnly',
-    },
-    {
-      account: '055985823062/ALKSReadOnly - awscommonorgdzcp1np',
+      account: '234567890123/ALKSReadOnly - sharedservices',
       role: 'ReadOnly',
     },
     {
-      account: '585246496791/ALKSLabAdmin - awscoxautolabs11',
+      account: '567890123456/ALKSReadOnly - commontools',
+      role: 'ReadOnly',
+    },
+    {
+      account: '890123456789/ALKSLabAdmin - devlabs',
       role: 'LabAdmin',
     },
-    { account: '551664769586/ALKSAdmin - awsepdpapps', role: 'Admin' },
-    { account: '221508814545/ALKSAdmin - awsepdpappsnp', role: 'Admin' },
-    { account: '118078152803/ALKSAdmin - awsepdpops', role: 'Admin' },
-    { account: '842430935180/ALKSReadOnly - awssignincell1', role: 'ReadOnly' },
-    { account: '224526364523/ALKSReadOnly - awssignincell2', role: 'ReadOnly' },
-    { account: '507452165201/ALKSReadOnly - awssignincell3', role: 'ReadOnly' },
+    { account: '012345678901/ALKSAdmin - prodapps', role: 'Admin' },
+    { account: '543210987654/ALKSAdmin - testapps', role: 'Admin' },
+    { account: '321098765432/ALKSAdmin - opstools', role: 'Admin' },
+    { account: '654321098765/ALKSReadOnly - identity1', role: 'ReadOnly' },
+    { account: '876543210987/ALKSReadOnly - identity2', role: 'ReadOnly' },
+    { account: '109876543210/ALKSReadOnly - identity3', role: 'ReadOnly' },
   ];
 
   const mockFavorites = [
-    '221508814545/ALKSAdmin - awsepdpappsnp',
-    '055985823062/ALKSReadOnly - awscommonorgdzcp1np',
-    '635030964719/ALKSAdmin - awsclntmgmntdzcp1np',
-    '657046243912/ALKSReadOnly - awsbridgedzcell2np',
-    '640543234732/ALKSReadOnly - awsbridgedzcell2np',
-    '550629699577/ALKSAdmin - awsbridgedzcp1np',
+    '543210987654/ALKSAdmin - testapps',
+    '567890123456/ALKSReadOnly - commontools',
+    '678901234567/ALKSAdmin - clientstaging',
+    '456789012345/ALKSReadOnly - stagingcell2',
+    '111111111111/ALKSReadOnly - testenv2',
+    '987654321098/ALKSAdmin - prodbridge1',
+    '890123456789/ALKSLabAdmin - devlabs',
   ];
 
   let mockPromptFn: jest.Mock;
@@ -69,7 +70,7 @@ describe('promptForAlksAccountAndRole', () => {
     (getFavorites as jest.Mock).mockResolvedValue(mockFavorites);
     mockPromptFn = jest.fn().mockResolvedValue({
       alksAccount:
-        'awscoxautolabs11 ..... 585246496791/ALKSLabAdmin :: LabAdmin',
+        'devlabs ........ 890123456789/ALKSLabAdmin              ::  LabAdmin',
     });
     (getStdErrPrompt as jest.Mock).mockReturnValue(mockPromptFn);
   });
@@ -79,36 +80,38 @@ describe('promptForAlksAccountAndRole', () => {
 
     expect(mockPromptFn.mock.calls[0][0][0].choices).toStrictEqual([
       // favorites pulled to top after alphabetical sort
-      'awsbridgedzcell2np .. 640543234732/ALKSReadOnly              ::  ReadOnly',
-      'awsbridgedzcell2np .. 657046243912/ALKSReadOnly              ::  ReadOnly',
-      'awsbridgedzcp1np .... 550629699577/ALKSAdmin                 ::  Admin',
-      'awsclntmgmntdzcp1np . 635030964719/ALKSAdmin                 ::  Admin',
-      'awscommonorgdzcp1np . 055985823062/ALKSReadOnly              ::  ReadOnly',
-      'awsepdpappsnp ....... 221508814545/ALKSAdmin                 ::  Admin',
-      'awsbridgecp1 ........ 986533904591/ALKSReadOnly              ::  ReadOnly',
-      'awsbridgeops ........ 469759795247/ALKSReadOnlyPlusApproval  ::  ReadOnlyPlusApproval',
-      'awsclntmgmntcp1 ..... 261782789091/ALKSReadOnly              ::  ReadOnly',
-      'awscommonorgcp1 ..... 137386787517/ALKSReadOnly              ::  ReadOnly',
-      'awscoxautolabs11 .... 585246496791/ALKSLabAdmin              ::  LabAdmin',
-      'awsepdpapps ......... 551664769586/ALKSAdmin                 ::  Admin',
-      'awsepdpops .......... 118078152803/ALKSAdmin                 ::  Admin',
-      'awssignincell1 ...... 842430935180/ALKSReadOnly              ::  ReadOnly',
-      'awssignincell2 ...... 224526364523/ALKSReadOnly              ::  ReadOnly',
-      'awssignincell3 ...... 507452165201/ALKSReadOnly              ::  ReadOnly',
+      'clientstaging .. 678901234567/ALKSAdmin                 ::  Admin',
+      'commontools .... 567890123456/ALKSReadOnly              ::  ReadOnly',
+      'devlabs ........ 890123456789/ALKSLabAdmin              ::  LabAdmin',
+      'prodbridge1 .... 987654321098/ALKSAdmin                 ::  Admin',
+      'stagingcell2 ... 456789012345/ALKSReadOnly              ::  ReadOnly',
+      'testapps ....... 543210987654/ALKSAdmin                 ::  Admin',
+      'testenv2 ....... 111111111111/ALKSReadOnly              ::  ReadOnly',
+      'clientmgmt1 .... 345678901234/ALKSReadOnly              ::  ReadOnly',
+      'devaccount1 .... 123456789012/ALKSReadOnly              ::  ReadOnly',
+      'identity1 ...... 654321098765/ALKSReadOnly              ::  ReadOnly',
+      'identity2 ...... 876543210987/ALKSReadOnly              ::  ReadOnly',
+      'identity3 ...... 109876543210/ALKSReadOnly              ::  ReadOnly',
+      'operations ..... 789012345678/ALKSReadOnlyPlusApproval  ::  ReadOnlyPlusApproval',
+      'opstools ....... 321098765432/ALKSAdmin                 ::  Admin',
+      'prodapps ....... 012345678901/ALKSAdmin                 ::  Admin',
+      'sharedservices . 234567890123/ALKSReadOnly              ::  ReadOnly',
     ]);
   });
 
   it('returns the ALKS account and role', async () => {
     const result = await promptForAlksAccountAndRole({});
     expect(result).toStrictEqual({
-      alksAccount: '585246496791/ALKSLabAdmin - awscoxautolabs11',
+      alksAccount: '890123456789/ALKSLabAdmin - devlabs',
       alksRole: 'LabAdmin',
     });
   });
 
   it('should filter non-favorites if filterFavorites is true', async () => {
     await promptForAlksAccountAndRole({ filterFavorites: true });
-    expect(mockPromptFn.mock.calls[0][0][0].choices.length).toBe(6);
+    expect(mockPromptFn.mock.calls[0][0][0].choices.length).toBe(
+      mockFavorites.length
+    );
   });
 
   it('should throw an error if no accounts are found', async () => {
@@ -121,13 +124,13 @@ describe('promptForAlksAccountAndRole', () => {
 
   it('should use default account and role if available', async () => {
     (getAlksAccount as jest.Mock).mockResolvedValue(
-      '585246496791/ALKSLabAdmin - awscoxautolabs11'
+      '890123456789/ALKSLabAdmin - devlabs'
     );
     (getAlksRole as jest.Mock).mockResolvedValue('LabAdmin');
 
     await promptForAlksAccountAndRole({});
     expect(mockPromptFn.mock.calls[0][0][0].default).toBe(
-      'awscoxautolabs11 .... 585246496791/ALKSLabAdmin              ::  LabAdmin'
+      'devlabs ........ 890123456789/ALKSLabAdmin              ::  LabAdmin'
     );
   });
 });
