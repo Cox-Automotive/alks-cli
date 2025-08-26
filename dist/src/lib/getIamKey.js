@@ -14,7 +14,7 @@ const promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 const getKeys_1 = require("./getKeys");
 const addKey_1 = require("./addKey");
 const getAwsAccountFromString_1 = require("./getAwsAccountFromString");
-function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true, sessionDuration = undefined, ciid, activityType, description) {
+function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true, sessionDuration = undefined, changeRequestOptions = {}) {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield (0, ensureConfigured_1.ensureConfigured)();
@@ -63,14 +63,26 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
         console.error(cli_color_1.white.underline(`Creating new session in "${(_b = awsAccount.label) !== null && _b !== void 0 ? _b : awsAccount.alias}" (id=${awsAccount.id} alias=${awsAccount.alias}) for ${alksRole} expiring in ${duration} hour${duration === 1 ? '' : 's'}`));
         let alksKey;
         try {
-            alksKey = yield alks.getIAMKeys({
-                account: awsAccount.id,
-                role: alksRole,
-                sessionTime: duration,
-                primaryCI: ciid,
-                category: activityType,
-                description,
-            });
+            if (changeRequestOptions === null || changeRequestOptions === void 0 ? void 0 : changeRequestOptions.hasOwnProperty('changeNumber')) {
+                alksKey = yield alks.getIAMKeys({
+                    account: awsAccount.id,
+                    role: alksRole,
+                    sessionTime: duration,
+                    changeRequestNumber: changeRequestOptions.changeNumber,
+                });
+            }
+            else {
+                alksKey = yield alks.getIAMKeys({
+                    account: awsAccount.id,
+                    role: alksRole,
+                    sessionTime: duration,
+                    primaryCI: changeRequestOptions.ciid,
+                    category: changeRequestOptions
+                        .activityType,
+                    description: changeRequestOptions
+                        .description,
+                });
+            }
         }
         catch (e) {
             throw new Error(badAccountMessage_1.badAccountMessage);
