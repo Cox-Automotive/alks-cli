@@ -50,8 +50,8 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       }
     }
     let changeRequestOptions: ChangeRequestOptions;
-    if (options.changeRequestNumber) {
-      changeRequestOptions = { changeNumber: options.changeRequestNumber };
+    if (options.chgNumber) {
+      changeRequestOptions = { changeNumber: options.chgNumber };
     } else {
       changeRequestOptions = {
         ciid: options.ciid,
