@@ -14,7 +14,7 @@ const promptForAlksAccountAndRole_1 = require("./promptForAlksAccountAndRole");
 const getKeys_1 = require("./getKeys");
 const addKey_1 = require("./addKey");
 const getAwsAccountFromString_1 = require("./getAwsAccountFromString");
-function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true, sessionDuration = undefined) {
+function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorites = false, iamOnly = true, sessionDuration = undefined, ciid, activityType, description) {
     var _a, _b;
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield (0, ensureConfigured_1.ensureConfigured)();
@@ -67,6 +67,9 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
                 account: awsAccount.id,
                 role: alksRole,
                 sessionTime: duration,
+                primaryCI: ciid,
+                category: activityType,
+                description,
             });
         }
         catch (e) {

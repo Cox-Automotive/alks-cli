@@ -60,6 +60,7 @@ const sessions = program
     .command('sessions')
     .alias('session')
     .description('manage aws sessions');
+sessions;
 sessions
     .command('open')
     .description('creates or resumes a session')
@@ -75,6 +76,10 @@ sessions
     .option('-P, --profile <profile>', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
     .option('-F, --favorites', 'filters favorite accounts')
+    .option('--ciid <ciid>', 'ChangeAPI CIID for change request')
+    .option('--activity-type <type>', 'ChangeAPI activity type for change request')
+    .option('--description <desc>', 'ChangeAPI description for change request')
+    .option('--chg-number <number>', 'Pre-generated change request ticket number')
     .action(alks_sessions_open_1.handleAlksSessionsOpen);
 sessions
     .command('list')
@@ -94,6 +99,10 @@ sessions
     .option('-o, --openWith <openWith>', 'open in a different app (optional)')
     .option('-F, --favorites', 'filters favorite accounts')
     .option('-p, --password <password>', 'my password')
+    .option('--ciid <ciid>', 'ChangeAPI CIID for change request')
+    .option('--activity-type <type>', 'ChangeAPI activity type for change request')
+    .option('--description <desc>', 'ChangeAPI description for change request')
+    .option('--chg-number <number>', 'Pre-generated change request ticket number')
     .action(alks_sessions_console_1.handleAlksSessionsConsole);
 const iam = program.command('iam').description('manage iam resources');
 iam
