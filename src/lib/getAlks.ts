@@ -4,6 +4,7 @@ import { getServer } from './state/server';
 
 interface TokenProps {
   token: string;
+  headers?: Record<string, string>;
 }
 
 function isTokenProps(props: Props): props is TokenProps {
@@ -13,6 +14,7 @@ function isTokenProps(props: Props): props is TokenProps {
 interface PasswordProps {
   userid: string;
   password: string;
+  headers?: Record<string, string>;
 }
 
 export type Props = TokenProps | PasswordProps;
@@ -28,10 +30,13 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     );
   }
 
-  const params = {
+  const params: any = {
     baseUrl: server,
     userAgent: getUserAgentString(),
   };
+  if ('headers' in props && props.headers) {
+    params.headers = props.headers;
+  }
 
   let alks;
 
@@ -57,6 +62,7 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     alks = alks.create({
       ...params,
       accessToken: result.accessToken,
+      ...(props.headers ? { headers: props.headers } : {}),
     });
   } else {
     // According to typescript, alks.js doesn't officially support username & password
@@ -64,6 +70,7 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
       ...params,
       userid: props.userid,
       password: props.password,
+      ...(props.headers ? { headers: props.headers } : {}),
     } as unknown as AlksProps);
   }
 

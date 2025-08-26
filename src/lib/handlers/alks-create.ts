@@ -1,4 +1,4 @@
-import { errorAndExit } from './errorAndExit';
+import { errorAndExit } from '../errorAndExit';
 
 export interface CreateOptions {
   ciid?: string;
