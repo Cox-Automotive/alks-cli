@@ -9,4 +9,5 @@ export interface Key extends AwsKey {
   alksRole: string;
   isIAM: boolean;
   expires: Date;
+  changeNumber?: string;
 }
