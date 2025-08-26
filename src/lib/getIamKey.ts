@@ -19,7 +19,10 @@ export async function getIamKey(
   forceNewSession: boolean = false,
   filterFavorites: boolean = false,
   iamOnly: boolean = true,
-  sessionDuration: number | undefined = undefined
+  sessionDuration: number | undefined = undefined,
+  ciid?: string,
+  activityType?: string,
+  description?: string
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -105,6 +108,9 @@ export async function getIamKey(
       account: awsAccount.id,
       role: alksRole,
       sessionTime: duration,
+      primaryCI: ciid,
+      category: activityType,
+      description,
     });
   } catch (e) {
     throw new Error(badAccountMessage);

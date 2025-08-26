@@ -1,4 +1,4 @@
-import { errorAndExit } from './errorAndExit';
+import { errorAndExit } from '../errorAndExit';
 
 export interface VerifyOptions {
   changerequest?: string;
