@@ -1,7 +1,7 @@
 import commander from 'commander';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { getIamKey } from '../getIamKey';
+import { ChangeRequestOptions, getIamKey } from '../getIamKey';
 import { getKeyOutput } from '../getKeyOutput';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
@@ -49,6 +49,16 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
         errorAndExit('Unable to load default account!');
       }
     }
+    let changeRequestOptions: ChangeRequestOptions;
+    if (options.changeRequestNumber) {
+      changeRequestOptions = { changeNumber: options.changeRequestNumber };
+    } else {
+      changeRequestOptions = {
+        ciid: options.ciid,
+        activityType: options.activityType,
+        description: options.description,
+      };
+    }
 
     const key = await getIamKey(
       alksAccount,
@@ -57,9 +67,7 @@ export async function handleAlksSessionsOpen(options: commander.OptionValues) {
       options.favorites,
       !!options.iam,
       options.duration,
-      options.ciid,
-      options.activityType,
-      options.description
+      changeRequestOptions
     );
 
     console.log(

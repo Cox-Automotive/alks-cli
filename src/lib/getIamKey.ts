@@ -13,6 +13,20 @@ import { getKeys } from './getKeys';
 import { addKey } from './addKey';
 import { getAwsAccountFromString } from './getAwsAccountFromString';
 
+interface NewChangeRequestOptions {
+  ciid: string;
+  activityType: string;
+  description: string;
+}
+
+interface ExistingChangeRequestOptions {
+  changeNumber: string;
+}
+
+export type ChangeRequestOptions =
+  | NewChangeRequestOptions
+  | ExistingChangeRequestOptions;
+
 export async function getIamKey(
   alksAccount: string | undefined,
   alksRole: string | undefined,
@@ -20,9 +34,7 @@ export async function getIamKey(
   filterFavorites: boolean = false,
   iamOnly: boolean = true,
   sessionDuration: number | undefined = undefined,
-  ciid?: string,
-  activityType?: string,
-  description?: string
+  changeRequestOptions: ChangeRequestOptions | object = {}
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -104,14 +116,27 @@ export async function getIamKey(
 
   let alksKey: ALKS.Key;
   try {
-    alksKey = await alks.getIAMKeys({
-      account: awsAccount.id,
-      role: alksRole,
-      sessionTime: duration,
-      primaryCI: ciid,
-      category: activityType,
-      description,
-    });
+    if (changeRequestOptions?.hasOwnProperty('changeNumber')) {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
+        changeRequestNumber: (
+          changeRequestOptions as ExistingChangeRequestOptions
+        ).changeNumber,
+      });
+    } else {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
+        primaryCI: (changeRequestOptions as NewChangeRequestOptions).ciid,
+        category: (changeRequestOptions as NewChangeRequestOptions)
+          .activityType,
+        description: (changeRequestOptions as NewChangeRequestOptions)
+          .description,
+      });
+    }
   } catch (e) {
     throw new Error(badAccountMessage);
   }
