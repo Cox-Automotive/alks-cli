@@ -21,6 +21,23 @@ function handleAlksSessionsOpen(options) {
             (0, log_1.log)('trying to extract role from account');
             alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);
         }
+        // Validation for ChangeAPI options
+        const hasCiid = !!options.ciid;
+        const hasActivityType = !!options.activityType;
+        const hasDescription = !!options.description;
+        const hasChgNumber = !!options.chgNumber;
+        if (hasChgNumber) {
+            // If chg-number is provided, do not require the other three
+            if (hasCiid || hasActivityType || hasDescription) {
+                (0, errorAndExit_1.errorAndExit)('Do not provide --ciid, --activity-type, or --description when using --chg-number.');
+            }
+        }
+        else if (hasCiid || hasActivityType || hasDescription) {
+            // If any of the three is provided, all must be present
+            if (!(hasCiid && hasActivityType && hasDescription)) {
+                (0, errorAndExit_1.errorAndExit)('If any of --ciid, --activity-type, or --description is provided, all three must be specified.');
+            }
+        }
         try {
             if (options.default) {
                 alksAccount = yield (0, alksAccount_1.getAlksAccount)();
@@ -29,7 +46,7 @@ function handleAlksSessionsOpen(options) {
                     (0, errorAndExit_1.errorAndExit)('Unable to load default account!');
                 }
             }
-            const key = yield (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam, options.duration);
+            const key = yield (0, getIamKey_1.getIamKey)(alksAccount, alksRole, options.newSession, options.favorites, !!options.iam, options.duration, options.ciid, options.activityType, options.description);
             console.log((0, getKeyOutput_1.getKeyOutput)(options.output || (yield (0, outputFormat_1.getOutputFormat)()), key, (_a = options.profile) !== null && _a !== void 0 ? _a : options.namedProfile, options.force));
             yield (0, checkForUpdate_1.checkForUpdate)();
         }
