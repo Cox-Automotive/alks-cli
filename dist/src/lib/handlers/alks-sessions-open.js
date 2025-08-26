@@ -47,8 +47,8 @@ function handleAlksSessionsOpen(options) {
                 }
             }
             let changeRequestOptions;
-            if (options.changeRequestNumber) {
-                changeRequestOptions = { changeNumber: options.changeRequestNumber };
+            if (options.chgNumber) {
+                changeRequestOptions = { changeNumber: options.chgNumber };
             }
             else {
                 changeRequestOptions = {
