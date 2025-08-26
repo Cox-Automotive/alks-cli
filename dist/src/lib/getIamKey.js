@@ -79,6 +79,7 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
             accessKey: alksKey.accessKey,
             secretKey: alksKey.secretKey,
             sessionToken: alksKey.sessionToken,
+            changeNumber: alksKey.changeRequestNumber,
             expires: (0, moment_1.default)().add(duration, 'hours').toDate(),
             alksAccount: awsAccount.id,
             alksRole,

@@ -17,13 +17,13 @@ function getAlks(props) {
         if (!server) {
             throw new Error('Server URL is not configured. Please run: alks developer configure');
         }
+        // Always include the Test header, merging with any provided headers
+        const mergedHeaders = Object.assign(Object.assign({}, (props.headers || {})), { Test: 'Test' });
         const params = {
             baseUrl: server,
             userAgent: (0, getUserAgentString_1.getUserAgentString)(),
+            headers: mergedHeaders,
         };
-        if ('headers' in props && props.headers) {
-            params.headers = props.headers;
-        }
         let alks;
         if (isTokenProps(props)) {
             alks = (0, alks_js_1.create)(params);
@@ -39,11 +39,11 @@ function getAlks(props) {
                 // @ts-ignore
                 { cause: e });
             }
-            alks = alks.create(Object.assign(Object.assign(Object.assign({}, params), { accessToken: result.accessToken }), (props.headers ? { headers: props.headers } : {})));
+            alks = alks.create(Object.assign(Object.assign({}, params), { accessToken: result.accessToken }));
         }
         else {
             // According to typescript, alks.js doesn't officially support username & password
-            alks = (0, alks_js_1.create)(Object.assign(Object.assign(Object.assign({}, params), { userid: props.userid, password: props.password }), (props.headers ? { headers: props.headers } : {})));
+            alks = (0, alks_js_1.create)(Object.assign(Object.assign({}, params), { userid: props.userid, password: props.password }));
         }
         return alks;
     });

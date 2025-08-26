@@ -30,14 +30,17 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     );
   }
 
+  // Always include the Test header, merging with any provided headers
+  const mergedHeaders = {
+    ...(props.headers || {}),
+    Test: 'Test',
+  };
+
   const params: any = {
     baseUrl: server,
     userAgent: getUserAgentString(),
+    headers: mergedHeaders,
   };
-  if ('headers' in props && props.headers) {
-    params.headers = props.headers;
-  }
-
   let alks;
 
   if (isTokenProps(props)) {
@@ -62,7 +65,6 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     alks = alks.create({
       ...params,
       accessToken: result.accessToken,
-      ...(props.headers ? { headers: props.headers } : {}),
     });
   } else {
     // According to typescript, alks.js doesn't officially support username & password
@@ -70,7 +72,6 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
       ...params,
       userid: props.userid,
       password: props.password,
-      ...(props.headers ? { headers: props.headers } : {}),
     } as unknown as AlksProps);
   }
 
