@@ -28,16 +28,17 @@ describe('getAlks', () => {
         const customHeaders = { 'X-Test-Header': 'value' };
         yield (0, getAlks_1.getAlks)({ token: 'sometoken', headers: customHeaders });
         // Check that headers were passed in params (first call)
-        expect(createChain[0]).toEqual(expect.objectContaining({ headers: customHeaders }));
+        expect(createChain[0]).toEqual(expect.objectContaining({ headers: Object.assign(Object.assign({}, customHeaders), { Test: 'Test' }) }));
     }));
     it('should set Authorization header when using token', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         yield (0, getAlks_1.getAlks)({ token: 'sometoken' });
         expect(mockAlksInstance.getAccessToken).toHaveBeenCalledWith({
             refreshToken: 'sometoken',
         });
-        // The second call to create should include the Authorization header
-        expect(createChain[1]).toEqual(expect.objectContaining({
-            headers: { Authorization: 'Bearer testtoken' },
+        // The second call to create should include the Authorization header and Test header
+        expect(createChain[1].headers).toEqual(expect.objectContaining({
+            Authorization: 'Bearer testtoken',
+            Test: 'Test',
         }));
     }));
 });
