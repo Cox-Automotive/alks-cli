@@ -30,7 +30,7 @@ describe('getAlks', () => {
     await getAlks({ token: 'sometoken', headers: customHeaders });
     // Check that headers were passed in params (first call)
     expect(createChain[0]).toEqual(
-      expect.objectContaining({ headers: customHeaders })
+      expect.objectContaining({ headers: { ...customHeaders, Test: 'Test' } })
     );
   });
 
@@ -39,10 +39,11 @@ describe('getAlks', () => {
     expect(mockAlksInstance.getAccessToken).toHaveBeenCalledWith({
       refreshToken: 'sometoken',
     });
-    // The second call to create should include the Authorization header
-    expect(createChain[1]).toEqual(
+    // The second call to create should include the Authorization header and Test header
+    expect(createChain[1].headers).toEqual(
       expect.objectContaining({
-        headers: { Authorization: 'Bearer testtoken' },
+        Authorization: 'Bearer testtoken',
+        Test: 'Test',
       })
     );
   });
