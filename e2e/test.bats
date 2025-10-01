@@ -85,7 +85,7 @@ setup() {
     for o in ${output_types[@]}; do
         echo "# should supply AWS account credentials with output type $o" >&3
 
-        run alks sessions open -i -a ${ACCOUNT} -r ${ROLE} -o ${o}
+        run alks sessions open -i -a ${ACCOUNT} -r ${ROLE} -f -o ${o}
         [ "$status" -eq 0 ]
 
         case $o in
