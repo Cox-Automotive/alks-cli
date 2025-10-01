@@ -10,7 +10,6 @@
 
 # variables
 set refreshToken "$env(REFRESH_TOKEN)"
-send_user "DEBUG: REFRESH_TOKEN = $refreshToken\n"
 
 # Config values
 set timeout 5
