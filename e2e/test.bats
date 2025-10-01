@@ -168,7 +168,7 @@ setup() {
 
 # bats test_tags=developer,login2fa
 @test "alks developer login2fa" {
-    echo "# should save a refresh token.  DEBUG ${REFRESH_TOKEN}" >&3
+    echo "# should save a refresh token.  DEBUG ${$env(REFRESH_TOKEN)}" >&3
 
     run expect scripts/login2fa.exp
     [ "$status" -eq 0 ]
