@@ -701,7 +701,8 @@ describe('handleAlksSessionsOpen', () => {
             t.getIamKeyParams.newSession,
             t.getIamKeyParams.favorites,
             t.getIamKeyParams.iamOnly,
-            t.getIamKeyParams.duration
+            t.getIamKeyParams.duration,
+            {} // changeRequestOptions default
           );
         });
       } else {

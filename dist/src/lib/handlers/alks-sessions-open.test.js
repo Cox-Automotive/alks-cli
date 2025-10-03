@@ -462,7 +462,8 @@ describe('handleAlksSessionsOpen', () => {
             }
             if (t.shouldGetIamKey) {
                 it('attempts to fetch an IAM key', () => {
-                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites, t.getIamKeyParams.iamOnly, t.getIamKeyParams.duration);
+                    expect(getIamKey_1.getIamKey).toHaveBeenCalledWith(t.getIamKeyParams.alksAccount, t.getIamKeyParams.alksRole, t.getIamKeyParams.newSession, t.getIamKeyParams.favorites, t.getIamKeyParams.iamOnly, t.getIamKeyParams.duration, {} // changeRequestOptions default
+                    );
                 });
             }
             else {

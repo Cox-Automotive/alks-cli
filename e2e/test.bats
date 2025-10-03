@@ -85,7 +85,7 @@ setup() {
     for o in ${output_types[@]}; do
         echo "# should supply AWS account credentials with output type $o" >&3
 
-        run alks sessions open -i -a ${ACCOUNT} -r ${ROLE} -o ${o}
+        run alks sessions open -i -a ${ACCOUNT} -r ${ROLE} -f -o ${o}
         [ "$status" -eq 0 ]
 
         case $o in
@@ -168,7 +168,9 @@ setup() {
 
 # bats test_tags=developer,login2fa
 @test "alks developer login2fa" {
-    echo "# should save a refresh token" >&3
+    echo "# DEBUG: REFRESH_TOKEN=${REFRESH_TOKEN:-'NOT SET'}" >&3
+    echo "# DEBUG: USERNAME=${USERNAME:-'NOT SET'}" >&3
+    echo "# should save a refresh token." >&3
 
     run expect scripts/login2fa.exp
     [ "$status" -eq 0 ]

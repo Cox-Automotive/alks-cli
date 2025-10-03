@@ -32,7 +32,8 @@ export function getKeyOutput(
         accessKey: key.accessKey,
         secretKey: key.secretKey,
         sessionToken: key.sessionToken,
-        expires: key.expires, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
+        expires: key.expires,
+        changeNumber: key.changeNumber, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
       };
       return JSON.stringify(keyData, null, 4);
     }
@@ -55,10 +56,14 @@ export function getKeyOutput(
       return `AWS_ACCESS_KEY_ID=${key.accessKey}\nAWS_SECRET_ACCESS_KEY=${key.secretKey}\nAWS_SESSION_TOKEN=${key.sessionToken}\nAWS_SESSION_EXPIRES=${keyExpires}`;
     }
     case 'powershell': {
-      return `$env:AWS_ACCESS_KEY_ID, $env:AWS_SECRET_ACCESS_KEY, $env:AWS_SESSION_TOKEN, $env:AWS_SESSION_EXPIRES = "${key.accessKey}","${key.secretKey}","${key.sessionToken}","${keyExpires}"`;
+      return `$env:AWS_ACCESS_KEY_ID, $env:AWS_SECRET_ACCESS_KEY, $env:AWS_SESSION_TOKEN, $env:AWS_SESSION_EXPIRES, $env:CHANGE_NUMBER = "${
+        key.accessKey
+      }","${key.secretKey}","${key.sessionToken}","${keyExpires}", "${
+        key.changeNumber ?? ''
+      }"`;
     }
     case 'fishshell': {
-      return `set -xg AWS_ACCESS_KEY_ID '${key.accessKey}'; and set -xg AWS_SECRET_ACCESS_KEY '${key.secretKey}'; and set -xg AWS_SESSION_TOKEN '${key.sessionToken}'; and set -xg AWS_SESSION_EXPIRES '${keyExpires}';`;
+      return `set -xg AWS_ACCESS_KEY_ID '${key.accessKey}'; and set -xg AWS_SECRET_ACCESS_KEY '${key.secretKey}'; and set -xg AWS_SESSION_TOKEN '${key.sessionToken}'; and set -xg AWS_SESSION_EXPIRES '${keyExpires}'; and set -xg CHANGE_NUMBER '${key.changeNumber}'`;
     }
     case 'aws': {
       return JSON.stringify({
@@ -71,7 +76,7 @@ export function getKeyOutput(
     }
     case 'linux': {
       // forces export format
-      return `export AWS_ACCESS_KEY_ID=${key.accessKey} && export AWS_SECRET_ACCESS_KEY=${key.secretKey} && export AWS_SESSION_TOKEN=${key.sessionToken} && export AWS_SESSION_EXPIRES=${keyExpires}`;
+      return `export AWS_ACCESS_KEY_ID=${key.accessKey} && export AWS_SECRET_ACCESS_KEY=${key.secretKey} && export AWS_SESSION_TOKEN=${key.sessionToken} && export AWS_SESSION_EXPIRES=${keyExpires} && export CHANGE_NUMBER='${key.changeNumber}'`;
     }
     case 'export': // fall through to default case
     case 'set':
@@ -82,7 +87,7 @@ export function getKeyOutput(
 
       const cmd = isWindows() || format === 'set' ? 'SET' : 'export';
 
-      return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires}`;
+      return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires} && ${cmd} CHANGE_NUMBER='${key.changeNumber}'`;
     }
   }
 }

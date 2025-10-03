@@ -4,6 +4,7 @@ import { getServer } from './state/server';
 
 interface TokenProps {
   token: string;
+  headers?: Record<string, string>;
 }
 
 function isTokenProps(props: Props): props is TokenProps {
@@ -13,6 +14,7 @@ function isTokenProps(props: Props): props is TokenProps {
 interface PasswordProps {
   userid: string;
   password: string;
+  headers?: Record<string, string>;
 }
 
 export type Props = TokenProps | PasswordProps;
@@ -28,11 +30,17 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     );
   }
 
-  const params = {
-    baseUrl: server,
-    userAgent: getUserAgentString(),
+  // Always include the Test header, merging with any provided headers
+  const mergedHeaders = {
+    ...(props.headers || {}),
+    Test: 'Test',
   };
 
+  const params: any = {
+    baseUrl: server,
+    userAgent: getUserAgentString(),
+    headers: mergedHeaders,
+  };
   let alks;
 
   if (isTokenProps(props)) {
