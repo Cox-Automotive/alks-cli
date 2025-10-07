@@ -18,7 +18,7 @@ endif
 
 build:
 	@echo "Building tester..."
-	docker build $(TOKEN) $(USER) -t alks-cli-test -f Dockerfile ..
+	docker build --no-cache $(TOKEN) $(USER) -t alks-cli-test -f Dockerfile ..
 
 test: build
 	@echo "running intg tests..."

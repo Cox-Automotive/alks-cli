@@ -75,6 +75,9 @@ setup() {
     [ "$status" -eq 0 ]
     assert_output --partial "Developer Configuration"
     assert_output --partial "${REFRESH_TOKEN:0:4}****"
+
+    echo "# DEBUG: REFRESH_TOKEN=${REFRESH_TOKEN:-'NOT SET'}" >&3
+    echo "# DEBUG: USERNAME=${USERNAME:-'NOT SET'}" >&3
 }
 
 # bats test_tags=sessions,open
