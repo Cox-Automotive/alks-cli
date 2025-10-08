@@ -57,12 +57,22 @@ sleep .1
 expect "Refresh Token" {send -h "$refreshToken\r"}
 sleep .1
 
-# we store the refresh token in plaintext because the docker image does not have
-# a builtin key-chain
-# because of the way expect works, this prompt will not hinder execution
-# when running outside of a container on a machine with a key-chain
-# input yes when asked to store refresh token in plaintext
-expect "plaintext file" {send -h "y\r"}
+# Wait for validation and plaintext prompt
+expect {
+    "Refresh token validated!" {
+        # Token validated, continue
+        exp_continue
+    }
+    -re "plaintext file.*\\(y/N" {
+        send "y\r"
+    }
+    "plaintext file" {
+        send "y\r"
+    }
+    "Refresh token saved!" {
+        # Already saved, good
+    }
+}
 sleep .1
 
 # skipping the other configuration options
