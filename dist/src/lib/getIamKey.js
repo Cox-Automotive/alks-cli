@@ -71,7 +71,7 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
                     changeRequestNumber: changeRequestOptions.changeNumber,
                 });
             }
-            else {
+            else if (changeRequestOptions === null || changeRequestOptions === void 0 ? void 0 : changeRequestOptions.hasOwnProperty('ciid')) {
                 alksKey = yield alks.getIAMKeys({
                     account: awsAccount.id,
                     role: alksRole,
@@ -81,6 +81,13 @@ function getIamKey(alksAccount, alksRole, forceNewSession = false, filterFavorit
                         .activityType,
                     description: changeRequestOptions
                         .description,
+                });
+            }
+            else {
+                alksKey = yield alks.getIAMKeys({
+                    account: awsAccount.id,
+                    role: alksRole,
+                    sessionTime: duration,
                 });
             }
         }

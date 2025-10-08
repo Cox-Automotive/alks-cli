@@ -125,7 +125,7 @@ export async function getIamKey(
           changeRequestOptions as ExistingChangeRequestOptions
         ).changeNumber,
       });
-    } else {
+    } else if (changeRequestOptions?.hasOwnProperty('ciid')) {
       alksKey = await alks.getIAMKeys({
         account: awsAccount.id,
         role: alksRole,
@@ -135,6 +135,12 @@ export async function getIamKey(
           .activityType,
         description: (changeRequestOptions as NewChangeRequestOptions)
           .description,
+      });
+    } else {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
       });
     }
   } catch (e) {
