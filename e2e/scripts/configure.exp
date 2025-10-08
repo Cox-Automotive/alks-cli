@@ -29,8 +29,8 @@ set username "$env(USERNAME)"
 set refreshToken "$env(REFRESH_TOKEN)"
 
 # expect config
-## wait 5 seconds per pattern match
-set timeout 5
+## wait 30 seconds per pattern match (increased for API calls)
+set timeout 30
 ## variable key entry speed to simulate human input
 set send_slow {1 .1}
 set send_human {.1 .3 1 .05 2}
@@ -60,17 +60,26 @@ sleep .1
 # Wait for validation and plaintext prompt
 expect {
     "Refresh token validated!" {
-        # Token validated, continue
+        # Token validated, continue waiting for next prompt
         exp_continue
     }
     -re "plaintext file.*\\(y/N" {
+        # Matched full inquirer prompt with regex
         send "y\r"
+        exp_continue
     }
     "plaintext file" {
+        # Fallback simple match
         send "y\r"
+        exp_continue
     }
     "Refresh token saved!" {
-        # Already saved, good
+        # Successfully saved, done with this section
+    }
+    timeout {
+        # If we timeout here, something went wrong
+        send_user "\nERROR: Timeout waiting for token validation/storage prompts\n"
+        exit 1
     }
 }
 sleep .1
