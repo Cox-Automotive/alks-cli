@@ -3,7 +3,8 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Removes references to Okta
+* Allows for use of automated change ticket creation or verification when getting keys.
+See [ChangeMinder](https://pages.ghe.coxautoinc.com/ETS-CloudAutomation/Cloud-Platform-Docs/docs/tools_by_cloud_provider/aws/security_services/alks/changeminder) for details.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
