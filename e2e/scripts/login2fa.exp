@@ -11,24 +11,107 @@
 # variables
 set refreshToken "$env(REFRESH_TOKEN)"
 
+# Debug output
+send_user "\n========================================\n"
+send_user "DEBUG: Starting login2fa expect script\n"
+send_user "DEBUG: REFRESH_TOKEN length = [string length $refreshToken]\n"
+send_user "DEBUG: REFRESH_TOKEN first 10 chars = [string range $refreshToken 0 9]...\n"
+send_user "========================================\n\n"
+
 # Config values
-set timeout 5
+set timeout 30
 ## variable key entry speed to simulate human input
 set send_slow {1 .1}
 set send_human {.1 .3 1 .05 2}
 match_max 100000
 
+# Enable full diagnostic mode to see pattern matching
+exp_internal 1
+log_user 1
+
 # spawning program
+send_user "\n>>> DEBUG: Spawning 'alks developer login2fa' at [clock format [clock seconds]]\n"
 spawn alks developer login2fa
-expect_after eof {exit 0}
+set spawn_id $spawn_id
+send_user ">>> DEBUG: Process spawned with PID: [exp_pid]\n\n"
 
-# input alks server from envvar on system
-expect "Refresh Token" {send -h "$refreshToken\r"}
-sleep .1
+# Don't exit on EOF yet, we want to control it
+# expect_after eof {exit 0}
 
-# input yes when asked to store refresh token in plaintext
-expect "plaintext file" {send -h "y\r"}
-sleep .1
+# Wait for the refresh token prompt
+send_user "\n>>> DEBUG: [clock format [clock seconds]] - Waiting for 'Refresh Token' prompt...\n"
+expect {
+    "Refresh Token" {
+        send_user "\n>>> DEBUG: [clock format [clock seconds]] - SUCCESS: Got 'Refresh Token' prompt\n"
+        send_user ">>> DEBUG: Sending refresh token...\n"
+        send -h "$refreshToken\r"
+        send_user ">>> DEBUG: Token sent!\n\n"
+    }
+    -re "(.*)\n" {
+        send_user ">>> DEBUG: Got unexpected output: '$expect_out(1,string)'\n"
+        exp_continue
+    }
+    timeout {
+        send_user "\n!!! ERROR: [clock format [clock seconds]] - Timeout (30s) waiting for 'Refresh Token' prompt\n"
+        send_user "!!! ERROR: Buffer contents: '$expect_out(buffer)'\n"
+        exit 1
+    }
+    eof {
+        send_user "\n!!! ERROR: Process ended before 'Refresh Token' prompt\n"
+        send_user "!!! ERROR: Buffer contents: '$expect_out(buffer)'\n"
+        exit 1
+    }
+}
 
-## skipping the other configuration options
-expect eof
+# Wait for validation message OR the plaintext prompt (they might come together)
+send_user "\n>>> DEBUG: [clock format [clock seconds]] - Waiting for validation and/or storage prompt...\n"
+send_user ">>> DEBUG: This may take a while as it calls the ALKS API...\n"
+expect {
+    "Refresh token validated!" {
+        send_user "\n>>> DEBUG: [clock format [clock seconds]] - SUCCESS: Token validated!\n\n"
+        # Don't break, continue to look for storage prompt
+        exp_continue
+    }
+    -re "plaintext file.*\\(y/N" {
+        send_user "\n>>> DEBUG: Got plaintext file prompt (matched with regex)\n"
+        send_user ">>> DEBUG: Sending 'y' to accept plaintext storage\n"
+        send "y\r"
+        send_user ">>> DEBUG: Response sent!\n\n"
+        # Continue to look for save confirmation
+        exp_continue
+    }
+    "plaintext file" {
+        send_user "\n>>> DEBUG: Got plaintext file prompt (simple match)\n"
+        send_user ">>> DEBUG: Sending 'y' to accept plaintext storage\n"
+        send "y\r"
+        send_user ">>> DEBUG: Response sent!\n\n"
+        # Continue to look for save confirmation
+        exp_continue
+    }
+    "Refresh token saved!" {
+        send_user "\n>>> DEBUG: SUCCESS: Token saved!\n"
+        # We're done!
+    }
+    "Error validating refresh token" {
+        send_user "\n!!! ERROR: Token validation failed\n"
+        send_user "!!! ERROR: Buffer: '$expect_out(buffer)'\n"
+        exit 1
+    }
+    -re "(.*)\n" {
+        send_user ">>> DEBUG: Output: '$expect_out(1,string)'\n"
+        exp_continue
+    }
+    timeout {
+        send_user "\n!!! ERROR: [clock format [clock seconds]] - Timeout (30s) waiting for completion\n"
+        send_user "!!! ERROR: Buffer contents: '$expect_out(buffer)'\n"
+        exit 1
+    }
+    eof {
+        send_user "\n>>> DEBUG: Process ended\n"
+    }
+}
+
+send_user "\n========================================\n"
+send_user ">>> DEBUG: [clock format [clock seconds]] - Expect script completed successfully\n"
+send_user "========================================\n\n"
+exit 0
