@@ -30,10 +30,9 @@ export async function getAlks(props: Props): Promise<ALKS.Alks> {
     );
   }
 
-  // Always include the Test header, merging with any provided headers
+  // FYI: for enabled but not enforced we should not send the Test header.
   const mergedHeaders = {
     ...(props.headers || {}),
-    Test: 'Test',
   };
 
   const params: any = {

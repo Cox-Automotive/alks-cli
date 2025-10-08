@@ -17,8 +17,8 @@ function getAlks(props) {
         if (!server) {
             throw new Error('Server URL is not configured. Please run: alks developer configure');
         }
-        // Always include the Test header, merging with any provided headers
-        const mergedHeaders = Object.assign(Object.assign({}, (props.headers || {})), { Test: 'Test' });
+        // FYI: for enabled but not enforced we should not send the Test header.
+        const mergedHeaders = Object.assign({}, (props.headers || {}));
         const params = {
             baseUrl: server,
             userAgent: (0, getUserAgentString_1.getUserAgentString)(),
