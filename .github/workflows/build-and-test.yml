@@ -11,7 +11,7 @@ on:
 
 env:
   REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
-  AD_NAME: ${{ secrets.ALKS_USER }}
+  USERNAME: ${{ secrets.ALKS_USER }}
 
 jobs:
   build_and_test:
