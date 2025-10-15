@@ -56,12 +56,19 @@ program
     .command('completion')
     .description('shell completer for cli commands')
     .action(alks_completion_1.handleCompletion);
+function addChangeRequestOptions(command) {
+    return command
+        .option('--ciid <ciid>', 'Component ID for change request. Mutually exclusive with --chg-number')
+        .option('--activity-type <type>', 'activity type for change request. Required with --ciid')
+        .option('--description <desc>', 'description for change request. Required with --ciid')
+        .option('--chg-number <number>', 'Pre-generated change request ticket number. Mutually exclusive with --ciid');
+}
 const sessions = program
     .command('sessions')
     .alias('session')
     .description('manage aws sessions');
 sessions;
-sessions
+const sessionsOpenCommand = sessions
     .command('open')
     .description('creates or resumes a session')
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
@@ -75,19 +82,15 @@ sessions
     .option('-n, --namedProfile <profile>', 'alias for --profile, if output is set to creds, use this profile, default: default')
     .option('-P, --profile <profile>', 'if output is set to creds, use this profile, default: default')
     .option('-f, --force', 'if output is set to creds, force overwriting of AWS credentials')
-    .option('-F, --favorites', 'filters favorite accounts')
-    .option('--ciid <ciid>', 'ChangeAPI CIID for change request')
-    .option('--activity-type <type>', 'ChangeAPI activity type for change request')
-    .option('--description <desc>', 'ChangeAPI description for change request')
-    .option('--chg-number <number>', 'Pre-generated change request ticket number')
-    .action(alks_sessions_open_1.handleAlksSessionsOpen);
+    .option('-F, --favorites', 'filters favorite accounts');
+addChangeRequestOptions(sessionsOpenCommand).action(alks_sessions_open_1.handleAlksSessionsOpen);
 sessions
     .command('list')
     .alias('ls')
     .description('list active sessions')
     .option('-p, --password <password>', 'my password')
     .action(alks_sessions_list_1.handleAlksSessionsList);
-sessions
+const sessionsConsoleCommand = sessions
     .command('console')
     .description('open an AWS console in your browser')
     .option('-a, --account <accountIdOrAlias>', 'the 12-digit ID or alias for an AWS account')
@@ -98,12 +101,8 @@ sessions
     .option('-u, --url', 'just print the url')
     .option('-o, --openWith <openWith>', 'open in a different app (optional)')
     .option('-F, --favorites', 'filters favorite accounts')
-    .option('-p, --password <password>', 'my password')
-    .option('--ciid <ciid>', 'ChangeAPI CIID for change request')
-    .option('--activity-type <type>', 'ChangeAPI activity type for change request')
-    .option('--description <desc>', 'ChangeAPI description for change request')
-    .option('--chg-number <number>', 'Pre-generated change request ticket number')
-    .action(alks_sessions_console_1.handleAlksSessionsConsole);
+    .option('-p, --password <password>', 'my password');
+addChangeRequestOptions(sessionsConsoleCommand).action(alks_sessions_console_1.handleAlksSessionsConsole);
 const iam = program.command('iam').description('manage iam resources');
 iam
     .command('roletypes')
