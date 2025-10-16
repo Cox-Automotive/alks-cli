@@ -40,6 +40,23 @@ function handleAlksSessionsConsole(options) {
         const forceNewSession = options.newSession;
         const useDefaultAcct = options.default;
         const filterFaves = options.favorites || false;
+        // Validation for ChangeAPI options
+        const hasCiid = !!options.ciid;
+        const hasActivityType = !!options.activityType;
+        const hasDescription = !!options.description;
+        const hasChgNumber = !!options.chgNumber;
+        if (hasChgNumber) {
+            // If chg-number is provided, do not require the other three
+            if (hasCiid || hasActivityType || hasDescription) {
+                (0, errorAndExit_1.errorAndExit)('Do not provide --ciid, --activity-type, or --description when using --chg-number.');
+            }
+        }
+        else if (hasCiid || hasActivityType || hasDescription) {
+            // If any of the three is provided, all must be present
+            if (!(hasCiid && hasActivityType && hasDescription)) {
+                (0, errorAndExit_1.errorAndExit)('If any of --ciid, --activity-type, or --description is provided, all three must be specified.');
+            }
+        }
         if (!(0, underscore_2.isUndefined)(alksAccount) && (0, underscore_2.isUndefined)(alksRole)) {
             (0, log_1.log)('trying to extract role from account');
             alksRole = (0, tryToExtractRole_1.tryToExtractRole)(alksAccount);

@@ -1,5 +1,5 @@
-TOKEN = --build-arg REFRESH_TOKEN
-USER = --build-arg USERNAME
+TOKEN = --build-arg REFRESH_TOKEN=$(REFRESH_TOKEN)
+USER = --build-arg USERNAME=$(USERNAME)
 
 CI_MODE = false
 ifeq ($(CI_MODE),true)
@@ -18,7 +18,7 @@ endif
 
 build:
 	@echo "Building tester..."
-	docker build $(TOKEN) $(USER) -t alks-cli-test -f Dockerfile ..
+	docker build --no-cache $(TOKEN) $(USER) -t alks-cli-test -f Dockerfile ..
 
 test: build
 	@echo "running intg tests..."

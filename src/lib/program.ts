@@ -72,12 +72,33 @@ program
   .description('shell completer for cli commands')
   .action(handleCompletion);
 
+function addChangeRequestOptions(command: Command): Command {
+  return command
+    .option(
+      '--ciid <ciid>',
+      'Component ID for change request. Mutually exclusive with --chg-number'
+    )
+    .option(
+      '--activity-type <type>',
+      'activity type for change request. Required with --ciid'
+    )
+    .option(
+      '--description <desc>',
+      'description for change request. Required with --ciid'
+    )
+    .option(
+      '--chg-number <number>',
+      'Pre-generated change request ticket number. Mutually exclusive with --ciid'
+    );
+}
+
 const sessions = program
   .command('sessions')
   .alias('session')
   .description('manage aws sessions');
 
-sessions
+sessions;
+const sessionsOpenCommand = sessions
   .command('open')
   .description('creates or resumes a session')
   .option(
@@ -119,9 +140,8 @@ sessions
     '-f, --force',
     'if output is set to creds, force overwriting of AWS credentials'
   )
-  .option('-F, --favorites', 'filters favorite accounts')
-  .action(handleAlksSessionsOpen);
-
+  .option('-F, --favorites', 'filters favorite accounts');
+addChangeRequestOptions(sessionsOpenCommand).action(handleAlksSessionsOpen);
 sessions
   .command('list')
   .alias('ls')
@@ -129,7 +149,7 @@ sessions
   .option('-p, --password <password>', 'my password')
   .action(handleAlksSessionsList);
 
-sessions
+const sessionsConsoleCommand = sessions
   .command('console')
   .description('open an AWS console in your browser')
   .option(
@@ -149,8 +169,10 @@ sessions
   .option('-u, --url', 'just print the url')
   .option('-o, --openWith <openWith>', 'open in a different app (optional)')
   .option('-F, --favorites', 'filters favorite accounts')
-  .option('-p, --password <password>', 'my password')
-  .action(handleAlksSessionsConsole);
+  .option('-p, --password <password>', 'my password');
+addChangeRequestOptions(sessionsConsoleCommand).action(
+  handleAlksSessionsConsole
+);
 
 const iam = program.command('iam').description('manage iam resources');
 

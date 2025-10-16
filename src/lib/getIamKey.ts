@@ -13,13 +13,28 @@ import { getKeys } from './getKeys';
 import { addKey } from './addKey';
 import { getAwsAccountFromString } from './getAwsAccountFromString';
 
+interface NewChangeRequestOptions {
+  ciid: string;
+  activityType: string;
+  description: string;
+}
+
+interface ExistingChangeRequestOptions {
+  changeNumber: string;
+}
+
+export type ChangeRequestOptions =
+  | NewChangeRequestOptions
+  | ExistingChangeRequestOptions;
+
 export async function getIamKey(
   alksAccount: string | undefined,
   alksRole: string | undefined,
   forceNewSession: boolean = false,
   filterFavorites: boolean = false,
   iamOnly: boolean = true,
-  sessionDuration: number | undefined = undefined
+  sessionDuration: number | undefined = undefined,
+  changeRequestOptions: ChangeRequestOptions | object = {}
 ): Promise<Key> {
   await ensureConfigured();
 
@@ -101,11 +116,33 @@ export async function getIamKey(
 
   let alksKey: ALKS.Key;
   try {
-    alksKey = await alks.getIAMKeys({
-      account: awsAccount.id,
-      role: alksRole,
-      sessionTime: duration,
-    });
+    if (changeRequestOptions?.hasOwnProperty('changeNumber')) {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
+        changeRequestNumber: (
+          changeRequestOptions as ExistingChangeRequestOptions
+        ).changeNumber,
+      });
+    } else if (changeRequestOptions?.hasOwnProperty('ciid')) {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
+        primaryCI: (changeRequestOptions as NewChangeRequestOptions).ciid,
+        category: (changeRequestOptions as NewChangeRequestOptions)
+          .activityType,
+        description: (changeRequestOptions as NewChangeRequestOptions)
+          .description,
+      });
+    } else {
+      alksKey = await alks.getIAMKeys({
+        account: awsAccount.id,
+        role: alksRole,
+        sessionTime: duration,
+      });
+    }
   } catch (e) {
     throw new Error(badAccountMessage);
   }
@@ -113,6 +150,7 @@ export async function getIamKey(
     accessKey: alksKey.accessKey,
     secretKey: alksKey.secretKey,
     sessionToken: alksKey.sessionToken,
+    changeNumber: alksKey.changeRequestNumber,
     expires: moment().add(duration, 'hours').toDate(),
     alksAccount: awsAccount.id,
     alksRole,

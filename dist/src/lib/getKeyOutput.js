@@ -9,6 +9,7 @@ const updateCreds_1 = require("./updateCreds");
 const log_1 = require("./log");
 // if adding new output types be sure to update getOutputValues.ts
 function getKeyOutput(format, key, profile, force) {
+    var _a;
     const keyExpires = (0, moment_1.default)(key.expires).format();
     (0, log_1.log)(`using output format: ${format}`);
     switch (format) {
@@ -27,7 +28,8 @@ function getKeyOutput(format, key, profile, force) {
                 accessKey: key.accessKey,
                 secretKey: key.secretKey,
                 sessionToken: key.sessionToken,
-                expires: key.expires, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
+                expires: key.expires,
+                changeNumber: key.changeNumber, // This is the only format using the unformatted "key.expires". This may be a bug but I'm leaving it for the moment for backwards compatibility
             };
             return JSON.stringify(keyData, null, 4);
         }
@@ -47,10 +49,10 @@ function getKeyOutput(format, key, profile, force) {
             return `AWS_ACCESS_KEY_ID=${key.accessKey}\nAWS_SECRET_ACCESS_KEY=${key.secretKey}\nAWS_SESSION_TOKEN=${key.sessionToken}\nAWS_SESSION_EXPIRES=${keyExpires}`;
         }
         case 'powershell': {
-            return `$env:AWS_ACCESS_KEY_ID, $env:AWS_SECRET_ACCESS_KEY, $env:AWS_SESSION_TOKEN, $env:AWS_SESSION_EXPIRES = "${key.accessKey}","${key.secretKey}","${key.sessionToken}","${keyExpires}"`;
+            return `$env:AWS_ACCESS_KEY_ID, $env:AWS_SECRET_ACCESS_KEY, $env:AWS_SESSION_TOKEN, $env:AWS_SESSION_EXPIRES, $env:CHANGE_NUMBER = "${key.accessKey}","${key.secretKey}","${key.sessionToken}","${keyExpires}", "${(_a = key.changeNumber) !== null && _a !== void 0 ? _a : ''}"`;
         }
         case 'fishshell': {
-            return `set -xg AWS_ACCESS_KEY_ID '${key.accessKey}'; and set -xg AWS_SECRET_ACCESS_KEY '${key.secretKey}'; and set -xg AWS_SESSION_TOKEN '${key.sessionToken}'; and set -xg AWS_SESSION_EXPIRES '${keyExpires}';`;
+            return `set -xg AWS_ACCESS_KEY_ID '${key.accessKey}'; and set -xg AWS_SECRET_ACCESS_KEY '${key.secretKey}'; and set -xg AWS_SESSION_TOKEN '${key.sessionToken}'; and set -xg AWS_SESSION_EXPIRES '${keyExpires}'; and set -xg CHANGE_NUMBER '${key.changeNumber}'`;
         }
         case 'aws': {
             return JSON.stringify({
@@ -63,14 +65,14 @@ function getKeyOutput(format, key, profile, force) {
         }
         case 'linux': {
             // forces export format
-            return `export AWS_ACCESS_KEY_ID=${key.accessKey} && export AWS_SECRET_ACCESS_KEY=${key.secretKey} && export AWS_SESSION_TOKEN=${key.sessionToken} && export AWS_SESSION_EXPIRES=${keyExpires}`;
+            return `export AWS_ACCESS_KEY_ID=${key.accessKey} && export AWS_SECRET_ACCESS_KEY=${key.secretKey} && export AWS_SESSION_TOKEN=${key.sessionToken} && export AWS_SESSION_EXPIRES=${keyExpires} && export CHANGE_NUMBER='${key.changeNumber}'`;
         }
         case 'export': // fall through to default case
         case 'set':
         default: {
             console.error('WARNING: Because this tool runs in a subshell, it cannot set environment variables in the parent shell. To use these keys, copy the commands printed below and run them in your current shell to have these environment variables set');
             const cmd = (0, isWindows_1.isWindows)() || format === 'set' ? 'SET' : 'export';
-            return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires}`;
+            return `${cmd} AWS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} AWS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} AWS_SESSION_TOKEN=${key.sessionToken} && ${cmd} AWS_SESSION_EXPIRES=${keyExpires} && ${cmd} CHANGE_NUMBER='${key.changeNumber}'`;
         }
     }
 }
