@@ -12,10 +12,10 @@ async function runServerDaemon() {
 
   // Dynamically import forever since it is an optional dependency
   (await import('forever')).startDaemon(
-    path.join(__dirname, '../lib') + '/metadata-server.js',
+    path.join(__dirname, '../metadata-server.js'),
     {
       uid: 'alks-metadata',
-      root: path.join(__dirname, '../'),
+      root: path.join(__dirname, '../../../../'),
     }
   );
 
@@ -36,7 +36,7 @@ export async function handleAlksServerStart(_options: commander.OptionValues) {
           'Installing metadata daemon rules. You may be prompted for your system password since this requires escalated privileges.'
         )
       );
-      const servicePath = path.join(__dirname, '../service');
+      const servicePath = path.join(__dirname, '../../../../service');
 
       try {
         log('Adding pf.anchor');

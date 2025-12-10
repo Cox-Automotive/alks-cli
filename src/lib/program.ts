@@ -444,7 +444,7 @@ developer
 const server = program
   .command('server')
   .name('server')
-  .description('ec23 metadata server');
+  .description('ec2 metadata server');
 
 server
   .command('stop')
