@@ -9,6 +9,8 @@ jobs:
   test-coverage:
     name: Upload Coverage to Sonarqube
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with: 

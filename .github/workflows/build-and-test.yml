@@ -13,7 +13,8 @@ jobs:
   build_and_test:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
     strategy:
       matrix:
         node-version: [20.x, 22.x, 24.x]
