@@ -1,5 +1,6 @@
 TOKEN = --build-arg REFRESH_TOKEN=$(REFRESH_TOKEN)
 USER = --build-arg USERNAME=$(USERNAME)
+NPM_AUTH = --build-arg NPM_AUTH_TOKEN=$(NPM_AUTH_TOKEN)
 
 CI_MODE = false
 ifeq ($(CI_MODE),true)
@@ -18,7 +19,7 @@ endif
 
 build:
 	@echo "Building tester..."
-	docker build --no-cache $(TOKEN) $(USER) -t alks-cli-test -f Dockerfile ..
+	docker build --no-cache $(TOKEN) $(USER) $(NPM_AUTH) -t alks-cli-test -f Dockerfile ..
 
 test: build
 	@echo "running intg tests..."

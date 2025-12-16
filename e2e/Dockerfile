@@ -2,6 +2,11 @@ ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}
 
+# Configure npm to use Artifactory
+ARG NPM_AUTH_TOKEN
+RUN npm config set registry https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ && \
+    npm config set //artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/:_authToken ${NPM_AUTH_TOKEN}
+
 # build and install cli from source
 COPY . /alks
 WORKDIR /alks

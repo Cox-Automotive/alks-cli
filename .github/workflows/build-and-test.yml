@@ -29,6 +29,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Set up Artifactory Auth with OIDC
+      id: jfrog_setup
       uses: jfrog/setup-jfrog-cli@v4
       env:
         JF_URL: https://artifactory.coxautoinc.com
@@ -53,6 +54,7 @@ jobs:
       env:
         REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
         USERNAME: ${{ secrets.ALKS_USER }}
+        NPM_AUTH_TOKEN: ${{ steps.jfrog_setup.outputs.oidc-token }}
       run: |
-        make test CI_MODE=true 
+        make test CI_MODE=true NPM_AUTH_TOKEN=${{ steps.jfrog_setup.outputs.oidc-token }}
       working-directory: ./e2e
