@@ -44,7 +44,7 @@ jobs:
     #   folder and npm-shrinkwrap.json file, then run `npm i --registry=https://registry.npmjs.org/` to reinstall using public NPM
     #   and then `npm shrinkwrap` to regenerate the npm-shrinkwrap.json file.
     - name: Install dependencies
-      run: npm ci
+      run: jf npm ci
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch

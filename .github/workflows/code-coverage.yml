@@ -32,7 +32,7 @@ jobs:
           jf npm-config --repo-resolve cai-npm --server-id-resolve setup-jfrog-cli-server
 
       - name: Install node modules
-        run: npm ci
+        run: jf npm ci
       - name: Build coverage report
         run: npm run coverage
         env:
