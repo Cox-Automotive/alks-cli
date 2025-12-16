@@ -1,10 +1,10 @@
-★ Release Notes: 2025-10-16 ★
+★ Release Notes: 2025-12-16 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Allows for use of automated change ticket creation or verification when getting keys.
-See [ChangeMinder](https://pages.ghe.coxautoinc.com/ETS-CloudAutomation/Cloud-Platform-Docs/docs/tools_by_cloud_provider/aws/security_services/alks/changeminder) for details.
+* Updated alks.js dependency to latest version (2.14.9) with bug fixes and improvements.
+* Updated CI/CD workflows to use Artifactory for npm package registry.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 

@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [20.x, 22.x, 24.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -25,6 +25,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Set up Artifactory Auth with OIDC
+      uses: jfrog/setup-jfrog-cli@v4
+      env:
+        JF_URL: https://artifactory.coxautoinc.com
+      with:
+        oidc-provider-name: gh-public
+
+    - name: Configure npm to use Artifactory
+      run: |
+        jf npm-config --repo-resolve cai-npm --server-id-resolve setup-jfrog-cli-server
 
     # Note: if this step is failing due to authentication errors, it is likely because you regenerated the npm-shrinkwrap.json 
     #   file while your local NPM was set to use the coxauto artifactory NPM registry. To fix this, locally delete your node_modules

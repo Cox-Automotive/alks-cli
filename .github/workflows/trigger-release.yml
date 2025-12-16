@@ -24,6 +24,8 @@ jobs:
     
   bump_version:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     needs: 
       - get_pull_request
     if: ${{ contains(needs.get_pull_request.outputs.pull_request_labels, 'release/patch') || contains(needs.get_pull_request.outputs.pull_request_labels, 'release/minor') || contains(needs.get_pull_request.outputs.pull_request_labels, 'release/major') }}
@@ -35,8 +37,18 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+          node-version: 24
+
+      - name: Set up Artifactory Auth with OIDC
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: https://artifactory.coxautoinc.com
+        with:
+          oidc-provider-name: gh-public
+
+      - name: Configure npm to use Artifactory
+        run: |
+          jf npm-config --repo-resolve cai-npm --server-id-resolve setup-jfrog-cli-server
 
       - name: Set github user
         run: |
@@ -116,6 +128,11 @@ jobs:
           release_name: ${{ steps.previoustag.outputs.tag }}
           body: ${{ needs.get_pull_request.outputs.pull_request_body }}
 
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Configure npm for npmjs publishing
+        run: |
+          echo "registry=https://registry.npmjs.org/" > .npmrc
+
+      - name: Publish to npm with OIDC provenance
+        run: |
+          unset NODE_AUTH_TOKEN
+          npm publish --provenance --access public
