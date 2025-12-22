@@ -31,6 +31,7 @@ function handleAlksDeveloperFavorites(_options) {
                     const name = [alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)());
                     choices.push({
                         name,
+                        value: name,
                         checked: (0, underscore_1.contains)(favorites, name),
                     });
                 }
@@ -43,6 +44,7 @@ function handleAlksDeveloperFavorites(_options) {
                 const name = [val.account, val.role].join((0, getAccountDelim_1.getAccountDelim)());
                 choices.push({
                     name,
+                    value: name,
                     checked: (0, underscore_1.contains)(favorites, name),
                 });
             });

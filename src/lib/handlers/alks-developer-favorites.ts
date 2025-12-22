@@ -40,6 +40,7 @@ export async function handleAlksDeveloperFavorites(
         );
         choices.push({
           name,
+          value: name,
           checked: contains(favorites, name),
         });
       } else {
@@ -52,6 +53,7 @@ export async function handleAlksDeveloperFavorites(
       const name = [val.account, val.role].join(getAccountDelim());
       choices.push({
         name,
+        value: name,
         checked: contains(favorites, name),
       });
     });

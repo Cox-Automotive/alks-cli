@@ -12,6 +12,7 @@ const parseAlksAccount_1 = require("./parseAlksAccount");
 const formatAccountOutput_1 = require("./formatAccountOutput");
 const compareAliasesAlphabetically_1 = require("./compareAliasesAlphabetically");
 const compareFavorites_1 = require("./compareFavorites");
+const getAccountDelim_1 = require("./getAccountDelim");
 function promptForAlksAccountAndRole(options) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const opts = {
@@ -25,7 +26,8 @@ function promptForAlksAccountAndRole(options) {
         const maxAccountAliasLength = Math.max(...alksAccounts.map((a) => a.accountAlias.length));
         const maxAccountIdAndRoleLength = Math.max(...alksAccounts.map((a) => a.accountIdAndRole.length));
         const indexedAlksAccounts = alksAccounts
-            .filter((alksAccount) => !opts.filterFavorites || favorites.includes(alksAccount.account)) // Filter out non-favorites if filterFavorites flag is passed
+            .filter((alksAccount) => !opts.filterFavorites ||
+            favorites.includes([alksAccount.account, alksAccount.role].join((0, getAccountDelim_1.getAccountDelim)()))) // Filter out non-favorites if filterFavorites flag is passed
             .sort((0, compareAliasesAlphabetically_1.compareAliasesAlphabetically)()) // Sort alphabetically first
             .sort((0, compareFavorites_1.compareFavorites)(favorites)) // Move favorites to the front of the list, non-favorites to the back
             .map((alksAccount) => (Object.assign(Object.assign({}, alksAccount), { formattedOutput: (0, formatAccountOutput_1.formatAccountOutput)(alksAccount, maxAccountAliasLength, maxAccountIdAndRoleLength) }))); // Add a field to the account object containing the formatted output string

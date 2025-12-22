@@ -8,6 +8,7 @@ import { parseAlksAccount } from './parseAlksAccount';
 import { formatAccountOutput } from './formatAccountOutput';
 import { compareAliasesAlphabetically } from './compareAliasesAlphabetically';
 import { compareFavorites } from './compareFavorites';
+import { getAccountDelim } from './getAccountDelim';
 
 export interface GetAlksAccountOptions {
   iamOnly: boolean;
@@ -50,7 +51,10 @@ export async function promptForAlksAccountAndRole(
   const indexedAlksAccounts = alksAccounts
     .filter(
       (alksAccount) =>
-        !opts.filterFavorites || favorites.includes(alksAccount.account)
+        !opts.filterFavorites ||
+        favorites.includes(
+          [alksAccount.account, alksAccount.role].join(getAccountDelim())
+        )
     ) // Filter out non-favorites if filterFavorites flag is passed
     .sort(compareAliasesAlphabetically()) // Sort alphabetically first
     .sort(compareFavorites(favorites)) // Move favorites to the front of the list, non-favorites to the back
