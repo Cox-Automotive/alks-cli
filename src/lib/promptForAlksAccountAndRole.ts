@@ -6,7 +6,6 @@ import { getAlksAccount } from './state/alksAccount';
 import { getAlksRole } from './state/alksRole';
 import { parseAlksAccount } from './parseAlksAccount';
 import { formatAccountOutput } from './formatAccountOutput';
-import { compareAliasesAlphabetically } from './compareAliasesAlphabetically';
 import { compareFavorites } from './compareFavorites';
 import { getAccountDelim } from './getAccountDelim';
 
@@ -56,8 +55,7 @@ export async function promptForAlksAccountAndRole(
           [alksAccount.account, alksAccount.role].join(getAccountDelim())
         )
     ) // Filter out non-favorites if filterFavorites flag is passed
-    .sort(compareAliasesAlphabetically()) // Sort alphabetically first
-    .sort(compareFavorites(favorites)) // Move favorites to the front of the list, non-favorites to the back
+    .sort(compareFavorites(favorites)) // Sort favorites to top while maintaining alphabetical order
     .map((alksAccount) => ({
       ...alksAccount,
       formattedOutput: formatAccountOutput(
