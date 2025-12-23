@@ -3,8 +3,7 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Updated alks.js dependency to latest version (2.14.9) with bug fixes and improvements.
-* Updated CI/CD workflows to use Artifactory for npm package registry.
+* Fixed favorites not being displayed correctly in certain scenarios.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
