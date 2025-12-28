@@ -41,4 +41,5 @@ function logTime(start, programStart) {
         (0, log_1.log)(`time elapsed while parsing program: ${now.getTime() - programStart.getTime()}`);
     }
 }
+// trivial edit.
 //# sourceMappingURL=alks.js.map
