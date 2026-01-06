@@ -53,13 +53,13 @@ describe('promptForAlksAccountAndRole', () => {
   ];
 
   const mockFavorites = [
-    '543210987654/ALKSAdmin - testapps',
-    '567890123456/ALKSReadOnly - commontools',
-    '678901234567/ALKSAdmin - clientstaging',
-    '456789012345/ALKSReadOnly - stagingcell2',
-    '111111111111/ALKSReadOnly - testenv2',
-    '987654321098/ALKSAdmin - prodbridge1',
-    '890123456789/ALKSLabAdmin - devlabs',
+    '543210987654/ALKSAdmin - testapps :: Admin',
+    '567890123456/ALKSReadOnly - commontools :: ReadOnly',
+    '678901234567/ALKSAdmin - clientstaging :: Admin',
+    '456789012345/ALKSReadOnly - stagingcell2 :: ReadOnly',
+    '111111111111/ALKSReadOnly - testenv2 :: ReadOnly',
+    '987654321098/ALKSAdmin - prodbridge1 :: Admin',
+    '890123456789/ALKSLabAdmin - devlabs :: LabAdmin',
   ];
 
   let mockPromptFn: jest.Mock;

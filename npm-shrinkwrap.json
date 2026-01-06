@@ -18,7 +18,7 @@
         "crypto": "0.0.3",
         "fuzzy": "^0.1.1",
         "ini": "^2.0.0",
-        "inquirer": "^6.5.2",
+        "inquirer": "^8.2.7",
         "lodash": "^4.17.21",
         "lokijs": "^1.5.1",
         "memoizee": "^0.4.15",
@@ -2069,21 +2069,6 @@
         }
       }
     },
-    "node_modules/@jest/core/node_modules/ansi-escapes": {
-      "version": "4.3.2",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-4.3.2.tgz",
-      "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
-      "dev": true,
-      "dependencies": {
-        "type-fest": "^0.21.3"
-      },
-      "engines": {
-        "node": ">=8"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
     "node_modules/@jest/core/node_modules/ansi-styles": {
       "version": "5.2.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-styles/-/ansi-styles-5.2.0.tgz",
@@ -2115,30 +2100,6 @@
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/react-is/-/react-is-18.3.1.tgz",
       "integrity": "sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==",
       "dev": true
-    },
-    "node_modules/@jest/core/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/@jest/core/node_modules/type-fest": {
-      "version": "0.21.3",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/type-fest/-/type-fest-0.21.3.tgz",
-      "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
-      "dev": true,
-      "engines": {
-        "node": ">=10"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
-      }
     },
     "node_modules/@jest/environment": {
       "version": "29.7.0",
@@ -2281,18 +2242,6 @@
       },
       "engines": {
         "node": ">=10"
-      }
-    },
-    "node_modules/@jest/reporters/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/@jest/schemas": {
@@ -3104,11 +3053,28 @@
       }
     },
     "node_modules/ansi-escapes": {
-      "version": "3.2.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-3.2.0.tgz",
-      "integrity": "sha512-cBhpre4ma+U0T1oM5fXg7Dy1Jw7zzwv7lt/GoCpr+hDQJoYnKVPLL4dCvSEFMmQurOQvSrwT7SL/DAlhBI97RQ==",
+      "version": "4.3.2",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-4.3.2.tgz",
+      "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
+      "dependencies": {
+        "type-fest": "^0.21.3"
+      },
       "engines": {
-        "node": ">=4"
+        "node": ">=8"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/ansi-escapes/node_modules/type-fest": {
+      "version": "0.21.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/type-fest/-/type-fest-0.21.3.tgz",
+      "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
       }
     },
     "node_modules/ansi-regex": {
@@ -3575,7 +3541,6 @@
       "version": "4.1.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/bl/-/bl-4.1.0.tgz",
       "integrity": "sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==",
-      "optional": true,
       "dependencies": {
         "buffer": "^5.5.0",
         "inherits": "^2.0.4",
@@ -3837,7 +3802,6 @@
           "url": "https://feross.org/support"
         }
       ],
-      "optional": true,
       "dependencies": {
         "base64-js": "^1.3.1",
         "ieee754": "^1.1.13"
@@ -4147,7 +4111,6 @@
       "version": "4.1.2",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chalk/-/chalk-4.1.2.tgz",
       "integrity": "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==",
-      "dev": true,
       "dependencies": {
         "ansi-styles": "^4.1.0",
         "supports-color": "^7.1.0"
@@ -4169,9 +4132,9 @@
       }
     },
     "node_modules/chardet": {
-      "version": "0.7.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chardet/-/chardet-0.7.0.tgz",
-      "integrity": "sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA=="
+      "version": "2.1.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chardet/-/chardet-2.1.1.tgz",
+      "integrity": "sha512-PsezH1rqdV9VvyNhxxOW32/d75r01NY7TQCmOqomRo15ZSOKbpTFVsfjghxo6JloQUCGnH4k1LGu0R4yCLlWQQ=="
     },
     "node_modules/chokidar": {
       "version": "1.7.0",
@@ -4295,14 +4258,25 @@
       }
     },
     "node_modules/cli-cursor": {
-      "version": "2.1.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-cursor/-/cli-cursor-2.1.0.tgz",
-      "integrity": "sha512-8lgKz8LmCRYZZQDpRyT2m5rKJ08TnU4tR9FFFW2rxpxR1FzWi4PQ/NfyODchAatHaUgnSPVcx/R5w6NuTBzFiw==",
+      "version": "3.1.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-cursor/-/cli-cursor-3.1.0.tgz",
+      "integrity": "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==",
       "dependencies": {
-        "restore-cursor": "^2.0.0"
+        "restore-cursor": "^3.1.0"
       },
       "engines": {
-        "node": ">=4"
+        "node": ">=8"
+      }
+    },
+    "node_modules/cli-spinners": {
+      "version": "2.9.2",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-spinners/-/cli-spinners-2.9.2.tgz",
+      "integrity": "sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==",
+      "engines": {
+        "node": ">=6"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
       }
     },
     "node_modules/cli-table3": {
@@ -4350,22 +4324,13 @@
         "node": ">=8"
       }
     },
-    "node_modules/cli-truncate/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/cli-width": {
-      "version": "2.2.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-width/-/cli-width-2.2.1.tgz",
-      "integrity": "sha512-GRMWDxpOB6Dgk2E5Uo+3eEBvtOOlimMmpbFiKuLFnQzYDavtLFY3K5ona41jgN/WdRZtG7utuVSVTL4HbZHGkw=="
+      "version": "3.0.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-width/-/cli-width-3.0.0.tgz",
+      "integrity": "sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==",
+      "engines": {
+        "node": ">= 10"
+      }
     },
     "node_modules/cliff": {
       "version": "0.1.10",
@@ -4416,22 +4381,10 @@
         "node": ">=8"
       }
     },
-    "node_modules/cliui/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/clone": {
       "version": "1.0.4",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/clone/-/clone-1.0.4.tgz",
       "integrity": "sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==",
-      "optional": true,
       "engines": {
         "node": ">=0.8"
       }
@@ -4815,6 +4768,17 @@
         "url": "https://github.com/sponsors/sindresorhus"
       }
     },
+    "node_modules/defaults": {
+      "version": "1.0.4",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/defaults/-/defaults-1.0.4.tgz",
+      "integrity": "sha512-eFuaLoy/Rxalv2kr+lqMlUnrDWV+3j4pljOIJgLIhI058IQfWJ7vXhyEIHu+HtC738klGALYxOKDO0bQP3tg8A==",
+      "dependencies": {
+        "clone": "^1.0.2"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
     "node_modules/define-lazy-prop": {
       "version": "2.0.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/define-lazy-prop/-/define-lazy-prop-2.0.0.tgz",
@@ -5019,18 +4983,6 @@
       },
       "engines": {
         "node": ">=8.6"
-      }
-    },
-    "node_modules/enquirer/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/err-code": {
@@ -5488,6 +5440,11 @@
         "node": ">=4"
       }
     },
+    "node_modules/external-editor/node_modules/chardet": {
+      "version": "0.7.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chardet/-/chardet-0.7.0.tgz",
+      "integrity": "sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA=="
+    },
     "node_modules/external-editor/node_modules/iconv-lite": {
       "version": "0.4.24",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/iconv-lite/-/iconv-lite-0.4.24.tgz",
@@ -5536,14 +5493,17 @@
       }
     },
     "node_modules/figures": {
-      "version": "2.0.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/figures/-/figures-2.0.0.tgz",
-      "integrity": "sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==",
+      "version": "3.2.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/figures/-/figures-3.2.0.tgz",
+      "integrity": "sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==",
       "dependencies": {
         "escape-string-regexp": "^1.0.5"
       },
       "engines": {
-        "node": ">=4"
+        "node": ">=8"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
       }
     },
     "node_modules/file-uri-to-path": {
@@ -6225,7 +6185,6 @@
       "version": "4.0.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/has-flag/-/has-flag-4.0.0.tgz",
       "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
-      "dev": true,
       "engines": {
         "node": ">=8"
       }
@@ -6492,8 +6451,7 @@
           "type": "consulting",
           "url": "https://feross.org/support"
         }
-      ],
-      "optional": true
+      ]
     },
     "node_modules/import-fresh": {
       "version": "3.3.1",
@@ -6581,82 +6539,107 @@
       }
     },
     "node_modules/inquirer": {
-      "version": "6.5.2",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/inquirer/-/inquirer-6.5.2.tgz",
-      "integrity": "sha512-cntlB5ghuB0iuO65Ovoi8ogLHiWGs/5yNrtUcKjFhSSiVeAIVpD7koaSU9RM8mpXw5YDi9RdYXGQMaOURB7ycQ==",
+      "version": "8.2.7",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/inquirer/-/inquirer-8.2.7.tgz",
+      "integrity": "sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==",
       "dependencies": {
-        "ansi-escapes": "^3.2.0",
-        "chalk": "^2.4.2",
-        "cli-cursor": "^2.1.0",
-        "cli-width": "^2.0.0",
-        "external-editor": "^3.0.3",
-        "figures": "^2.0.0",
-        "lodash": "^4.17.12",
-        "mute-stream": "0.0.7",
-        "run-async": "^2.2.0",
-        "rxjs": "^6.4.0",
-        "string-width": "^2.1.0",
-        "strip-ansi": "^5.1.0",
-        "through": "^2.3.6"
+        "@inquirer/external-editor": "^1.0.0",
+        "ansi-escapes": "^4.2.1",
+        "chalk": "^4.1.1",
+        "cli-cursor": "^3.1.0",
+        "cli-width": "^3.0.0",
+        "figures": "^3.0.0",
+        "lodash": "^4.17.21",
+        "mute-stream": "0.0.8",
+        "ora": "^5.4.1",
+        "run-async": "^2.4.0",
+        "rxjs": "^7.5.5",
+        "string-width": "^4.1.0",
+        "strip-ansi": "^6.0.0",
+        "through": "^2.3.6",
+        "wrap-ansi": "^6.0.1"
       },
       "engines": {
-        "node": ">=6.0.0"
+        "node": ">=12.0.0"
       }
     },
-    "node_modules/inquirer/node_modules/ansi-styles": {
-      "version": "3.2.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-styles/-/ansi-styles-3.2.1.tgz",
-      "integrity": "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==",
+    "node_modules/inquirer/node_modules/@inquirer/external-editor": {
+      "version": "1.0.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/@inquirer/external-editor/-/external-editor-1.0.3.tgz",
+      "integrity": "sha512-RWbSrDiYmO4LbejWY7ttpxczuwQyZLBUyygsA9Nsv95hpzUWwnNTVQmAq3xuh7vNwCp07UTmE5i11XAEExx4RA==",
       "dependencies": {
-        "color-convert": "^1.9.0"
+        "chardet": "^2.1.1",
+        "iconv-lite": "^0.7.0"
       },
       "engines": {
-        "node": ">=4"
+        "node": ">=18"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        }
       }
     },
-    "node_modules/inquirer/node_modules/chalk": {
-      "version": "2.4.2",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chalk/-/chalk-2.4.2.tgz",
-      "integrity": "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==",
+    "node_modules/inquirer/node_modules/@types/node": {
+      "version": "25.0.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/@types/node/-/node-25.0.3.tgz",
+      "integrity": "sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA==",
+      "optional": true,
+      "peer": true,
       "dependencies": {
-        "ansi-styles": "^3.2.1",
-        "escape-string-regexp": "^1.0.5",
-        "supports-color": "^5.3.0"
+        "undici-types": "~7.16.0"
+      }
+    },
+    "node_modules/inquirer/node_modules/iconv-lite": {
+      "version": "0.7.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/iconv-lite/-/iconv-lite-0.7.1.tgz",
+      "integrity": "sha512-2Tth85cXwGFHfvRgZWszZSvdo+0Xsqmw8k8ZwxScfcBneNUraK+dxRxRm24nszx80Y0TVio8kKLt5sLE7ZCLlw==",
+      "dependencies": {
+        "safer-buffer": ">= 2.1.2 < 3.0.0"
       },
       "engines": {
-        "node": ">=4"
+        "node": ">=0.10.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
       }
     },
-    "node_modules/inquirer/node_modules/color-convert": {
-      "version": "1.9.3",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/color-convert/-/color-convert-1.9.3.tgz",
-      "integrity": "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==",
+    "node_modules/inquirer/node_modules/rxjs": {
+      "version": "7.8.2",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/rxjs/-/rxjs-7.8.2.tgz",
+      "integrity": "sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==",
       "dependencies": {
-        "color-name": "1.1.3"
+        "tslib": "^2.1.0"
       }
     },
-    "node_modules/inquirer/node_modules/color-name": {
-      "version": "1.1.3",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/color-name/-/color-name-1.1.3.tgz",
-      "integrity": "sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw=="
-    },
-    "node_modules/inquirer/node_modules/has-flag": {
-      "version": "3.0.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/has-flag/-/has-flag-3.0.0.tgz",
-      "integrity": "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==",
-      "engines": {
-        "node": ">=4"
-      }
-    },
-    "node_modules/inquirer/node_modules/supports-color": {
-      "version": "5.5.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/supports-color/-/supports-color-5.5.0.tgz",
-      "integrity": "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==",
+    "node_modules/inquirer/node_modules/string-width": {
+      "version": "4.2.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/string-width/-/string-width-4.2.3.tgz",
+      "integrity": "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==",
       "dependencies": {
-        "has-flag": "^3.0.0"
+        "emoji-regex": "^8.0.0",
+        "is-fullwidth-code-point": "^3.0.0",
+        "strip-ansi": "^6.0.1"
       },
       "engines": {
-        "node": ">=4"
+        "node": ">=8"
+      }
+    },
+    "node_modules/inquirer/node_modules/wrap-ansi": {
+      "version": "6.2.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/wrap-ansi/-/wrap-ansi-6.2.0.tgz",
+      "integrity": "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==",
+      "dependencies": {
+        "ansi-styles": "^4.0.0",
+        "string-width": "^4.1.0",
+        "strip-ansi": "^6.0.0"
+      },
+      "engines": {
+        "node": ">=8"
       }
     },
     "node_modules/interpret": {
@@ -6843,6 +6826,14 @@
         "node": ">=0.10.0"
       }
     },
+    "node_modules/is-interactive": {
+      "version": "1.0.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/is-interactive/-/is-interactive-1.0.0.tgz",
+      "integrity": "sha512-2HvIEKRoqS62guEC+qBjpvRubdX910WCMuJTZ+I9yvqKU2/12eSL549HMwtabb4oupdj2sMP50k+XJfB/8JE6w==",
+      "engines": {
+        "node": ">=8"
+      }
+    },
     "node_modules/is-number": {
       "version": "7.0.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/is-number/-/is-number-7.0.0.tgz",
@@ -6944,7 +6935,6 @@
       "version": "0.1.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz",
       "integrity": "sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==",
-      "dev": true,
       "engines": {
         "node": ">=10"
       },
@@ -8042,33 +8032,6 @@
         "node": "^14.15.0 || ^16.10.0 || >=18.0.0"
       }
     },
-    "node_modules/jest-watcher/node_modules/ansi-escapes": {
-      "version": "4.3.2",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-4.3.2.tgz",
-      "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
-      "dev": true,
-      "dependencies": {
-        "type-fest": "^0.21.3"
-      },
-      "engines": {
-        "node": ">=8"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
-    "node_modules/jest-watcher/node_modules/type-fest": {
-      "version": "0.21.3",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/type-fest/-/type-fest-0.21.3.tgz",
-      "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
-      "dev": true,
-      "engines": {
-        "node": ">=10"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
     "node_modules/jest-worker": {
       "version": "29.7.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/jest-worker/-/jest-worker-29.7.0.tgz",
@@ -8419,7 +8382,6 @@
       "version": "4.1.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/log-symbols/-/log-symbols-4.1.0.tgz",
       "integrity": "sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==",
-      "dev": true,
       "dependencies": {
         "chalk": "^4.1.0",
         "is-unicode-supported": "^0.1.0"
@@ -8447,46 +8409,6 @@
       },
       "funding": {
         "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
-    "node_modules/log-update/node_modules/ansi-escapes": {
-      "version": "4.3.2",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-4.3.2.tgz",
-      "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
-      "dev": true,
-      "dependencies": {
-        "type-fest": "^0.21.3"
-      },
-      "engines": {
-        "node": ">=8"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
-      }
-    },
-    "node_modules/log-update/node_modules/cli-cursor": {
-      "version": "3.1.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-cursor/-/cli-cursor-3.1.0.tgz",
-      "integrity": "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==",
-      "dev": true,
-      "dependencies": {
-        "restore-cursor": "^3.1.0"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/log-update/node_modules/restore-cursor": {
-      "version": "3.1.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/restore-cursor/-/restore-cursor-3.1.0.tgz",
-      "integrity": "sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA==",
-      "dev": true,
-      "dependencies": {
-        "onetime": "^5.1.0",
-        "signal-exit": "^3.0.2"
-      },
-      "engines": {
-        "node": ">=8"
       }
     },
     "node_modules/log-update/node_modules/slice-ansi": {
@@ -8518,30 +8440,6 @@
       },
       "engines": {
         "node": ">=8"
-      }
-    },
-    "node_modules/log-update/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/log-update/node_modules/type-fest": {
-      "version": "0.21.3",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/type-fest/-/type-fest-0.21.3.tgz",
-      "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
-      "dev": true,
-      "engines": {
-        "node": ">=10"
-      },
-      "funding": {
-        "url": "https://github.com/sponsors/sindresorhus"
       }
     },
     "node_modules/log-update/node_modules/wrap-ansi": {
@@ -8790,7 +8688,6 @@
       "version": "2.1.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mimic-fn/-/mimic-fn-2.1.0.tgz",
       "integrity": "sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==",
-      "dev": true,
       "engines": {
         "node": ">=6"
       }
@@ -9302,18 +9199,6 @@
         "node": ">=8"
       }
     },
-    "node_modules/mocha/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/mocha/node_modules/supports-color": {
       "version": "8.1.1",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/supports-color/-/supports-color-8.1.1.tgz",
@@ -9361,9 +9246,9 @@
       "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
     },
     "node_modules/mute-stream": {
-      "version": "0.0.7",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mute-stream/-/mute-stream-0.0.7.tgz",
-      "integrity": "sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ=="
+      "version": "0.0.8",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mute-stream/-/mute-stream-0.0.8.tgz",
+      "integrity": "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA=="
     },
     "node_modules/nan": {
       "version": "2.24.0",
@@ -9808,18 +9693,6 @@
         "node": ">=8"
       }
     },
-    "node_modules/nyc/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/nyc/node_modules/wrap-ansi": {
       "version": "6.2.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/wrap-ansi/-/wrap-ansi-6.2.0.tgz",
@@ -10021,7 +9894,6 @@
       "version": "5.1.2",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/onetime/-/onetime-5.1.2.tgz",
       "integrity": "sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==",
-      "dev": true,
       "dependencies": {
         "mimic-fn": "^2.1.0"
       },
@@ -10063,6 +9935,28 @@
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/minimist/-/minimist-0.0.10.tgz",
       "integrity": "sha512-iotkTvxc+TwOm5Ieim8VnSNvCDjCK9S8G3scJ50ZthspSxa7jx50jkhYduuAtAjvfDUwSgOwf8+If99AlOEhyw==",
       "optional": true
+    },
+    "node_modules/ora": {
+      "version": "5.4.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ora/-/ora-5.4.1.tgz",
+      "integrity": "sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==",
+      "dependencies": {
+        "bl": "^4.1.0",
+        "chalk": "^4.1.0",
+        "cli-cursor": "^3.1.0",
+        "cli-spinners": "^2.5.0",
+        "is-interactive": "^1.0.0",
+        "is-unicode-supported": "^0.1.0",
+        "log-symbols": "^4.1.0",
+        "strip-ansi": "^6.0.0",
+        "wcwidth": "^1.0.1"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
     },
     "node_modules/os-tmpdir": {
       "version": "1.0.2",
@@ -11323,34 +11217,15 @@
       }
     },
     "node_modules/restore-cursor": {
-      "version": "2.0.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/restore-cursor/-/restore-cursor-2.0.0.tgz",
-      "integrity": "sha512-6IzJLuGi4+R14vwagDHX+JrXmPVtPpn4mffDJ1UdR7/Edm87fl6yi8mMBIVvFtJaNTUvjughmW4hwLhRG7gC1Q==",
+      "version": "3.1.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/restore-cursor/-/restore-cursor-3.1.0.tgz",
+      "integrity": "sha512-l+sSefzHpj5qimhFSE5a8nufZYAM3sBSVMAPtYkmC+4EH2anSGaEMXSD0izRQbu9nfyQ9y5JrVmp7E8oZrUjvA==",
       "dependencies": {
-        "onetime": "^2.0.0",
+        "onetime": "^5.1.0",
         "signal-exit": "^3.0.2"
       },
       "engines": {
-        "node": ">=4"
-      }
-    },
-    "node_modules/restore-cursor/node_modules/mimic-fn": {
-      "version": "1.2.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mimic-fn/-/mimic-fn-1.2.0.tgz",
-      "integrity": "sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ==",
-      "engines": {
-        "node": ">=4"
-      }
-    },
-    "node_modules/restore-cursor/node_modules/onetime": {
-      "version": "2.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/onetime/-/onetime-2.0.1.tgz",
-      "integrity": "sha512-oyyPpiMaKARvvcgip+JV+7zci5L8D1W9RZIz2l1o08AM3pfspitVWnPt3mzHcBPp12oYMTy0pqrFs/C+m3EwsQ==",
-      "dependencies": {
-        "mimic-fn": "^1.0.0"
-      },
-      "engines": {
-        "node": ">=4"
+        "node": ">=8"
       }
     },
     "node_modules/ret": {
@@ -12279,18 +12154,6 @@
         "node": ">=10"
       }
     },
-    "node_modules/string-length/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dev": true,
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/string-width": {
       "version": "2.1.1",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/string-width/-/string-width-2.1.1.tgz",
@@ -12312,17 +12175,6 @@
         "emoji-regex": "^8.0.0",
         "is-fullwidth-code-point": "^3.0.0",
         "strip-ansi": "^6.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/string-width-cjs/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
       },
       "engines": {
         "node": ">=8"
@@ -12370,14 +12222,14 @@
       }
     },
     "node_modules/strip-ansi": {
-      "version": "5.2.0",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-5.2.0.tgz",
-      "integrity": "sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==",
+      "version": "6.0.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
+      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
       "dependencies": {
-        "ansi-regex": "^4.1.0"
+        "ansi-regex": "^5.0.1"
       },
       "engines": {
-        "node": ">=6"
+        "node": ">=8"
       }
     },
     "node_modules/strip-ansi-cjs": {
@@ -12390,14 +12242,6 @@
       },
       "engines": {
         "node": ">=8"
-      }
-    },
-    "node_modules/strip-ansi/node_modules/ansi-regex": {
-      "version": "4.1.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-regex/-/ansi-regex-4.1.1.tgz",
-      "integrity": "sha512-ILlv4k/3f6vfQ4OoP2AGvirOktlQ98ZEL1k9FaQjxa3L1abBgbuTDAdPOpvbGncC0BTVQrl+OM8xZGK6tWXt7g==",
-      "engines": {
-        "node": ">=6"
       }
     },
     "node_modules/strip-bom": {
@@ -12439,7 +12283,6 @@
       "version": "7.2.0",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/supports-color/-/supports-color-7.2.0.tgz",
       "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
-      "dev": true,
       "dependencies": {
         "has-flag": "^4.0.0"
       },
@@ -12470,6 +12313,175 @@
         "minimist": "^1.2.0",
         "mkdirp": "^0.5.1",
         "untildify": "^3.0.3"
+      }
+    },
+    "node_modules/tabtab/node_modules/ansi-escapes": {
+      "version": "3.2.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-escapes/-/ansi-escapes-3.2.0.tgz",
+      "integrity": "sha512-cBhpre4ma+U0T1oM5fXg7Dy1Jw7zzwv7lt/GoCpr+hDQJoYnKVPLL4dCvSEFMmQurOQvSrwT7SL/DAlhBI97RQ==",
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/ansi-regex": {
+      "version": "4.1.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-regex/-/ansi-regex-4.1.1.tgz",
+      "integrity": "sha512-ILlv4k/3f6vfQ4OoP2AGvirOktlQ98ZEL1k9FaQjxa3L1abBgbuTDAdPOpvbGncC0BTVQrl+OM8xZGK6tWXt7g==",
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    "node_modules/tabtab/node_modules/ansi-styles": {
+      "version": "3.2.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ansi-styles/-/ansi-styles-3.2.1.tgz",
+      "integrity": "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==",
+      "dependencies": {
+        "color-convert": "^1.9.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/chalk": {
+      "version": "2.4.2",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/chalk/-/chalk-2.4.2.tgz",
+      "integrity": "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==",
+      "dependencies": {
+        "ansi-styles": "^3.2.1",
+        "escape-string-regexp": "^1.0.5",
+        "supports-color": "^5.3.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/cli-cursor": {
+      "version": "2.1.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-cursor/-/cli-cursor-2.1.0.tgz",
+      "integrity": "sha512-8lgKz8LmCRYZZQDpRyT2m5rKJ08TnU4tR9FFFW2rxpxR1FzWi4PQ/NfyODchAatHaUgnSPVcx/R5w6NuTBzFiw==",
+      "dependencies": {
+        "restore-cursor": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/cli-width": {
+      "version": "2.2.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/cli-width/-/cli-width-2.2.1.tgz",
+      "integrity": "sha512-GRMWDxpOB6Dgk2E5Uo+3eEBvtOOlimMmpbFiKuLFnQzYDavtLFY3K5ona41jgN/WdRZtG7utuVSVTL4HbZHGkw=="
+    },
+    "node_modules/tabtab/node_modules/color-convert": {
+      "version": "1.9.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/color-convert/-/color-convert-1.9.3.tgz",
+      "integrity": "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==",
+      "dependencies": {
+        "color-name": "1.1.3"
+      }
+    },
+    "node_modules/tabtab/node_modules/color-name": {
+      "version": "1.1.3",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/color-name/-/color-name-1.1.3.tgz",
+      "integrity": "sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw=="
+    },
+    "node_modules/tabtab/node_modules/figures": {
+      "version": "2.0.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/figures/-/figures-2.0.0.tgz",
+      "integrity": "sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==",
+      "dependencies": {
+        "escape-string-regexp": "^1.0.5"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/has-flag": {
+      "version": "3.0.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/has-flag/-/has-flag-3.0.0.tgz",
+      "integrity": "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==",
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/inquirer": {
+      "version": "6.5.2",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/inquirer/-/inquirer-6.5.2.tgz",
+      "integrity": "sha512-cntlB5ghuB0iuO65Ovoi8ogLHiWGs/5yNrtUcKjFhSSiVeAIVpD7koaSU9RM8mpXw5YDi9RdYXGQMaOURB7ycQ==",
+      "dependencies": {
+        "ansi-escapes": "^3.2.0",
+        "chalk": "^2.4.2",
+        "cli-cursor": "^2.1.0",
+        "cli-width": "^2.0.0",
+        "external-editor": "^3.0.3",
+        "figures": "^2.0.0",
+        "lodash": "^4.17.12",
+        "mute-stream": "0.0.7",
+        "run-async": "^2.2.0",
+        "rxjs": "^6.4.0",
+        "string-width": "^2.1.0",
+        "strip-ansi": "^5.1.0",
+        "through": "^2.3.6"
+      },
+      "engines": {
+        "node": ">=6.0.0"
+      }
+    },
+    "node_modules/tabtab/node_modules/mimic-fn": {
+      "version": "1.2.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mimic-fn/-/mimic-fn-1.2.0.tgz",
+      "integrity": "sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ==",
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/mute-stream": {
+      "version": "0.0.7",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/mute-stream/-/mute-stream-0.0.7.tgz",
+      "integrity": "sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ=="
+    },
+    "node_modules/tabtab/node_modules/onetime": {
+      "version": "2.0.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/onetime/-/onetime-2.0.1.tgz",
+      "integrity": "sha512-oyyPpiMaKARvvcgip+JV+7zci5L8D1W9RZIz2l1o08AM3pfspitVWnPt3mzHcBPp12oYMTy0pqrFs/C+m3EwsQ==",
+      "dependencies": {
+        "mimic-fn": "^1.0.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/restore-cursor": {
+      "version": "2.0.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/restore-cursor/-/restore-cursor-2.0.0.tgz",
+      "integrity": "sha512-6IzJLuGi4+R14vwagDHX+JrXmPVtPpn4mffDJ1UdR7/Edm87fl6yi8mMBIVvFtJaNTUvjughmW4hwLhRG7gC1Q==",
+      "dependencies": {
+        "onetime": "^2.0.0",
+        "signal-exit": "^3.0.2"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tabtab/node_modules/strip-ansi": {
+      "version": "5.2.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-5.2.0.tgz",
+      "integrity": "sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==",
+      "dependencies": {
+        "ansi-regex": "^4.1.0"
+      },
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    "node_modules/tabtab/node_modules/supports-color": {
+      "version": "5.5.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/supports-color/-/supports-color-5.5.0.tgz",
+      "integrity": "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==",
+      "dependencies": {
+        "has-flag": "^3.0.0"
+      },
+      "engines": {
+        "node": ">=4"
       }
     },
     "node_modules/tar": {
@@ -13055,6 +13067,13 @@
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/underscore/-/underscore-1.13.7.tgz",
       "integrity": "sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g=="
     },
+    "node_modules/undici-types": {
+      "version": "7.16.0",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/undici-types/-/undici-types-7.16.0.tgz",
+      "integrity": "sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==",
+      "optional": true,
+      "peer": true
+    },
     "node_modules/unicode-canonical-property-names-ecmascript": {
       "version": "2.0.1",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-2.0.1.tgz",
@@ -13360,6 +13379,14 @@
         "makeerror": "1.0.12"
       }
     },
+    "node_modules/wcwidth": {
+      "version": "1.0.1",
+      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/wcwidth/-/wcwidth-1.0.1.tgz",
+      "integrity": "sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==",
+      "dependencies": {
+        "defaults": "^1.0.3"
+      }
+    },
     "node_modules/webidl-conversions": {
       "version": "3.0.1",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/webidl-conversions/-/webidl-conversions-3.0.1.tgz",
@@ -13491,17 +13518,6 @@
         "node": ">=8"
       }
     },
-    "node_modules/wrap-ansi-cjs/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
     "node_modules/wrap-ansi/node_modules/string-width": {
       "version": "4.2.3",
       "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/string-width/-/string-width-4.2.3.tgz",
@@ -13510,17 +13526,6 @@
         "emoji-regex": "^8.0.0",
         "is-fullwidth-code-point": "^3.0.0",
         "strip-ansi": "^6.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/wrap-ansi/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
       },
       "engines": {
         "node": ">=8"
@@ -13640,17 +13645,6 @@
         "emoji-regex": "^8.0.0",
         "is-fullwidth-code-point": "^3.0.0",
         "strip-ansi": "^6.0.1"
-      },
-      "engines": {
-        "node": ">=8"
-      }
-    },
-    "node_modules/yargs/node_modules/strip-ansi": {
-      "version": "6.0.1",
-      "resolved": "https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/strip-ansi/-/strip-ansi-6.0.1.tgz",
-      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
-      "dependencies": {
-        "ansi-regex": "^5.0.1"
       },
       "engines": {
         "node": ">=8"
