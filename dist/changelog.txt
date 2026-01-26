@@ -1,8 +1,9 @@
-★ Release Notes: 2026-01-06 ★
+★ Release Notes: 2026-01-26 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
+* Fixed metadata server path resolution issues that prevented server from starting (DE565327).
 * Fixed favorites not being displayed correctly in certain scenarios.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
