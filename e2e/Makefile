@@ -1,6 +1,10 @@
 TOKEN = --build-arg REFRESH_TOKEN=$(REFRESH_TOKEN)
 USER = --build-arg USERNAME=$(USERNAME)
-NPM_AUTH = --build-arg NPM_AUTH_TOKEN=$(NPM_AUTH_TOKEN)
+
+# NPM_AUTH_TOKEN is optional - if not provided, will use public npm registry
+ifneq ($(NPM_AUTH_TOKEN),)
+	NPM_AUTH = --build-arg NPM_AUTH_TOKEN=$(NPM_AUTH_TOKEN)
+endif
 
 CI_MODE = false
 ifeq ($(CI_MODE),true)

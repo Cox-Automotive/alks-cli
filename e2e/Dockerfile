@@ -2,15 +2,25 @@ ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}
 
-# Configure npm to use Artifactory
-ARG NPM_AUTH_TOKEN
-RUN npm config set registry https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/ && \
-    npm config set //artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/:_authToken ${NPM_AUTH_TOKEN}
-
 # build and install cli from source
 COPY . /alks
 WORKDIR /alks
-RUN npm install
+
+# Remove any .npmrc that might have Artifactory config
+RUN rm -f .npmrc
+
+# Configure npm registry (defaults to public npm, can be overridden for Artifactory)
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+ARG NPM_AUTH_TOKEN
+RUN if [ -n "$NPM_AUTH_TOKEN" ] && [ "$NPM_REGISTRY" != "https://registry.npmjs.org/" ]; then \
+      npm config set registry ${NPM_REGISTRY} && \
+      npm config set //artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/:_authToken ${NPM_AUTH_TOKEN}; \
+    else \
+      npm config set registry https://registry.npmjs.org/; \
+    fi
+
+# Install dependencies and build the local code
+RUN npm install --registry=https://registry.npmjs.org/
 RUN npm run build
 RUN npm pack --pack-destination /root
 
