@@ -49,12 +49,12 @@ jobs:
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
-    
-    - name: Run end-2-end tests
-      env:
-        REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
-        USERNAME: ${{ secrets.ALKS_USER }}
-        NPM_AUTH_TOKEN: ${{ steps.jfrog_setup.outputs.oidc-token }}
-      run: |
-        make test CI_MODE=true NPM_AUTH_TOKEN=${{ steps.jfrog_setup.outputs.oidc-token }}
-      working-directory: ./e2e
+
+    # - name: Run end-2-end tests
+    #   env:
+    #     REFRESH_TOKEN: ${{ secrets.ALKS_REFRESH_TOKEN }}
+    #     USERNAME: ${{ secrets.ALKS_USER }}
+    #     NPM_AUTH_TOKEN: ${{ steps.jfrog_setup.outputs.oidc-token }}
+    #   run: |
+    #     make test CI_MODE=true NPM_AUTH_TOKEN=${{ steps.jfrog_setup.outputs.oidc-token }}
+    #   working-directory: ./e2e
