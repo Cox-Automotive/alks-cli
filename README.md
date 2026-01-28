@@ -42,7 +42,7 @@ Once configured, install ALKS CLI globally:
 npm install -g alks
 ```
 
-### Public NPM Registry (Optional)
+### Public NPM Registry (Deprecated)
 
 ALKS CLI is also available on the public NPM registry for external users:
 
