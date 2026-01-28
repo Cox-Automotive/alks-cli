@@ -1,1 +1,0 @@
-{"version":3,"file":"isWindows.js","sourceRoot":"","sources":["../../../src/lib/isWindows.ts"],"names":[],"mappings":";;;AAAA,SAAgB,SAAS;IACvB,MAAM,QAAQ,GAAG,OAAO,CAAC,GAAG,CAAC,QAAQ,IAAI,OAAO,CAAC,QAAQ,CAAC;IAC1D,OAAO,MAAM,CAAC,IAAI,CAAC,QAAQ,CAAC,CAAC;AAC/B,CAAC;AAHD,8BAGC"}

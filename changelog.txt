@@ -3,7 +3,10 @@
 
 Thanks for upgrading to the latest version of the ALKS CLI!
 
-* Fixed metadata server path resolution issues that prevented server from starting (DE565327).
+* Fixed metadata server path resolution issues and launch daemon loading (DE565327).
+  - Corrected paths for metadata-server.js, forever daemon root, and service files
+  - Fixed launch daemon plist to properly load pf rules as an anchor
+  - Improved daemon loading logic to ensure service starts even if files were previously installed
 * Fixed favorites not being displayed correctly in certain scenarios.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues

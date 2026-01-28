@@ -1,1 +1,0 @@
-{"version":3,"file":"promptForUserId.js","sourceRoot":"","sources":["../../../src/lib/promptForUserId.ts"],"names":[],"mappings":";;;;AAAA,2CAAwC;AACxC,2CAA2C;AAE3C,SAAsB,eAAe;;QACnC,oDAAoD;QACpD,MAAM,MAAM,GAAG,MAAM,IAAA,kBAAS,GAAE,CAAC;QAEjC,OAAO,IAAA,qBAAS,EACd,QAAQ,EACR,MAAM,EACN,4DAA4D,EAC5D,IAAI,CACL,CAAC;IACJ,CAAC;CAAA;AAVD,0CAUC;AAED,oCAAoC;AACpC,iHAAiH;AACjH,wEAAwE"}
