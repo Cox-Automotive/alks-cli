@@ -28,11 +28,24 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    # Note: Using public npm registry to avoid JFrog Artifactory authentication issues in CI.
-    # If you regenerate npm-shrinkwrap.json, make sure to use the public registry:
-    #   `npm i --registry=https://registry.npmjs.org/` followed by `npm shrinkwrap`
+    - name: Set up Artifactory Auth with OIDC
+      id: jfrog_setup
+      uses: jfrog/setup-jfrog-cli@v4
+      env:
+        JF_URL: https://artifactory.coxautoinc.com
+      with:
+        oidc-provider-name: gh-public
+
+    - name: Configure npm to use Artifactory
+      run: |
+        jf npm-config --repo-resolve cai-npm --server-id-resolve setup-jfrog-cli-server
+
+    # Note: if this step is failing due to authentication errors, it is likely because you regenerated the npm-shrinkwrap.json
+    #   file while your local NPM was set to use the coxauto artifactory NPM registry. To fix this, locally delete your node_modules
+    #   folder and npm-shrinkwrap.json file, then run `npm i --registry=https://registry.npmjs.org/` to reinstall using public NPM
+    #   and then `npm shrinkwrap` to regenerate the npm-shrinkwrap.json file.
     - name: Install dependencies
-      run: npm ci --registry=https://registry.npmjs.org/
+      run: jf npm ci
     - run: npm run build --if-present
     - name: Run tests
       run: npm test -- --no-watch
