@@ -56,7 +56,6 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      # need to run npm install before npm version so that husky's precommit hooks rebuild the dist/ folder
       - name: install dependencies
         run: jf npm ci
 
@@ -128,6 +127,9 @@ jobs:
           tag_name: ${{ steps.previoustag.outputs.tag }}
           release_name: ${{ steps.previoustag.outputs.tag }}
           body: ${{ needs.get_pull_request.outputs.pull_request_body }}
+
+      - name: Build the project
+        run: npm run build
 
       - name: Configure npm for npmjs publishing
         run: |

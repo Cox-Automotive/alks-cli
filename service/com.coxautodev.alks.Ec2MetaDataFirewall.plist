@@ -8,7 +8,7 @@
         <array>
             <string>/bin/bash</string>
             <string>-c</string>
-            <string>ifconfig lo0 alias 169.254.169.254; pfctl -ef /etc/pf.anchors/com.coxautodev.alks</string>
+            <string>ifconfig lo0 alias 169.254.169.254 && pfctl -e 2>/dev/null; cat /etc/pf.anchors/com.coxautodev.alks | pfctl -a com.coxautodev.alks -f -</string>
         </array>
         <key>RunAtLoad</key>
         <true/>

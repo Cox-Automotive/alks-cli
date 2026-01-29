@@ -4,6 +4,8 @@ node_modules
 coverage
 */.alksrc
 .tool-versions
+dist/
+.npmrc
 
 # package-lock.json has historically not been committed to this repo. Committing npm-shrinkwrap.json instead.
 package-lock.json
