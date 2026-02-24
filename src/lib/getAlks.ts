@@ -1,5 +1,6 @@
 import ALKS, { AlksProps, create } from 'alks.js';
 import { getUserAgentString } from './getUserAgentString';
+import { defaultServer } from './promptForServer';
 import { getServer } from './state/server';
 
 interface TokenProps {
@@ -23,12 +24,7 @@ export type Props = TokenProps | PasswordProps;
  * Gets a preconfigured alks.js object
  */
 export async function getAlks(props: Props): Promise<ALKS.Alks> {
-  const server = await getServer();
-  if (!server) {
-    throw new Error(
-      'Server URL is not configured. Please run: alks developer configure'
-    );
-  }
+  const server = (await getServer()) ?? defaultServer;
 
   // FYI: for enabled but not enforced we should not send the Test header.
   const mergedHeaders = {
