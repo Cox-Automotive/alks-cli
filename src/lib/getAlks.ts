@@ -1,4 +1,5 @@
 import ALKS, { AlksProps, create } from 'alks.js';
+import { yellow } from 'cli-color';
 import { getUserAgentString } from './getUserAgentString';
 import { defaultServer } from './promptForServer';
 import { getServer } from './state/server';
@@ -24,7 +25,26 @@ export type Props = TokenProps | PasswordProps;
  * Gets a preconfigured alks.js object
  */
 export async function getAlks(props: Props): Promise<ALKS.Alks> {
-  const server = (await getServer()) ?? defaultServer;
+  const server = await getServer();
+  if (!server) {
+    throw new Error(
+      'Server URL is not configured. Please run: alks developer configure'
+    );
+  }
+
+  const normalizedServer = server.replace(/\/+$/, '');
+  const normalizedDefault = defaultServer.replace(/\/+$/, '');
+  const defaultOrigin = defaultServer.replace(/\/rest\/?$/, '');
+  if (
+    normalizedServer !== normalizedDefault &&
+    normalizedServer.startsWith(defaultOrigin)
+  ) {
+    console.error(
+      yellow(
+        `Tip: Did you mean ${defaultServer}? Run \`alks developer configure\` to update your server URL.`
+      )
+    );
+  }
 
   // FYI: for enabled but not enforced we should not send the Test header.
   const mergedHeaders = {
