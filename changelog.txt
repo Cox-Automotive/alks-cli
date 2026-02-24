@@ -1,3 +1,12 @@
+★ Release Notes: 2026-02-24 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+Thanks for upgrading to the latest version of the ALKS CLI!
+
+* Added deprecation warning for Basic Authentication (US1879500).
+  - A warning banner now appears whenever a command runs using basic auth (network password)
+  - Basic Authentication will be retired on May 3rd; please migrate to OAuth2 via `alks developer configure`
+
 ★ Release Notes: 2026-01-29 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
