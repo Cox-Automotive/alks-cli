@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "3.24.3",
+  "version": "3.24.4",
   "description": "CLI for working with ALKS",
   "main": "dist/src/bin/alks.js",
   "scripts": {
@@ -54,6 +54,7 @@
     "fuzzy": "^0.1.1",
     "ini": "^2.0.0",
     "inquirer": "^8.2.7",
+    "inquirer-autocomplete-prompt": "^2.0.1",
     "lodash": "^4.17.21",
     "lokijs": "^1.5.1",
     "memoizee": "^0.4.15",
