@@ -78,7 +78,9 @@ describe('promptForAlksAccountAndRole', () => {
   it('prompts the user with formatted role output', async () => {
     await promptForAlksAccountAndRole({});
 
-    expect(mockPromptFn.mock.calls[0][0][0].choices).toStrictEqual([
+    const promptConfig = mockPromptFn.mock.calls[0][0][0];
+    const results = await promptConfig.source({}, undefined);
+    expect(results).toStrictEqual([
       // favorites pulled to top after alphabetical sort
       'clientstaging .. 678901234567/ALKSAdmin                 ::  Admin',
       'commontools .... 567890123456/ALKSReadOnly              ::  ReadOnly',
@@ -109,9 +111,31 @@ describe('promptForAlksAccountAndRole', () => {
 
   it('should filter non-favorites if filterFavorites is true', async () => {
     await promptForAlksAccountAndRole({ filterFavorites: true });
-    expect(mockPromptFn.mock.calls[0][0][0].choices.length).toBe(
-      mockFavorites.length
-    );
+    const promptConfig = mockPromptFn.mock.calls[0][0][0];
+    const results = await promptConfig.source({}, undefined);
+    expect(results.length).toBe(mockFavorites.length);
+  });
+
+  it('should return all choices when input is an empty string', async () => {
+    await promptForAlksAccountAndRole({});
+    const promptConfig = mockPromptFn.mock.calls[0][0][0];
+    const results = await promptConfig.source({}, '');
+    expect(results.length).toBe(mockAccounts.length);
+  });
+
+  it('should return only matching results when input is provided', async () => {
+    await promptForAlksAccountAndRole({});
+    const promptConfig = mockPromptFn.mock.calls[0][0][0];
+    const results = await promptConfig.source({}, 'devlabs');
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((r: string) => r.includes('devlabs'))).toBe(true);
+  });
+
+  it('should return no results when input does not match any account', async () => {
+    await promptForAlksAccountAndRole({});
+    const promptConfig = mockPromptFn.mock.calls[0][0][0];
+    const results = await promptConfig.source({}, 'rafa');
+    expect(results.length).toBe(0);
   });
 
   it('should throw an error if no accounts are found', async () => {

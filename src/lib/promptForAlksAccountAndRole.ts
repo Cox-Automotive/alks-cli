@@ -19,7 +19,10 @@ export interface AlksAccountPromptData {
   type: string;
   name: string;
   message: string;
-  choices: string[];
+  source: (
+    answers: Record<string, unknown>,
+    input: string | undefined
+  ) => Promise<string[]>;
   pageSize: number;
   default?: string;
 }
@@ -69,11 +72,23 @@ export async function promptForAlksAccountAndRole(
     throw new Error('No accounts found.');
   }
 
+  const allChoices = indexedAlksAccounts.map((a) => a.formattedOutput);
+
   const promptData: AlksAccountPromptData = {
-    type: 'list',
+    type: 'autocomplete',
     name: 'alksAccount',
     message: opts.prompt,
-    choices: indexedAlksAccounts.map((a) => a.formattedOutput), // Use the formatted output for choices
+    source: (
+      _answers: Record<string, unknown>,
+      input: string | undefined
+    ): Promise<string[]> => {
+      if (!input) {
+        return Promise.resolve(allChoices);
+      }
+      return Promise.resolve(
+        allChoices.filter((c) => c.toLowerCase().includes(input.toLowerCase()))
+      );
+    },
     pageSize: 15,
   };
 

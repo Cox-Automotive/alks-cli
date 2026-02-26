@@ -1,3 +1,12 @@
+★ Release Notes: 2026-02-25 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+Thanks for upgrading to the latest version of the ALKS CLI!
+
+* Added real-time search/filter to account selection prompt.
+  - Type to filter accounts by alias or account ID instead of scrolling
+  - Uses case-insensitive substring matching
+
 ★ Release Notes: 2026-02-24 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
@@ -6,17 +15,6 @@ Thanks for upgrading to the latest version of the ALKS CLI!
 * Added deprecation warning for Basic Authentication (US1879500).
   - A warning banner now appears whenever a command runs using basic auth (network password)
   - Basic Authentication will be retired on May 3rd; please migrate to OAuth2 via `alks developer configure`
-
-★ Release Notes: 2026-01-29 ★
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-
-Thanks for upgrading to the latest version of the ALKS CLI!
-
-* Fixed metadata server path resolution issues and launch daemon loading (DE565327).
-  - Corrected paths for metadata-server.js, forever daemon root, and service files
-  - Fixed launch daemon plist to properly load pf rules as an anchor
-  - Improved daemon loading logic to ensure service starts even if files were previously installed
-* Fixed favorites not being displayed correctly in certain scenarios.
 
 Have feedback? https://github.com/Cox-Automotive/ALKS-CLI/issues
 
