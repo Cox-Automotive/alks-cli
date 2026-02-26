@@ -18,7 +18,7 @@ export async function promptForAuthType(): Promise<string> {
         short: REFRESH_TOKEN_AUTH_CHOICE,
       },
       {
-        name: `[${PASSWORD_AUTH_CHOICE}] Store your network password (not recommended)`,
+        name: `[${PASSWORD_AUTH_CHOICE}] Store your network password (DEPRECATED - retiring May 3rd, not recommended)`,
         value: PASSWORD_AUTH_CHOICE,
         short: PASSWORD_AUTH_CHOICE,
       },
