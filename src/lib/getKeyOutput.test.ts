@@ -100,6 +100,30 @@ describe('getKeyOutput', () => {
     });
   });
 
+  describe('docker format', () => {
+    it('should include changeNumber when defined (AC-2.1)', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+
+      const result = getKeyOutput(
+        'docker',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+
+      expect(result).toContain('-e ALKS_CHANGE_NUMBER=CHG123456');
+    });
+
+    it('should not include changeNumber when undefined (AC-2.2)', () => {
+      const result = getKeyOutput('docker', mockKey, undefined, false);
+
+      expect(result).not.toContain('ALKS_CHANGE_NUMBER');
+    });
+  });
+
   describe('other formats', () => {
     it('should include changeNumber in json format', () => {
       const keyWithChangeNumber: Key = {
