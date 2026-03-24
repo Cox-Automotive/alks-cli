@@ -20,14 +20,14 @@ export function getKeyOutput(
     case 'docker': {
       let output = `-e AWS_ACCESS_KEY_ID=${key.accessKey} -e AWS_SECRET_ACCESS_KEY=${key.secretKey} -e AWS_SESSION_TOKEN=${key.sessionToken} -e AWS_SESSION_EXPIRES=${keyExpires}`;
       if (key.changeNumber) {
-        output += ` -e ALKS_CHANGE_NUMBER=${key.changeNumber}`;
+        output += ` -e CHANGE_NUMBER=${key.changeNumber}`;
       }
       return output;
     }
     case 'terraformarg': {
       let output = `-e ALKS_ACCESS_KEY_ID=${key.accessKey} -e ALKS_SECRET_ACCESS_KEY=${key.secretKey} -e ALKS_SESSION_TOKEN=${key.sessionToken} -e ALKS_SESSION_EXPIRES=${keyExpires}`;
       if (key.changeNumber) {
-        output += ` -var alks_change_number=${key.changeNumber}`;
+        output += ` -e CHANGE_NUMBER=${key.changeNumber}`;
       }
       return output;
     }
@@ -35,7 +35,7 @@ export function getKeyOutput(
       const cmd = isWindows() ? 'SET' : 'export';
       let output = `${cmd} ALKS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} ALKS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} ALKS_SESSION_TOKEN=${key.sessionToken} && ${cmd} ALKS_SESSION_EXPIRES=${keyExpires}`;
       if (key.changeNumber) {
-        output += ` && ${cmd} ALKS_CHANGE_NUMBER=${key.changeNumber}`;
+        output += ` && ${cmd} CHANGE_NUMBER=${key.changeNumber}`;
       }
       return output;
     }
@@ -67,7 +67,7 @@ export function getKeyOutput(
     case 'idea': {
       let output = `AWS_ACCESS_KEY_ID=${key.accessKey}\nAWS_SECRET_ACCESS_KEY=${key.secretKey}\nAWS_SESSION_TOKEN=${key.sessionToken}\nAWS_SESSION_EXPIRES=${keyExpires}`;
       if (key.changeNumber) {
-        output += `\nALKS_CHANGE_NUMBER=${key.changeNumber}`;
+        output += `\nCHANGE_NUMBER=${key.changeNumber}`;
       }
       return output;
     }

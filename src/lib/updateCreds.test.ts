@@ -81,11 +81,11 @@ alks_managed_by = alks
 
       if (writeCall) {
         const writtenContent = writeCall[1];
-        expect(writtenContent).toContain('# ALKS_CHANGE_NUMBER=CHG123456');
+        expect(writtenContent).toContain('# CHANGE_NUMBER=CHG123456');
         expect(writtenContent).toContain('[default]');
         // Verify the comment appears before the profile section
         const commentIndex = writtenContent.indexOf(
-          '# ALKS_CHANGE_NUMBER=CHG123456'
+          '# CHANGE_NUMBER=CHG123456'
         );
         const sectionIndex = writtenContent.indexOf('[default]');
         expect(commentIndex).toBeGreaterThan(-1);
@@ -121,7 +121,7 @@ alks_managed_by = alks
 
       if (writeCall) {
         const writtenContent = writeCall[1];
-        expect(writtenContent).not.toContain('ALKS_CHANGE_NUMBER');
+        expect(writtenContent).not.toContain('CHANGE_NUMBER');
       }
     });
 
@@ -151,7 +151,7 @@ alks_managed_by = alks
 
       if (writeCall) {
         const writtenContent = writeCall[1];
-        expect(writtenContent).toContain('# ALKS_CHANGE_NUMBER=CHG789012');
+        expect(writtenContent).toContain('# CHANGE_NUMBER=CHG789012');
         expect(writtenContent).toContain('[myprofile]');
       }
     });

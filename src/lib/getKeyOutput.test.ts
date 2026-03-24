@@ -114,13 +114,13 @@ describe('getKeyOutput', () => {
         false
       );
 
-      expect(result).toContain('-e ALKS_CHANGE_NUMBER=CHG123456');
+      expect(result).toContain('-e CHANGE_NUMBER=CHG123456');
     });
 
     it('should not include changeNumber when undefined (AC-2.2)', () => {
       const result = getKeyOutput('docker', mockKey, undefined, false);
 
-      expect(result).not.toContain('ALKS_CHANGE_NUMBER');
+      expect(result).not.toContain('CHANGE_NUMBER');
     });
   });
 
@@ -138,13 +138,13 @@ describe('getKeyOutput', () => {
         false
       );
 
-      expect(result).toContain('-var alks_change_number=CHG123456');
+      expect(result).toContain('-e CHANGE_NUMBER=CHG123456');
     });
 
     it('should not include changeNumber when undefined (AC-3.2)', () => {
       const result = getKeyOutput('terraformarg', mockKey, undefined, false);
 
-      expect(result).not.toContain('alks_change_number');
+      expect(result).not.toContain('CHANGE_NUMBER');
     });
   });
 
@@ -162,13 +162,13 @@ describe('getKeyOutput', () => {
         false
       );
 
-      expect(result).toMatch(/ALKS_CHANGE_NUMBER=CHG123456/);
+      expect(result).toMatch(/CHANGE_NUMBER=CHG123456/);
     });
 
     it('should not include changeNumber when undefined (AC-4.2)', () => {
       const result = getKeyOutput('tarraformenv', mockKey, undefined, false);
 
-      expect(result).not.toContain('ALKS_CHANGE_NUMBER');
+      expect(result).not.toContain('CHANGE_NUMBER');
     });
   });
 
@@ -207,13 +207,13 @@ describe('getKeyOutput', () => {
         false
       );
 
-      expect(result).toContain('ALKS_CHANGE_NUMBER=CHG123456');
+      expect(result).toContain('CHANGE_NUMBER=CHG123456');
     });
 
     it('should not include changeNumber when undefined (AC-6.2)', () => {
       const result = getKeyOutput('idea', mockKey, undefined, false);
 
-      expect(result).not.toContain('ALKS_CHANGE_NUMBER');
+      expect(result).not.toContain('CHANGE_NUMBER');
     });
   });
 

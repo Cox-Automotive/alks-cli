@@ -52,7 +52,7 @@ export function updateCreds(
   if (key.changeNumber) {
     const fileContent = readFileSync(credFile, 'utf-8');
     const sectionHeader = `[${section}]`;
-    const commentLine = `# ALKS_CHANGE_NUMBER=${key.changeNumber}`;
+    const commentLine = `# CHANGE_NUMBER=${key.changeNumber}`;
 
     // Find the section header and insert the comment before it
     const sectionIndex = fileContent.indexOf(sectionHeader);
