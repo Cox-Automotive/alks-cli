@@ -7,9 +7,9 @@
 
 ## Current State
 
-**Phase:** Incremental Depth
-**Active Bundle:** Bundle 2
-**Last Completed:** TASK-2
+**Phase:** Complete
+**Active Bundle:** —
+**Last Completed:** TASK-7
 **Baseline:** 086b0b1
 **Baseline Exit Code:** 1 (pre-existing test failures - module resolution issue)
 
@@ -21,11 +21,11 @@
 |---------|-------|--------|--------|
 | TASK-1 | Implement changeNumber in creds output format | done | 3d6c4bc |
 | TASK-2 | Write changeNumber to AWS credentials file | done | e282107 |
-| TASK-3 | Implement changeNumber in docker output format | pending | — |
-| TASK-4 | Implement changeNumber in terraformarg output format | pending | — |
-| TASK-5 | Implement changeNumber in terraformenv output format | pending | — |
-| TASK-6 | Implement changeNumber in aws output format | pending | — |
-| TASK-7 | Implement changeNumber in idea output format | pending | — |
+| TASK-3 | Implement changeNumber in docker output format | done | 9b0b3f2 |
+| TASK-4 | Implement changeNumber in terraformarg output format | done | bdd81c4 |
+| TASK-5 | Implement changeNumber in terraformenv output format | done | d8c5d92 |
+| TASK-6 | Implement changeNumber in aws output format | done | a4c4e43 |
+| TASK-7 | Implement changeNumber in idea output format | done | a4c4e43 |
 
 ---
 
@@ -39,14 +39,14 @@
 - [x] TASK-2: Write changeNumber to AWS credentials file (e282107)
 
 ### Bundle 2: Incremental Depth - Remaining Formats [P]
-**Status:** pending
-**Tasks:** 5/5 pending
+**Status:** complete
+**Tasks:** 5/5 complete
 
-- [ ] TASK-3: Implement changeNumber in docker output format
-- [ ] TASK-4: Implement changeNumber in terraformarg output format
-- [ ] TASK-5: Implement changeNumber in terraformenv output format
-- [ ] TASK-6: Implement changeNumber in aws output format
-- [ ] TASK-7: Implement changeNumber in idea output format
+- [x] TASK-3: Implement changeNumber in docker output format (9b0b3f2)
+- [x] TASK-4: Implement changeNumber in terraformarg output format (bdd81c4)
+- [x] TASK-5: Implement changeNumber in terraformenv output format (d8c5d92)
+- [x] TASK-6: Implement changeNumber in aws output format (a4c4e43)
+- [x] TASK-7: Implement changeNumber in idea output format (a4c4e43)
 
 ---
 
@@ -66,6 +66,11 @@ This file is automatically updated by the execute skill. Do not edit manually.
 - Completed: TASK-1: Implement changeNumber in creds output format, TASK-2: Write changeNumber to AWS credentials file
 - Decisions: none
 - Next: TASK-3: Implement changeNumber in docker output format
+
+### 2026-03-23 — Bundle 2: Incremental Depth - Remaining Formats
+- Completed: TASK-3: docker format, TASK-4: terraformarg format, TASK-5: terraformenv format, TASK-6: aws format, TASK-7: idea format
+- Decisions: TASK-6 and TASK-7 implemented together (same commit a4c4e43)
+- Next: Verification complete - all tasks done
 
 ---
 
