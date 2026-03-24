@@ -148,6 +148,30 @@ describe('getKeyOutput', () => {
     });
   });
 
+  describe('terraformenv format', () => {
+    it('should include changeNumber when defined (AC-4.1)', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+
+      const result = getKeyOutput(
+        'tarraformenv',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+
+      expect(result).toMatch(/ALKS_CHANGE_NUMBER=CHG123456/);
+    });
+
+    it('should not include changeNumber when undefined (AC-4.2)', () => {
+      const result = getKeyOutput('tarraformenv', mockKey, undefined, false);
+
+      expect(result).not.toContain('ALKS_CHANGE_NUMBER');
+    });
+  });
+
   describe('other formats', () => {
     it('should include changeNumber in json format', () => {
       const keyWithChangeNumber: Key = {

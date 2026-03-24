@@ -33,7 +33,11 @@ export function getKeyOutput(
     }
     case 'tarraformenv': {
       const cmd = isWindows() ? 'SET' : 'export';
-      return `${cmd} ALKS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} ALKS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} ALKS_SESSION_TOKEN=${key.sessionToken} && ${cmd} ALKS_SESSION_EXPIRES=${keyExpires}`;
+      let output = `${cmd} ALKS_ACCESS_KEY_ID=${key.accessKey} && ${cmd} ALKS_SECRET_ACCESS_KEY=${key.secretKey} && ${cmd} ALKS_SESSION_TOKEN=${key.sessionToken} && ${cmd} ALKS_SESSION_EXPIRES=${keyExpires}`;
+      if (key.changeNumber) {
+        output += ` && ${cmd} ALKS_CHANGE_NUMBER=${key.changeNumber}`;
+      }
+      return output;
     }
     case 'json': {
       const keyData = {
