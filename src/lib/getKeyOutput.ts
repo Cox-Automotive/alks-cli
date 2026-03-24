@@ -25,7 +25,11 @@ export function getKeyOutput(
       return output;
     }
     case 'terraformarg': {
-      return `-e ALKS_ACCESS_KEY_ID=${key.accessKey} -e ALKS_SECRET_ACCESS_KEY=${key.secretKey} -e ALKS_SESSION_TOKEN=${key.sessionToken} -e ALKS_SESSION_EXPIRES=${keyExpires}`;
+      let output = `-e ALKS_ACCESS_KEY_ID=${key.accessKey} -e ALKS_SECRET_ACCESS_KEY=${key.secretKey} -e ALKS_SESSION_TOKEN=${key.sessionToken} -e ALKS_SESSION_EXPIRES=${keyExpires}`;
+      if (key.changeNumber) {
+        output += ` -var alks_change_number=${key.changeNumber}`;
+      }
+      return output;
     }
     case 'tarraformenv': {
       const cmd = isWindows() ? 'SET' : 'export';

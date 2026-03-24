@@ -124,6 +124,30 @@ describe('getKeyOutput', () => {
     });
   });
 
+  describe('terraformarg format', () => {
+    it('should include changeNumber when defined (AC-3.1)', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+
+      const result = getKeyOutput(
+        'terraformarg',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+
+      expect(result).toContain('-var alks_change_number=CHG123456');
+    });
+
+    it('should not include changeNumber when undefined (AC-3.2)', () => {
+      const result = getKeyOutput('terraformarg', mockKey, undefined, false);
+
+      expect(result).not.toContain('alks_change_number');
+    });
+  });
+
   describe('other formats', () => {
     it('should include changeNumber in json format', () => {
       const keyWithChangeNumber: Key = {
