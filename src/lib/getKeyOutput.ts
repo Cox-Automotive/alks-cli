@@ -65,7 +65,11 @@ export function getKeyOutput(
       }
     }
     case 'idea': {
-      return `AWS_ACCESS_KEY_ID=${key.accessKey}\nAWS_SECRET_ACCESS_KEY=${key.secretKey}\nAWS_SESSION_TOKEN=${key.sessionToken}\nAWS_SESSION_EXPIRES=${keyExpires}`;
+      let output = `AWS_ACCESS_KEY_ID=${key.accessKey}\nAWS_SECRET_ACCESS_KEY=${key.secretKey}\nAWS_SESSION_TOKEN=${key.sessionToken}\nAWS_SESSION_EXPIRES=${keyExpires}`;
+      if (key.changeNumber) {
+        output += `\nALKS_CHANGE_NUMBER=${key.changeNumber}`;
+      }
+      return output;
     }
     case 'powershell': {
       return `$env:AWS_ACCESS_KEY_ID, $env:AWS_SECRET_ACCESS_KEY, $env:AWS_SESSION_TOKEN, $env:AWS_SESSION_EXPIRES, $env:CHANGE_NUMBER = "${
@@ -78,13 +82,17 @@ export function getKeyOutput(
       return `set -xg AWS_ACCESS_KEY_ID '${key.accessKey}'; and set -xg AWS_SECRET_ACCESS_KEY '${key.secretKey}'; and set -xg AWS_SESSION_TOKEN '${key.sessionToken}'; and set -xg AWS_SESSION_EXPIRES '${keyExpires}'; and set -xg CHANGE_NUMBER '${key.changeNumber}'`;
     }
     case 'aws': {
-      return JSON.stringify({
+      const awsOutput: any = {
         Version: 1,
         AccessKeyId: key.accessKey,
         SecretAccessKey: key.secretKey,
         SessionToken: key.sessionToken,
         Expiration: moment(key.expires).toISOString(),
-      });
+      };
+      if (key.changeNumber) {
+        awsOutput.ChangeNumber = key.changeNumber;
+      }
+      return JSON.stringify(awsOutput);
     }
     case 'linux': {
       // forces export format
