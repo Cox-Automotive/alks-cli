@@ -217,6 +217,94 @@ describe('getKeyOutput', () => {
     });
   });
 
+  describe('powershell format', () => {
+    it('should include changeNumber when defined', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+      const result = getKeyOutput(
+        'powershell',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+      expect(result).toContain('CHANGE_NUMBER');
+      expect(result).toContain('CHG123456');
+    });
+
+    it('should not include changeNumber when undefined', () => {
+      const result = getKeyOutput('powershell', mockKey, undefined, false);
+      expect(result).not.toContain('CHANGE_NUMBER');
+    });
+  });
+
+  describe('fishshell format', () => {
+    it('should include changeNumber when defined', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+      const result = getKeyOutput(
+        'fishshell',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+      expect(result).toContain('CHANGE_NUMBER');
+      expect(result).toContain('CHG123456');
+    });
+
+    it('should not include changeNumber when undefined', () => {
+      const result = getKeyOutput('fishshell', mockKey, undefined, false);
+      expect(result).not.toContain('CHANGE_NUMBER');
+    });
+  });
+
+  describe('linux format', () => {
+    it('should include changeNumber when defined', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+      const result = getKeyOutput(
+        'linux',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+      expect(result).toContain('CHANGE_NUMBER');
+      expect(result).toContain('CHG123456');
+    });
+
+    it('should not include changeNumber when undefined', () => {
+      const result = getKeyOutput('linux', mockKey, undefined, false);
+      expect(result).not.toContain('CHANGE_NUMBER');
+    });
+  });
+
+  describe('export/default format', () => {
+    it('should include changeNumber when defined', () => {
+      const keyWithChangeNumber: Key = {
+        ...mockKey,
+        changeNumber: 'CHG123456',
+      };
+      const result = getKeyOutput(
+        'export',
+        keyWithChangeNumber,
+        undefined,
+        false
+      );
+      expect(result).toContain('CHANGE_NUMBER');
+      expect(result).toContain('CHG123456');
+    });
+
+    it('should not include changeNumber when undefined', () => {
+      const result = getKeyOutput('export', mockKey, undefined, false);
+      expect(result).not.toContain('CHANGE_NUMBER');
+    });
+  });
+
   describe('other formats', () => {
     it('should include changeNumber in json format', () => {
       const keyWithChangeNumber: Key = {
