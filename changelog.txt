@@ -1,3 +1,12 @@
+★ Release Notes: 2026-04-03 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+Thanks for upgrading to the latest version of the ALKS CLI!
+
+* CHANGE_NUMBER is now included in all key output formats when a ChangeMinder ticket is present.
+  - Supported formats: docker, terraformarg, terraformenv, idea, json, aws, powershell, fishshell, linux, export/set
+  - CHANGE_NUMBER is omitted entirely when no change number is provided
+
 ★ Release Notes: 2026-02-26 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 
