@@ -1,6 +1,7 @@
-import { AwsKey } from '../model/keys';
+import { Key } from '../model/keys';
 import { createInstance } from 'prop-ini';
 import { has } from 'underscore';
+import { readFileSync, writeFileSync } from 'fs';
 import { addNewLineToEof } from './addNewLineToEof';
 import { getAwsCredentialsFile } from './getAwsCredentialsFile';
 import {
@@ -12,7 +13,7 @@ import {
 } from './awsCredentialsFileContstants';
 
 export function updateCreds(
-  key: AwsKey,
+  key: Key,
   profile: string | undefined,
   force: boolean = false
 ) {
@@ -46,6 +47,24 @@ export function updateCreds(
   }
 
   propIni.encode({ file: credFile });
+
+  // Write changeNumber as a comment above the profile section if present
+  if (key.changeNumber) {
+    const fileContent = readFileSync(credFile, 'utf-8');
+    const sectionHeader = `[${section}]`;
+    const commentLine = `# CHANGE_NUMBER=${key.changeNumber}`;
+
+    // Find the section header and insert the comment before it
+    const sectionIndex = fileContent.indexOf(sectionHeader);
+    if (sectionIndex !== -1) {
+      const modifiedContent =
+        fileContent.slice(0, sectionIndex) +
+        commentLine +
+        '\n' +
+        fileContent.slice(sectionIndex);
+      writeFileSync(credFile, modifiedContent, 'utf-8');
+    }
+  }
 
   // propIni doesnt add a new line, so running aws configure will cause issues
   addNewLineToEof(credFile);
