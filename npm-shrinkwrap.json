@@ -1,12 +1,12 @@
 {
   "name": "alks",
-  "version": "3.24.6",
+  "version": "3.24.7",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "alks",
-      "version": "3.24.6",
+      "version": "3.24.7",
       "license": "MIT",
       "dependencies": {
         "@google-analytics/data": "^4.12.0",
