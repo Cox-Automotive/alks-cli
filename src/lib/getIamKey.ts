@@ -144,7 +144,8 @@ export async function getIamKey(
       });
     }
   } catch (e) {
-    throw new Error(badAccountMessage);
+    const serverMessage = (e as Error).message;
+    throw new Error(serverMessage || badAccountMessage);
   }
   const key: Key = {
     accessKey: alksKey.accessKey,

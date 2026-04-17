@@ -11,6 +11,7 @@ import { addKey } from './addKey';
 import ALKS from 'alks.js';
 import moment from 'moment';
 import { getAwsAccountFromString } from './getAwsAccountFromString';
+import { badAccountMessage } from './badAccountMessage';
 
 jest.mock('./ensureConfigured');
 jest.mock('./getAuth');
@@ -47,6 +48,7 @@ describe('getIamKey', () => {
     filterFavorites: boolean;
     result: Key;
     shouldThrow: boolean;
+    expectedErrorMessage?: string;
     shouldGetAlksAccount: boolean;
     shouldSaveKey: boolean;
     ensureConfigured: typeof ensureConfigured;
@@ -296,7 +298,7 @@ describe('getIamKey', () => {
     },
     {
       ...defaultTestCase,
-      description: 'when alks.getIAMKeys fails',
+      description: 'when alks.getIAMKeys fails with no message',
       getAlks: async () =>
         ({
           getLoginRole: async (props: ALKS.GetLoginRoleProps) => {
@@ -309,6 +311,24 @@ describe('getIamKey', () => {
           },
         } as unknown as ALKS.Alks),
       shouldThrow: true,
+      expectedErrorMessage: badAccountMessage,
+    },
+    {
+      ...defaultTestCase,
+      description: 'when alks.getIAMKeys fails with a server error message',
+      getAlks: async () =>
+        ({
+          getLoginRole: async (props: ALKS.GetLoginRoleProps) => {
+            return (await defaultTestCase.getAlks({} as any)).getLoginRole(
+              props
+            );
+          },
+          getIAMKeys: async () => {
+            throw new Error('Change request required for production access');
+          },
+        } as unknown as ALKS.Alks),
+      shouldThrow: true,
+      expectedErrorMessage: 'Change request required for production access',
     },
     {
       ...defaultTestCase,
@@ -331,6 +351,7 @@ describe('getIamKey', () => {
     describe(t.description, () => {
       let result: Key;
       let errorThrown: boolean = false;
+      let thrownError: Error | undefined;
 
       beforeEach(async () => {
         (ensureConfigured as jest.Mock).mockImplementation(t.ensureConfigured);
@@ -362,6 +383,7 @@ describe('getIamKey', () => {
         } catch (err) {
           console.error(err);
           errorThrown = true;
+          thrownError = err as Error;
         }
       });
 
@@ -369,6 +391,12 @@ describe('getIamKey', () => {
         it('rejects with an error', () => {
           expect(errorThrown).toBe(true);
         });
+
+        if (t.expectedErrorMessage) {
+          it('throws with the expected error message', () => {
+            expect(thrownError?.message).toBe(t.expectedErrorMessage);
+          });
+        }
       } else {
         it('resolves with the correct key', () => {
           expect(result).toEqual(expect.objectContaining(t.result));
