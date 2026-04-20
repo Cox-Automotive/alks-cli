@@ -1,6 +1,6 @@
 {
   "name": "alks",
-  "version": "3.24.8",
+  "version": "3.24.9",
   "description": "CLI for working with ALKS",
   "main": "dist/src/bin/alks.js",
   "scripts": {
