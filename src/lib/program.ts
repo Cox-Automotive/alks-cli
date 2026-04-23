@@ -103,7 +103,7 @@ const sessionsOpenCommand = sessions
   .description('creates or resumes a session')
   .option(
     '-a, --account <accountIdOrAlias>',
-    'the 12-digit ID or alias for an AWS account'
+    'the 12-digit ID (requires use of \'-r, --role\' option or full alias (<12-digit-id>/ALKS<Role>) for an AWS account'
   )
   .option(
     '-r, --role <authRole>',
