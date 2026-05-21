@@ -1,3 +1,11 @@
+★ Release Notes: 2026-05-21 ★
+≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
+
+Thanks for upgrading to the latest version of the ALKS CLI!
+
+* Fixed an issue where `alks developer configure` could silently fail to persist new settings when the local config store contained an empty account record, requiring users to delete the file manually to recover.
+* Optional post-configure steps (such as shell tab completion installation) no longer abort the configure command with a misleading "Error configuring developer:" message when they fail. Failures are now reported as warnings and the configuration is preserved.
+
 ★ Release Notes: 2026-04-20 ★
 ≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
 

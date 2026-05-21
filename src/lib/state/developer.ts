@@ -17,10 +17,11 @@ export async function getDeveloper(): Promise<Developer> {
 
 export async function updateDeveloper(newDeveloper: Developer): Promise<void> {
   log('saving developer');
-  const collection: Collection<Developer> = await getCollection('account');
 
-  collection.removeDataOnly();
-
+  // Read current state first. getDeveloper internally calls getCollection, which
+  // calls db.loadDatabase. If we obtained a collection reference *before* that,
+  // LokiJS's loadJSONObject would reset db.collections and orphan our reference,
+  // causing db.save to write stale data from disk instead of our updates.
   const developer = await getDeveloper();
 
   if (newDeveloper.server) {
@@ -55,8 +56,9 @@ export async function updateDeveloper(newDeveloper: Developer): Promise<void> {
 
   log(`saving ${JSON.stringify(developer)}`);
 
-  // LokiJS complains if we try to simply update or simply insert, and the project has been abandoned so upsert isn't coming soon
-  // TODO ^on that note, let's remove LokiJS - BW
+  // Obtain the collection AFTER reading state, so this reference is the live
+  // one attached to db.collections after the most recent loadDatabase.
+  const collection: Collection<Developer> = await getCollection('account');
   collection.clear();
   collection.insert(developer);
 

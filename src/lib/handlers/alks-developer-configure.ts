@@ -105,19 +105,40 @@ export async function handleAlksDeveloperConfigure(
     }
 
     console.error(clc.white('Your developer configuration has been updated.'));
-
-    if (process.stdin.isTTY && shouldPrompt) {
-      await tabtab.install({
-        name: 'alks',
-        completer: 'alks',
-      });
-    }
-
-    await checkForUpdate();
   } catch (err) {
     errorAndExit(
       'Error configuring developer: ' + (err as Error).message,
       err as Error
+    );
+  }
+
+  // Post-configure steps are non-critical: the configuration is already saved
+  // by this point. A failure here should warn and continue, not abort with a
+  // misleading "Error configuring developer:" message.
+  if (process.stdin.isTTY && !options.nonInteractive) {
+    try {
+      await tabtab.install({
+        name: 'alks',
+        completer: 'alks',
+      });
+    } catch (err) {
+      console.error(
+        clc.yellow(
+          'Warning: failed to install shell tab completion: ' +
+            (err as Error).message +
+            '. Your ALKS configuration was saved successfully; this does not affect ALKS functionality.'
+        )
+      );
+    }
+  }
+
+  try {
+    await checkForUpdate();
+  } catch (err) {
+    console.error(
+      clc.yellow(
+        'Warning: failed to check for updates: ' + (err as Error).message
+      )
     );
   }
 }

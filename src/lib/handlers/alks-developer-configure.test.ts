@@ -214,14 +214,16 @@ describe('handleAlksDeveloperConfigure', () => {
     },
     {
       ...defaultTestCase,
-      description: 'when installing tab completion fails',
-      shouldErr: true,
+      description:
+        'when installing tab completion fails, configure still succeeds (post-configure step is non-critical)',
+      shouldErr: false,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
       savePassword: true,
       alksAccount: '012345678910/ALKSAdmin - awstest',
       alksRole: 'Admin',
+      outputFormat: 'env',
       shouldSaveServer: true,
       shouldSaveUserId: true,
       shouldSetPassword: true,
@@ -232,8 +234,9 @@ describe('handleAlksDeveloperConfigure', () => {
     },
     {
       ...defaultTestCase,
-      description: 'when checkForUpdate fails',
-      shouldErr: true,
+      description:
+        'when checkForUpdate fails, configure still succeeds (post-configure step is non-critical)',
+      shouldErr: false,
       server: 'https://alks.com/rest',
       userId: 'bobby',
       password: 'letmein',
