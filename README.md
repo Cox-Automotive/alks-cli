@@ -17,20 +17,13 @@ ALKS CLI is meant to be installed via NPM from Cox Automotive's internal Artifac
 
 ### Configure NPM for Artifactory
 
-Before installing, you need to configure NPM to use the Cox Automotive Artifactory registry. Add the following to your `~/.npmrc` file:
+Before installing, you need to configure NPM to use the Cox Automotive Artifactory registry:
 
-```
-registry=https://artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/
-//artifactory.coxautoinc.com/artifactory/api/npm/cai-npm/:_auth=<YOUR_ARTIFACTORY_TOKEN>
-```
-
-Replace `<YOUR_ARTIFACTORY_TOKEN>` with your Artifactory authentication token. You can obtain your token from [artifactory.coxautoinc.com](https://artifactory.coxautoinc.com) under your user profile settings.
-
-Alternatively, if you're already authenticated with JFrog CLI, you can use:
-
-```
-jf npm-config --repo-resolve cai-npm
-```
+1. Go to [artifactory.coxautoinc.com](https://artifactory.coxautoinc.com).
+2. Click on your profile in the top right.
+3. Click **Set Me Up**.
+4. Select **npm** and enter `cai-npm` for the repository.
+5. Follow the instructions provided to configure your `~/.npmrc`.
 
 **Need help?** If you have questions about configuring your `.npmrc` file or accessing Artifactory, ask in the [#artifactory](https://cox.enterprise.slack.com/archives/C8Y7NP7HN) Slack channel.
 
