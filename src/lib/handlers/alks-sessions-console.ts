@@ -4,7 +4,7 @@ import { isEmpty, isUndefined } from 'underscore';
 import { Key } from '../../model/keys';
 import { checkForUpdate } from '../checkForUpdate';
 import { errorAndExit } from '../errorAndExit';
-import { getIamKey } from '../getIamKey';
+import { ChangeRequestOptions, getIamKey } from '../getIamKey';
 import { getUserAgentString } from '../getUserAgentString';
 import { log } from '../log';
 import { tryToExtractRole } from '../tryToExtractRole';
@@ -79,6 +79,17 @@ export async function handleAlksSessionsConsole(
       }
     }
 
+    let changeRequestOptions: ChangeRequestOptions;
+    if (hasChgNumber) {
+      changeRequestOptions = { changeNumber: options.chgNumber };
+    } else {
+      changeRequestOptions = {
+        ciid: options.ciid,
+        activityType: options.activityType,
+        description: options.description,
+      };
+    }
+
     let key: Key;
     try {
       key = await getIamKey(
@@ -86,7 +97,9 @@ export async function handleAlksSessionsConsole(
         alksRole,
         forceNewSession,
         filterFaves,
-        isUndefined(options.iam) ? false : true
+        isUndefined(options.iam) ? false : true,
+        undefined,
+        changeRequestOptions
       );
     } catch (err) {
       errorAndExit(err as Error);
