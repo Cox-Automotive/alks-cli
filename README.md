@@ -1,3 +1,5 @@
+> **This repository has moved.** The canonical source is now at [`ghe.coxautoinc.com/ETS-CloudAutomation/alks-cli`](https://ghe.coxautoinc.com/ETS-CloudAutomation/alks-cli). This repo is archived and no longer maintained.
+
 # ALKS CLI
 
 [![NPM](https://nodei.co/npm/alks.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/alks/)
@@ -218,7 +220,7 @@ Arguments:
 Arguments:
 
 * `-a [account]` The ALKS account to use, be sure to wrap in quotes
-* `-r [role]` The ALKS login role to use to create your role, be sure to wrap in quotes
+* `-r [role]` The ALKS role to use, be sure to wrap in quotes
 * `-n [roleName]` The name of the role, be sure to wrap in quotes, alphanumeric including: `@+=._-`
 * `-p [trustPolicy]` A trust policy as a JSON string.  Must include trustPolicy or roleType, but not both
 * `-t [roleType]` The role type, to see available roles: `alks iam roletypes`, be sure to wrap in quotes.  Must include roleType or trust policy, but not both. We recommend specifying the trust policy instead since role types are a legacy feature and no new role types are being created for new AWS services
